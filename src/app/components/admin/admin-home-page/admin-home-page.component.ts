@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-admin-home-page',
@@ -10,7 +11,7 @@ export class AdminHomePageComponent implements OnInit {
 
   selectedCity: any;
 
-  constructor() {
+  constructor(private spinner: NgxSpinnerService) {
     this.cities = [
       { name: 'New York', code: 'NY' },
       { name: 'Rome', code: 'RM' },
@@ -20,5 +21,10 @@ export class AdminHomePageComponent implements OnInit {
     ];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 2000);
+  }
 }
