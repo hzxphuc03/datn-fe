@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MasterLayoutAdminComponent implements OnInit {
   isOpen: boolean = true;
+  actionNavItems: any[] = [
+    { icon: 'bx bx-home-circle', name: 'Home', url: '/auth/admin/home' },
+    { icon: 'bx bx-cube', name: 'Product', url: '/auth/admin/home' },
+  ];
   constructor() {}
 
   ngOnInit(): void {}
