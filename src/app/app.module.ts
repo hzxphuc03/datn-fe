@@ -6,14 +6,20 @@ import { MasterLayoutAdminComponent } from './shareds/master-layout-admin/master
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ChatComponent } from './shareds/chat/chat/chat.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
-  declarations: [AppComponent, MasterLayoutAdminComponent],
+  declarations: [AppComponent, MasterLayoutAdminComponent, ChatComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     DropdownModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
