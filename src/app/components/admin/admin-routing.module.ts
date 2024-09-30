@@ -15,6 +15,14 @@ const routes: Routes = [
     component: fromPagesComponent.ThuongHieuComponent,
   },
   {
+    path: 'the-loai',
+    component: fromPagesComponent.TheLoaiComponent,
+  },
+  {
+    path: 'kich-co',
+    component: fromPagesComponent.KichCoComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

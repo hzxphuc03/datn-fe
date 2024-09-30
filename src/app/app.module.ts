@@ -10,6 +10,10 @@ import { ChatComponent } from './shareds/chat/chat/chat.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'; // Thêm dòng này
+import { MatDialogModule } from '@angular/material/dialog';
+import { ToastModule } from 'primeng/toast';
+import { InputSwitchModule } from 'primeng/inputswitch';
+
 @NgModule({
   declarations: [AppComponent, MasterLayoutAdminComponent, ChatComponent],
   imports: [
@@ -22,6 +26,9 @@ import { HttpClientModule } from '@angular/common/http'; // Thêm dòng này
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatDialogModule,
+    ToastModule,
+    InputSwitchModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

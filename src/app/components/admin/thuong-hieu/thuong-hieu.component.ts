@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ThuongHieuServiceService } from '../service/thuong-hieu-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddOrDetailComponent } from './add-or-detail/add-or-detail.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-thuong-hieu',
@@ -11,11 +14,16 @@ export class ThuongHieuComponent implements OnInit {
   listPageNumber: number[] = [];
   listData = [];
   optionStatus: any = [
-    { value: '', name: 'All' },
     { value: '1', name: 'Hoạt Động' },
     { value: '0', name: 'Dừng Hoạt Động' },
   ];
-  constructor(private service: ThuongHieuServiceService) {}
+  openDialog: boolean = false;
+  dataDialog: any;
+  constructor(
+    private service: ThuongHieuServiceService,
+    private dialog: MatDialog,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit(): void {
     this.getListWords('rows');
@@ -43,10 +51,23 @@ export class ThuongHieuComponent implements OnInit {
         delete this.searchQuery[key];
       }
     });
+    this.spinner.show();
     const data = await this.service.getAll(this.searchQuery).toPromise();
     if (data) {
       this.getTotalPage(data);
       this.listData = data.item;
+      if (this.listData) {
+        this.listData?.map((item: any) => {
+          if (item.trangThai === 1) {
+            item.status = true;
+          } else {
+            item.status = false;
+          }
+        });
+      }
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
     }
 
     //   gọi api
@@ -69,5 +90,29 @@ export class ThuongHieuComponent implements OnInit {
   }
   filter() {
     this.getListWords('rows');
+  }
+  details(item: any) {
+    this.openDialog = true;
+    this.dataDialog = item;
+  }
+  getAction(event: any) {
+    this.openDialog = false;
+    this.getListWords('page');
+    this.dataDialog = {};
+  }
+  add() {
+    this.openDialog = true;
+    this.dataDialog = {};
+  }
+  noneClick(event: any) {
+    event.stopPropagation();
+  }
+  async changeStatus(item: any) {
+    const data = await this.service
+      .udpateStatus(item.id, item.status ? 1 : 0)
+      .toPromise();
+    if (data) {
+      this.getListWords('page');
+    }
   }
 }

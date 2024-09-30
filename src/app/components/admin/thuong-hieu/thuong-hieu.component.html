@@ -22,6 +22,11 @@
         class="table-pagination-item fsel-select fsel-select-xsm"
       ></p-dropdown>
     </div>
+    <div class="add">
+      <button class="btn" (click)="add()">
+        Thêm mới <i class="bx bx-message-square-add"></i>
+      </button>
+    </div>
   </div>
   <div class="content">
     <p-table [value]="listData">
@@ -31,10 +36,11 @@
           <th>Tên</th>
           <th>Ngày tạo</th>
           <th>Ngày sửa</th>
+          <th>Trạng thái</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-product>
-        <tr>
+        <tr (click)="details(product)">
           <td>{{ product.id }}</td>
           <td>{{ product.ten }}</td>
           <td>
@@ -42,8 +48,17 @@
           </td>
           <td>
             {{
-              product.ngaySua ? (product.ngaySua | date : "dd/MM/yyyy") : "--"
+              product.ngaySua
+                ? (product.ngaySua | date : "dd/MM/yyyy")
+                : "------------"
             }}
+          </td>
+          <td>
+            <p-inputSwitch
+              (onChange)="changeStatus(product)"
+              [(ngModel)]="product.status"
+              (click)="noneClick($event)"
+            ></p-inputSwitch>
           </td>
         </tr>
       </ng-template>
@@ -86,3 +101,10 @@
     </div>
   </div>
 </div>
+<app-add-or-detail
+  class="dialog"
+  [dataGet]="dataDialog"
+  *ngIf="openDialog"
+  (end)="getAction($event)"
+>
+</app-add-or-detail>

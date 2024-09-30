@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,5 +17,38 @@ export class ThuongHieuServiceService {
         return of(error?.errorJson ? error.errorJson : error.error);
       })
     );
+  }
+  update(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/update`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  add(params: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/add`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  udpateStatus(id: number, status: number): Observable<any> {
+    const params = new HttpParams().set('status', status.toString());
+    return this.http
+      .put<any>(`${this.url}/update-trang-thai/${id}`, null, { params })
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
 }

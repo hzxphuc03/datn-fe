@@ -1,0 +1,7 @@
+<div class="dialog" (click)="endAction()">
+  <div class="form" (click)="noneClick($event)">
+    <input type="text" [(ngModel)]="dataDetail.ten" />
+    <button class="btn" *ngIf="!isAdd" (click)="addOrUpdate()">Update</button>
+    <button class="btn" *ngIf="isAdd" (click)="addOrUpdate()">Add</button>
+  </div>
+</div>

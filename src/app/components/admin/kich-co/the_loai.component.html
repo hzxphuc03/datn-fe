@@ -1,0 +1,110 @@
+<div class="manager">
+  <div class="header">
+    <div class="title">Quản lý Thể Loại</div>
+  </div>
+  <div class="user-action d-flex align-items-center" style="gap: 20px">
+    <div class="search">
+      <i class="icon-search-3"></i>
+      <input
+        type="text"
+        placeholder="Search..."
+        (keyup.enter)="filter()"
+        [(ngModel)]="searchQuery.keyWord"
+      />
+    </div>
+    <div class="filter">
+      <p-dropdown
+        (onChange)="filter()"
+        [options]="optionStatus"
+        [(ngModel)]="searchQuery.status"
+        optionLabel="name"
+        optionValue="value"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <div class="add">
+      <button class="btn" (click)="add()">
+        Thêm mới <i class="bx bx-message-square-add"></i>
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <p-table [value]="listData">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>id</th>
+          <th>Tên</th>
+          <th>Ngày tạo</th>
+          <th>Ngày sửa</th>
+          <th>Trạng thái</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr (click)="details(product)">
+          <td>{{ product.id }}</td>
+          <td>{{ product.ten }}</td>
+          <td>
+            {{ product.ngayTao | date : "dd/MM/yyyy" }}
+          </td>
+          <td>
+            {{
+              product.ngaySua
+                ? (product.ngaySua | date : "dd/MM/yyyy")
+                : "------------"
+            }}
+          </td>
+          <td>
+            <p-inputSwitch
+              (onChange)="changeStatus(product)"
+              [(ngModel)]="product.status"
+              (click)="noneClick($event)"
+            ></p-inputSwitch>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="table-pagination d-flex mb-3 pb-4">
+    <div class="flex-grow-1"></div>
+    <div><small class="text-muted">Pages: </small></div>
+    <div>
+      <p-dropdown
+        (onChange)="getListWords('page')"
+        [options]="listPageNumber"
+        [(ngModel)]="searchQuery.page"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <!-- <div class="px-3"></div> -->
+    <div>
+      <p-dropdown
+        (onChange)="getListWords('rows')"
+        [options]="[10, 20, 30]"
+        [(ngModel)]="searchQuery.pageSize"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <div><small class="text-muted ml-1">Items per page</small></div>
+    <div class="d-flex justify-content-center align-items-center">
+      <span
+        (click)="getListWords('page', 'prev')"
+        class="table-pagination-item btn-prev ml-2"
+      >
+        <i class="bx bx-left-arrow-alt"></i>
+      </span>
+      <span
+        (click)="getListWords('page', 'next')"
+        class="table-pagination-item btn-next"
+      >
+        <i class="bx bx-right-arrow-alt"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<app-add-or-detail-kich-co
+  class="dialog"
+  [dataGet]="dataDialog"
+  *ngIf="openDialog"
+  (end)="getAction($event)"
+>
+</app-add-or-detail-kich-co>
