@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@types/socket.io": "^3.0.2",
+    "axios": "^1.7.7",
     "boxicons": "^2.1.4",
     "concurrently": "^9.0.1",
     "ngx-spinner": "^14.0.0",

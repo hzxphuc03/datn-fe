@@ -11,6 +11,10 @@ const routes: Routes = [
     component: fromPagesComponent.AdminHomePageComponent,
   },
   {
+    path: 'thuong-hieu',
+    component: fromPagesComponent.ThuongHieuComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

@@ -1,0 +1,36 @@
+.manager {
+  padding: 20px;
+  .title {
+    font-size: x-large;
+    font-weight: bold;
+  }
+}
+.table-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  .bx {
+    font-size: 36px;
+    cursor: pointer;
+  }
+  .table-pagination-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.search {
+  padding: 8px 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  input {
+    border: none !important;
+  }
+  input:focus-visible {
+    border: none;
+    outline: none;
+  }
+}
