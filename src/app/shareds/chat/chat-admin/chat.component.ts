@@ -13,6 +13,7 @@ export class ChatComponent implements OnInit {
   // bước 4 quản lý việc gửi tin nhắn người gửi , người nhận , thời gian , đã đọc chưa (có hoặc không)
   newMessage = '';
   messageList: string[] = [];
+  listChatBox: any[] = [];
 
   constructor(private chatService: ChatService) {}
 

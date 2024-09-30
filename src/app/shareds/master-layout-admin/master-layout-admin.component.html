@@ -24,6 +24,13 @@
       <span class="tooltip">{{ item.name }}</span>
     </li>
     <li>
+      <a [routerLink]="'/auth/admin/chat'">
+        <i class="bx bx-cog"></i>
+        <span class="links_name">{{ "Chat" }}</span>
+      </a>
+      <span class="tooltip">{{ "Chat" }}</span>
+    </li>
+    <li>
       <a>
         <i class="bx bx-cog"></i>
         <span class="links_name">{{ "Setting" }}</span>

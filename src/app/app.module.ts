@@ -6,7 +6,7 @@ import { MasterLayoutAdminComponent } from './shareds/master-layout-admin/master
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ChatComponent } from './shareds/chat/chat/chat.component';
+import { ChatComponent } from './shareds/chat/chat-admin/chat.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'; // Thêm dòng này

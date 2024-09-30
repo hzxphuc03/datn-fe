@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppModule } from 'src/app/app.module';
 import * as fromPagesComponent from './index';
 import { AdminLazyModule } from './admin-lazy.module';
-import { ChatComponent } from 'src/app/shareds/chat/chat/chat.component';
+import { ChatComponent } from 'src/app/shareds/chat/chat-admin/chat.component';
 
 const routes: Routes = [
   {
