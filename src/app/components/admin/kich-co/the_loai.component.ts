@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { TheLoaiServiceService } from '../service/the-loai-service.service';
-import { KichCoServiceService } from '../service/kich-co-service.service copy';
+import { KIchCoServiceService } from '../service/kich-co-service.service copy';
 
 @Component({
   selector: 'app-kich-co',
@@ -20,7 +19,7 @@ export class KichCoComponent implements OnInit {
   openDialog: boolean = false;
   dataDialog: any;
   constructor(
-    private service: KichCoServiceService,
+    private service: KIchCoServiceService,
     private dialog: MatDialog,
     private spinner: NgxSpinnerService
   ) {}

@@ -12,6 +12,7 @@ export class MasterLayoutAdminComponent implements OnInit {
     { icon: 'bx bx-cube', name: 'Thương hiệu', url: '/auth/admin/thuong-hieu' },
     { icon: 'bx bx-cube', name: 'Thể loại', url: '/auth/admin/the-loai' },
     { icon: 'bx bx-cube', name: 'Kích cỡ', url: '/auth/admin/kich-co' },
+    { icon: 'bx bx-cube', name: 'CTSP', url: '/auth/admin/chi-tiet-san-pham' },
   ];
   constructor() {}
 

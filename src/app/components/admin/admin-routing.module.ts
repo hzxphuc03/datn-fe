@@ -19,6 +19,14 @@ const routes: Routes = [
     component: fromPagesComponent.TheLoaiComponent,
   },
   {
+    path: 'chi-tiet-san-pham',
+    component: fromPagesComponent.ChiTietSanPhamComponent,
+  },
+  {
+    path: 'chi-tiet-san-pham/:id',
+    component: fromPagesComponent.AddOrEditCtspComponent,
+  },
+  {
     path: 'kich-co',
     component: fromPagesComponent.KichCoComponent,
   },

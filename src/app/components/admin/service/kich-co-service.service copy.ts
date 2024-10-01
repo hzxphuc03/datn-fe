@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class KichCoServiceService {
+export class KIchCoServiceService {
   url: string = 'http://localhost:8080/api/kich_co';
   constructor(private http: HttpClient) {}
 

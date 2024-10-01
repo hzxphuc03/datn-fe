@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { KichCoServiceService } from '../../service/kich-co-service.service copy';
+import { KIchCoServiceService } from '../../service/kich-co-service.service copy';
 
 @Component({
   selector: 'app-add-or-detail-kich-co',
@@ -18,7 +18,7 @@ export class AddOrDetailKichCoComponent implements OnInit {
   dataDetail: any = {};
   @Output() end = new EventEmitter();
   isAdd: boolean = false;
-  constructor(private service: KichCoServiceService) {}
+  constructor(private service: KIchCoServiceService) {}
 
   ngOnInit(): void {
     if (this.dataGet.id) {
