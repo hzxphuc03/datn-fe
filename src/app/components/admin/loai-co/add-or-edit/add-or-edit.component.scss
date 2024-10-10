@@ -1,0 +1,31 @@
+.dialog {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu đen với độ mờ 50% */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .form {
+    width: 400px;
+    background-color: rgb(180, 180, 180);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    input {
+      width: 100%;
+      outline: none;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .btn {
+      border: 1px solid rgba(255, 255, 255);
+      width: 100%;
+    }
+  }
+  

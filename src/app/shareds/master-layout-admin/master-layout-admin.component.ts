@@ -13,7 +13,10 @@ export class MasterLayoutAdminComponent implements OnInit {
     { icon: 'bx bx-cube', name: 'Thể loại', url: '/auth/admin/the-loai' },
     { icon: 'bx bx-cube', name: 'Kích cỡ', url: '/auth/admin/kich-co' },
     { icon: 'bx bx-cube', name: 'CTSP', url: '/auth/admin/chi-tiet-san-pham' },
-  ];
+    { icon: 'bx bx-cube', name: 'Loại cổ', url: '/auth/admin/loai-co' },
+    { icon: 'bx bx-cube', name: 'Loại đế', url: '/auth/admin/loai-de' },
+    { icon: 'bx bx-cube', name: 'Vật Liệu', url: '/auth/admin/vat-lieu' },
+  ];  
   constructor() {}
 
   ngOnInit(): void {}

@@ -31,6 +31,18 @@ const routes: Routes = [
     component: fromPagesComponent.KichCoComponent,
   },
   {
+    path: 'loai-co',
+    component: fromPagesComponent.LoaiCoComponent,
+  },
+  {
+    path: 'loai-de',
+    component: fromPagesComponent.LoaiDeComponent,
+  },
+  {
+    path: 'vat-lieu',
+    component: fromPagesComponent.VatLieuComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },
