@@ -7,6 +7,8 @@ import { AddOrEditLoaiCoComponent } from './loai-co/add-or-edit/add-or-edit.comp
 import { LoaiCoComponent } from './loai-co/loai-co.component';
 import { AddOrEditLoaiDeComponent } from './loai-de/add-or-edit-loai-de/add-or-edit-loai-de.component';
 import { LoaiDeComponent } from './loai-de/loai-de.component';
+import { MauSacAddOrEditComponent } from './mau-sac/mau-sac-add-or-edit/mau-sac-add-or-edit.component';
+import { MauSacComponent } from './mau-sac/mau-sac.component';
 import { AddOrDetailTheLoaiComponent } from './the-loai/add-or-detail/add-or-detail.component';
 import { TheLoaiComponent } from './the-loai/the_loai.component';
 import { AddOrDetailComponent } from './thuong-hieu/add-or-detail/add-or-detail.component';
@@ -29,7 +31,9 @@ export const pagesComponents: any[] = [
   AddOrEditLoaiDeComponent,
   LoaiDeComponent,
   AddOrEditVatLieuComponent,
-  VatLieuComponent
+  VatLieuComponent,
+  MauSacComponent,
+  MauSacAddOrEditComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -46,3 +50,5 @@ export * from './loai-de/add-or-edit-loai-de/add-or-edit-loai-de.component';
 export * from './loai-de/loai-de.component';
 export * from './vat-lieu/add-or-edit-vat-lieu/add-or-edit-vat-lieu.component';
 export * from './vat-lieu/vat-lieu.component';
+export * from './mau-sac/mau-sac.component';
+export * from './mau-sac/mau-sac-add-or-edit/mau-sac-add-or-edit.component';

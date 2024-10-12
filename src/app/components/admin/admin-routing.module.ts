@@ -43,6 +43,10 @@ const routes: Routes = [
     component: fromPagesComponent.VatLieuComponent,
   },
   {
+    path: 'mau-sac',
+    component: fromPagesComponent.MauSacComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },
