@@ -1,0 +1,39 @@
+.giam-gia-dialog{
+    width: 60vw;
+    // height: 80vh;
+}
+.header{
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.content{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+:host ::ng-deep{
+    .p-float-label input:focus ~ label, .p-float-label input.p-filled ~ label, .p-float-label textarea:focus ~ label, .p-float-label textarea.p-filled ~ label, .p-float-label .p-inputwrapper-focus ~ label, .p-float-label .p-inputwrapper-filled ~ label{
+        top: 0.10rem !important;
+        background-color: #fff;
+    }
+    input{
+        width: 100%;
+    }
+    .p-datepicker-touch-ui, .p-calendar .p-datepicker-touch-ui{
+        min-width: 40vw !important;
+    }
+    .p-calendar{
+        width: 100%;
+    }
+}
+.action{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    .btn{
+        border: 1px solid  black;
+        width: 100%;
+    }
+}

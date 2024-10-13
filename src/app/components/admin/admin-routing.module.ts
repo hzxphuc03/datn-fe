@@ -47,6 +47,10 @@ const routes: Routes = [
     component: fromPagesComponent.MauSacComponent,
   },
   {
+    path: 'giam-gia',
+    component: fromPagesComponent.GiamGiaComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

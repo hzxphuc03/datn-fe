@@ -1,6 +1,8 @@
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
 import { AddOrEditCtspComponent } from './chi-tiet-san-pham/add-or-edit-ctsp/add-or-edit-ctsp.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
+import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
+import { GiamGiaComponent } from './giam-gia/giam-gia.component';
 import { AddOrDetailKichCoComponent } from './kich-co/add-or-detail/add-or-detail.component';
 import { KichCoComponent } from './kich-co/the_loai.component';
 import { AddOrEditLoaiCoComponent } from './loai-co/add-or-edit/add-or-edit.component';
@@ -33,7 +35,9 @@ export const pagesComponents: any[] = [
   AddOrEditVatLieuComponent,
   VatLieuComponent,
   MauSacComponent,
-  MauSacAddOrEditComponent
+  MauSacAddOrEditComponent,
+  GiamGiaAddOrEditComponent,
+  GiamGiaComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -52,3 +56,5 @@ export * from './vat-lieu/add-or-edit-vat-lieu/add-or-edit-vat-lieu.component';
 export * from './vat-lieu/vat-lieu.component';
 export * from './mau-sac/mau-sac.component';
 export * from './mau-sac/mau-sac-add-or-edit/mau-sac-add-or-edit.component';
+export * from './giam-gia/giam-gia.component';
+export * from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';

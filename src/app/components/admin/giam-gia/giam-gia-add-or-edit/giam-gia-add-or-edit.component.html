@@ -1,0 +1,22 @@
+<div class="giam-gia-dialog">
+    <div class="header" *ngIf="!data?.id">Thêm mới giảm giá</div>
+    <div class="header" *ngIf="data?.id">Chi tiết giảm giá</div>
+    <div class="content">
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText [(ngModel)]="data.ten"> 
+            <label for="float-input">Tên</label>
+        </span>
+        <span class="p-float-label">
+            <input id="float-input" type="number" pInputText [(ngModel)]="data.mucGiam" min="0" max="100"> 
+            <label for="float-input">Mức giảm</label>
+        </span>
+        <p-calendar [(ngModel)]="data.ngayBatDau" [showTime]="true" hourFormat="12" [touchUI]="true" [showIcon]="true"></p-calendar>
+        <p-calendar [(ngModel)]="data.ngayKetThuc" [showTime]="true" hourFormat="12" [touchUI]="true" [showIcon]="true"></p-calendar>
+        
+    </div>
+    <div class="action">
+        <button class="btn" *ngIf="!data?.id" (click)="addOrUpdate()">Thêm mới</button>
+        <button class="btn" *ngIf="data?.id" (click)="addOrUpdate()">Cập nhật</button>
+        <button class="btn" (click)="close()">Close</button>
+    </div>
+</div>  

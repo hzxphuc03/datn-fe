@@ -9,19 +9,27 @@ export class MasterLayoutAdminComponent implements OnInit {
   isOpen: boolean = true;
   actionNavItems: any[] = [
     { icon: 'bx bx-home-circle', name: 'Home', url: '/auth/admin/home' },
-    { icon: 'bx bx-cube', name: 'Thương hiệu', url: '/auth/admin/thuong-hieu' },
-    { icon: 'bx bx-cube', name: 'Thể loại', url: '/auth/admin/the-loai' },
-    { icon: 'bx bx-cube', name: 'Kích cỡ', url: '/auth/admin/kich-co' },
-    { icon: 'bx bx-cube', name: 'CTSP', url: '/auth/admin/chi-tiet-san-pham' },
-    { icon: 'bx bx-cube', name: 'Loại cổ', url: '/auth/admin/loai-co' },
-    { icon: 'bx bx-cube', name: 'Loại đế', url: '/auth/admin/loai-de' },
-    { icon: 'bx bx-cube', name: 'Vật liệu', url: '/auth/admin/vat-lieu' },
-    { icon: 'bx bx-cube', name: 'Màu Sắc', url: '/auth/admin/mau-sac' },
+    { icon: 'bx bx-home-circle', name: 'Sản phẩm', url: '' , type: 'drop' , item :[
+      { icon: 'bx bx-cube', name: 'Thương hiệu', url: '/auth/admin/thuong-hieu' },
+      { icon: 'bx bx-cube', name: 'Thể loại', url: '/auth/admin/the-loai' },
+      { icon: 'bx bx-cube', name: 'Kích cỡ', url: '/auth/admin/kich-co' },
+      { icon: 'bx bx-cube', name: 'CTSP', url: '/auth/admin/chi-tiet-san-pham' },
+      { icon: 'bx bx-cube', name: 'Loại cổ', url: '/auth/admin/loai-co' },
+      { icon: 'bx bx-cube', name: 'Loại đế', url: '/auth/admin/loai-de' },
+      { icon: 'bx bx-cube', name: 'Vật liệu', url: '/auth/admin/vat-lieu' },
+      { icon: 'bx bx-cube', name: 'Màu Sắc', url: '/auth/admin/mau-sac' },
+      { icon: 'bx bx-cube', name: 'Giảm giá', url: '/auth/admin/giam-gia' },
+    ]},
   ];  
   constructor() {}
 
   ngOnInit(): void {}
   openSlide() {
+    if(this.isOpen){
+      this.actionNavItems.map(a =>{
+        a.open = false;
+      })
+    }
     this.isOpen = !this.isOpen;
   }
 }
