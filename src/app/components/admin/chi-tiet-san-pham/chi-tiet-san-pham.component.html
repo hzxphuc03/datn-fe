@@ -33,9 +33,16 @@
       <ng-template pTemplate="header">
         <tr>
           <th>id</th>
+          <th>Hình ảnh</th>
           <th>Mã</th>
           <th>Tên</th>
-          <th>Người tạo</th>
+          <th>Giá</th>
+          <th>Giảm giá</th>
+          <th>Loại cổ</th>
+          <th>Loại Đế</th>
+          <th>Thể loại</th>
+          <th>Thương hiệu</th>
+          <th>Vật liệu</th>
           <th>Ngày tạo</th>
           <th>Ngày sửa</th>
           <th>Số Lượng</th>
@@ -45,9 +52,20 @@
       <ng-template pTemplate="body" let-product>
         <tr (click)="details(product)">
           <td>{{ product.id }}</td>
+          <td>
+            <img [src]="product.hinhAnh" class="show-img" alt="" />
+          </td>
           <td>{{ product.ma }}</td>
           <td>{{ product.ten }}</td>
-          <td>{{ product.nguoiTao ? product.nguoiTao : "------------" }}</td>
+          <td>{{ product.giaThapNhat }} đến {{ product.giaCaoNhat }}</td>
+          <td>
+            {{ product?.giamGia ? product?.giamGia?.mucGiam : "Không áp dụng" }}
+          </td>
+          <td>{{ product?.loaiCo?.ten }}</td>
+          <td>{{ product?.loaiDe?.ten }}</td>
+          <td>{{ product?.theLoai?.ten }}</td>
+          <td>{{ product?.thuongHieu?.ten }}</td>
+          <td>{{ product?.vatLieu?.ten }}</td>
           <td>
             {{ product.ngayTao | date : "dd/MM/yyyy" }}
           </td>
@@ -55,7 +73,7 @@
             {{
               product.ngaySua
                 ? (product.ngaySua | date : "dd/MM/yyyy")
-                : "------------"
+                : "-----"
             }}
           </td>
           <td>{{ product.soLuong ? product.soLuong : 0 }}</td>

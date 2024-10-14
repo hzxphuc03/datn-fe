@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'chi-tiet-san-pham/:id',
-    component: fromPagesComponent.AddOrEditCtspComponent,
+    component: fromPagesComponent.ChiTietSanPhamAddOrUpdateComponent,
   },
   {
     path: 'kich-co',

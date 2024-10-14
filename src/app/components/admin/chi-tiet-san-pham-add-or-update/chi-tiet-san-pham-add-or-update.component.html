@@ -1,0 +1,400 @@
+<div class="all-detail">
+  <div class="header">Chi tiết sản phẩm</div>
+  <div class="san-pham-content">
+    <div class="left item-sanpham">
+      <div class="title">Ảnh chính sản phẩm</div>
+      <label class="uploadimg" for="upload-file">
+        <img
+          [src]="data?.sanPham?.hinhAnh"
+          alt=""
+          *ngIf="data?.sanPham?.hinhAnh"
+        />
+        <span>UploadFile</span>
+      </label>
+      <input
+        type="file"
+        id="upload-file"
+        accept="image/*"
+        style="display: none"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+    <div class="right item-sanpham">
+      <div class="d-flex" style="gap: 20px">
+        <span class="p-float-label">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.ten"
+          />
+          <label for="float-input">Tên sản phẩm</label>
+        </span>
+        <span class="p-float-label">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.ma"
+            readonly
+          />
+          <label for="float-input">Mã sản phẩm</label>
+        </span>
+      </div>
+      <div class="d-flex" style="gap: 20px">
+        <span class="p-float-label" style="width: 33%">
+          <input
+            id="float-input"
+            type="number"
+            pInputText
+            [(ngModel)]="data?.sanPham.trongLuong"
+            min="0"
+            max="10000"
+          />
+          <label for="float-input">Trọng lượng</label>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.beMatSuDung"
+          />
+          <label for="float-input">Bề mặt sử dụng</label>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.congNghe"
+          />
+          <label for="float-input">Công nghệ</label>
+        </span>
+      </div>
+      <div class="d-flex" style="gap: 20px">
+        <span class="p-float-label" style="width: 33%">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.kieuDang"
+          />
+          <label for="float-input">Kiểu dáng</label>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.giaThapNhat"
+          />
+          <label for="float-input">Giá thấp nhất</label>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.giaCaoNhat"
+            readonly
+          />
+          <label for="float-input">Giá cao nhất</label>
+        </span>
+      </div>
+      <div class="d-flex" style="gap: 20px">
+        <span class="p-float-label" style="width: 33%">
+          <input
+            (click)="
+              data?.sanPham.giamGia.isOpen
+                ? (data?.sanPham.giamGia.isOpen = false)
+                : (data?.sanPham.giamGia.isOpen = true)
+            "
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.giamGia.ten"
+            readonly
+          />
+          <label for="float-input">Giảm giá</label>
+          <div
+            class="option-drop-down giam-gia-dropdown"
+            *ngIf="data?.sanPham.giamGia.isOpen"
+            (scroll)="onScrollGiamGia()"
+          >
+            <div
+              class="option"
+              *ngFor="let item of giamgGia"
+              [class.active-drop]="item.id === data?.sanPham?.giamGia?.id"
+            >
+              <div
+                (click)="
+                  data?.sanPham.giamGia = item;
+                  data?.sanPham.giamGia.isOpen = false
+                "
+              >
+                {{ item.ten }}
+              </div>
+            </div>
+          </div>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            (click)="
+              data?.sanPham.thuongHieu.isOpen
+                ? (data?.sanPham.thuongHieu.isOpen = false)
+                : (data?.sanPham.thuongHieu.isOpen = true)
+            "
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.thuongHieu.ten"
+            readonly
+          />
+          <label for="float-input">Thương hiệu</label>
+          <div
+            class="option-drop-down thuong-hieu-dropdown"
+            *ngIf="data?.sanPham.thuongHieu.isOpen"
+            (scroll)="onScrollThuongHieu()"
+          >
+            <div
+              class="option"
+              *ngFor="let item of thuongHieu"
+              [class.active-drop]="item.id === data?.sanPham?.thuongHieu?.id"
+            >
+              <div
+                (click)="
+                  data?.sanPham.thuongHieu = item;
+                  data?.sanPham.thuongHieu.isOpen = false
+                "
+              >
+                {{ item.ten }}
+              </div>
+            </div>
+          </div>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            (click)="
+              data?.sanPham.theLoai.isOpen
+                ? (data?.sanPham.theLoai.isOpen = false)
+                : (data?.sanPham.theLoai.isOpen = true)
+            "
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.theLoai.ten"
+            readonly
+          />
+          <label for="float-input">Thể loại</label>
+          <div
+            class="option-drop-down the-loai-dropdown"
+            *ngIf="data?.sanPham.theLoai.isOpen"
+            (scroll)="onScrollTheLoai()"
+          >
+            <div
+              class="option"
+              *ngFor="let item of theLoai"
+              [class.active-drop]="item.id === data?.sanPham?.theLoai?.id"
+            >
+              <div
+                (click)="
+                  data?.sanPham.theLoai = item;
+                  data?.sanPham.theLoai.isOpen = false
+                "
+              >
+                {{ item.ten }}
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+      <div class="d-flex" style="gap: 20px">
+        <span class="p-float-label" style="width: 33%">
+          <input
+            (click)="
+              data?.sanPham.loaiCo.isOpen
+                ? (data?.sanPham.loaiCo.isOpen = false)
+                : (data?.sanPham.loaiCo.isOpen = true)
+            "
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.loaiCo.ten"
+            readonly
+          />
+          <label for="float-input">Loại cổ</label>
+          <div
+            class="option-drop-down loai-co-dropdown"
+            *ngIf="data?.sanPham.loaiCo.isOpen"
+            (scroll)="onScrollLoaiCo()"
+          >
+            <div
+              class="option"
+              *ngFor="let item of loaiCo"
+              [class.active-drop]="item.id === data?.sanPham?.loaiCo?.id"
+            >
+              <div
+                (click)="
+                  data?.sanPham.loaiCo = item;
+                  data?.sanPham.loaiCo.isOpen = false
+                "
+              >
+                {{ item.ten }}
+              </div>
+            </div>
+          </div>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            (click)="
+              data?.sanPham.vatLieu.isOpen
+                ? (data?.sanPham.vatLieu.isOpen = false)
+                : (data?.sanPham.vatLieu.isOpen = true)
+            "
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.vatLieu.ten"
+            readonly
+          />
+          <label for="float-input">Vật Liệu</label>
+          <div
+            class="option-drop-down vat-lieu-dropdown"
+            *ngIf="data?.sanPham.vatLieu.isOpen"
+            (scroll)="onScrollVatLieu()"
+          >
+            <div
+              class="option"
+              *ngFor="let item of vatLieu"
+              [class.active-drop]="item.id === data?.sanPham?.vatLieu?.id"
+            >
+              <div
+                (click)="
+                  data?.sanPham.vatLieu = item;
+                  data?.sanPham.vatLieu.isOpen = false
+                "
+              >
+                {{ item.ten }}
+              </div>
+            </div>
+          </div>
+        </span>
+        <span class="p-float-label" style="width: 33%">
+          <input
+            (click)="
+              data?.sanPham.loaiDe?.isOpen
+                ? (data?.sanPham.loaiDe.isOpen = false)
+                : (data?.sanPham.loaiDe.isOpen = true)
+            "
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data?.sanPham.loaiDe.ten"
+            readonly
+          />
+          <label for="float-input">Loại đế</label>
+          <div
+            class="option-drop-down loai-de-dropdown"
+            *ngIf="data?.sanPham.loaiDe.isOpen"
+            (scroll)="onScrollLoaiDe()"
+          >
+            <div
+              class="option"
+              *ngFor="let item of loaiDe"
+              [class.active-drop]="item.id === data?.sanPham?.loaiDe?.id"
+            >
+              <div
+                (click)="
+                  data?.sanPham.loaiDe = item;
+                  data?.sanPham.loaiDe.isOpen = false
+                "
+              >
+                {{ item.ten }}
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+      <div class="d-flex" style="gap: 20px">
+        <span class="p-float-label textarea-p-float-label">
+          <textarea
+            name=""
+            id="loat-input"
+            pInputText
+            [(ngModel)]="data?.sanPham.moTa"
+          ></textarea>
+          <label for="float-input">Mô tả</label>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="chi-tiet-san-pham-content">
+    <div class="content">
+      <p-table [value]="data?.sanPhamChiTietList">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>id</th>
+            <th>Hình ảnh</th>
+            <th>Ngày tạo</th>
+            <th>Ngày sửa</th>
+            <th>Giá nhập</th>
+            <th>Giá Bán</th>
+            <th>Số lượng</th>
+            <th>Màu sắc</th>
+            <th>Kích cỡ</th>
+            <th>Trạng thái</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{ product?.id }}</td>
+            <td>
+              <img class="ctsp-img" [src]="product?.hinhAnh" alt="" />
+            </td>
+            <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
+            <td>
+              {{
+                product.ngaySua
+                  ? (product.ngaySua | date : "dd/MM/yyyy")
+                  : "-----"
+              }}
+            </td>
+            <td>
+              <span class="p-float-label">
+                <input
+                  id="float-input"
+                  type="text"
+                  pInputText
+                  [(ngModel)]="product.giaNhap"
+                />
+                <label for="float-input">giá nhập</label>
+              </span>
+            </td>
+            <td>
+              <span class="p-float-label">
+                <input
+                  id="float-input"
+                  type="text"
+                  pInputText
+                  [(ngModel)]="product.giaBan"
+                />
+                <label for="float-input">giá bán</label>
+              </span>
+            </td>
+            <td>{{ product.soLuong }}</td>
+            <td>
+              <div
+                *ngIf="product.mauSac.maMau"
+                style="height: 20px; width: 20px; border-radius: 50%"
+                [ngStyle]="{ 'background-color': product.mauSac.maMau }"
+              ></div>
+            </td>
+            <td>{{ product.kichCo.ten }}</td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
