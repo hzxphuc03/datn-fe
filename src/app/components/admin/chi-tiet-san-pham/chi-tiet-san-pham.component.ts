@@ -101,7 +101,7 @@ export class ChiTietSanPhamComponent implements OnInit {
   }
   add() {
     this.openDialog = true;
-    this.dataDialog = {};
+    this.router.navigate([`auth/admin/chi-tiet-san-pham/add`]);
   }
   noneClick(event: any) {
     event.stopPropagation();

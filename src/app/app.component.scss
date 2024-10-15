@@ -6,9 +6,51 @@
     top: 50% !important;
   }
 }
-:host ::ng-deep{
-  .p-float-label input:focus ~ label, .p-float-label input.p-filled ~ label, .p-float-label textarea:focus ~ label, .p-float-label textarea.p-filled ~ label, .p-float-label .p-inputwrapper-focus ~ label, .p-float-label .p-inputwrapper-filled ~ label{
-      top: 0.10rem !important;
-      background-color: #fff;
+:host ::ng-deep {
+  .p-float-label input:focus ~ label,
+  .p-float-label input.p-filled ~ label,
+  .p-float-label textarea:focus ~ label,
+  .p-float-label textarea.p-filled ~ label,
+  .p-float-label .p-inputwrapper-focus ~ label,
+  .p-float-label .p-inputwrapper-filled ~ label {
+    top: 0.1rem !important;
+    background-color: #fff;
+  }
+}
+.mess {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+.error {
+  border: 2px solid red;
+  color: red;
+}
+.success {
+  border: 2px solid green;
+  color: green;
+}
+.normal {
+  border: 2px solid gray;
+  color: gray;
+}
+.mess {
+  padding: 5px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  animation: showUp 0.3s ease-in-out forwards;
+}
+@keyframes showUp {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

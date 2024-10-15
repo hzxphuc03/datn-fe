@@ -14,3 +14,20 @@
     />
   </div>
 </ngx-spinner>
+<div
+  class="mess"
+  *ngIf="errorMessage"
+  [class.error]="errorMessage.type === 'error'"
+  [class.success]="errorMessage.type === 'success'"
+  [class.normal]="
+    errorMessage.type !== 'success' && errorMessage.type !== 'error'
+  "
+>
+  <i class="bx bx-error" *ngIf="errorMessage.type === 'error'"></i>
+  <i class="bx bx-check-square" *ngIf="errorMessage.type === 'success'"></i>
+  <i
+    class="bx bx-message-dots"
+    *ngIf="errorMessage.type !== 'success' && errorMessage.type !== 'error'"
+  ></i>
+  {{ errorMessage.message }}
+</div>

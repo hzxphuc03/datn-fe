@@ -1,6 +1,14 @@
-<div class="all-detail">
+<div class="all-detail" *ngIf="data">
   <div class="header">Chi tiết sản phẩm</div>
-  <div class="san-pham-content">
+  <div class="action-header">
+    <button class="btn" *ngIf="isAdd" (click)="addOrEdit()">
+      Thêm mới sản phẩm
+    </button>
+    <button class="btn" *ngIf="!isAdd" (click)="addOrEdit()">
+      Cập nhật sản phẩm
+    </button>
+  </div>
+  <div class="san-pham-content" *ngIf="data?.sanPham">
     <div class="left item-sanpham">
       <div class="title">Ảnh chính sản phẩm</div>
       <label class="uploadimg" for="upload-file">
@@ -88,6 +96,7 @@
             type="text"
             pInputText
             [(ngModel)]="data?.sanPham.giaThapNhat"
+            readonly
           />
           <label for="float-input">Giá thấp nhất</label>
         </span>
@@ -107,13 +116,13 @@
           <input
             (click)="
               data?.sanPham.giamGia.isOpen
-                ? (data?.sanPham.giamGia.isOpen = false)
-                : (data?.sanPham.giamGia.isOpen = true)
+                ? (data?.sanPham?.giamGia.isOpen = false)
+                : (data?.sanPham?.giamGia.isOpen = true)
             "
             id="float-input"
             type="text"
             pInputText
-            [(ngModel)]="data?.sanPham.giamGia.ten"
+            [(ngModel)]="data?.sanPham?.giamGia.ten"
             readonly
           />
           <label for="float-input">Giảm giá</label>
@@ -142,19 +151,19 @@
           <input
             (click)="
               data?.sanPham.thuongHieu.isOpen
-                ? (data?.sanPham.thuongHieu.isOpen = false)
-                : (data?.sanPham.thuongHieu.isOpen = true)
+                ? (data?.sanPham?.thuongHieu.isOpen = false)
+                : (data?.sanPham?.thuongHieu.isOpen = true)
             "
             id="float-input"
             type="text"
             pInputText
-            [(ngModel)]="data?.sanPham.thuongHieu.ten"
+            [(ngModel)]="data?.sanPham?.thuongHieu.ten"
             readonly
           />
           <label for="float-input">Thương hiệu</label>
           <div
             class="option-drop-down thuong-hieu-dropdown"
-            *ngIf="data?.sanPham.thuongHieu.isOpen"
+            *ngIf="data?.sanPham?.thuongHieu.isOpen"
             (scroll)="onScrollThuongHieu()"
           >
             <div
@@ -165,7 +174,7 @@
               <div
                 (click)="
                   data?.sanPham.thuongHieu = item;
-                  data?.sanPham.thuongHieu.isOpen = false
+                  data?.sanPham?.thuongHieu.isOpen = false
                 "
               >
                 {{ item.ten }}
@@ -177,13 +186,13 @@
           <input
             (click)="
               data?.sanPham.theLoai.isOpen
-                ? (data?.sanPham.theLoai.isOpen = false)
-                : (data?.sanPham.theLoai.isOpen = true)
+                ? (data?.sanPham?.theLoai.isOpen = false)
+                : (data?.sanPham?.theLoai.isOpen = true)
             "
             id="float-input"
             type="text"
             pInputText
-            [(ngModel)]="data?.sanPham.theLoai.ten"
+            [(ngModel)]="data?.sanPham?.theLoai.ten"
             readonly
           />
           <label for="float-input">Thể loại</label>
@@ -200,7 +209,7 @@
               <div
                 (click)="
                   data?.sanPham.theLoai = item;
-                  data?.sanPham.theLoai.isOpen = false
+                  data?.sanPham?.theLoai.isOpen = false
                 "
               >
                 {{ item.ten }}
@@ -214,19 +223,19 @@
           <input
             (click)="
               data?.sanPham.loaiCo.isOpen
-                ? (data?.sanPham.loaiCo.isOpen = false)
-                : (data?.sanPham.loaiCo.isOpen = true)
+                ? (data?.sanPham?.loaiCo.isOpen = false)
+                : (data?.sanPham?.loaiCo.isOpen = true)
             "
             id="float-input"
             type="text"
             pInputText
-            [(ngModel)]="data?.sanPham.loaiCo.ten"
+            [(ngModel)]="data?.sanPham?.loaiCo.ten"
             readonly
           />
           <label for="float-input">Loại cổ</label>
           <div
             class="option-drop-down loai-co-dropdown"
-            *ngIf="data?.sanPham.loaiCo.isOpen"
+            *ngIf="data?.sanPham?.loaiCo.isOpen"
             (scroll)="onScrollLoaiCo()"
           >
             <div
@@ -237,7 +246,7 @@
               <div
                 (click)="
                   data?.sanPham.loaiCo = item;
-                  data?.sanPham.loaiCo.isOpen = false
+                  data?.sanPham?.loaiCo.isOpen = false
                 "
               >
                 {{ item.ten }}
@@ -249,13 +258,13 @@
           <input
             (click)="
               data?.sanPham.vatLieu.isOpen
-                ? (data?.sanPham.vatLieu.isOpen = false)
-                : (data?.sanPham.vatLieu.isOpen = true)
+                ? (data?.sanPham?.vatLieu.isOpen = false)
+                : (data?.sanPham?.vatLieu.isOpen = true)
             "
             id="float-input"
             type="text"
             pInputText
-            [(ngModel)]="data?.sanPham.vatLieu.ten"
+            [(ngModel)]="data?.sanPham?.vatLieu.ten"
             readonly
           />
           <label for="float-input">Vật Liệu</label>
@@ -272,7 +281,7 @@
               <div
                 (click)="
                   data?.sanPham.vatLieu = item;
-                  data?.sanPham.vatLieu.isOpen = false
+                  data?.sanPham?.vatLieu.isOpen = false
                 "
               >
                 {{ item.ten }}
@@ -284,8 +293,8 @@
           <input
             (click)="
               data?.sanPham.loaiDe?.isOpen
-                ? (data?.sanPham.loaiDe.isOpen = false)
-                : (data?.sanPham.loaiDe.isOpen = true)
+                ? (data?.sanPham?.loaiDe.isOpen = false)
+                : (data?.sanPham?.loaiDe.isOpen = true)
             "
             id="float-input"
             type="text"
@@ -307,7 +316,7 @@
               <div
                 (click)="
                   data?.sanPham.loaiDe = item;
-                  data?.sanPham.loaiDe.isOpen = false
+                  data?.sanPham?.loaiDe.isOpen = false
                 "
               >
                 {{ item.ten }}
@@ -346,11 +355,28 @@
             <th>Trạng thái</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-product let-index="rowIndex">
           <tr>
             <td>{{ product?.id }}</td>
             <td>
-              <img class="ctsp-img" [src]="product?.hinhAnh" alt="" />
+              <label [for]="'upload-file-ctsp-' + index">
+                <img
+                  *ngIf="product?.hinhAnh"
+                  class="ctsp-img"
+                  [src]="product?.hinhAnh"
+                  alt=""
+                />
+                <div *ngIf="!product?.hinhAnh" style="">
+                  <i class="bx bx-image-add" style="font-size: 50px"></i>
+                </div>
+              </label>
+              <input
+                type="file"
+                [id]="'upload-file-ctsp-' + index"
+                accept="image/*"
+                style="display: none"
+                (change)="onFileCTSPSelected($event, index)"
+              />
             </td>
             <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
             <td>
@@ -364,9 +390,11 @@
               <span class="p-float-label">
                 <input
                   id="float-input"
-                  type="text"
+                  type="number"
                   pInputText
                   [(ngModel)]="product.giaNhap"
+                  min="0"
+                  max="1000000"
                 />
                 <label for="float-input">giá nhập</label>
               </span>
@@ -375,26 +403,77 @@
               <span class="p-float-label">
                 <input
                   id="float-input"
-                  type="text"
+                  type="number"
                   pInputText
                   [(ngModel)]="product.giaBan"
+                  min="0"
+                  max="1000000"
                 />
                 <label for="float-input">giá bán</label>
               </span>
             </td>
-            <td>{{ product.soLuong }}</td>
             <td>
+              <span class="p-float-label">
+                <input
+                  id="float-input"
+                  type="number"
+                  pInputText
+                  [(ngModel)]="product.soLuong"
+                  min="0"
+                  max="1000"
+                />
+                <label for="float-input">Số lượng</label>
+              </span>
+            </td>
+            <td (click)="openIMG(product.mauSac, index)">
               <div
                 *ngIf="product.mauSac.maMau"
-                style="height: 20px; width: 20px; border-radius: 50%"
+                style="height: 20px; width: 90%"
                 [ngStyle]="{ 'background-color': product.mauSac.maMau }"
               ></div>
+              <div
+                *ngIf="!product.mauSac.maMau"
+                style="width: 100%; display: flex; justify-content: center"
+              >
+                <i class="bx bx-color" style="font-size: 24px"></i>
+              </div>
             </td>
-            <td>{{ product.kichCo.ten }}</td>
-            <td></td>
+            <td (click)="openSize(product.kichCo, index)">
+              <div
+                style="display: flex; justify-content: center"
+                *ngIf="product.kichCo.ten"
+              >
+                {{ product.kichCo.ten }}
+              </div>
+              <div
+                *ngIf="!product.kichCo.ten"
+                style="display: flex; justify-content: center"
+              >
+                <i class="bx bx-font-size" style="font-size: 24px"></i>
+              </div>
+            </td>
+            <td>
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+                *ngIf="product?.isNew"
+              >
+                New
+              </div>
+              <div *ngIf="!product?.isNew"></div>
+            </td>
           </tr>
         </ng-template>
       </p-table>
+      <div class="add-more">
+        <button class="btn" (click)="addMoreCTDP()">
+          <i class="bx bx-add-to-queue"></i>
+          Thêm mới
+        </button>
+      </div>
     </div>
   </div>
 </div>

@@ -4,6 +4,7 @@ import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.c
 import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 import { GiamGiaComponent } from './giam-gia/giam-gia.component';
 import { AddOrDetailKichCoComponent } from './kich-co/add-or-detail/add-or-detail.component';
+import { CtspKichCoComponent } from './kich-co/ctsp-kich-co/ctsp-kich-co.component';
 import { KichCoComponent } from './kich-co/the_loai.component';
 import { AddOrEditLoaiCoComponent } from './loai-co/add-or-edit/add-or-edit.component';
 import { LoaiCoComponent } from './loai-co/loai-co.component';
@@ -40,6 +41,7 @@ export const pagesComponents: any[] = [
   GiamGiaComponent,
   ChiTietSanPhamAddOrUpdateComponent,
   CtspMauSacComponent,
+  CtspKichCoComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -61,3 +63,4 @@ export * from './giam-gia/giam-gia.component';
 export * from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 export * from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update.component';
 export * from './mau-sac/ctsp-mau-sac/ctsp-mau-sac.component';
+export * from './kich-co/ctsp-kich-co/ctsp-kich-co.component';

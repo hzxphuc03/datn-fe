@@ -27,6 +27,10 @@ const routes: Routes = [
     component: fromPagesComponent.ChiTietSanPhamAddOrUpdateComponent,
   },
   {
+    path: 'chi-tiet-san-pham/add',
+    component: fromPagesComponent.ChiTietSanPhamAddOrUpdateComponent,
+  },
+  {
     path: 'kich-co',
     component: fromPagesComponent.KichCoComponent,
   },

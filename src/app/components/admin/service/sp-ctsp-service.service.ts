@@ -39,6 +39,26 @@ export class CTSPServiceService {
       })
     );
   }
+  updateCTSP(params: any): Observable<any> {
+    return this.http.put<any>(`${this.urlCTSP}/update`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  addCTSP(params: any): Observable<any> {
+    return this.http.post<any>(`${this.urlCTSP}/add`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   add(params: any): Observable<any> {
     return this.http.post<any>(`${this.url}/add`, params).pipe(
       (res: any) => {
