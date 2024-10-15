@@ -353,6 +353,7 @@
             <th>Màu sắc</th>
             <th>Kích cỡ</th>
             <th>Trạng thái</th>
+            <th>Action</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product let-index="rowIndex">
@@ -463,7 +464,30 @@
               >
                 New
               </div>
-              <div *ngIf="!product?.isNew"></div>
+              <div *ngIf="!product?.isNew">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  Update
+                </div>
+              </div>
+            </td>
+            <td>
+              <p-inputSwitch
+                *ngIf="!product?.isNew"
+                [(ngModel)]="product.status"
+              ></p-inputSwitch>
+              <div *ngIf="product?.isNew">
+                <i
+                  class="bx bx-x"
+                  style="font-size: 34px; color: red"
+                  (click)="remove(index)"
+                ></i>
+              </div>
             </td>
           </tr>
         </ng-template>

@@ -146,6 +146,13 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
           isOpen: false,
         };
       }
+      this.data.sanPhamChiTietList.map((item: any) => {
+        if (item.trangThai === 1) {
+          item.status = true;
+        } else {
+          item.status = false;
+        }
+      });
 
       setTimeout(() => {
         this.spinner.hide();
@@ -436,6 +443,7 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
       mauSac: {},
       kichCo: {},
       isNew: true,
+      status: true,
     });
   }
   async addOrEdit() {
@@ -550,7 +558,7 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
             giaNhap: a.giaNhap,
             giaBan: a.giaBan,
             soLuong: a.soLuong,
-            trangThai: a.trangThai,
+            trangThai: a.status ? 1 : 0,
             sanPham: a.sanPham,
             mauSac: a.mauSac.id,
             kichCo: a.kichCo.id,
@@ -568,6 +576,8 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
               .updateCTSP(ctspBody)
               .toPromise();
             if (dataCTSP) {
+              if (a.isChange) {
+              }
             } else {
               this.errorService.displayError('Lỗi', 'error');
               return;
@@ -765,5 +775,8 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
       return;
     }
     return isDone;
+  }
+  remove(index: any) {
+    this.data.sanPhamChiTietList.splice(index, 1);
   }
 }
