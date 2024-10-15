@@ -1,4 +1,4 @@
-<div class="all-detail" *ngIf="data">
+<div class="all-detail">
   <div class="header">Chi tiết sản phẩm</div>
   <div class="action-header">
     <button class="btn" *ngIf="isAdd" (click)="addOrEdit()">
@@ -112,7 +112,7 @@
         </span>
       </div>
       <div class="d-flex" style="gap: 20px">
-        <span class="p-float-label" style="width: 33%">
+        <span class="p-float-label drop-down" style="width: 33%">
           <input
             (click)="
               data?.sanPham.giamGia.isOpen
@@ -147,7 +147,7 @@
             </div>
           </div>
         </span>
-        <span class="p-float-label" style="width: 33%">
+        <span class="p-float-label drop-down" style="width: 33%">
           <input
             (click)="
               data?.sanPham.thuongHieu.isOpen
@@ -182,7 +182,7 @@
             </div>
           </div>
         </span>
-        <span class="p-float-label" style="width: 33%">
+        <span class="p-float-label drop-down" style="width: 33%">
           <input
             (click)="
               data?.sanPham.theLoai.isOpen
@@ -219,7 +219,7 @@
         </span>
       </div>
       <div class="d-flex" style="gap: 20px">
-        <span class="p-float-label" style="width: 33%">
+        <span class="p-float-label drop-down" style="width: 33%">
           <input
             (click)="
               data?.sanPham.loaiCo.isOpen
@@ -254,7 +254,7 @@
             </div>
           </div>
         </span>
-        <span class="p-float-label" style="width: 33%">
+        <span class="p-float-label drop-down" style="width: 33%">
           <input
             (click)="
               data?.sanPham.vatLieu.isOpen
@@ -289,7 +289,7 @@
             </div>
           </div>
         </span>
-        <span class="p-float-label" style="width: 33%">
+        <span class="p-float-label drop-down" style="width: 33%">
           <input
             (click)="
               data?.sanPham.loaiDe?.isOpen

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CTSPServiceService } from '../service/sp-ctsp-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -778,5 +778,19 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
   }
   remove(index: any) {
     this.data.sanPhamChiTietList.splice(index, 1);
+  }
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    // Kiểm tra xem click có xảy ra bên trong phần tử có class 'drop-down' hay không
+    const isDropDownClick = target.closest('.drop-down') !== null;
+    if (!isDropDownClick) {
+      this.data.sanPham.giamGia.isOpen = false;
+      this.data.sanPham.thuongHieu.isOpen = false;
+      this.data.sanPham.theLoai.isOpen = false;
+      this.data.sanPham.loaiCo.isOpen = false;
+      this.data.sanPham.vatLieu.isOpen = false;
+      this.data.sanPham.loaiDe.isOpen = false;
+    }
   }
 }

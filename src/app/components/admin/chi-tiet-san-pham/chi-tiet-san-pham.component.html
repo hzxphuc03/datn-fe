@@ -59,7 +59,15 @@
           <td>{{ product.ten }}</td>
           <td>{{ product.giaThapNhat }} đến {{ product.giaCaoNhat }}</td>
           <td>
-            {{ product?.giamGia ? product?.giamGia?.mucGiam : "Không áp dụng" }}
+            {{
+              product?.giamGia
+                ? product?.giamGia?.ten +
+                  "-" +
+                  "(" +
+                  product?.giamGia?.mucGiam +
+                  "%)"
+                : "Không áp dụng"
+            }}
           </td>
           <td>{{ product?.loaiCo?.ten }}</td>
           <td>{{ product?.loaiDe?.ten }}</td>
