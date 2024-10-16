@@ -1,0 +1,31 @@
+<div class="container-login" [ngClass]="{ active: isActive }">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div
+    class="center"
+    style="
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    "
+  >
+    <h2>Login user</h2>
+    <span class="p-float-label" style="width: 90%">
+      <input id="float-input" type="text" pInputText [(ngModel)]="username" />
+      <label for="float-input">Username</label>
+    </span>
+    <span class="p-float-label" style="width: 90%">
+      <input id="float-input" type="text" pInputText [(ngModel)]="password" />
+      <label for="float-input">Password</label>
+    </span>
+    <button
+      class="btn btn-primary"
+      style="margin-top: 20px; width: 90%"
+      (click)="onSubmit()"
+    >
+      Login now
+    </button>
+  </div>
+</div>

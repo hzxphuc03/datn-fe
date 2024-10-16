@@ -21,23 +21,38 @@
         <i class="{{ item.icon }}"></i>
         <span class="links_name">{{ item.name }}</span>
       </a>
-      <a  *ngIf="item.type === 'drop'" style="cursor: pointer;" (click)="(item.open = !item.open)">
-        <i class="{{ item.icon }}"></i>
-        <span class="links_name">{{ item.name }}</span>
+      <a
+        *ngIf="item.type === 'drop'"
+        style="cursor: pointer; display: flex; justify-content: space-between"
+        (click)="item.open = !item.open"
+      >
+        <div>
+          <i class="{{ item.icon }}"></i>
+          <span class="links_name">{{ item.name }}</span>
+        </div>
+        <i class="bx bxs-chevron-down" *ngIf="!item.open"></i>
+        <i class="bx bxs-chevron-up" *ngIf="item.open"></i>
       </a>
-      <div class="option-item-drop" *ngIf="item.type === 'drop' && item.open && isOpen">
+      <div
+        class="option-item-drop"
+        *ngIf="item.type === 'drop' && item.open && isOpen"
+      >
         <li *ngFor="let dropItem of item.item">
           <a [routerLink]="dropItem.url">
-            <i class='bx bx-subdirectory-right'></i>
+            <i class="bx bx-subdirectory-right"></i>
             <i class="{{ dropItem.icon }}"></i>
             <span class="links_name">{{ dropItem.name }}</span>
           </a>
         </li>
       </div>
-      <div class="option-item-drop is-close-nav" *ngIf="item.type === 'drop' && item.open && !isOpen" (click)="item.open = !item.open">
+      <div
+        class="option-item-drop is-close-nav"
+        *ngIf="item.type === 'drop' && item.open && !isOpen"
+        (click)="item.open = !item.open"
+      >
         <li *ngFor="let dropItem of item.item">
           <a [routerLink]="dropItem.url">
-            <i class='bx bx-subdirectory-right'></i>
+            <i class="bx bx-subdirectory-right"></i>
             <i class="{{ dropItem.icon }}"></i>
             <span class="links_name">{{ dropItem.name }}</span>
           </a>
@@ -59,7 +74,7 @@
       </a>
       <span class="tooltip">{{ "Setting" }}</span>
     </li>
-    <li class="profile">
+    <li class="profile" (click)="logOut()">
       <div class="profile-details">
         <i class="bx bx-export"></i>
         <div class="name_job">

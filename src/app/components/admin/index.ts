@@ -10,6 +10,7 @@ import { AddOrEditLoaiCoComponent } from './loai-co/add-or-edit/add-or-edit.comp
 import { LoaiCoComponent } from './loai-co/loai-co.component';
 import { AddOrEditLoaiDeComponent } from './loai-de/add-or-edit-loai-de/add-or-edit-loai-de.component';
 import { LoaiDeComponent } from './loai-de/loai-de.component';
+import { LoginComponent } from './login/login.component';
 import { CtspMauSacComponent } from './mau-sac/ctsp-mau-sac/ctsp-mau-sac.component';
 import { MauSacAddOrEditComponent } from './mau-sac/mau-sac-add-or-edit/mau-sac-add-or-edit.component';
 import { MauSacComponent } from './mau-sac/mau-sac.component';
@@ -42,6 +43,7 @@ export const pagesComponents: any[] = [
   ChiTietSanPhamAddOrUpdateComponent,
   CtspMauSacComponent,
   CtspKichCoComponent,
+  LoginComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -64,3 +66,4 @@ export * from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 export * from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update.component';
 export * from './mau-sac/ctsp-mau-sac/ctsp-mau-sac.component';
 export * from './kich-co/ctsp-kich-co/ctsp-kich-co.component';
+export * from './login/login.component';

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-admin-home-page',
@@ -15,7 +16,10 @@ export class AdminHomePageComponent implements OnInit {
   index: number = 0;
   displayedText: string = '';
 
-  constructor(private spinner: NgxSpinnerService) {
+  constructor(
+    private spinner: NgxSpinnerService,
+    private tokenService: TokenService
+  ) {
     this.cities = [
       { name: 'New York', code: 'NY' },
       { name: 'Rome', code: 'RM' },
@@ -26,10 +30,13 @@ export class AdminHomePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const { decoded } = this.tokenService.getToken();
+    this.originalText = `WELLCOME BACK ` + decoded.username;
+
     this.spinner.show();
     setTimeout(() => {
       this.spinner.hide();
-    }, 2000);
+    }, 1000);
     this.displayedText = this.originalText; // Hiển thị văn bản gốc
     this.startCodeCrackEffect();
   }

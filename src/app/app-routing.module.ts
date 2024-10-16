@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MasterLayoutAdminComponent } from './shareds/master-layout-admin/master-layout-admin.component';
+import { LoginComponent } from './components/admin';
 
 const routes: Routes = [
   {
@@ -15,6 +16,14 @@ const routes: Routes = [
           ),
       },
     ],
+  },
+  {
+    path: 'auth/shop/login',
+    component: LoginComponent,
+  },
+  {
+    path: '', // Route cho trang chủ
+    component: LoginComponent,
   },
 ];
 
