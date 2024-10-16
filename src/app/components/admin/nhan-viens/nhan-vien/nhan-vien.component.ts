@@ -102,8 +102,7 @@ export class NhanVienComponent implements OnInit {
     this.dataDialog = {};
   }
   add() {
-    this.openDialog = true;
-    this.dataDialog = {};
+   this.router.navigate(['auth/admin/nhan-vien-add']);
   }
   noneClick(event: any) {
     event.stopPropagation();

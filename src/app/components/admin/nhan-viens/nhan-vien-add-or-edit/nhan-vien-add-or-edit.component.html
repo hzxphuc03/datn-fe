@@ -8,7 +8,24 @@
       Cập nhật nhân viên
     </button>
   </div>
-  <div class="content">
+  <div class="content" *ngIf="data">
+    <div class="left item-sanpham">
+      <label class="uploadimg" for="upload-file">
+        <img
+          [src]="data?.hinhAnh"
+          alt=""
+          *ngIf="data?.hinhAnh"
+        />
+        <span>UploadFile</span>
+      </label>
+      <input
+        type="file"
+        id="upload-file"
+        accept="image/*"
+        style="display: none"
+        (change)="onFileSelected($event)"
+      />
+    </div>
     <div class="d-flex info">
       <span class="p-float-label">
         <input id="float-input" type="text" pInputText [(ngModel)]="data.ma" />
@@ -24,18 +41,14 @@
         <label for="float-input">Họ và Tên</label>
       </span>
       <span class="p-float-label">
-        <input
-          id="float-input"
-          type="date"
-          pInputText
-          [(ngModel)]="data.ngaySinh"
-        />
-        <label for="float-input">Họ và Tên</label>
+        <p-calendar [(ngModel)]="data.ngaySinh"  id="float-input"  [touchUI]="true" 
+        [readonlyInput]="true"></p-calendar>
+        <label for="float-input">Ngày sinh</label>
       </span>
       <span class="p-float-label">
         <input
           id="float-input"
-          type="number"
+          type="text"
           pInputText
           [(ngModel)]="data.soDienThoai"
         />
@@ -67,6 +80,77 @@
           <label for="ingredient1" class="ml-2" style="margin-left: 10px">
             Nữ
           </label>
+        </div>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.diaChi"
+        />
+        <label for="float-input">Địa chỉ</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.email"
+        />
+        <label for="float-input">Email</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.taiKhoan"
+        />
+        <label for="float-input">Tài khoản</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.matKhau"
+        />
+        <label for="float-input">Mật khẩu</label>
+      </span>
+      <span class="p-float-label drop-down" style="width: 33%">
+        <input
+          (click)="
+           data?.chucVu.isOpen
+              ? (data?.chucVu.isOpen = false)
+              : (data?.chucVu.isOpen = true)
+          "
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data?.chucVu.ten"
+          readonly
+        />
+        <label for="float-input">Chức vụ</label>
+        <div
+          class="option-drop-down chuc-vu-dropdown"
+          *ngIf="data?.chucVu.isOpen"
+          (scroll)="onScrollChucVu()"
+        >
+          <div
+            class="option"
+            *ngFor="let item of chucVu"
+            [class.active-drop]="item.id === data?.chucVu?.id"
+          >
+            <div
+              (click)="
+                data.chucVu = item;
+                data?.chucVu.isOpen = false
+              "
+            >
+              {{ item.ten }}
+            </div>
+          </div>
         </div>
       </span>
     </div>
