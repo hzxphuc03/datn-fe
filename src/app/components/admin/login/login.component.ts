@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       })
       .subscribe(
         (response) => {
-          if (response.error) {
+          if (response.errorCode) {
             // Xử lý lỗi đăng nhập
             this.errorService.displayError(
               'Tài khoản hoặc mật khẩu bị sai ,vui lòng kiểm tra lại',
