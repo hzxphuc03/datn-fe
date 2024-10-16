@@ -1,0 +1,74 @@
+<div class="all-contents">
+  <div class="header">Chi tiết sản phẩm</div>
+  <div class="action-header">
+    <button class="btn" *ngIf="isAdd" (click)="addOrEdit()">
+      Thêm mới nhân viên
+    </button>
+    <button class="btn" *ngIf="!isAdd" (click)="addOrEdit()">
+      Cập nhật nhân viên
+    </button>
+  </div>
+  <div class="content">
+    <div class="d-flex info">
+      <span class="p-float-label">
+        <input id="float-input" type="text" pInputText [(ngModel)]="data.ma" />
+        <label for="float-input">Mã nhân viên</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.hoTen"
+        />
+        <label for="float-input">Họ và Tên</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="date"
+          pInputText
+          [(ngModel)]="data.ngaySinh"
+        />
+        <label for="float-input">Họ và Tên</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="number"
+          pInputText
+          [(ngModel)]="data.soDienThoai"
+        />
+        <label for="float-input">Số điện thoại</label>
+      </span>
+      <span
+        class="p-float-label"
+        style="height: 50px; justify-content: center; align-items: center"
+      >
+        <div style="width: 30%">Giới tính:</div>
+        <div class="flex align-items-center" style="width: 40%">
+          <p-radioButton
+            name="gender"
+            value="1"
+            [(ngModel)]="data.gioiTinh"
+            inputId="ingredient2"
+          ></p-radioButton>
+          <label for="ingredient2" class="ml-2" style="margin-left: 10px">
+            Nam
+          </label>
+        </div>
+        <div class="flex align-items-center" style="width: 40%">
+          <p-radioButton
+            name="gender"
+            value="0"
+            [(ngModel)]="data.gioiTinh"
+            inputId="ingredient1"
+          ></p-radioButton>
+          <label for="ingredient1" class="ml-2" style="margin-left: 10px">
+            Nữ
+          </label>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>

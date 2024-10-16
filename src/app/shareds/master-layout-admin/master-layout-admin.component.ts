@@ -20,21 +20,31 @@ export class MasterLayoutAdminComponent implements OnInit {
       item: [
         {
           icon: 'bx bx-cube',
+          name: 'Sản phẩm',
+          url: '/auth/admin/chi-tiet-san-pham',
+        },
+        {
+          icon: 'bx bx-cube',
           name: 'Thương hiệu',
           url: '/auth/admin/thuong-hieu',
         },
         { icon: 'bx bx-cube', name: 'Thể loại', url: '/auth/admin/the-loai' },
         { icon: 'bx bx-cube', name: 'Kích cỡ', url: '/auth/admin/kich-co' },
-        {
-          icon: 'bx bx-cube',
-          name: 'CTSP',
-          url: '/auth/admin/chi-tiet-san-pham',
-        },
         { icon: 'bx bx-cube', name: 'Loại cổ', url: '/auth/admin/loai-co' },
         { icon: 'bx bx-cube', name: 'Loại đế', url: '/auth/admin/loai-de' },
         { icon: 'bx bx-cube', name: 'Vật liệu', url: '/auth/admin/vat-lieu' },
         { icon: 'bx bx-cube', name: 'Màu Sắc', url: '/auth/admin/mau-sac' },
         { icon: 'bx bx-cube', name: 'Giảm giá', url: '/auth/admin/giam-gia' },
+      ],
+    },
+    {
+      icon: 'bx bx-home-circle',
+      name: 'Nhân viên',
+      url: '',
+      type: 'drop',
+      item: [
+        { icon: 'bx bx-cube', name: 'Chức vụ', url: '/auth/admin/chuc-vu' },
+        { icon: 'bx bx-cube', name: 'Nhân Viên', url: '/auth/admin/nhan-vien' },
       ],
     },
   ];

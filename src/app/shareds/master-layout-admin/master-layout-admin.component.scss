@@ -268,7 +268,8 @@
   }
 }
 .option-item-drop {
-  height: 220px;
+  min-height: 50px;
+  max-height: 220px;
   width: 100%;
   overflow: auto;
   &::-webkit-scrollbar {

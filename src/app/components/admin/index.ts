@@ -14,6 +14,10 @@ import { LoginComponent } from './login/login.component';
 import { CtspMauSacComponent } from './mau-sac/ctsp-mau-sac/ctsp-mau-sac.component';
 import { MauSacAddOrEditComponent } from './mau-sac/mau-sac-add-or-edit/mau-sac-add-or-edit.component';
 import { MauSacComponent } from './mau-sac/mau-sac.component';
+import { ChucVuAddOrEditComponent } from './nhan-viens/chuc-vu/chuc-vu-add-or-edit/chuc-vu-add-or-edit.component';
+import { ChucVuComponent } from './nhan-viens/chuc-vu/chuc-vu.component';
+import { NhanVienAddOrEditComponent } from './nhan-viens/nhan-vien-add-or-edit/nhan-vien-add-or-edit.component';
+import { NhanVienComponent } from './nhan-viens/nhan-vien/nhan-vien.component';
 import { AddOrDetailTheLoaiComponent } from './the-loai/add-or-detail/add-or-detail.component';
 import { TheLoaiComponent } from './the-loai/the_loai.component';
 import { AddOrDetailComponent } from './thuong-hieu/add-or-detail/add-or-detail.component';
@@ -44,6 +48,10 @@ export const pagesComponents: any[] = [
   CtspMauSacComponent,
   CtspKichCoComponent,
   LoginComponent,
+  ChucVuComponent,
+  NhanVienAddOrEditComponent,
+  NhanVienComponent,
+  ChucVuAddOrEditComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -67,3 +75,7 @@ export * from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update
 export * from './mau-sac/ctsp-mau-sac/ctsp-mau-sac.component';
 export * from './kich-co/ctsp-kich-co/ctsp-kich-co.component';
 export * from './login/login.component';
+export * from './nhan-viens/chuc-vu/chuc-vu.component';
+export * from './nhan-viens/nhan-vien-add-or-edit/nhan-vien-add-or-edit.component';
+export * from './nhan-viens/nhan-vien/nhan-vien.component';
+export * from './nhan-viens/chuc-vu/chuc-vu-add-or-edit/chuc-vu-add-or-edit.component';

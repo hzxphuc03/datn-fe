@@ -9,9 +9,9 @@ import { AddOrDetailComponent } from './thuong-hieu/add-or-detail/add-or-detail.
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastModule } from 'primeng/toast';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {InputTextModule} from 'primeng/inputtext';
-import {CalendarModule} from 'primeng/calendar';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { RadioButtonModule } from 'primeng/radiobutton';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -24,7 +24,8 @@ import {CalendarModule} from 'primeng/calendar';
     ToastModule,
     InputSwitchModule,
     InputTextModule,
-    CalendarModule
+    CalendarModule,
+    RadioButtonModule,
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],

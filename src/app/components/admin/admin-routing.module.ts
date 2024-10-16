@@ -55,6 +55,22 @@ const routes: Routes = [
     component: fromPagesComponent.GiamGiaComponent,
   },
   {
+    path: 'nhan-vien',
+    component: fromPagesComponent.NhanVienComponent,
+  },
+  {
+    path: 'chuc-vu',
+    component: fromPagesComponent.ChucVuComponent,
+  },
+  {
+    path: 'nhan-vien/:id',
+    component: fromPagesComponent.NhanVienAddOrEditComponent,
+  },
+  {
+    path: 'nhan-vien-add',
+    component: fromPagesComponent.NhanVienAddOrEditComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },
