@@ -3,6 +3,8 @@ import { ChiTietSanPhamAddOrUpdateComponent } from './chi-tiet-san-pham-add-or-u
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 import { GiamGiaComponent } from './giam-gia/giam-gia.component';
+import { KhachHangAddOrEditComponent } from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.component';
+import { KhachHangComponent } from './khach-hang/khach-hang/khach-hang.component';
 import { AddOrDetailKichCoComponent } from './kich-co/add-or-detail/add-or-detail.component';
 import { CtspKichCoComponent } from './kich-co/ctsp-kich-co/ctsp-kich-co.component';
 import { KichCoComponent } from './kich-co/the_loai.component';
@@ -24,6 +26,8 @@ import { AddOrDetailComponent } from './thuong-hieu/add-or-detail/add-or-detail.
 import { ThuongHieuComponent } from './thuong-hieu/thuong-hieu.component';
 import { AddOrEditVatLieuComponent } from './vat-lieu/add-or-edit-vat-lieu/add-or-edit-vat-lieu.component';
 import { VatLieuComponent } from './vat-lieu/vat-lieu.component';
+import { VoucherAddOrEditComponent } from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
+import { VoucherComponent } from './vouchers/voucher/voucher.component';
 
 export const pagesComponents: any[] = [
   AdminHomePageComponent,
@@ -52,6 +56,10 @@ export const pagesComponents: any[] = [
   NhanVienAddOrEditComponent,
   NhanVienComponent,
   ChucVuAddOrEditComponent,
+  KhachHangAddOrEditComponent,
+  KhachHangComponent,
+  VoucherComponent,
+  VoucherAddOrEditComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -79,3 +87,7 @@ export * from './nhan-viens/chuc-vu/chuc-vu.component';
 export * from './nhan-viens/nhan-vien-add-or-edit/nhan-vien-add-or-edit.component';
 export * from './nhan-viens/nhan-vien/nhan-vien.component';
 export * from './nhan-viens/chuc-vu/chuc-vu-add-or-edit/chuc-vu-add-or-edit.component';
+export * from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.component';
+export * from './khach-hang/khach-hang/khach-hang.component';
+export * from './vouchers/voucher/voucher.component';
+export * from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';

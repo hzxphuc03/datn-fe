@@ -47,6 +47,16 @@ export class MasterLayoutAdminComponent implements OnInit {
         { icon: 'bx bx-cube', name: 'Nhân Viên', url: '/auth/admin/nhan-vien' },
       ],
     },
+    {
+      icon: 'bx bx-home-circle',
+      name: 'Khách hàng',
+      url: '/auth/admin/khach-hang',
+    },
+    {
+      icon: 'bx bx-cube',
+      name: 'Voucher',
+      url: '/auth/admin/voucher',
+    },
   ];
   constructor(
     private tokenService: TokenService,
