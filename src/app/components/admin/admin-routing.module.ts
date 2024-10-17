@@ -83,6 +83,18 @@ const routes: Routes = [
     component: fromPagesComponent.KhachHangAddOrEditComponent,
   },
   {
+    path: 'voucher',
+    component: fromPagesComponent.VoucherComponent,
+  },
+  {
+    path: 'voucher/:id',
+    component: fromPagesComponent.VoucherAddOrEditComponent,
+  },
+  {
+    path: 'voucher-add',
+    component: fromPagesComponent.VoucherAddOrEditComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

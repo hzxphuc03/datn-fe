@@ -26,6 +26,8 @@ import { AddOrDetailComponent } from './thuong-hieu/add-or-detail/add-or-detail.
 import { ThuongHieuComponent } from './thuong-hieu/thuong-hieu.component';
 import { AddOrEditVatLieuComponent } from './vat-lieu/add-or-edit-vat-lieu/add-or-edit-vat-lieu.component';
 import { VatLieuComponent } from './vat-lieu/vat-lieu.component';
+import { VoucherAddOrEditComponent } from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
+import { VoucherComponent } from './vouchers/voucher/voucher.component';
 
 export const pagesComponents: any[] = [
   AdminHomePageComponent,
@@ -56,6 +58,8 @@ export const pagesComponents: any[] = [
   ChucVuAddOrEditComponent,
   KhachHangAddOrEditComponent,
   KhachHangComponent,
+  VoucherComponent,
+  VoucherAddOrEditComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -85,3 +89,5 @@ export * from './nhan-viens/nhan-vien/nhan-vien.component';
 export * from './nhan-viens/chuc-vu/chuc-vu-add-or-edit/chuc-vu-add-or-edit.component';
 export * from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.component';
 export * from './khach-hang/khach-hang/khach-hang.component';
+export * from './vouchers/voucher/voucher.component';
+export * from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
