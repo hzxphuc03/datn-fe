@@ -3,6 +3,8 @@ import { ChiTietSanPhamAddOrUpdateComponent } from './chi-tiet-san-pham-add-or-u
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 import { GiamGiaComponent } from './giam-gia/giam-gia.component';
+import { KhachHangAddOrEditComponent } from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.component';
+import { KhachHangComponent } from './khach-hang/khach-hang/khach-hang.component';
 import { AddOrDetailKichCoComponent } from './kich-co/add-or-detail/add-or-detail.component';
 import { CtspKichCoComponent } from './kich-co/ctsp-kich-co/ctsp-kich-co.component';
 import { KichCoComponent } from './kich-co/the_loai.component';
@@ -52,6 +54,8 @@ export const pagesComponents: any[] = [
   NhanVienAddOrEditComponent,
   NhanVienComponent,
   ChucVuAddOrEditComponent,
+  KhachHangAddOrEditComponent,
+  KhachHangComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -79,3 +83,5 @@ export * from './nhan-viens/chuc-vu/chuc-vu.component';
 export * from './nhan-viens/nhan-vien-add-or-edit/nhan-vien-add-or-edit.component';
 export * from './nhan-viens/nhan-vien/nhan-vien.component';
 export * from './nhan-viens/chuc-vu/chuc-vu-add-or-edit/chuc-vu-add-or-edit.component';
+export * from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.component';
+export * from './khach-hang/khach-hang/khach-hang.component';

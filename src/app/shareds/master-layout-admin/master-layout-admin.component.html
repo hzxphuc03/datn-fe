@@ -28,10 +28,12 @@
       >
         <div>
           <i class="{{ item.icon }}"></i>
-          <span class="links_name">{{ item.name }}</span>
+          <span class="links_name" *ngIf="isOpen">{{ item.name }}</span>
         </div>
-        <i class="bx bxs-chevron-down" *ngIf="!item.open"></i>
-        <i class="bx bxs-chevron-up" *ngIf="item.open"></i>
+        <div *ngIf="isOpen" class="show-up">
+          <i class="bx bxs-chevron-down" *ngIf="!item.open"></i>
+          <i class="bx bxs-chevron-up" *ngIf="item.open"></i>
+        </div>
       </a>
       <div
         class="option-item-drop"
