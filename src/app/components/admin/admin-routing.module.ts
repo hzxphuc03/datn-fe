@@ -95,6 +95,10 @@ const routes: Routes = [
     component: fromPagesComponent.VoucherAddOrEditComponent,
   },
   {
+    path: 'ban-hang-tai-quay',
+    component: fromPagesComponent.FormBanHangTaiQuayComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

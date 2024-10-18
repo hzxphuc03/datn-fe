@@ -1,4 +1,5 @@
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
+import { FormBanHangTaiQuayComponent } from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay.component';
 import { ChiTietSanPhamAddOrUpdateComponent } from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
@@ -60,6 +61,7 @@ export const pagesComponents: any[] = [
   KhachHangComponent,
   VoucherComponent,
   VoucherAddOrEditComponent,
+  FormBanHangTaiQuayComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -91,3 +93,4 @@ export * from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.compon
 export * from './khach-hang/khach-hang/khach-hang.component';
 export * from './vouchers/voucher/voucher.component';
 export * from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
+export * from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay.component';
