@@ -19,6 +19,16 @@ export class VoucherService {
       })
     );
   }
+  getById(id: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/get-by-id?idVoucher=${id}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   update(params: any): Observable<any> {
     return this.http.put<any>(`${this.url}/update`, params).pipe(
       (res: any) => {

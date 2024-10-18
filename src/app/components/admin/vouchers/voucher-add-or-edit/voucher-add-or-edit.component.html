@@ -1,1 +1,87 @@
-<p>voucher-add-or-edit works!</p>
+<div class="all-voucher-detail">
+  <div class="header">Chi tiết voucher</div>
+  <div class="form">
+    <span class="p-float-label">
+      <input id="float-input" type="text" pInputText [(ngModel)]="data.ma" />
+      <label for="float-input">Mã</label>
+    </span>
+    <span class="p-float-label">
+      <input id="float-input" type="text" pInputText [(ngModel)]="data.ten" />
+      <label for="float-input">Tên</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="data.giaTriGiamToiThieu"
+        min="0"
+      />
+      <label for="float-input" *ngIf="data.trangThai === 1"
+        >Giá trị giảm cho (hóa đơn từ)
+      </label>
+      <label for="float-input" *ngIf="data.trangThai === 2"
+        >Giá trị giảm cho (vận chuyển từ)
+      </label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="data.giamToiDa"
+        min="0"
+      />
+      <label for="float-input">Giá tối đa</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="data.phanTramGiam"
+        min="0"
+      />
+      <label for="float-input">Phần trăm giảm</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="data.soLuong"
+        min="0"
+      />
+      <label for="float-input">Số lượng</label>
+    </span>
+    <span class="p-float-label">
+      <p-calendar
+        [(ngModel)]="data.ngayBatDau"
+        inputId="float-input"
+      ></p-calendar>
+      <label for="float-input">Ngày bắt đầu</label>
+    </span>
+    <span class="p-float-label">
+      <p-calendar
+        [(ngModel)]="data.ngayKetThuc"
+        inputId="float-input"
+      ></p-calendar>
+      <label for="float-input">Ngày kết thúc</label>
+    </span>
+    <span class="p-float-label">
+      <p-dropdown
+        [options]="optionStatus"
+        [(ngModel)]="data.trangThai"
+        optionLabel="name"
+        optionValue="value"
+        inputId="float-input"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+      <label for="float-input">Loại</label>
+    </span>
+  </div>
+  <div class="action-header">
+    <button class="btn" *ngIf="isAdd" (click)="addOrEdit()">Thêm mới</button>
+    <button class="btn" *ngIf="!isAdd" (click)="addOrEdit()">Cập nhật</button>
+  </div>
+</div>
