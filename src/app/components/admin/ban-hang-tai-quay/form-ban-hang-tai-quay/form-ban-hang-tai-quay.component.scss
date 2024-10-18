@@ -4,30 +4,71 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
-  background-color: aliceblue;
+  border: 1px solid black;
+  border-radius: 10px;
   padding: 20px;
   .header {
     font-size: 23px;
     font-weight: bold;
   }
   .header-hoa-don {
-    height: 200px;
-    background-color: lightgray;
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    .btn-add-hoa-don{
+      width: 150px;
+      .btn{
+        color: #fff;
+      }
+    }
+    .list-hoa-don{
+      width: calc(100% - 150px);
+    }
   }
   .all-content {
     height: 100%;
     width: 100%;
-    background-color: beige;
+    border: 1px solid black;
+    border-radius: 10px;
     display: flex;
-    gap: 20px;
+    gap: 10px;
+    padding: 10px;
     flex-direction: row;
-    .chi-tiet-san-pham {
-      width: 75%;
-      background-color: #fff;
+    .chi-tiet-san-pham {  
+      width: 65%;
+      border: 1px solid black;
+      border-radius: 10px;
     }
     .info-hoa-don {
-      width: 25%;
-      background-color: #fff;
+      width: 35%;
+      border: 1px solid black;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 5px;
     }
+  }
+}
+:host ::ng-deep {
+  .p-float-label {
+    display: flex;
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
+  .p-calendar,
+  p-calendar {
+    width: 100% !important;
+  }
+
+  .p-calendar .p-datepicker {
+    border: 1px solid gray;
   }
 }
