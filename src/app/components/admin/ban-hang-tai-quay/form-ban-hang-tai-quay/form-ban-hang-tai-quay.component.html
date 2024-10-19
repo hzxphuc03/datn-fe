@@ -68,7 +68,7 @@
             <li>Ngày tạo : {{ data?.ngayTao | date : "dd/MM/yyyy" }}</li>
           </ul>
           <div class="btn-show-san-pham">
-            <button class="btn btn-primary">Thêm sản phẩm</button>
+            <button class="btn btn-primary" (click)="addSanPham()">Thêm sản phẩm</button>
           </div>
         </div>
         <p-table [value]="listDataHoaDonCt">

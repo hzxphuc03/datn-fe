@@ -6,6 +6,7 @@ import { ThongTinNhanHangComponent } from '../thong-tin-nhan-hang/thong-tin-nhan
 import { HoaDonService } from '../../service/hoa-don.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TokenService } from 'src/app/services/token.service';
+import { ChiTietSanPhamBanHangComponent } from '../chi-tiet-san-pham/chi-tiet-san-pham.component';
 
 @Component({
   selector: 'app-form-ban-hang-tai-quay',
@@ -189,5 +190,20 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       
       //chạy get all chiTietSanPham
     }
+  }
+  addSanPham(){
+    if(!this.data.id){
+      return;
+    }
+    const dialogRef = this.dialog.open(ChiTietSanPhamBanHangComponent, {
+      data:  {
+        idHoaDon : this.data.id,
+      }, disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      
+      }
+    });
   }
 }

@@ -1,4 +1,6 @@
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
+import { ChiTietSanPhamDetailBanHangComponent } from './ban-hang-tai-quay/chi-tiet-san-pham-detail-ban-hang/chi-tiet-san-pham-detail-ban-hang.component';
+import { ChiTietSanPhamBanHangComponent } from './ban-hang-tai-quay/chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { FormBanHangTaiQuayComponent } from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay.component';
 import { KhachHangPopupComponent } from './ban-hang-tai-quay/khach-hang-popup/khach-hang-popup.component';
 import { ThongTinNhanHangComponent } from './ban-hang-tai-quay/thong-tin-nhan-hang/thong-tin-nhan-hang.component';
@@ -67,7 +69,10 @@ export const pagesComponents: any[] = [
   FormBanHangTaiQuayComponent,
   KhachHangPopupComponent,
   ThemNhanhKhachHangComponent,
-  ThongTinNhanHangComponent
+  ThongTinNhanHangComponent,
+  ChiTietSanPhamComponent,
+  ChiTietSanPhamBanHangComponent,
+  ChiTietSanPhamDetailBanHangComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -103,3 +108,5 @@ export * from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay
 export * from './ban-hang-tai-quay/khach-hang-popup/khach-hang-popup.component';
 export * from './khach-hang/them-nhanh-khach-hang/them-nhanh-khach-hang.component';
 export * from './ban-hang-tai-quay/thong-tin-nhan-hang/thong-tin-nhan-hang.component';
+export * from './ban-hang-tai-quay/chi-tiet-san-pham/chi-tiet-san-pham.component';
+export * from './ban-hang-tai-quay/chi-tiet-san-pham-detail-ban-hang/chi-tiet-san-pham-detail-ban-hang.component';
