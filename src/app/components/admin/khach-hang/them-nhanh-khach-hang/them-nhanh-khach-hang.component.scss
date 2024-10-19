@@ -1,0 +1,74 @@
+.khach-hang-info {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .header {
+      font-size: 32px;
+      font-weight: bold;
+    }
+    .content {
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+      flex-direction: column;
+      gap: 20px;
+      width: calc(100% - 300px);
+    }
+  }
+  :host ::ng-deep {
+    .p-float-label {
+      display: flex;
+      width: 100%;
+      input {
+        width: 100%;
+      }
+    }
+    .p-calendar,
+    p-calendar {
+      width: 100% !important;
+    }
+  
+    .p-calendar .p-datepicker {
+      border: 1px solid gray;
+    }
+  }
+  .all-content {
+    display: flex;
+    gap: 20px;
+    .img {
+      width: 300px;
+    }
+  }
+  .uploadimg {
+    padding: 10px;
+    cursor: pointer;
+    max-height: 500px;
+    min-height: 200px;
+    width: 100%;
+    border: 1px dashed black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    img {
+      max-height: 300px;
+      max-width: 100%;
+    }
+  }
+  .action-header {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    .btn {
+      border: 1px solid black;
+    }
+  }
+  

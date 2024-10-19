@@ -1,0 +1,129 @@
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { KhachHangServiceService } from '../../service/khach-hang-service.service';
+import { ThemNhanhKhachHangComponent } from '../../khach-hang/them-nhanh-khach-hang/them-nhanh-khach-hang.component';
+
+@Component({
+  selector: 'app-khach-hang-popup',
+  templateUrl: './khach-hang-popup.component.html',
+  styleUrls: ['./khach-hang-popup.component.scss']
+})
+export class KhachHangPopupComponent implements OnInit {
+  searchQuery: any = {};
+  listPageNumber: number[] = [];
+  listData = [];
+  optionStatus: any = [
+    { value: '1', name: 'Khách hàng' },
+    { value: '3', name: 'Khách hàng vãng lai' },
+  ];
+  openDialog: boolean = false;
+  dataDialog: any;
+  constructor(
+    private service: KhachHangServiceService,
+    private dialog: MatDialog,
+    private spinner: NgxSpinnerService,
+    private router: Router,
+    private matDialogRef: MatDialogRef<KhachHangPopupComponent>,
+  ) {}
+
+  ngOnInit(): void {
+    this.getListWords('rows');
+  }
+  async getListWords(type: string, action?: string): Promise<void> {
+    // this.spinner.show();
+    if (type && type === 'rows') {
+      this.searchQuery.page = 1;
+    }
+    if (action) {
+      if (action === 'prev' && Number(this.searchQuery.page) > 1) {
+        this.searchQuery.page = Number(this.searchQuery.page) - 1;
+      }
+      if (
+        action === 'next' &&
+        Number(this.searchQuery.page) + 1 <= this.listPageNumber.length
+      ) {
+        this.searchQuery.page = Number(this.searchQuery.page) + 1;
+      }
+    } else {
+      this.searchQuery.page = this.searchQuery.page;
+    }
+    Object.keys(this.searchQuery).forEach((key) => {
+      if (this.searchQuery[key] === null || this.searchQuery[key] === '') {
+        delete this.searchQuery[key];
+      }
+    });
+    this.spinner.show();
+    const data = await this.service.getAll(this.searchQuery).toPromise();
+    if (data) {
+      this.getTotalPage(data);
+      this.listData = data.item;
+      if (this.listData.length) {
+        this.listData?.map((item: any) => {
+          if (item.trangThai === 1) {
+            item.status = true;
+          } else {
+            item.status = false;
+          }
+        });
+      }
+
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
+    }
+
+    //   gọi api
+  }
+  getTotalPage(data: any): number {
+    let totalPage = 0;
+    if (Number(data.totalItem) < Number(data.pageSize)) {
+      totalPage = 1;
+    } else {
+      totalPage = Math.floor(Number(data.totalItem) / Number(data.pageSize));
+      if (Number(data.totalItem) % Number(data.pageSize) > 0) {
+        totalPage = totalPage + 1;
+      }
+    }
+    this.listPageNumber = [];
+    for (let i = 1; i <= totalPage; i++) {
+      this.listPageNumber.push(i);
+    }
+    return totalPage;
+  }
+  filter() {
+    this.getListWords('rows');
+  }
+  details(item: any) {
+  }
+  getAction(event: any) {
+    this.openDialog = false;
+    this.getListWords('page');
+    this.dataDialog = {};
+  }
+  add() {
+    const dialogRef = this.dialog.open(ThemNhanhKhachHangComponent, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getListWords('rows');
+      }
+    });
+  }
+  noneClick(event: any) {
+    event.stopPropagation();
+  }
+  async changeStatus(item: any) {
+    const data = await this.service
+      .udpateStatus(item.id, item.status ? 1 : 0)
+      .toPromise();
+    if (data) {
+      this.getListWords('page');
+    }
+  }
+  chosse(item : any){
+    this.matDialogRef.close(item);
+  }
+
+}

@@ -1,69 +1,218 @@
 <div class="all-content">
   <div class="header-hoa-don">
-    <div class="list-hoa-don">
-      đây là nơi show tất cả hóa đơn
+    <div class="list-hoa-dons">
+      <div class="pre icon-action">
+        <span
+          (click)="getListHoaDon('page', 'prev')"
+          class="table-pagination-item btn-prev ml-2"
+        >
+          <i class="bx bx-left-arrow-alt"></i>
+        </span>
+      </div>
+      <div class="list-hoa-don">
+        <div class="item" *ngFor="let hoadon of listDataHoaDon">
+          <div class="all-item" (click)="detailHoaDon(hoadon)">
+            <i class="bx bx-bookmark-alt"></i>
+            {{ hoadon.ma }}
+          </div>
+        </div>
+      </div>
+      <div class="next icon-action">
+        <span
+          (click)="getListHoaDon('page', 'next')"
+          class="table-pagination-item btn-next"
+        >
+          <i class="bx bx-right-arrow-alt"></i>
+        </span>
+      </div>
     </div>
     <div class="btn-add-hoa-don">
-      <button class="btn btn-primary">Thêm hóa đơn</button>
+      <button class="btn btn-primary" (click)="addNhanhHoaDon()">
+        Thêm hóa đơn
+      </button>
     </div>
     <!-- danh sách của list hóa đơn -->
   </div>
-  <div class="all-content">
-    <div class="chi-tiet-san-pham">đây là nơi show chi tiết sản phẩm</div>
+  <div class="all-content" *ngIf="this?.data?.id">
+    <div
+      class="chi-tiet-san-pham"
+      style="
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: space-between;
+      "
+    >
+      <div class="content">
+        <div
+          class="info-hoa-don-detail"
+          style="
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <ul
+            style="
+              display: flex;
+              gap: 30px;
+              justify-content: center;
+              align-items: center;
+              padding-top: 5px;
+            "
+          >
+            <li>Id hóa đơn : {{ data?.id }}</li>
+            <li>Mã hóa đơn : {{ data?.ma }}</li>
+            <li>Người tạo : {{ data?.nhanVien?.hoTen }}</li>
+            <li>Ngày tạo : {{ data?.ngayTao | date : "dd/MM/yyyy" }}</li>
+          </ul>
+          <div class="btn-show-san-pham">
+            <button class="btn btn-primary">Thêm sản phẩm</button>
+          </div>
+        </div>
+        <p-table [value]="listDataHoaDonCt">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>id</th>
+              <th>Hóa Đơn</th>
+              <!-- <th>Giá hiện hành</th> -->
+              <th>Giá</th>
+              <th>Số lượng</th>
+              <th>Sản phẩm</th>
+              <th>Hình ảnh</th>
+              <th>Màu sắc</th>
+              <th>Kích cỡ</th>
+              <th>Thao tác</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>{{ product.id }}</td>
+              <td>{{ product?.hoaDon?.ma }}</td>
+              <!-- <td>{{ product?.giaHienHanh }}</td> -->
+              <td>{{ product?.giaDaGiam }}</td>
+              <td>{{ product?.soLuong }}</td>
+              <td>{{ product?.sanPhamChiTiet?.sanPham?.ten }}</td>
+              <td>
+                <img
+                  style="width: 50px; height: 50px"
+                  [src]="product?.sanPhamChiTiet?.hinhAnh"
+                  alt=""
+                />
+              </td>
+              <td>
+                <div
+                  *ngIf="product?.sanPhamChiTiet.mauSac.maMau"
+                  style="height: 20px; width: 90%"
+                  [ngStyle]="{
+                    'background-color': product?.sanPhamChiTiet.mauSac.maMau
+                  }"
+                ></div>
+              </td>
+              <td>{{ product?.sanPhamChiTiet.kichCo.ten }}</td>
+              <td>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 32px;
+                    gap: 20px;
+                    cursor: pointer;
+                  "
+                >
+                  <i class="bx bx-x-circle"></i>
+                  <i class="bx bx-edit-alt"></i>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="table-pagination d-flex mb-3 pb-4">
+        <div class="flex-grow-1"></div>
+        <!-- <div><small class="text-muted">Pages: </small></div> -->
+        <!-- <div>
+          <p-dropdown
+            (onChange)="getListCTHoaDon('page')"
+            [options]="listHoaDonCtPageNumber"
+            [(ngModel)]="searchQueryCT.page"
+            class="table-pagination-item fsel-select fsel-select-xsm"
+          ></p-dropdown>
+        </div> -->
+        <!-- <div class="px-3"></div> -->
+        <div><small class="text-muted ml-1">Items per page</small></div>
+        <div class="d-flex justify-content-center align-items-center">
+          <span
+            (click)="getListCTHoaDon('page', 'prev')"
+            class="table-pagination-item btn-prev ml-2"
+          >
+            <i class="bx bx-left-arrow-alt"></i>
+          </span>
+          <span
+            (click)="getListCTHoaDon('page', 'next')"
+            class="table-pagination-item btn-next"
+          >
+            <i class="bx bx-right-arrow-alt"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- asssssssssssssssssssssssssssssssssss -->
     <div class="info-hoa-don">
-      <span class="p-float-label">
+      <span class="p-float-label" (click)="getKhachHang()">
         <input
           id="float-input"
           type="text"
           pInputText
           readonly
+          [(ngModel)]="data?.khachHang.hoTen"
         />
         <label for="float-input">Khách hàng</label>
       </span>
-      <span class="p-float-label">
-        <input
-          id="float-input"
-          type="text"
-          pInputText
-          readonly
-        />
-        <label for="float-input">Địa chỉ</label>
+      <span class="p-float-label" (click)="thongTinNhanHang()">
+        <input id="float-input" type="text" pInputText readonly />
+        <label for="float-input">Thông tin nhận hàng</label>
       </span>
       <span class="p-float-label">
-        <input
-          id="float-input"
-          type="text"
-          pInputText
-          readonly
-        />
+        <input id="float-input" type="text" pInputText readonly />
         <label for="float-input">Giảm giá</label>
       </span>
       <div class="bill-info">
-        <span style="font-weight: bold;">Tiền ship :</span>
+        <span style="font-weight: bold">Voucher hóa đơn :</span>
         <span> 12.000</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold;">Tổng tiền :</span>
+        <span style="font-weight: bold">Voucher vận chuyển :</span>
+        <span> 12.000</span>
+      </div>
+      <div class="bill-info">
+        <span style="font-weight: bold">Tiền ship :</span>
+        <span> 12.000</span>
+      </div>
+      <div class="bill-info">
+        <span style="font-weight: bold">Tổng tiền :</span>
         <span> 120.000</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold;">Giảm giá hóa đơn:</span>
+        <span style="font-weight: bold">Giảm giá hóa đơn:</span>
         <span> 20.000</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold;">Giảm giá giá ship:</span>
+        <span style="font-weight: bold">Giảm giá giá ship:</span>
         <span> 12.000</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold;">Tổng tiền giảm:</span>
+        <span style="font-weight: bold">Tổng tiền giảm:</span>
         <span> 32.000</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold;">Tổng thanh toán:</span>
+        <span style="font-weight: bold">Tổng thanh toán:</span>
         <span> 80.000</span>
       </div>
       <div class="btn-thanh-toan">
-        <button class="btn btn-primary" style="width: 100%;">Thanh toán</button>
+        <button class="btn btn-primary" style="width: 100%">Thanh toán</button>
       </div>
     </div>
   </div>

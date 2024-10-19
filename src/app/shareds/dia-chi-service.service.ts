@@ -10,6 +10,7 @@ export class DiaChiServiceService {
   urlQuanHuyen : string = 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district';
   urlPhuongXa : string = 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id';
   token : string = 'f8ae5d1b-8d5a-11ef-8e53-0a00184fe694';
+  shop_id : string = '195078'
   constructor(private http: HttpClient) {
    }
 
@@ -62,4 +63,5 @@ export class DiaChiServiceService {
       })
     );
 }
+
 }

@@ -24,16 +24,19 @@
   z-index: 9999;
 }
 .error {
-  border: 2px solid red;
-  color: red;
+  background-color: red;
+  color: #fff;
+  border: 1px solid black;
 }
 .success {
-  border: 2px solid green;
-  color: green;
+  background-color:  green;
+  color: #fff;
+  border: 1px solid black;
 }
 .normal {
-  border: 2px solid gray;
-  color: gray;
+  background-color:  gray;
+  color: #fff;
+  border: 1px solid black;
 }
 .mess {
   padding: 5px 20px;

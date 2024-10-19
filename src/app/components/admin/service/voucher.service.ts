@@ -20,7 +20,7 @@ export class VoucherService {
     );
   }
   getById(id: any): Observable<any> {
-    return this.http.get<any>(`${this.url}/get-by-id?idVoucher=${id}`).pipe(
+    return this.http.get<any>(`${this.url}/get-by-id/${id}`).pipe(
       (res: any) => {
         return res || null;
       },

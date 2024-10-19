@@ -1,11 +1,14 @@
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
 import { FormBanHangTaiQuayComponent } from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay.component';
+import { KhachHangPopupComponent } from './ban-hang-tai-quay/khach-hang-popup/khach-hang-popup.component';
+import { ThongTinNhanHangComponent } from './ban-hang-tai-quay/thong-tin-nhan-hang/thong-tin-nhan-hang.component';
 import { ChiTietSanPhamAddOrUpdateComponent } from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 import { GiamGiaComponent } from './giam-gia/giam-gia.component';
 import { KhachHangAddOrEditComponent } from './khach-hang/khach-hang-add-or-edit/khach-hang-add-or-edit.component';
 import { KhachHangComponent } from './khach-hang/khach-hang/khach-hang.component';
+import { ThemNhanhKhachHangComponent } from './khach-hang/them-nhanh-khach-hang/them-nhanh-khach-hang.component';
 import { AddOrDetailKichCoComponent } from './kich-co/add-or-detail/add-or-detail.component';
 import { CtspKichCoComponent } from './kich-co/ctsp-kich-co/ctsp-kich-co.component';
 import { KichCoComponent } from './kich-co/the_loai.component';
@@ -62,6 +65,9 @@ export const pagesComponents: any[] = [
   VoucherComponent,
   VoucherAddOrEditComponent,
   FormBanHangTaiQuayComponent,
+  KhachHangPopupComponent,
+  ThemNhanhKhachHangComponent,
+  ThongTinNhanHangComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -94,3 +100,6 @@ export * from './khach-hang/khach-hang/khach-hang.component';
 export * from './vouchers/voucher/voucher.component';
 export * from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
 export * from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay.component';
+export * from './ban-hang-tai-quay/khach-hang-popup/khach-hang-popup.component';
+export * from './khach-hang/them-nhanh-khach-hang/them-nhanh-khach-hang.component';
+export * from './ban-hang-tai-quay/thong-tin-nhan-hang/thong-tin-nhan-hang.component';

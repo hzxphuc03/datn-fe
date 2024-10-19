@@ -39,12 +39,12 @@
     padding: 10px;
     flex-direction: row;
     .chi-tiet-san-pham {  
-      width: 65%;
+      width: 75%;
       border: 1px solid black;
       border-radius: 10px;
     }
     .info-hoa-don {
-      width: 35%;
+      width: 25%;
       border: 1px solid black;
       border-radius: 10px;
       padding: 15px;
@@ -70,5 +70,61 @@
 
   .p-calendar .p-datepicker {
     border: 1px solid gray;
+  }
+}
+.list-hoa-dons{
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: calc(100vw - 470px);
+  .icon-action{
+    font-size: 32px;
+    width: 50px;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .list-hoa-don{
+    width: 100%;
+  }
+}
+.list-hoa-don{
+  display: flex;
+  gap: 20px;
+  justify-content:flex-start;
+  align-items: center;
+  width: 100%;
+  overflow: auto;
+  .item ,.all-item{
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column  ;
+    gap: 5px;
+    cursor: pointer;
+    i{
+      font-size: 50px;
+    }
+  }
+  
+}
+.table-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  .bx {
+    font-size: 36px;
+    cursor: pointer;
+  }
+  .table-pagination-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
