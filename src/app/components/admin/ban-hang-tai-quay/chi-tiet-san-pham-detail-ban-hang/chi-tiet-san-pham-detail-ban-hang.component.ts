@@ -4,6 +4,7 @@ import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { CTSPServiceService } from '../../service/sp-ctsp-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SwiperOptions } from 'swiper';
+import { HoaDonService } from '../../service/hoa-don.service';
 
 interface Size {
   size: string; // Hoặc 'any' nếu bạn không chắc chắn về kiểu
@@ -37,17 +38,18 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
       delay : 1000
     }
   } 
+  openAdd : boolean = false;
+  soLuongWantToAdd : number = 0;
   constructor(
     private matDialogRef: MatDialogRef<ChiTietSanPhamDetailBanHangComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private errorService: ErrorTsService,
     private service: CTSPServiceService,
     private spinner: NgxSpinnerService,
+    private serverHD : HoaDonService
   ) {
     this.getAll(data.idSanPham);
-    console.log(data.idHoaDon);
- 
-       
+    console.log(data.idHoaDon);  
   }
   ngOnInit(): void {}
   async getAll(id : any) {
@@ -107,5 +109,15 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
       });
     }
   
+  }
+  async addSPToGHCT(){
+    const body ={
+      id: 0,
+      soLuong: this.soLuongWantToAdd,
+      trangThai: 0,
+      idHoaDon: this.data.idHoaDon,
+      idSanPhamChiTiet:  this.coler[this.indexActiveColer - 1].listSize[this.indexActiveSize - 1]?.id
+    }
+    // const data = await this.serverHD.hdctAdd(body).toPromise();
   }
 }

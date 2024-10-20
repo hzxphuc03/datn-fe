@@ -135,6 +135,34 @@
     class="btn-add"
     style="width: 100%; display: flex; justify-content: flex-end"
   >
-    <button class="btn btn-primary">Thêm sản phẩm</button>
+    <button class="btn btn-primary" (click)="openAdd = true">
+      Thêm sản phẩm
+    </button>
+  </div>
+</div>
+<div class="dialog-so-luong" *ngIf="openAdd" >
+  <div >
+    <div
+    class="show-soluong"
+    *ngIf="
+      coler[indexActiveColer - 1] &&
+      coler[indexActiveColer - 1].listSize &&
+      coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+    "
+  >
+  <div class="header" style="display: flex;justify-content: flex-end; align-items: center;font-size: 32px;" (click)="openAdd = false"><i class='bx bx-window-close'></i></div>
+    Số lượng của sản phẩm :
+    {{ coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong }}
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="text"
+        pInputText
+        [(ngModel)]="soLuongWantToAdd"
+      />
+      <label for="float-input">Nhập số lượng</label>
+    </span>
+    <button class="btn btn-primary" (click)="addSPToGHCT()">Thêm sản phẩm</button>
+  </div>
   </div>
 </div>

@@ -28,3 +28,22 @@
     align-items: center;
     gap: 10px;
 }
+.dialog-so-luong{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, .32);
+    .show-soluong{
+        padding: 20px;
+        background-color: white;
+        color: black;
+        display: flex;
+        gap: 30px;
+        flex-direction: column;
+    }
+}

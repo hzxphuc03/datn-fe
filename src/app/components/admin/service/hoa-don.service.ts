@@ -61,6 +61,16 @@ export class HoaDonService {
       })
     );
   }
+  hdctAdd(params: any): Observable<any> {
+    return this.http.post<any>(`${this.urlCT}/add`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   udpateStatus(id: number, status: number): Observable<any> {
     const params = new HttpParams().set('status', status.toString());
     return this.http
