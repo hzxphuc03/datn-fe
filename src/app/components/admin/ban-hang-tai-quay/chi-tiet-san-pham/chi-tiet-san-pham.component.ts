@@ -128,6 +128,7 @@ export class ChiTietSanPhamBanHangComponent implements OnInit {
     const dialogRef = this.dialog.open(ChiTietSanPhamDetailBanHangComponent, {
       data:  {
         idSanPham : item.id,
+        idHoaDon : this.data.idHoaDon
       },
     });
     dialogRef.afterClosed().subscribe((result) => {

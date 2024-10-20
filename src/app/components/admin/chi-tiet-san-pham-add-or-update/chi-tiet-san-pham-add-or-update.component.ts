@@ -785,12 +785,31 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
     // Kiểm tra xem click có xảy ra bên trong phần tử có class 'drop-down' hay không
     const isDropDownClick = target.closest('.drop-down') !== null;
     if (!isDropDownClick) {
-      this.data.sanPham.giamGia.isOpen = false;
-      this.data.sanPham.thuongHieu.isOpen = false;
-      this.data.sanPham.theLoai.isOpen = false;
-      this.data.sanPham.loaiCo.isOpen = false;
-      this.data.sanPham.vatLieu.isOpen = false;
-      this.data.sanPham.loaiDe.isOpen = false;
+      if (this.data.sanPham) {
+        if (this.data.sanPham.giamGia && this.data.sanPham.giamGia.isOpen) {
+          this.data.sanPham.giamGia.isOpen = false;
+        }
+      
+        if (this.data.sanPham.thuongHieu && this.data.sanPham.thuongHieu.isOpen) {
+          this.data.sanPham.thuongHieu.isOpen = false;
+        }
+      
+        if (this.data.sanPham.theLoai && this.data.sanPham.theLoai.isOpen) {
+          this.data.sanPham.theLoai.isOpen = false;
+        }
+      
+        if (this.data.sanPham.loaiCo && this.data.sanPham.loaiCo.isOpen) {
+          this.data.sanPham.loaiCo.isOpen = false;
+        }
+      
+        if (this.data.sanPham.vatLieu && this.data.sanPham.vatLieu.isOpen) {
+          this.data.sanPham.vatLieu.isOpen = false;
+        }
+      
+        if (this.data.sanPham.loaiDe && this.data.sanPham.loaiDe.isOpen) {
+          this.data.sanPham.loaiDe.isOpen = false;
+        }
+      }
     }
   }
 }
