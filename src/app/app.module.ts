@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http'; // Thêm dòng này
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastModule } from 'primeng/toast';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   declarations: [AppComponent, MasterLayoutAdminComponent, ChatComponent],
@@ -29,6 +30,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     MatDialogModule,
     ToastModule,
     InputSwitchModule,
+    SwiperModule
   ],
   providers: [],
   bootstrap: [AppComponent],

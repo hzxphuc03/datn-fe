@@ -1,3 +1,140 @@
-<div class="all content">
-   
+<div class="all-content">
+  <div
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      width: 100%;
+    "
+  >
+    <div class="sanPham" style="width: 20%">
+      <div class="left">
+        <swiper
+          #swiper
+          [slidesPerView]="1"
+          [spaceBetween]="50"
+          [autoplay]="true"
+          [config]="autoPlay"
+          class="swiper-container swiper-ielts"
+        >
+          <ng-template
+            swiperSlide
+            class="swiper-slide"
+            *ngFor="let img of listImg"
+          >
+            <img [src]="img" alt="" style="height: 300px; width: 230px" />
+          </ng-template>
+        </swiper>
+      </div>
+    </div>
+    <div
+      class="info-sanPham"
+      style="width: 80%; display: flex; flex-direction: column; gap: 20px"
+    >
+      <div class="ten-san-pham" style="font-size: 32px; font-weight: bolder">
+        Tên sản phẩm : {{ getData?.sanPham.ten }}
+        <span style="font-size: 20px; font-weight: 300; color: black">
+          ({{ getData?.sanPham.giaThapNhat }}đ -
+          {{ getData?.sanPham.giaCaoNhat }}đ)</span
+        >
+      </div>
+
+      <div style="display: flex; gap: 20px">
+        <ul>
+          <li>Bề mặt sử dụng : {{ getData?.sanPham.beMatSuDung }}</li>
+          <li>Công nghệ :{{ getData?.sanPham.congNghe }}</li>
+          <li>Giảm giá :{{ getData?.sanPham.congNghe }}</li>
+        </ul>
+        <ul>
+          <li>Kiểu dáng :{{ getData?.sanPham.kieuDang }}</li>
+          <li>Loại cổ :{{ getData?.sanPham.loaiCo?.ten }}</li>
+          <li>Loại đế :{{ getData?.sanPham.loaiDe?.ten }}</li>
+          <li>Thể loại :{{ getData?.sanPham?.theLoai?.ten }}</li>
+        </ul>
+        <ul>
+          <li>Thương hiệu :{{ getData?.sanPham?.thuongHieu?.ten }}</li>
+          <li>vật iệu :{{ getData?.sanPham?.vatLieu?.ten }}</li>
+          <li>Trọng lượng :{{ getData?.sanPham?.trongLuong }}</li>
+          <li>Mô tả :{{ getData?.sanPham?.moTa }}</li>
+        </ul>
+      </div>
+      <div
+        class="colers-and-size"
+        style="
+          display: flex;
+          gap: 20px;
+          justify-content: flex-start;
+          align-items: center;
+        "
+      >
+        <span>Màu sắc:</span>
+        <div
+          class="colers"
+          style="
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+          *ngFor="let item of coler; let i = index"
+          [class.active-coler]="i + 1 === indexActiveColer"
+        >
+          <div
+            (click)="indexActiveColer = i + 1; indexActiveSize = 1"
+            style="
+              height: 20px;
+              width: 20px;
+              border-radius: 50%;
+              cursor: pointer;
+            "
+            [ngStyle]="{
+              'background-color': item.coler
+            }"
+          ></div>
+        </div>
+      </div>
+      <div class="sizes">
+        <div
+          class="item-size"
+          *ngFor="
+            let size of coler[indexActiveColer - 1]?.listSize;
+            let indexSize = index
+          "
+          [class.active-size]="indexSize + 1 === indexActiveSize"
+        >
+          <div
+            style="
+              height: 40px;
+              width: 60px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            (click)="indexActiveSize = indexSize + 1"
+          >
+            {{ size.size }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="show-soluong"
+        *ngIf="
+          coler[indexActiveColer - 1] &&
+          coler[indexActiveColer - 1].listSize &&
+          coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+        "
+      >
+        Số lượng của sản phẩm :
+        {{ coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong }}
+      </div>
+    </div>
+  </div>
+  <div
+    class="btn-add"
+    style="width: 100%; display: flex; justify-content: flex-end"
+  >
+    <button class="btn btn-primary">Thêm sản phẩm</button>
+  </div>
 </div>

@@ -3,12 +3,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { CTSPServiceService } from '../../service/sp-ctsp-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SwiperOptions } from 'swiper';
 
 interface Size {
   size: string; // Hoặc 'any' nếu bạn không chắc chắn về kiểu
   id: number;
   idSP : any,
-  soLuong : any
+  soLuong : any,
+  giaBan : any,
+  hinhAnh : any
 }
 
 interface Color {
@@ -23,8 +26,17 @@ interface Color {
   styleUrls: ['./chi-tiet-san-pham-detail-ban-hang.component.scss'],
 })
 export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
+[x: string]: any;
   getData : any;
   coler: Color[] = [];
+  indexActiveColer : number = 1;
+  indexActiveSize : number = 1;
+  listImg : string[] = [];
+  autoPlay : SwiperOptions = {
+    autoplay : {
+      delay : 1000
+    }
+  } 
   constructor(
     private matDialogRef: MatDialogRef<ChiTietSanPhamDetailBanHangComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,8 +46,8 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
   ) {
     this.getAll(data.idSanPham);
     console.log(data.idHoaDon);
-    
-    
+ 
+       
   }
   ngOnInit(): void {}
   async getAll(id : any) {
@@ -44,8 +56,16 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
     if (data) {
       this.getData = data;
       this.custumData();
-      console.log(this.coler);
+      this.imgs();
       this.spinner.hide();
+    }
+  }
+  imgs(){
+    this.listImg.push(this.getData?.sanPham?.hinhAnh)
+    if (this.getData && this.getData.sanPhamChiTietList) {
+      this.getData.sanPhamChiTietList.map((item: any) => {
+        this.listImg.push(item.hinhAnh);
+      });
     }
   }
   custumData(){
@@ -64,7 +84,9 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
             size: item.kichCo.ten, // Giả định ten là string
             id: item.kichCo.id, // Giả định id là number
             idSP : item.id,
-            soLuong : item.soLuong
+            soLuong : item.soLuong,
+            giaBan : item.giaBan,
+            hinhAnh : item.hinhAnh
           });
 
           this.coler.push(coler); // Thêm đối tượng vào mảng
@@ -76,7 +98,9 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
               size: item.kichCo.ten,
               id: item.kichCo.id,
               idSP : item.id,
-              soLuong : item.soLuong
+              soLuong : item.soLuong,
+              giaBan : item.giaBan,
+              hinhAnh : item.hinhAnh
             });
           }
         }

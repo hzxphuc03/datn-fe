@@ -1,0 +1,30 @@
+:host{
+    .all-content{
+        // height: 90vh;
+        // width: 70vw;
+
+    }
+}
+.active-coler{
+    border: 2px solid black;
+    border-radius: 50%;
+}
+.active-size{
+    border: 2px solid black;
+    border-radius:20px;
+}
+.item-size{
+    background: rgb(229, 227, 227);
+    color: black;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sizes{
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
