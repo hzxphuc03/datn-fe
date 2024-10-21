@@ -133,6 +133,7 @@ export class ChiTietSanPhamBanHangComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.matDialogRef.close('close')
       }
     });
   }

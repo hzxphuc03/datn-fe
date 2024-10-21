@@ -113,11 +113,19 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
   async addSPToGHCT(){
     const body ={
       id: 0,
-      soLuong: this.soLuongWantToAdd,
-      trangThai: 0,
+      soLuong: Number(this.soLuongWantToAdd),
+      trangThai: 1,
       idHoaDon: this.data.idHoaDon,
-      idSanPhamChiTiet:  this.coler[this.indexActiveColer - 1].listSize[this.indexActiveSize - 1]?.id
+      idSanPhamChiTiet:  this.coler[this.indexActiveColer - 1].listSize[this.indexActiveSize - 1]?.idSP
     }
-    // const data = await this.serverHD.hdctAdd(body).toPromise();
+    const data = await this.serverHD.hdctAdd(body).toPromise();
+    if(data){
+      if(data?.errorCode){
+        this.errorService.displayError(data.messageError,'error');
+      }else{
+        this.errorService.displayError('Thêm sản phẩm thàng công','sussces');
+        this.matDialogRef.close('close');
+      }
+    }
   }
 }

@@ -202,7 +202,7 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-      
+        this.getListCTHoaDon('rows');
       }
     });
   }
