@@ -7,10 +7,21 @@ import { Observable, catchError, of } from 'rxjs';
 })
 export class KhachHangServiceService {
   url: string = 'http://localhost:8080/api/khach_hang';
+  urlDiaChi: string = 'http://localhost:8080/api/dia_chi';
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {
     return this.http.get<any>(`${this.url}`, { params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getDiaChiByKH(params: any): Observable<any> {
+    return this.http.get<any>(`${this.urlDiaChi}`, { params }).pipe(
       (res: any) => {
         return res || null;
       },

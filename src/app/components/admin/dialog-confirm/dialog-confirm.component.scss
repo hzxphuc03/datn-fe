@@ -1,0 +1,21 @@
+.dialog{
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+    .title{
+        font-size: 23px;
+    }
+    .action{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        .btn{
+            width: 100%;
+        }
+    }
+}

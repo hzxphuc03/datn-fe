@@ -13,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SwiperModule } from 'swiper/angular';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -27,7 +28,8 @@ import { SwiperModule } from 'swiper/angular';
     InputTextModule,
     CalendarModule,
     RadioButtonModule,
-    SwiperModule
+    SwiperModule,
+    AutoCompleteModule
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],

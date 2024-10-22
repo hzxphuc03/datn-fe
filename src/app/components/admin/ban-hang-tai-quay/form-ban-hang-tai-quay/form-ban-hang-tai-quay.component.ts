@@ -7,6 +7,7 @@ import { HoaDonService } from '../../service/hoa-don.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TokenService } from 'src/app/services/token.service';
 import { ChiTietSanPhamBanHangComponent } from '../chi-tiet-san-pham/chi-tiet-san-pham.component';
+import { DialogConfirmComponent } from '../../dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-form-ban-hang-tai-quay',
@@ -40,10 +41,24 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     const dialogRef = this.dialog.open(KhachHangPopupComponent, {
       data:  {},
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-       this.data.khachHang = result
-       console.log(this.data);
+        this.data.khachHang = result
+        const params =       {
+          idObject: this.data?.khachHang?.id,
+          idHoaDon: this.data.id
+        }
+         this.spinner.show();
+       const data = await this.hoaDonService.addKhachHangToHD(params).toPromise();
+       if(data){
+        if(data?.errorCode){
+          this.errorService.displayError(data.messageError,'error');
+          this.spinner.hide();
+        }else{
+          this.errorService.displayError('Cập nhật khách hàng thành công','normal');
+          this.spinner.hide();
+        }
+       }  
       }
     });
   }
@@ -203,6 +218,27 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getListCTHoaDon('rows');
+      }
+    });
+  }
+  async deleteProduct(item : any){
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      data:  {
+        inputTitle : `Bạn có muốn xóa sản phẩm này ?`,
+        inputBtn : `Đồng ý xóa`,
+      },
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        const data =  await this.hoaDonService.deleteSPFromCTSP(item.id).toPromise();
+        if(data){
+          if(data?.errorCode){
+            this.errorService.displayError(data.messageError,'error');
+          }else{
+            this.errorService.displayError('Xóa sản phẩm thành công','sussces');
+            this.getListCTHoaDon('rows');
+          }
+        }
       }
     });
   }

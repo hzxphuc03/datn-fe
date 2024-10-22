@@ -1,5 +1,5 @@
 .form-info-thong-tin-nhan-hang{
-    width: 80vw;
+    width: 76vw;
     height: 90vh;
     display: flex;
     justify-content: center;
@@ -19,9 +19,49 @@
         gap: 20px;
         .left{
             width: 65%;
+            height: 100%;
+            display: flex;
+            // justify-content: space-between;
+            /* align-items: center; */
+            flex-direction: column;
+            gap: 20px;
+            span{
+              font-size: 22px;
+            }
+            .table-pagination {
+                margin-top: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                font-size: 20px;
+                .bx {
+                  font-size: 32px;
+                  cursor: pointer;
+                }
+                .table-pagination-item {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+              }
+              .content {
+                margin-top: 20px;
+                padding: 10px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+              }
         }
         .right{
             width: 35%;
         }
     }
+}
+:host ::ng-deep{
+  .p-datatable-thead{
+    border: 1px solid;
+    td{
+      padding: 10px;
+    }
+  }
 }

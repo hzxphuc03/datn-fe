@@ -71,6 +71,27 @@ export class HoaDonService {
       })
     );
   }
+  deleteSPFromCTSP(id: any): Observable<any> {
+    return this.http.delete<any>(`${this.urlCT}/delete/${id}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  addKhachHangToHD(params : any): Observable<any> {
+    return this.http.put<any>(`${this.url}/add-khach-hang`, params
+    ).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   udpateStatus(id: number, status: number): Observable<any> {
     const params = new HttpParams().set('status', status.toString());
     return this.http

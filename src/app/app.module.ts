@@ -14,7 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ToastModule } from 'primeng/toast';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SwiperModule } from 'swiper/angular';
-
+import { AutoCompleteModule } from 'primeng/autocomplete';
 @NgModule({
   declarations: [AppComponent, MasterLayoutAdminComponent, ChatComponent],
   imports: [
@@ -30,7 +30,8 @@ import { SwiperModule } from 'swiper/angular';
     MatDialogModule,
     ToastModule,
     InputSwitchModule,
-    SwiperModule
+    SwiperModule,
+    AutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent],

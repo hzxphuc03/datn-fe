@@ -1,11 +1,51 @@
 <div class="form-info-thong-tin-nhan-hang">
-    <div class="header">Thông tin nhận hành hóa đơn : </div>
-    <div class="contents">
-        <div class="left">
-            bên này là bảng địa chỉ và btn thêm nhanh địa chỉ
-        </div>
-        <div class="right">
-            bên này là thông tin đơn hàng được thanh toán
-        </div>
+  <div class="header">Thông tin nhận hành hóa đơn :</div>
+  <div class="contents">
+    <div class="left">
+          <div style="display: flex;flex-direction: column;gap: 20px;">
+            <span>Thông tin địa chỉ khách hàng <button class="btn btn-primary" (click)="addLocation()"><i class='bx bx-location-plus'></i></button></span>
+
+            <p-table [value]="listData" styleClass="p-datatable-gridlines">
+              <ng-template pTemplate="header">
+                <tr>
+                  <td>Tỉnh thành</td>
+                  <td>Quận huyện</td>
+                  <td>Phường xã</td>
+                  <td>Ghi chú</td>
+                  <td>Thao tác</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-product>
+                <tr>
+                  <td>{{ product.tinhThanh }}</td>
+                  <td>{{ product.quanHuyen }}</td>
+                  <td>{{ product.phuongXa }}</td>
+                  <td>{{ product.ghiChu }}</td>
+                  <td>action</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div class="table-pagination d-flex">
+            <div class="flex-grow-1"></div>
+            <div class="d-flex justify-content-center align-items-center">
+              <span
+                (click)="getListWords('page', 'prev')"
+                class="table-pagination-item btn-prev ml-2"
+              >
+                <i class="bx bx-left-arrow-alt"></i>
+              </span>
+              <span
+                (click)="getListWords('page', 'next')"
+                class="table-pagination-item btn-next"
+              >
+                <i class="bx bx-right-arrow-alt"></i>
+              </span>
+            </div>
+          </div>
     </div>
+    <div class="right">
+      bên này là thông tin đơn hàng được thanh toán
+  </div>
+  </div>
 </div>

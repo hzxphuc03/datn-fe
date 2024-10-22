@@ -83,6 +83,7 @@
               <th>Hình ảnh</th>
               <th>Màu sắc</th>
               <th>Kích cỡ</th>
+              <th>Tổng tiền</th>
               <th>Thao tác</th>
             </tr>
           </ng-template>
@@ -111,6 +112,7 @@
                 ></div>
               </td>
               <td>{{ product?.sanPhamChiTiet.kichCo.ten }}</td>
+              <td>{{product?.soLuong * product?.giaDaGiam}}</td>
               <td>
                 <div
                   style="
@@ -122,7 +124,7 @@
                     cursor: pointer;
                   "
                 >
-                  <i class="bx bx-x-circle"></i>
+                  <i class="bx bx-x-circle" (click)="deleteProduct(product)"></i>
                   <i class="bx bx-edit-alt"></i>
                 </div>
               </td>

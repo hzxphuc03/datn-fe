@@ -1,0 +1,19 @@
+<div class="add-or-edit-location">
+        <p-autoComplete
+        [(ngModel)]="idTinhThanh"
+        [suggestions]="filterListTinhThanh"
+        (completeMethod)="filterTinhThanh($event)"
+        [dropdown]="true"
+        optionLabel="name" 
+        optionValue="key"></p-autoComplete>
+        <p-autoComplete
+        [(ngModel)]="idQuanHuyen"
+        [suggestions]="listQuanHuyen"
+        (completeMethod)="filterCountry($event)"
+        optionLabel="name" ></p-autoComplete>
+        <p-autoComplete
+        [(ngModel)]="idTinhThanh"
+        [suggestions]="listTinhThanh"
+        (completeMethod)="filterCountry($event)"
+        optionLabel="name" ></p-autoComplete>
+</div>
