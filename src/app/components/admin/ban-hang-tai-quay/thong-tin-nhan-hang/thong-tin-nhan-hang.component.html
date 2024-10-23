@@ -1,30 +1,20 @@
 <div class="form-info-thong-tin-nhan-hang">
-  <div class="header">Thông tin nhận hành hóa đơn :</div>
+  <div
+    class="header d-flex"
+    style="gap: 10px; justify-content: flex-start; width: 100%"
+  >
+    <i style="font-size: 22px" class="bx bx-arrow-back" (click)="back()"></i
+    >Thông tin nhận hành hóa đơn :
+  </div>
   <div class="contents">
     <div class="left">
-          <div style="display: flex;flex-direction: column;gap: 20px;">
-            <span>Thông tin địa chỉ khách hàng <button class="btn btn-primary" (click)="addLocation()"><i class='bx bx-location-plus'></i></button></span>
-
-            <p-table [value]="listData" styleClass="p-datatable-gridlines">
-              <ng-template pTemplate="header">
-                <tr>
-                  <td>Tỉnh thành</td>
-                  <td>Quận huyện</td>
-                  <td>Phường xã</td>
-                  <td>Ghi chú</td>
-                  <td>Thao tác</td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-product>
-                <tr>
-                  <td>{{ product.tinhThanh }}</td>
-                  <td>{{ product.quanHuyen }}</td>
-                  <td>{{ product.phuongXa }}</td>
-                  <td>{{ product.ghiChu }}</td>
-                  <td>action</td>
-                </tr>
-              </ng-template>
-            </p-table>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; width: 100%; justify-content: space-between">
+          <div style="display: flex; gap: 20px">
+            <span>Thông tin địa chỉ khách hàng</span>
+            <button class="btn btn-primary" (click)="addLocation()">
+              <i class="bx bx-location-plus"></i>
+            </button>
           </div>
           <div class="table-pagination d-flex">
             <div class="flex-grow-1"></div>
@@ -43,9 +33,155 @@
               </span>
             </div>
           </div>
+        </div>
+
+        <p-table
+          [value]="listData"
+          styleClass="p-datatable-gridlines"
+          [scrollable]="true"
+          scrollHeight="calc(90vh - 100px)"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <td>Tỉnh thành</td>
+              <td>Quận huyện</td>
+              <td>Phường xã</td>
+              <td>Ghi chú</td>
+              <td>Thao tác</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>{{ product.tinhThanh }}</td>
+              <td>{{ product.quanHuyen }}</td>
+              <td>{{ product.phuongXa }}</td>
+              <td>{{ product.ghiChu }}</td>
+              <td>
+                <button class="btn btn-primary" (click)="useLocation(product)">
+                  <i class="bx bxs-check-circle"></i>
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
     <div class="right">
-      bên này là thông tin đơn hàng được thanh toán
-  </div>
+      <div class="loaction-option">
+        <div class="header"><div>Thông tin giao hàng</div></div>
+        <p-dropdown
+          [options]="listTinhThanh"
+          [(ngModel)]="data.idTinhThanh"
+          optionLabel="ProvinceName"
+          optionValue="ProvinceID"
+          [filter]="true"
+          filterBy="ProvinceName"
+          [showClear]="true"
+          placeholder="Chọn tỉnh thành"
+          (onChange)="changeTinhThanh()"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <div>{{ selectedOption.ProvinceName }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-location pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ location.ProvinceName }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <p-dropdown
+          [options]="listQuanHuyen"
+          [(ngModel)]="data.idQuanHuyen"
+          optionLabel="DistrictName"
+          optionValue="DistrictID"
+          [filter]="true"
+          filterBy="DistrictName"
+          [showClear]="true"
+          placeholder="Chọn quận huyện"
+          (onChange)="changeQuanHuyen()"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <div>{{ selectedOption.DistrictName }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-location pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ location.DistrictName }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <p-dropdown
+          [options]="listQuanXa"
+          [(ngModel)]="data.idPhuongXa"
+          optionLabel="WardName"
+          optionValue="WardCode"
+          [filter]="true"
+          filterBy="WardName"
+          [showClear]="true"
+          placeholder="Chọn phường xã"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <div>{{ selectedOption.WardName }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-location pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ location.WardName }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <span class="p-float-label">
+          <textarea
+            pInputText
+            id="float-input"
+            variant="filled"
+            rows="3"
+            cols="30"
+            pInputTextarea
+            [(ngModel)]="data.ghiChu"
+          ></textarea>
+          <label for="float-input">Ghi chú</label>
+        </span>
+        <span class="p-float-label">
+          <input
+            id="float-input"
+            type="text"
+            pInputText
+            [(ngModel)]="data.tenNguoiNhan"
+          />
+          <label for="float-input">Tên người nhận</label>
+        </span>
+        <span class="p-float-label">
+          <input
+            id="float-input"
+            type="number"
+            pInputText
+            [(ngModel)]="data.sdtNguoiNhan"
+          />
+          <label for="float-input">Số điện thoại người nhận</label>
+        </span>
+        <p-dropdown
+          [options]="listPhuongThuc"
+          [(ngModel)]="data.phuongThucThanhToan"
+          optionLabel="ten"
+          (onChange)="choseOptionThanhToan()"
+          placeholder="Chọn phương thức thanh toán"
+        ></p-dropdown>
+      </div>
+      <div class="luu-y"></div>
+      <div class="action" style="width: 100%">
+        <button
+          style="width: 100%"
+          class="btn btn-primary"
+          (click)="updateInfoHoaDon()"
+        >
+          Cập nhật thông tin giao hàng
+        </button>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,19 +1,87 @@
 <div class="add-or-edit-location">
-        <p-autoComplete
-        [(ngModel)]="idTinhThanh"
-        [suggestions]="filterListTinhThanh"
-        (completeMethod)="filterTinhThanh($event)"
-        [dropdown]="true"
-        optionLabel="name" 
-        optionValue="key"></p-autoComplete>
-        <p-autoComplete
-        [(ngModel)]="idQuanHuyen"
-        [suggestions]="listQuanHuyen"
-        (completeMethod)="filterCountry($event)"
-        optionLabel="name" ></p-autoComplete>
-        <p-autoComplete
-        [(ngModel)]="idTinhThanh"
-        [suggestions]="listTinhThanh"
-        (completeMethod)="filterCountry($event)"
-        optionLabel="name" ></p-autoComplete>
+  <div class="all-location">
+    <p-dropdown
+      [options]="listTinhThanh"
+      [(ngModel)]="tinhThanh"
+      optionLabel="ProvinceName"
+      [filter]="true"
+      filterBy="ProvinceName"
+      [showClear]="true"
+      placeholder="Chọn tỉnh thành"
+      (onChange)="changeTinhThanh()"
+    >
+      <ng-template pTemplate="selectedItem" let-selectedOption>
+        <div class="flex align-items-center gap-2">
+          <div>{{ selectedOption.ProvinceName }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-location pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <div>{{ location.ProvinceName }}</div>
+        </div>
+      </ng-template>
+    </p-dropdown>
+    <p-dropdown
+      [options]="listQuanHuyen"
+      [(ngModel)]="quanHuyen"
+      optionLabel="DistrictName"
+      [filter]="true"
+      filterBy="DistrictName"
+      [showClear]="true"
+      placeholder="Chọn quận huyện"
+      (onChange)="changeQuanHuyen()"
+    >
+      <ng-template pTemplate="selectedItem" let-selectedOption>
+        <div class="flex align-items-center gap-2">
+          <div>{{ selectedOption.DistrictName }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-location pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <div>{{ location.DistrictName }}</div>
+        </div>
+      </ng-template>
+    </p-dropdown>
+    <p-dropdown
+      [options]="listQuanXa"
+      [(ngModel)]="quanXa"
+      optionLabel="WardName"
+      [filter]="true"
+      filterBy="WardName"
+      [showClear]="true"
+      placeholder="Chọn phường xã"
+      (onChange)="changeQuanHuyen()"
+    >
+      <ng-template pTemplate="selectedItem" let-selectedOption>
+        <div class="flex align-items-center gap-2">
+          <div>{{ selectedOption.WardName }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-location pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <div>{{ location.WardName }}</div>
+        </div>
+      </ng-template>
+    </p-dropdown>
+    <span class="p-float-label">
+      <textarea
+        pInputText
+        id="float-input"
+        variant="filled"
+        rows="5"
+        cols="30"
+        pInputTextarea
+        [(ngModel)]="ghiChu"
+      ></textarea>
+      <label for="float-input">Ghi chú</label>
+    </span>
+  </div>
+  <div class="action" style="width: 100%; display: flex; gap: 20px">
+    <button class="btn btn-secondary" style="width: 50%" (click)="close()">
+      Đóng
+    </button>
+    <button class="btn btn-success" style="width: 50%" (click)="addOrEdit()">
+      Lưu
+    </button>
+  </div>
 </div>

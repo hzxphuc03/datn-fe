@@ -8,74 +8,104 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { TokenService } from 'src/app/services/token.service';
 import { ChiTietSanPhamBanHangComponent } from '../chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { DialogConfirmComponent } from '../../dialog-confirm/dialog-confirm.component';
+import { DiaChiServiceService } from 'src/app/shareds/dia-chi-service.service';
 
+interface Item {
+  name: string;
+  quantity: number;
+  height: number;
+  weight: number;
+  length: number;
+  width: number;
+}
+
+interface Data {
+  service_type_id: number;
+  to_district_id: number;
+  to_ward_code: string;
+  weight: number;
+  height: number;
+  length: number;
+  width: number;
+  items: Item[];
+}
 @Component({
   selector: 'app-form-ban-hang-tai-quay',
   templateUrl: './form-ban-hang-tai-quay.component.html',
-  styleUrls: ['./form-ban-hang-tai-quay.component.scss']
+  styleUrls: ['./form-ban-hang-tai-quay.component.scss'],
 })
 export class FormBanHangTaiQuayComponent implements OnInit {
-  data : any = {};
+  data: any = {};
   searchQuery: any = {};
   searchQueryCT: any = {};
   listHoaDonPageNumber: number[] = [];
   listHoaDonCtPageNumber: number[] = [];
-  listDataHoaDon : any = [];
-  listDataHoaDonCt : any = [];
-  constructor(    private dialog: MatDialog,
+  listDataHoaDon: any = [];
+  listDataHoaDonCt: any = [];
+  thongTinNHanHang: any;
+  constructor(
+    private dialog: MatDialog,
     private errorService: ErrorTsService,
-    private hoaDonService : HoaDonService,
+    private hoaDonService: HoaDonService,
     private spinner: NgxSpinnerService,
     private tokenService: TokenService,
-  ) { }
+    private diaChiService: DiaChiServiceService
+  ) {}
 
   ngOnInit(): void {
-    this.data.khachHang = {}
+    this.data.khachHang = {};
     const { decoded } = this.tokenService.getToken();
-    if(decoded && decoded?.user.id){
-      this.searchQuery.idNhanVien = decoded?.user.id
+    if (decoded && decoded?.user.id) {
+      this.searchQuery.idNhanVien = decoded?.user.id;
     }
-    this.getListHoaDon('rows');    
+    this.getListHoaDon('rows');
   }
-  getKhachHang(){
+  getKhachHang() {
     const dialogRef = this.dialog.open(KhachHangPopupComponent, {
-      data:  {},
+      data: {},
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        this.data.khachHang = result
-        const params =       {
+        this.data.khachHang = result;
+        const params = {
           idObject: this.data?.khachHang?.id,
-          idHoaDon: this.data.id
+          idHoaDon: this.data.id,
+        };
+        this.spinner.show();
+        const data = await this.hoaDonService
+          .addKhachHangToHD(params)
+          .toPromise();
+        if (data) {
+          if (data?.errorCode) {
+            this.errorService.displayError(data.messageError, 'error');
+            this.spinner.hide();
+          } else {
+            this.errorService.displayError(
+              'Cập nhật khách hàng thành công',
+              'normal'
+            );
+            this.spinner.hide();
+          }
         }
-         this.spinner.show();
-       const data = await this.hoaDonService.addKhachHangToHD(params).toPromise();
-       if(data){
-        if(data?.errorCode){
-          this.errorService.displayError(data.messageError,'error');
-          this.spinner.hide();
-        }else{
-          this.errorService.displayError('Cập nhật khách hàng thành công','normal');
-          this.spinner.hide();
-        }
-       }  
       }
     });
   }
-  thongTinNhanHang(){
-    if(!this.data?.khachHang?.id){
-      this.errorService.displayError('Vui lòng chọn khách hàng trước','normal');
+  thongTinNhanHang() {
+    if (!this.data?.khachHang?.id) {
+      this.errorService.displayError(
+        'Vui lòng chọn khách hàng trước',
+        'normal'
+      );
       return;
     }
     const dialogRef = this.dialog.open(ThongTinNhanHangComponent, {
-      data:  {
-        data : this.data,
-        
+      data: {
+        data: this.data,
       },
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-       
       }
     });
   }
@@ -125,7 +155,8 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       }
       if (
         action === 'next' &&
-        Number(this.searchQueryCT.page) + 1 <= this.listHoaDonCtPageNumber.length
+        Number(this.searchQueryCT.page) + 1 <=
+          this.listHoaDonCtPageNumber.length
       ) {
         this.searchQueryCT.page = Number(this.searchQueryCT.page) + 1;
       }
@@ -138,10 +169,13 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       }
     });
     this.spinner.show();
-    const data = await this.hoaDonService.getAllCt(this.searchQueryCT).toPromise();
+    const data = await this.hoaDonService
+      .getAllCt(this.searchQueryCT)
+      .toPromise();
     if (data) {
       this.getTotalHoaDonCtPage(data);
       this.listDataHoaDonCt = data.item;
+      this.getShipPrice();
       setTimeout(() => {
         this.spinner.hide();
       }, 500);
@@ -181,39 +215,41 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     }
     return totalPage;
   }
-  async addNhanhHoaDon(){
+  async addNhanhHoaDon() {
     this.spinner.show();
-    const data = await this.hoaDonService.ThemNhanhHoaDon(this.searchQuery.idNhanVien).toPromise();
-    if(data){
-      this.errorService.displayError('Tạo hóa đơn thành công','sucsses')
-      this.getListHoaDon('rows');    
+    const data = await this.hoaDonService
+      .ThemNhanhHoaDon(this.searchQuery.idNhanVien)
+      .toPromise();
+    if (data) {
+      this.errorService.displayError('Tạo hóa đơn thành công', 'sucsses');
+      this.getListHoaDon('rows');
       this.spinner.hide();
     }
   }
-  detailHoaDon(item : any){
+  detailHoaDon(item: any) {
     this.data = item;
-    if(!this?.data?.khachHang && !this?.data?.khachHang?.id){
-      this.data.khachHang = {}
+    this.thongTinNHanHang = `${this.data.tinhThanh}-${this.data.quanHuyen}-${this.data.phuongXa} && ${this.data.phuongThucThanhToan.ten}`;
+    if (!this?.data?.khachHang && !this?.data?.khachHang?.id) {
+      this.data.khachHang = {};
     }
-    if(this.data){
-      this.searchQueryCT = {}
+    if (this.data) {
+      this.searchQueryCT = {};
       this.listHoaDonCtPageNumber = [];
       this.listDataHoaDonCt = [];
       this.searchQueryCT.idHoaDon = this.data.id;
       this.getListCTHoaDon('rows');
-      console.log(this.listDataHoaDonCt);
-      
       //chạy get all chiTietSanPham
     }
   }
-  addSanPham(){
-    if(!this.data.id){
+  addSanPham() {
+    if (!this.data.id) {
       return;
     }
     const dialogRef = this.dialog.open(ChiTietSanPhamBanHangComponent, {
-      data:  {
-        idHoaDon : this.data.id,
-      }, disableClose: true,
+      data: {
+        idHoaDon: this.data.id,
+      },
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -221,25 +257,65 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       }
     });
   }
-  async deleteProduct(item : any){
+  async deleteProduct(item: any) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
-      data:  {
-        inputTitle : `Bạn có muốn xóa sản phẩm này ?`,
-        inputBtn : `Đồng ý xóa`,
+      data: {
+        inputTitle: `Bạn có muốn xóa sản phẩm này ?`,
+        inputBtn: `Đồng ý xóa`,
       },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        const data =  await this.hoaDonService.deleteSPFromCTSP(item.id).toPromise();
-        if(data){
-          if(data?.errorCode){
-            this.errorService.displayError(data.messageError,'error');
-          }else{
-            this.errorService.displayError('Xóa sản phẩm thành công','sussces');
+        const data = await this.hoaDonService
+          .deleteSPFromCTSP(item.id)
+          .toPromise();
+        if (data) {
+          if (data?.errorCode) {
+            this.errorService.displayError(data.messageError, 'error');
+          } else {
+            this.errorService.displayError(
+              'Xóa sản phẩm thành công',
+              'sussces'
+            );
             this.getListCTHoaDon('rows');
           }
         }
       }
     });
+  }
+  async getShipPrice() {
+    let data: Data = {
+      service_type_id: 2,
+      height: 0,
+      length: 0,
+      width: 0,
+      to_district_id: Number(this.data.idQuanHuyen),
+      to_ward_code: this.data.idPhuongXa + '',
+      weight: 0,
+      items: [],
+    };
+
+    this.listDataHoaDonCt.map((item: any) => {
+      data.height += 5;
+      data.length += 5;
+      data.width += 5;
+      data.weight += item?.sanPhamChiTiet?.sanPham?.trongLuong * item?.soLuong;
+      data.items.push({
+        name: item.id + '',
+        quantity: item.soLuong,
+        height: 5,
+        weight: item?.sanPhamChiTiet?.sanPham?.trongLuong * item?.soLuong,
+        length: 5,
+        width: 5,
+      });
+    });
+    const api = await this.diaChiService.getOder(data).toPromise();
+    if (api) {
+      if (api.code === 200) {
+        this.data.phiShip = Math.ceil(api.data.total * 0.4) || 25000;
+      } else {
+        this.data.phiShip = 25000;
+      }
+    }
   }
 }

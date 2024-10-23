@@ -3,11 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HoaDonService {
-
-
   url: string = 'http://localhost:8080/api/hoa_don';
   urlCT: string = 'http://localhost:8080/api/hoa_don_chi_tiet';
   constructor(private http: HttpClient) {}
@@ -81,9 +79,18 @@ export class HoaDonService {
       })
     );
   }
-  addKhachHangToHD(params : any): Observable<any> {
-    return this.http.put<any>(`${this.url}/add-khach-hang`, params
-    ).pipe(
+  addKhachHangToHD(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/add-khach-hang`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  updateDiaChi(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/add-dia-chi`, params).pipe(
       (res: any) => {
         return res || null;
       },

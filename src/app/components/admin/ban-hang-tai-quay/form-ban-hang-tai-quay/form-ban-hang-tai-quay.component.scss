@@ -19,18 +19,18 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    .btn-add-hoa-don{
+    .btn-add-hoa-don {
       width: 150px;
-      .btn{
+      .btn {
         color: #fff;
       }
     }
-    .list-hoa-don{
+    .list-hoa-don {
       width: calc(100% - 150px);
     }
   }
   .all-content {
-    height: 100%;
+    height: calc(100% - 160px);
     width: 100%;
     border: 1px solid black;
     border-radius: 10px;
@@ -38,7 +38,7 @@
     gap: 10px;
     padding: 10px;
     flex-direction: row;
-    .chi-tiet-san-pham {  
+    .chi-tiet-san-pham {
       width: 75%;
       border: 1px solid black;
       border-radius: 10px;
@@ -72,12 +72,12 @@
     border: 1px solid gray;
   }
 }
-.list-hoa-dons{
+.list-hoa-dons {
   display: flex;
   justify-content: space-between;
   gap: 20px;
   width: calc(100vw - 470px);
-  .icon-action{
+  .icon-action {
     font-size: 32px;
     width: 50px;
     cursor: pointer;
@@ -86,30 +86,30 @@
     justify-content: center;
     align-items: center;
   }
-  .list-hoa-don{
+  .list-hoa-don {
     width: 100%;
   }
 }
-.list-hoa-don{
+.list-hoa-don {
   display: flex;
   gap: 20px;
-  justify-content:flex-start;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   overflow: auto;
-  .item ,.all-item{
+  .item,
+  .all-item {
     width: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column  ;
+    flex-direction: column;
     gap: 5px;
     cursor: pointer;
-    i{
+    i {
       font-size: 50px;
     }
   }
-  
 }
 .table-pagination {
   margin-top: 20px;
