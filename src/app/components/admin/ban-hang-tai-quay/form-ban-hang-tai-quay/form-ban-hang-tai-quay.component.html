@@ -188,7 +188,7 @@
         />
         <label for="float-input">Thông tin nhận hàng</label>
       </span>
-      <span class="p-float-label">
+      <span class="p-float-label" (click)="openVoucher()">
         <input id="float-input" type="text" pInputText readonly />
         <label for="float-input">Giảm giá</label>
       </span>
@@ -202,19 +202,26 @@
       </div>
       <div class="bill-info">
         <span style="font-weight: bold">Tiền ship : </span>
-        <span>{{ data.phiShip }}</span>
+        <span>{{ data.phiShip | currency : "VND" : "symbol" : "1.0-0" }}</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold">Tổng tiền :</span>
-        <span> 120.000</span>
+        <span style="font-weight: bold">Tổng tiền : </span>
+        <span>{{
+          data.tongTienSanPhamChuaGiam | currency : "VND" : "symbol" : "1.0-0"
+        }}</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold">Tổng tiền giảm:</span>
-        <span> 32.000</span>
+        <span style="font-weight: bold">Tổng tiền giảm : </span>
+        <span>{{
+          data.tongTienGiam | currency : "VND" : "symbol" : "1.0-0"
+        }}</span>
       </div>
       <div class="bill-info">
-        <span style="font-weight: bold">Tổng thanh toán:</span>
-        <span> 80.000</span>
+        <span style="font-weight: bold">Tổng thanh toán : </span>
+        <span>{{
+          data.tongTienSanPhamChuaGiam - data.tongTienGiam
+            | currency : "VND" : "symbol" : "1.0-0"
+        }}</span>
       </div>
       <div class="btn-thanh-toan">
         <button class="btn btn-primary" style="width: 100%">Thanh toán</button>

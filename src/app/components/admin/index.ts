@@ -4,6 +4,7 @@ import { ChiTietSanPhamBanHangComponent } from './ban-hang-tai-quay/chi-tiet-san
 import { FormBanHangTaiQuayComponent } from './ban-hang-tai-quay/form-ban-hang-tai-quay/form-ban-hang-tai-quay.component';
 import { KhachHangPopupComponent } from './ban-hang-tai-quay/khach-hang-popup/khach-hang-popup.component';
 import { ThongTinNhanHangComponent } from './ban-hang-tai-quay/thong-tin-nhan-hang/thong-tin-nhan-hang.component';
+import { VoucherHoaDonComponent } from './ban-hang-tai-quay/voucher-hoa-don/voucher-hoa-don.component';
 import { ChiTietSanPhamAddOrUpdateComponent } from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
@@ -76,7 +77,8 @@ export const pagesComponents: any[] = [
   ChiTietSanPhamBanHangComponent,
   ChiTietSanPhamDetailBanHangComponent,
   DialogConfirmComponent,
-  AddDiaChiComponent
+  AddDiaChiComponent,
+  VoucherHoaDonComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -116,3 +118,4 @@ export * from './ban-hang-tai-quay/chi-tiet-san-pham/chi-tiet-san-pham.component
 export * from './ban-hang-tai-quay/chi-tiet-san-pham-detail-ban-hang/chi-tiet-san-pham-detail-ban-hang.component';
 export * from './dialog-confirm/dialog-confirm.component';
 export * from './khach-hang/add-dia-chi/add-dia-chi.component';
+export * from './ban-hang-tai-quay/voucher-hoa-don/voucher-hoa-don.component';

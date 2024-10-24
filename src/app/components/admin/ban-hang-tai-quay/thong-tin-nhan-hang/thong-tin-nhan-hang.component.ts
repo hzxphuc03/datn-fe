@@ -249,4 +249,8 @@ export class ThongTinNhanHangComponent implements OnInit {
       }
     }
   }
+  useInfoCustumer() {
+    this.data.tenNguoiNhan = this.data.khachHang.hoTen;
+    this.data.sdtNguoiNhan = this.data.khachHang.soDienThoai;
+  }
 }

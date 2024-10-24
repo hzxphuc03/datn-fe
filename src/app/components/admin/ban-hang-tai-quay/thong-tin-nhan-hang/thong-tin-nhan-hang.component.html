@@ -146,6 +146,9 @@
           ></textarea>
           <label for="float-input">Ghi chú</label>
         </span>
+        <div class="use-user" (click)="useInfoCustumer()">
+          <a>sử dụng thông tin khách hàng</a>
+        </div>
         <span class="p-float-label">
           <input
             id="float-input"
@@ -158,7 +161,7 @@
         <span class="p-float-label">
           <input
             id="float-input"
-            type="number"
+            type="text"
             pInputText
             [(ngModel)]="data.sdtNguoiNhan"
           />

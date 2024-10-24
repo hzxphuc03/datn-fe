@@ -1,0 +1,27 @@
+.detail-voucher {
+  width: 78vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    font-size: 32px;
+  }
+  .contents {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    height: 100%;
+  }
+  .left {
+    width: 50%;
+    height: 100%;
+  }
+  .right {
+    width: 50%;
+    height: 100%;
+  }
+}

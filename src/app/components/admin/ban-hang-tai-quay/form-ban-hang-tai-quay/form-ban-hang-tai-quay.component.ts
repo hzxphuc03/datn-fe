@@ -9,6 +9,7 @@ import { TokenService } from 'src/app/services/token.service';
 import { ChiTietSanPhamBanHangComponent } from '../chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { DialogConfirmComponent } from '../../dialog-confirm/dialog-confirm.component';
 import { DiaChiServiceService } from 'src/app/shareds/dia-chi-service.service';
+import { VoucherHoaDonComponent } from '../voucher-hoa-don/voucher-hoa-don.component';
 
 interface Item {
   name: string;
@@ -21,6 +22,7 @@ interface Item {
 
 interface Data {
   service_type_id: number;
+  from_district_id: number;
   to_district_id: number;
   to_ward_code: string;
   weight: number;
@@ -104,8 +106,14 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       },
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
+        await this.getListHoaDon('rows');
+        const idHD = this.data.id;
+        const data = this.listDataHoaDon.find((item: any) => item.id === idHD);
+        if (data) {
+          this.detailHoaDon(data);
+        }
       }
     });
   }
@@ -175,7 +183,8 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     if (data) {
       this.getTotalHoaDonCtPage(data);
       this.listDataHoaDonCt = data.item;
-      this.getShipPrice();
+      await this.getShipPrice();
+      await this.tinhThongTien();
       setTimeout(() => {
         this.spinner.hide();
       }, 500);
@@ -227,6 +236,7 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     }
   }
   detailHoaDon(item: any) {
+    this.data = {};
     this.data = item;
     this.thongTinNHanHang = `${this.data.tinhThanh}-${this.data.quanHuyen}-${this.data.phuongXa} && ${this.data.phuongThucThanhToan.ten}`;
     if (!this?.data?.khachHang && !this?.data?.khachHang?.id) {
@@ -284,8 +294,13 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     });
   }
   async getShipPrice() {
+    if (this.listDataHoaDonCt.length <= 0) {
+      this.data.phiShip = 0;
+      return;
+    }
     let data: Data = {
       service_type_id: 2,
+      from_district_id: 201,
       height: 0,
       length: 0,
       width: 0,
@@ -312,10 +327,39 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     const api = await this.diaChiService.getOder(data).toPromise();
     if (api) {
       if (api.code === 200) {
-        this.data.phiShip = Math.ceil(api.data.total * 0.4) || 25000;
+        this.data.phiShip = Math.ceil(api.data.total) || 25000;
       } else {
-        this.data.phiShip = 25000;
+        data.service_type_id = 5;
+        const api5 = await this.diaChiService.getOder(data).toPromise();
+        if (api5) {
+          if (api5.code === 200) {
+            this.data.phiShip = Math.ceil(api5.data.total) * 0.1 || 25000;
+          } else {
+            this.data.phiShip = 35000;
+          }
+        }
       }
     }
+  }
+  tinhThongTien() {
+    let tongTienHoaDon = 0;
+    this.listDataHoaDonCt?.map((data: any) => {
+      const tongTienItem = data?.soLuong * data?.giaDaGiam;
+      tongTienHoaDon += tongTienItem;
+    });
+    this.data.tongTienSanPhamChuaGiam = tongTienHoaDon;
+    if (this.data.phiShip) {
+      this.data.tongTienGiam += this.data.phiShip;
+    }
+  }
+  openVoucher() {
+    const dialogRef = this.dialog.open(VoucherHoaDonComponent, {
+      data: {},
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+      }
+    });
   }
 }
