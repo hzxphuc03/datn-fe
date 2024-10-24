@@ -22,4 +22,7 @@ export class VoucherHoaDonComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+  close(){
+    this.matDialogRef.close();
+  }
 }

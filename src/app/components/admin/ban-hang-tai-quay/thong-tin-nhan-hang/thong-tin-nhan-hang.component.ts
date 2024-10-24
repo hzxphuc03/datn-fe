@@ -36,6 +36,8 @@ export class ThongTinNhanHangComponent implements OnInit {
   listPhuongThuc: any[] = [];
   phuongThucThanhToanId: any;
 
+  // 
+  isShip : boolean = false;
   constructor(
     private matDialogRef: MatDialogRef<ThongTinNhanHangComponent>,
     @Inject(MAT_DIALOG_DATA) public getData: any,
@@ -75,7 +77,8 @@ export class ThongTinNhanHangComponent implements OnInit {
       this.spinner.hide();
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
   async getListWords(type: string, action?: string): Promise<void> {
     // this.spinner.show();
     if (type && type === 'rows') {
@@ -245,9 +248,22 @@ export class ThongTinNhanHangComponent implements OnInit {
       const data = await this.hoaDonService.updateDiaChi(hoaDon).toPromise();
       if (data) {
         this.errorService.displayError('Cập nhật thành công', 'success');
-        this.matDialogRef.close('done');
+      }else{
+        this.errorService.displayError('false', 'error');
+        return
+      }
+      const updateGiaoHang = await this.hoaDonService.updateTrangThaiGiaoHang({
+        idHoaDon : this.data.id,
+        giaohang : this.data.giaoHang
+      }).toPromise();
+      if(updateGiaoHang){
+        this.errorService.displayError('Cập nhật thành công', 'success');
+      }else{
+        this.errorService.displayError('false', 'error');
+        return
       }
     }
+    this.matDialogRef.close('done');
   }
   useInfoCustumer() {
     this.data.tenNguoiNhan = this.data.khachHang.hoTen;

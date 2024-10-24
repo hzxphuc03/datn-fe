@@ -57,7 +57,7 @@
               <td>{{ product.phuongXa }}</td>
               <td>{{ product.ghiChu }}</td>
               <td>
-                <button class="btn btn-primary" (click)="useLocation(product)">
+                <button class="btn btn-primary" (click)="useLocation(product)" [disabled]="!data.giaoHang">
                   <i class="bx bxs-check-circle"></i>
                 </button>
               </td>
@@ -67,9 +67,29 @@
       </div>
     </div>
     <div class="right">
+      <div class="is-ship-or-not">
+        <div class="titke">Vận chuyển ? :</div>
+        <div class="item">
+          <p-radioButton 
+          name="ship" 
+          [value]="true" 
+          [(ngModel)]="data.giaoHang"
+          inputId="ingredient1" ></p-radioButton>
+          <div><span>Có</span></div>
+        </div>
+        <div class="item">
+          <p-radioButton 
+          name="ship" 
+          [value]="false" 
+          [(ngModel)]="data.giaoHang" 
+          inputId="ingredient1" ></p-radioButton>
+          <div><span>Không</span></div>
+        </div>
+      </div> 
       <div class="loaction-option">
         <div class="header"><div>Thông tin giao hàng</div></div>
         <p-dropdown
+          [disabled]="!data.giaoHang"
           [options]="listTinhThanh"
           [(ngModel)]="data.idTinhThanh"
           optionLabel="ProvinceName"
@@ -92,6 +112,7 @@
           </ng-template>
         </p-dropdown>
         <p-dropdown
+        [disabled]="!data.giaoHang"
           [options]="listQuanHuyen"
           [(ngModel)]="data.idQuanHuyen"
           optionLabel="DistrictName"
@@ -114,6 +135,7 @@
           </ng-template>
         </p-dropdown>
         <p-dropdown
+        [disabled]="!data.giaoHang"
           [options]="listQuanXa"
           [(ngModel)]="data.idPhuongXa"
           optionLabel="WardName"
@@ -136,6 +158,7 @@
         </p-dropdown>
         <span class="p-float-label">
           <textarea
+          [disabled]="!data.giaoHang"
             pInputText
             id="float-input"
             variant="filled"

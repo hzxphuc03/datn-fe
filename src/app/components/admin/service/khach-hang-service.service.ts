@@ -21,7 +21,7 @@ export class KhachHangServiceService {
     );
   }
   getDiaChiByKH(params: any): Observable<any> {
-    return this.http.get<any>(`${this.urlDiaChi}`, { params }).pipe(
+    return this.http.get<any>(`${this.urlDiaChi}/get-by-idkh`, { params }).pipe(
       (res: any) => {
         return res || null;
       },

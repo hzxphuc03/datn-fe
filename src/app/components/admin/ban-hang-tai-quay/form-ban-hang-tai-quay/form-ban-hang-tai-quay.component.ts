@@ -343,12 +343,13 @@ export class FormBanHangTaiQuayComponent implements OnInit {
   }
   tinhThongTien() {
     let tongTienHoaDon = 0;
+    this.data.tongTienGiam = 0;
     this.listDataHoaDonCt?.map((data: any) => {
       const tongTienItem = data?.soLuong * data?.giaDaGiam;
       tongTienHoaDon += tongTienItem;
     });
     this.data.tongTienSanPhamChuaGiam = tongTienHoaDon;
-    if (this.data.phiShip) {
+    if (this.data.phiShip && this.data.giaoHang) {
       this.data.tongTienGiam += this.data.phiShip;
     }
   }
@@ -361,5 +362,23 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       if (result) {
       }
     });
+  }
+  async updateSoLuong(product : any){
+    this.spinner.show();
+    const data = await this.hoaDonService.updateSoLuong({
+      idHoaDonChiTiet : product.id,
+      soLuong : product.soLuong
+    }).toPromise();
+    if(data){
+      if(data?.errorCode){
+        this.errorService.displayError(data.messageError,'error');
+        this.spinner.hide();
+      }else{
+        this.errorService.displayError('Cập nhật thành công','sussces');
+        product.isEdit = !product.isEdit;
+        this.getListCTHoaDon('rows');
+        this.spinner.hide();
+      }
+    }
   }
 }

@@ -68,7 +68,7 @@
       gap: 20px;
       .loaction-option {
         display: flex;
-        gap: 20px;
+        gap: 15px;
         flex-direction: column;
       }
     }
@@ -124,5 +124,21 @@
   font-size: 16px;
   a {
     text-decoration: underline;
+  }
+}
+.is-ship-or-not{
+  display: flex;
+  // flex-direction: column;
+  .title{
+    font-weight: bold;
+  }
+  gap: 10px;
+  .item{
+    display: flex;
+    gap: 10px;
+    input{
+      width: 20px;
+      height: 20px;
+    }
   }
 }

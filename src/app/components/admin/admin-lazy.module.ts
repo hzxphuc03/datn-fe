@@ -15,6 +15,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SwiperModule } from 'swiper/angular';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -31,6 +32,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     RadioButtonModule,
     SwiperModule,
     AutoCompleteModule,
+    InputNumberModule,
     InputTextareaModule,
   ],
   exports: [],

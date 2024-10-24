@@ -94,8 +94,21 @@
               <td>{{ product.id }}</td>
               <td>{{ product?.hoaDon?.ma }}</td>
               <!-- <td>{{ product?.giaHienHanh }}</td> -->
-              <td>{{ product?.giaDaGiam }}</td>
-              <td>{{ product?.soLuong }}</td>
+              <td>{{ product?.giaDaGiam }}</td> 
+              <td>
+                <span *ngIf="!product.isEdit">{{ product?.soLuong }}</span>
+                <p-inputNumber  *ngIf="product.isEdit"
+                [(ngModel)]="product.soLuong" 
+                [showButtons]="true" 
+                buttonLayout="horizontal" 
+                spinnerMode="vertical" 
+                inputId="vertical"
+                [min]="0"
+                decrementButtonClass="p-button-secondary"
+                incrementButtonClass="p-button-secondary" 
+                incrementButtonIcon="pi pi-plus" 
+                decrementButtonIcon="pi pi-minus" ></p-inputNumber>
+              </td>
               <td>{{ product?.sanPhamChiTiet?.sanPham?.ten }}</td>
               <td>
                 <img
@@ -127,10 +140,12 @@
                   "
                 >
                   <i
-                    class="bx bx-x-circle"
+                    class="bx bx-x-circle" *ngIf="!product.isEdit"
                     (click)="deleteProduct(product)"
                   ></i>
-                  <i class="bx bx-edit-alt"></i>
+                  <i class="bx bx-edit-alt" *ngIf="!product.isEdit" (click)="product.isEdit = !product.isEdit"></i>
+                  <i class='bx bx-check-square' *ngIf="product.isEdit" (click)="updateSoLuong(product)"></i>
+                  <i class='bx bx-arrow-back' *ngIf="product.isEdit" (click)="product.isEdit = !product.isEdit; this.getListCTHoaDon('rows');"></i>
                 </div>
               </td>
             </tr>
@@ -200,7 +215,7 @@
         <span style="font-weight: bold">Voucher vận chuyển :</span>
         <span> 12.000</span>
       </div>
-      <div class="bill-info">
+      <div class="bill-info" *ngIf="data.giaoHang">
         <span style="font-weight: bold">Tiền ship : </span>
         <span>{{ data.phiShip | currency : "VND" : "symbol" : "1.0-0" }}</span>
       </div>

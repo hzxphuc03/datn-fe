@@ -39,8 +39,28 @@ export class HoaDonService {
       })
     );
   }
+  updateTrangThaiGiaoHang(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/update-trang-thai-giao-hang`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  updateSoLuong(params: any): Observable<any> {
+    return this.http.post<any>(`${this.urlCT}/add-so-luong`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   update(params: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/update`, params).pipe(
+    return this.http.put<any>(`${this.url}/update/`, params).pipe(
       (res: any) => {
         return res || null;
       },
