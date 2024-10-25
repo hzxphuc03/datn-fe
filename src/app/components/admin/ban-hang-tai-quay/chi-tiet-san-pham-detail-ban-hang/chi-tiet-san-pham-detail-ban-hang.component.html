@@ -9,6 +9,12 @@
     "
   >
     <div class="sanPham" style="width: 20%">
+      <div class="voucher">
+        <div class="title" *ngIf="isGiamGia">
+          Giảm
+          {{ getData.sanPham.giamGia.mucGiam }}%
+        </div>
+      </div>
       <div class="left">
         <swiper
           #swiper
@@ -34,9 +40,24 @@
     >
       <div class="ten-san-pham" style="font-size: 32px; font-weight: bolder">
         Tên sản phẩm : {{ getData?.sanPham.ten }}
-        <span style="font-size: 20px; font-weight: 300; color: black">
-          ({{ getData?.sanPham.giaThapNhat }}đ -
-          {{ getData?.sanPham.giaCaoNhat }}đ)</span
+        <span
+          style="font-size: 20px; font-weight: 300; color: black"
+          [class.giamGiaClass]="isGiamGia"
+        >
+          ({{
+            getData?.sanPham.giaThapNhat
+              | currency : "VND" : "symbol" : "1.0-0"
+          }}đ -
+          {{
+            getData?.sanPham.giaCaoNhat | currency : "VND" : "symbol" : "1.0-0"
+          }}đ)</span
+        >
+        <span
+          *ngIf="isGiamGia"
+          style="font-size: 20px; font-weight: 300; color: black"
+        >
+          ({{ fromMoneny | currency : "VND" : "symbol" : "1.0-0" }}đ -
+          {{ toMoneny | currency : "VND" : "symbol" : "1.0-0" }}đ)</span
         >
       </div>
 
@@ -126,8 +147,29 @@
           coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
         "
       >
-        Số lượng của sản phẩm :
-        {{ coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong }}
+        <span>
+          Số lượng của sản phẩm :
+          {{
+            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong
+          }}</span
+        >
+        <span *ngIf="!isGiamGia">
+          giá tiền của sản phẩm :
+          {{
+            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.giaBan
+              | currency : "VND" : "symbol" : "1.0-0"
+          }}
+        </span>
+        <span *ngIf="isGiamGia">
+          giá tiền của sản phẩm :
+          {{
+            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.giaBan -
+              (coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+                ?.giaBan *
+                phanTramGiam) /
+                100 | currency : "VND" : "symbol" : "1.0-0"
+          }}
+        </span>
       </div>
     </div>
   </div>
@@ -140,29 +182,42 @@
     </button>
   </div>
 </div>
-<div class="dialog-so-luong" *ngIf="openAdd" >
-  <div >
+<div class="dialog-so-luong" *ngIf="openAdd">
+  <div>
     <div
-    class="show-soluong"
-    *ngIf="
-      coler[indexActiveColer - 1] &&
-      coler[indexActiveColer - 1].listSize &&
-      coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
-    "
-  >
-  <div class="header" style="display: flex;justify-content: flex-end; align-items: center;font-size: 32px;" (click)="openAdd = false"><i class='bx bx-window-close'></i></div>
-    Số lượng của sản phẩm :
-    {{ coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong }}
-    <span class="p-float-label">
-      <input
-        id="float-input"
-        type="text"
-        pInputText
-        [(ngModel)]="soLuongWantToAdd"
-      />
-      <label for="float-input">Nhập số lượng</label>
-    </span>
-    <button class="btn btn-primary" (click)="addSPToGHCT()">Thêm sản phẩm</button>
-  </div>
+      class="show-soluong"
+      *ngIf="
+        coler[indexActiveColer - 1] &&
+        coler[indexActiveColer - 1].listSize &&
+        coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+      "
+    >
+      <div
+        class="header"
+        style="
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-size: 32px;
+        "
+        (click)="openAdd = false"
+      >
+        <i class="bx bx-window-close"></i>
+      </div>
+      Số lượng của sản phẩm :
+      {{ coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong }}
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="soLuongWantToAdd"
+        />
+        <label for="float-input">Nhập số lượng</label>
+      </span>
+      <button class="btn btn-primary" (click)="addSPToGHCT()">
+        Thêm sản phẩm
+      </button>
+    </div>
   </div>
 </div>

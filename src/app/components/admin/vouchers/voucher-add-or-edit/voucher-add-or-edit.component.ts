@@ -15,8 +15,8 @@ export class VoucherAddOrEditComponent implements OnInit {
   id: string | null = null;
   isAdd: boolean = true;
   optionStatus: any = [
-    { value: 1, name: 'Giảm hóa đơn' },
-    { value: 2, name: 'Giảm giá ship' },
+    { value: 0, name: 'Giảm hóa đơn' },
+    { value: 1, name: 'Giảm giá ship' },
   ];
   constructor(
     private route: ActivatedRoute,
@@ -61,7 +61,7 @@ export class VoucherAddOrEditComponent implements OnInit {
         phanTramGiam: this.data.phanTramGiam,
         giamToiDa: this.data.giamToiDa,
         giaTriGiamToiThieu: this.data.giaTriGiamToiThieu,
-        trangThai: this.data.trangThai,
+        theLoai: this.data.theLoai,
       };
       if (this.isAdd) {
         const data = await this.service.add(body).toPromise();
@@ -142,9 +142,9 @@ export class VoucherAddOrEditComponent implements OnInit {
       return isDone;
     }
     if (
-      this.data.trangThai === null ||
-      this.data.trangThai === '' ||
-      this.data.trangThai === undefined
+      this.data.theLoai === null ||
+      this.data.theLoai === '' ||
+      this.data.theLoai === undefined
     ) {
       isDone = false;
       this.errorService.displayError(

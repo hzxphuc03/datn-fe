@@ -14,9 +14,9 @@ export class VoucherComponent implements OnInit {
   listPageNumber: number[] = [];
   listData = [];
   optionStatus: any = [
-    { value: '1', name: 'Giảm hóa đơn' },
-    { value: '2', name: 'Giảm giá ship' },
-    { value: '0', name: 'Dừng Hoạt Động' },
+    { value: '0', name: 'Đã quá sự kiện' },
+    { value: '1', name: 'Đang trong sự kiện' },
+    { value: '2', name: 'Chưa đến sự kiện' },
   ];
   openDialog: boolean = false;
   dataDialog: any;
@@ -28,6 +28,7 @@ export class VoucherComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchQuery.status = '1';
     this.getListWords('rows');
   }
   async getListWords(type: string, action?: string): Promise<void> {

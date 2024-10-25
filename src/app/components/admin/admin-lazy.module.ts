@@ -16,6 +16,7 @@ import { SwiperModule } from 'swiper/angular';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { TabViewModule } from 'primeng/tabview';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -34,6 +35,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     AutoCompleteModule,
     InputNumberModule,
     InputTextareaModule,
+    TabViewModule,
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],

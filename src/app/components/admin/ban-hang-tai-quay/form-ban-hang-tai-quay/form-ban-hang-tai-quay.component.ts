@@ -45,6 +45,7 @@ export class FormBanHangTaiQuayComponent implements OnInit {
   listDataHoaDon: any = [];
   listDataHoaDonCt: any = [];
   thongTinNHanHang: any;
+  thongTinVoucher: any;
   constructor(
     private dialog: MatDialog,
     private errorService: ErrorTsService,
@@ -239,6 +240,8 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     this.data = {};
     this.data = item;
     this.thongTinNHanHang = `${this.data.tinhThanh}-${this.data.quanHuyen}-${this.data.phuongXa} && ${this.data.phuongThucThanhToan.ten}`;
+    console.log('ádasd', this.data);
+
     if (!this?.data?.khachHang && !this?.data?.khachHang?.id) {
       this.data.khachHang = {};
     }
@@ -354,27 +357,46 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     }
   }
   openVoucher() {
+    if (
+      (this.listDataHoaDonCt && this.listDataHoaDonCt.length === 0) ||
+      this.listDataHoaDonCt === null ||
+      this.listDataHoaDonCt === undefined
+    ) {
+      this.errorService.displayError('Vui lòng chọn trước sản phẩm', 'error');
+      return;
+    }
     const dialogRef = this.dialog.open(VoucherHoaDonComponent, {
-      data: {},
+      data: {
+        price: this.data?.tongTienSanPhamChuaGiam || 0,
+        data: this.data,
+      },
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
+        await this.getListHoaDon('rows');
+        const idHD = this.data.id;
+        const data = this.listDataHoaDon.find((item: any) => item.id === idHD);
+        if (data) {
+          this.detailHoaDon(data);
+        }
       }
     });
   }
-  async updateSoLuong(product : any){
+  async updateSoLuong(product: any) {
     this.spinner.show();
-    const data = await this.hoaDonService.updateSoLuong({
-      idHoaDonChiTiet : product.id,
-      soLuong : product.soLuong
-    }).toPromise();
-    if(data){
-      if(data?.errorCode){
-        this.errorService.displayError(data.messageError,'error');
+    const data = await this.hoaDonService
+      .updateSoLuong({
+        idHoaDonChiTiet: product.id,
+        soLuong: product.soLuong,
+      })
+      .toPromise();
+    if (data) {
+      if (data?.errorCode) {
+        this.errorService.displayError(data.messageError, 'error');
         this.spinner.hide();
-      }else{
-        this.errorService.displayError('Cập nhật thành công','sussces');
+      } else {
+        this.errorService.displayError('Cập nhật thành công', 'sussces');
         product.isEdit = !product.isEdit;
         this.getListCTHoaDon('rows');
         this.spinner.hide();

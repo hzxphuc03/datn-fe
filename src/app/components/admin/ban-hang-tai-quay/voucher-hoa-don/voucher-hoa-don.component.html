@@ -5,13 +5,194 @@
   </div>
   <div class="contents">
     <div class="left item">
-      <div class="hd-voucher">
-        <div class="title">Voucher hóa đơn</div>
+      <p-tabView>
+        <p-tabPanel header="Giảm giá hóa đơn">
+          <div class="hd-voucher">
+            <div class="title">
+              <div class="table-pagination d-flex">
+                <div class="flex-grow-1"></div>
+                <div><small class="text-muted">Pages: </small></div>
+                <div>
+                  <p-dropdown
+                    (onChange)="getListVoucherHoaDon('page')"
+                    [options]="listVoucherHoaDonPageNumber"
+                    [(ngModel)]="searchQueryVoucherHoaDon.page"
+                    class="table-pagination-item fsel-select fsel-select-xsm"
+                  ></p-dropdown>
+                </div>
+                <!-- <div class="px-3"></div> -->
+                <div><small class="text-muted ml-1">Items per page</small></div>
+                <div class="d-flex justify-content-center align-items-center">
+                  <span
+                    (click)="getListVoucherHoaDon('page', 'prev')"
+                    class="table-pagination-item btn-prev ml-2"
+                  >
+                    <i class="bx bx-left-arrow-alt"></i>
+                  </span>
+                  <span
+                    (click)="getListVoucherHoaDon('page', 'next')"
+                    class="table-pagination-item btn-next"
+                  >
+                    <i class="bx bx-right-arrow-alt"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="content">
+              <p-table
+                [value]="listDataVoucherHoaDon"
+                styleClass="p-datatable-gridlines"
+                [scrollable]="true"
+                scrollHeight="calc(90vh - 220px)"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>tên</th>
+                    <th>%</th>
+                    <th>HD từ</th>
+                    <th>Giảm tối đa</th>
+                    <th>Số lượng</th>
+                    <th>action</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td>{{ product.ten }}</td>
+                    <td>{{ product.phanTramGiam }}</td>
+                    <td>{{ product.giaTriGiamToiThieu }}</td>
+                    <td>{{ product.giamToiDa }}</td>
+                    <td>{{ product.soLuong }}</td>
+                    <td>
+                      <button
+                        class="btn btn-primary"
+                        (click)="useThisVoucher(product)"
+                      >
+                        <i class="bx bxs-check-square"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Giảm giá vận chuyển">
+          <div class="hd-voucher">
+            <div class="title">
+              <div class="table-pagination d-flex">
+                <div class="flex-grow-1"></div>
+                <div><small class="text-muted">Pages: </small></div>
+                <div>
+                  <p-dropdown
+                    (onChange)="getListVoucherVanChuyen('page')"
+                    [options]="listVoucherVanChuyenPageNumber"
+                    [(ngModel)]="searchQueryVoucherVanChuyen.page"
+                    class="table-pagination-item fsel-select fsel-select-xsm"
+                  ></p-dropdown>
+                </div>
+                <!-- <div class="px-3"></div> -->
+                <div><small class="text-muted ml-1">Items per page</small></div>
+                <div class="d-flex justify-content-center align-items-center">
+                  <span
+                    (click)="getListVoucherVanChuyen('page', 'prev')"
+                    class="table-pagination-item btn-prev ml-2"
+                  >
+                    <i class="bx bx-left-arrow-alt"></i>
+                  </span>
+                  <span
+                    (click)="getListVoucherVanChuyen('page', 'next')"
+                    class="table-pagination-item btn-next"
+                  >
+                    <i class="bx bx-right-arrow-alt"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="content">
+              <p-table
+                [value]="listDataVoucherVanChuyen"
+                styleClass="p-datatable-gridlines"
+                [scrollable]="true"
+                scrollHeight="calc(90vh - 220px)"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>tên</th>
+                    <th>%</th>
+                    <th>HD từ</th>
+                    <th>Giảm tối đa</th>
+                    <th>Số lượng</th>
+                    <th>action</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td>{{ product.ten }}</td>
+                    <td>{{ product.phanTramGiam }}</td>
+                    <td>{{ product.giaTriGiamToiThieu }}</td>
+                    <td>{{ product.giamToiDa }}</td>
+                    <td>{{ product.soLuong }}</td>
+                    <td>
+                      <button
+                        class="btn btn-primary"
+                        (click)="useThisVoucher(product)"
+                      >
+                        <i class="bx bxs-check-square"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+    <div class="right item">
+      <div>
+        <div class="title" style="margin-bottom: 20px">Voucher hóa đơn</div>
         <div class="content">
-          <!-- table -->
+          <p-table
+            [value]="allVoucherHoaDon"
+            styleClass="p-datatable-gridlines"
+            [scrollable]="true"
+            scrollHeight="calc(90vh - 220px)"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>tên</th>
+                <th>%</th>
+                <th>HD từ</th>
+                <th>Giảm tối đa</th>
+                <th>Số lượng</th>
+                <th>action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr [class.endVoucher]="product.isEnd">
+                <td>
+                  {{ product.ten }}
+                  <div *ngIf="product.isEnd">Voucher hết hạn</div>
+                </td>
+                <td>{{ product.phanTramGiam }}</td>
+                <td>{{ product.giaTriGiamToiThieu }}</td>
+                <td>{{ product.giamToiDa }}</td>
+                <td>{{ product.soLuong }}</td>
+                <td>
+                  <button class="btn btn-danger">
+                    <i class="bx bx-message-square-x"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
       </div>
+      <div class="action d-flex" style="width: 100%; justify-content: flex-end">
+        <button class="btn btn-primary" (click)="submit()">
+          Cập nhật hóa đơn giảm giá
+        </button>
+      </div>
     </div>
-    <div class="right item"></div>
   </div>
 </div>

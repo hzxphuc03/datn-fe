@@ -3,6 +3,7 @@ import { ErrorTsService } from './shareds/message/error.service';
 import { Subscription } from 'rxjs';
 import { TokenService } from './services/token.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { AutoServiceService } from './shareds/auto-service.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private errorService: ErrorTsService,
     private tokenService: TokenService,
-    private router: Router
+    private router: Router,
+    private autoVoucher: AutoServiceService
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +46,10 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((message) => {
         this.errorMessage = message;
       });
+    this.auto();
+  }
+  async auto() {
+    const voucherAuto = await this.autoVoucher.autoVoucher().toPromise();
   }
 
   ngOnDestroy(): void {

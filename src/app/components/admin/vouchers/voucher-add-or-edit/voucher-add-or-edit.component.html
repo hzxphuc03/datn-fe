@@ -17,10 +17,10 @@
         [(ngModel)]="data.giaTriGiamToiThieu"
         min="0"
       />
-      <label for="float-input" *ngIf="data.trangThai === 1"
+      <label for="float-input" *ngIf="data.theLoai === 0"
         >Giá trị giảm cho (hóa đơn từ)
       </label>
-      <label for="float-input" *ngIf="data.trangThai === 2"
+      <label for="float-input" *ngIf="data.theLoai === 1"
         >Giá trị giảm cho (vận chuyển từ)
       </label>
     </span>
@@ -71,7 +71,7 @@
     <span class="p-float-label">
       <p-dropdown
         [options]="optionStatus"
-        [(ngModel)]="data.trangThai"
+        [(ngModel)]="data.theLoai"
         optionLabel="name"
         optionValue="value"
         inputId="float-input"

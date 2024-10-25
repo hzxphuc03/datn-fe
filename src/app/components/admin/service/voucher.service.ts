@@ -7,6 +7,8 @@ import { Observable, catchError, of } from 'rxjs';
 })
 export class VoucherService {
   url: string = 'http://localhost:8080/api/voucher';
+  urlVoucherHoaDon: string = 'http://localhost:8080/api/voucher_hoa_don';
+  urlVoucherHoaDonCT: string = 'http://localhost:8080/api/hoa_don';
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {
@@ -28,6 +30,40 @@ export class VoucherService {
         return of(error?.errorJson ? error.errorJson : error.error);
       })
     );
+  }
+  getVoucherByIdHoaDon(id: any): Observable<any> {
+    return this.http.get<any>(`${this.urlVoucherHoaDon}/get-by-id/${id}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  addVoucherToHoaDon(params: any): Observable<any> {
+    return this.http
+      .put<any>(`${this.urlVoucherHoaDonCT}/add-voucher`, params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
+  getVoucherHoaDon(params: any): Observable<any> {
+    return this.http
+      .get<any>(`${this.url}/get-voucher-active`, { params })
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
   update(params: any): Observable<any> {
     return this.http.put<any>(`${this.url}/update`, params).pipe(

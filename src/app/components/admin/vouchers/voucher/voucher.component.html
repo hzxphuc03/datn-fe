@@ -41,6 +41,7 @@
           <th>Giảm tối đa</th>
           <th>Ngày tạo</th>
           <th>Ngày sửa</th>
+          <th>Thể loại</th>
           <th>Trạng thái</th>
         </tr>
       </ng-template>
@@ -51,8 +52,14 @@
           <td>{{ product.ngayBatDau | date : "dd/MM/yyyy" }}</td>
           <td>{{ product.ngayKetThuc | date : "dd/MM/yyyy" }}</td>
           <td>{{ product.phanTramGiam }}</td>
-          <td>{{ product.giaTriGiamToiThieu }}</td>
-          <td>{{ product.giamToiDa }}</td>
+          <td>
+            {{
+              product.giaTriGiamToiThieu | currency : "VND" : "symbol" : "1.0-0"
+            }}
+          </td>
+          <td>
+            {{ product.giamToiDa | currency : "VND" : "symbol" : "1.0-0" }}
+          </td>
           <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
           <td>
             {{
@@ -60,6 +67,9 @@
                 ? (product.ngaySua | date : "dd/MM/yyyy")
                 : "------------"
             }}
+          </td>
+          <td>
+            {{ product.theLoai === 0 ? "Giảm hóa đơn" : "Giảm giá giao hàng" }}
           </td>
           <td>
             {{ product.status }}
