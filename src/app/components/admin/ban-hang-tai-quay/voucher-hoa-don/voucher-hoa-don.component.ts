@@ -21,7 +21,7 @@ export class VoucherHoaDonComponent implements OnInit {
   listVoucherVanChuyenPageNumber: any;
   listDataVoucherHoaDon: any[] = [];
   listDataVoucherVanChuyen: any[] = [];
-  allVoucherHoaDon: any[] = [];
+  allVoucherHoaDon: any[] = []; 
   constructor(
     private matDialogRef: MatDialogRef<VoucherHoaDonComponent>,
     @Inject(MAT_DIALOG_DATA) public getData: any,
@@ -176,6 +176,9 @@ export class VoucherHoaDonComponent implements OnInit {
       this.allVoucherHoaDon = data;
       const today = new Date();
       this.allVoucherHoaDon.forEach((voucher) => {
+        if(this.getData.price < voucher.giaTriGiamToiThieu || voucher.soLuong === 0){
+          voucher.error = true
+        }
         const startDate = new Date(voucher.ngayBatDau);
         const endDate = new Date(voucher.ngayKetThuc);
 
@@ -183,7 +186,7 @@ export class VoucherHoaDonComponent implements OnInit {
         voucher.isEnd = today < startDate || today > endDate;
       });
     }
-    console.log(this.allVoucherHoaDon);
+   
   }
   async useThisVoucher(item: any) {
     // Kiểm tra voucher trùng lặp theo ID
@@ -193,7 +196,7 @@ export class VoucherHoaDonComponent implements OnInit {
     if (index !== -1) {
       // Nếu voucher đã tồn tại, thông báo và return
       this.errorService.displayError('Voucher đang được sử dụng', 'normal');
-      console.log(this.allVoucherHoaDon);
+     
       return;
     }
     // Tìm voucher theo thể loại
@@ -204,13 +207,13 @@ export class VoucherHoaDonComponent implements OnInit {
       // Nếu có voucher cùng thể loại, thay thế nó
       this.allVoucherHoaDon[typeIndex] = item;
       this.errorService.displayError('Cập nhật voucher thành công', 'normal');
-      console.log(this.allVoucherHoaDon);
+     
       return;
     }
     // Nếu không có voucher cùng thể loại, thêm voucher mới vào danh sách
     this.allVoucherHoaDon?.push(item);
     this.errorService.displayError('Voucher mới đã được thêm', 'normal');
-    console.log(this.allVoucherHoaDon);
+   
   }
 
   async submit() {
@@ -219,17 +222,25 @@ export class VoucherHoaDonComponent implements OnInit {
         idHoaDon: this.getData.data.id,
         idVoucher: item.id,
       };
-      return this.voucherService.addVoucherToHoaDon(param).pipe(
-        catchError((error) => {
-          this.errorService.displayError(error.message, 'error');
-          return of(null); // Trả về null để không làm gián đoạn các yêu cầu khác
-        })
-      );
+      if(!item.isDelete){
+        return this.voucherService.addVoucherToHoaDon(param).pipe(
+          catchError((error) => {
+            this.errorService.displayError(error.message, 'error');
+            return of(null); // Trả về null để không làm gián đoạn các yêu cầu khác
+          })
+        );
+      }else{
+        return this.voucherService.deleteVoucherToHoaDon(param).pipe(
+          catchError((error) => {
+            this.errorService.displayError(error.message, 'error');
+            return of(null); // Trả về null để không làm gián đoạn các yêu cầu khác
+          })
+        );
+      }
     });
     // Chờ tất cả các yêu cầu hoàn thành
     forkJoin(requests).subscribe((results) => {
       let hasError = false;
-
       results.forEach((data) => {
         if (data && data.errorCode) {
           this.errorService.displayError(data.messageError, 'error');
@@ -247,5 +258,8 @@ export class VoucherHoaDonComponent implements OnInit {
         this.matDialogRef.close('check');
       }
     });
+  }
+  delete(item : any){
+   item.isDelete = true;
   }
 }

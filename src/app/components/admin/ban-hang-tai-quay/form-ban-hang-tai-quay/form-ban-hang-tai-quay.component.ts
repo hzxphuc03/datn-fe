@@ -10,6 +10,9 @@ import { ChiTietSanPhamBanHangComponent } from '../chi-tiet-san-pham/chi-tiet-sa
 import { DialogConfirmComponent } from '../../dialog-confirm/dialog-confirm.component';
 import { DiaChiServiceService } from 'src/app/shareds/dia-chi-service.service';
 import { VoucherHoaDonComponent } from '../voucher-hoa-don/voucher-hoa-don.component';
+import { FormThanhToanComponent } from '../form-thanh-toan/form-thanh-toan.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ThanhCongOrThatBaiThanhToanComponent } from '../thanh-cong-or-that-bai-thanh-toan/thanh-cong-or-that-bai-thanh-toan.component';
 
 interface Item {
   name: string;
@@ -46,22 +49,74 @@ export class FormBanHangTaiQuayComponent implements OnInit {
   listDataHoaDonCt: any = [];
   thongTinNHanHang: any;
   thongTinVoucher: any;
+  voucherGiamGiaHoaDon: any = {};
+  voucherGiamGiaVanChuyen: any = {};
+  tongTien: number = 0;
+  dialogVoucher: any;
+  // vnpay
+  vnpOrderInfo: string | null = null;
+  transactionStatus: boolean | null = null;
   constructor(
     private dialog: MatDialog,
     private errorService: ErrorTsService,
     private hoaDonService: HoaDonService,
     private spinner: NgxSpinnerService,
     private tokenService: TokenService,
-    private diaChiService: DiaChiServiceService
+    private diaChiService: DiaChiServiceService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {}
-
   ngOnInit(): void {
+  this.route.queryParams.subscribe(params => {
+      this.vnpOrderInfo = params['vnp_OrderInfo'];
+      const responseCode = params['vnp_ResponseCode'];
+      const transactionStatus = params['vnp_TransactionStatus'];
+
+      // Xác định trạng thái giao dịch
+      if (responseCode === '00' && transactionStatus === '00') {
+        this.transactionStatus =  true;
+      }else{
+        this.transactionStatus = false;
+      }
+      if(this.transactionStatus !== null && this.vnpOrderInfo){
+        const dialogRef = this.dialog.open(ThanhCongOrThatBaiThanhToanComponent, {
+          data: {
+            vnpOrderInfo : this.vnpOrderInfo,
+            responseCode : responseCode,
+            transactionStatus : transactionStatus,
+            status :  this.transactionStatus
+            
+          },  disableClose: true,
+        });
+        dialogRef.afterClosed().subscribe(async (result) => {
+          if(result){
+            if(this.transactionStatus){
+              this.updateStatusHoaDon();
+            }
+            this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
+          }
+        });
+      }
+    });
     this.data.khachHang = {};
     const { decoded } = this.tokenService.getToken();
     if (decoded && decoded?.user.id) {
       this.searchQuery.idNhanVien = decoded?.user.id;
     }
     this.getListHoaDon('rows');
+  }
+  async updateStatusHoaDon(){
+    this.spinner.show();
+    const data = await this.hoaDonService.updateAfterOnlinePayment(this.vnpOrderInfo).toPromise();
+    if (data) {
+      if (data?.errorCode) {
+        this.errorService.displayError(data.messageError, 'error');
+        this.spinner.hide();
+      } else {
+        this.errorService.displayError('Thanh toán thành công', 'sussces');
+        this.spinner.hide();
+      }
+    }
   }
   getKhachHang() {
     const dialogRef = this.dialog.open(KhachHangPopupComponent, {
@@ -184,14 +239,169 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     if (data) {
       this.getTotalHoaDonCtPage(data);
       this.listDataHoaDonCt = data.item;
-      await this.getShipPrice();
+      await this.getShipPrice();  
       await this.tinhThongTien();
+      await this.checkVoucher();
+      await this.checkTongTienGiam();
+      await this.checkTongTien();
       setTimeout(() => {
         this.spinner.hide();
       }, 500);
     }
 
     //   gọi api
+  }
+  checkVoucher() {
+    if (
+      (this.listDataHoaDonCt && this.listDataHoaDonCt.length === 0) ||
+      this.listDataHoaDonCt === null ||
+      this.listDataHoaDonCt === undefined
+    ) {
+      this.voucherGiamGiaHoaDon = {};
+      this.voucherGiamGiaVanChuyen = {};
+      this.errorService.displayError('Vui lòng chọn trước sản phẩm', 'error');
+      return;
+    }
+    let errorVoucherHoaDon = '';
+    if (this.data.vouchers.length > 0) {
+      const today = new Date();
+      this.thongTinVoucher = this.data.vouchers
+        .map((item: any) => {
+          const startDateHoaDonVoucher = new Date(item.ngayBatDau);
+          const endDateHoaDonVoucher = new Date(item.ngayKetThuc);
+          // Sử dụng điều kiện trong hàm map
+          if (
+            this.data.tongTienSanPhamChuaGiam >= item.giaTriGiamToiThieu &&
+            today >= startDateHoaDonVoucher &&
+            today <= endDateHoaDonVoucher
+          ) {
+            return item.ten + ' - ' + item.phanTramGiam + '%';
+          } else {
+            item.isVoucherfalse = true;
+            errorVoucherHoaDon = `Voucher ${item.ma} đang không thỏa mãn điều kiện của hóa đơn`;
+            // Log item không thỏa mãn
+            return null; // Trả về null nếu không thỏa mãn
+          }
+        })
+        .filter((item: any) => item !== null) // Lọc bỏ các giá trị null
+        .join(', '); // Kết hợp các giá trị thành chuỗi
+    } else {
+      this.thongTinVoucher = 'Vui lòng chọn voucher'; // Hoặc giá trị mặc định khác nếu không có voucher
+    }
+    if (errorVoucherHoaDon !== '') {
+      this.errorService.displayError(
+        'có Voucher đang không thỏa mãn điều kiện hóa đơn vui lòng check lại',
+        'error'
+      );
+      this.thongTinVoucher = 'Cập nhật lại voucher';
+      this.openVoucher();
+    }
+    if (this.data.vouchers.length > 0) {
+      this.data.vouchers.map((item: any) => {
+        if (item.theLoai === 0) {
+          this.voucherGiamGiaHoaDon = item;
+        }
+        if (item.theLoai === 1) {
+          this.voucherGiamGiaVanChuyen = item;
+        }
+      });
+    }
+    // kiem tra xem gia hien sau khi giam vuot qua giamToiDa hay khoong neu khong dung luon
+    // check neu no voucher hao don
+    if (this.data.vouchers.length > 0) {
+      const today = new Date();
+      const startDateHoaDonVoucher = new Date(
+        this.voucherGiamGiaHoaDon.ngayBatDau
+      );
+      const endDateHoaDonVoucher = new Date(
+        this.voucherGiamGiaHoaDon.ngayKetThuc
+      );
+      const startDateVanChuyenVoucher = new Date(
+        this.voucherGiamGiaVanChuyen.ngayBatDau
+      );
+      const endDateVanChuyenVoucher = new Date(
+        this.voucherGiamGiaVanChuyen.ngayKetThuc
+      );
+      if(this.voucherGiamGiaHoaDon.soLuong === 0 ||this.voucherGiamGiaVanChuyen.soLuong === 0 ){
+        this.voucherGiamGiaHoaDon.giam = 'lỗi voucher';
+        this.errorService.displayError(
+          'có Voucher đang không thỏa mãn điều kiện hóa đơn vui lòng check lại',
+          'error'
+        );
+        this.openVoucher();
+      }
+      // nêu voucher có tồn tại
+      if (this.voucherGiamGiaHoaDon.id) {
+        const giamToiDa = this.voucherGiamGiaHoaDon.giamToiDa; //2000
+        const tienSauKhiGiam =
+          (this.data.tongTienSanPhamChuaGiam *
+            this.voucherGiamGiaHoaDon.phanTramGiam) /
+          100; // 1000
+        if (
+          this.data.tongTienSanPhamChuaGiam >=
+          this.voucherGiamGiaHoaDon.giaTriGiamToiThieu
+        ) {
+          if (tienSauKhiGiam > giamToiDa) {
+            this.voucherGiamGiaHoaDon.giam = giamToiDa;
+          } else {
+            this.voucherGiamGiaHoaDon.giam = tienSauKhiGiam;
+          }
+        } else {
+          this.voucherGiamGiaHoaDon.giam = 'lỗi voucher';
+        }
+      }
+      if (this.voucherGiamGiaHoaDon.id) {
+        if (today >= startDateHoaDonVoucher && today <= endDateHoaDonVoucher) {
+        } else {
+          this.voucherGiamGiaHoaDon.giam = 'lỗi voucher';
+          this.openVoucher();
+        }
+      }
+
+      if (this.voucherGiamGiaVanChuyen.id && this.data.giaoHang) {
+        if (this.voucherGiamGiaVanChuyen.id) {
+          const giamToiDa = this.data.phiShip; // tiền ship hiện tại
+          const tienSauKhiGiam =
+            (giamToiDa * this.voucherGiamGiaVanChuyen.phanTramGiam) / 100; // 1000
+          if (
+            this.data.tongTienSanPhamChuaGiam >=
+            this.voucherGiamGiaVanChuyen.giaTriGiamToiThieu
+          ) {
+            if (tienSauKhiGiam > giamToiDa) {
+              this.voucherGiamGiaVanChuyen.giam = giamToiDa;
+            } else {
+              this.voucherGiamGiaVanChuyen.giam = tienSauKhiGiam;
+            }
+          } else {
+            this.voucherGiamGiaVanChuyen.giam = 'lỗi voucher';
+          }
+        }
+      } else {
+        // this.voucherGiamGiaVanChuyen.giam = 'Không áp dụng';
+      }
+      if (this.voucherGiamGiaVanChuyen.id) {
+        if (
+          today >= startDateVanChuyenVoucher &&
+          today <= endDateVanChuyenVoucher
+        ) {
+        } else {
+          this.voucherGiamGiaVanChuyen.giam = 'lỗi voucher';
+          this.openVoucher();
+        }
+      }
+      if(!this.data.giaoHang){
+        this.data.vouchers.map((item : any) => {
+          if(item.theLoai === 1){
+            this.errorService.displayError(
+              'Vui lòng loại bỏ voucher vận chuyển khi không vận chuyển',
+              'error'
+            );
+            this.openVoucher();
+            return
+          }
+        });
+      }
+    }
   }
   getTotalHoaDonCtPage(data: any): number {
     let totalPage = 0;
@@ -239,9 +449,18 @@ export class FormBanHangTaiQuayComponent implements OnInit {
   detailHoaDon(item: any) {
     this.data = {};
     this.data = item;
-    this.thongTinNHanHang = `${this.data.tinhThanh}-${this.data.quanHuyen}-${this.data.phuongXa} && ${this.data.phuongThucThanhToan.ten}`;
-    console.log('ádasd', this.data);
-
+    if (
+      this.data.khachHang &&
+      this.data.khachHang.id &&
+      this.data.tinhThanh &&
+      this.data.quanHuyen &&
+      this.data.phuongXa
+    ) {
+      this.thongTinNHanHang = `${this.data.tinhThanh}-${this.data.quanHuyen}-${this.data.phuongXa} && ${this.data.phuongThucThanhToan.ten}`;
+    } else {
+      this.thongTinNHanHang = 'Vui lòng cập nhật thông tin';
+    }
+    // thongTinVoucher
     if (!this?.data?.khachHang && !this?.data?.khachHang?.id) {
       this.data.khachHang = {};
     }
@@ -264,9 +483,14 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       },
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        this.getListCTHoaDon('rows');
+        await this.getListHoaDon('rows');
+        const idHD = this.data.id;
+        const data = this.listDataHoaDon.find((item: any) => item.id === idHD);
+        if (data) {
+          this.detailHoaDon(data);
+        }
       }
     });
   }
@@ -290,7 +514,14 @@ export class FormBanHangTaiQuayComponent implements OnInit {
               'Xóa sản phẩm thành công',
               'sussces'
             );
-            this.getListCTHoaDon('rows');
+            await this.getListHoaDon('rows');
+            const idHD = this.data.id;
+            const data = this.listDataHoaDon.find(
+              (item: any) => item.id === idHD
+            );
+            if (data) {
+              this.detailHoaDon(data);
+            }
           }
         }
       }
@@ -352,8 +583,19 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       tongTienHoaDon += tongTienItem;
     });
     this.data.tongTienSanPhamChuaGiam = tongTienHoaDon;
-    if (this.data.phiShip && this.data.giaoHang) {
-      this.data.tongTienGiam += this.data.phiShip;
+  }
+  checkTongTienGiam() {
+    if (this.data.vouchers.length > 0) {
+      this.data.vouchers.map((item: any) => {
+        if (item.isVoucherfalse !== true) {
+          if (item.theLoai === 0) {
+            this.data.tongTienGiam += this.voucherGiamGiaHoaDon.giam;
+          }
+          if (item.theLoai === 1 && this.data.giaoHang) {
+            this.data.tongTienGiam += this.voucherGiamGiaVanChuyen.giam;
+          }
+        }
+      });
     }
   }
   openVoucher() {
@@ -365,14 +607,17 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       this.errorService.displayError('Vui lòng chọn trước sản phẩm', 'error');
       return;
     }
-    const dialogRef = this.dialog.open(VoucherHoaDonComponent, {
+    if (this.dialogVoucher) {
+      this.dialogVoucher.close();
+    }
+    this.dialogVoucher = this.dialog.open(VoucherHoaDonComponent, {
       data: {
         price: this.data?.tongTienSanPhamChuaGiam || 0,
         data: this.data,
       },
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(async (result) => {
+    this.dialogVoucher.afterClosed().subscribe(async (result: any) => {
       if (result) {
         await this.getListHoaDon('rows');
         const idHD = this.data.id;
@@ -401,6 +646,129 @@ export class FormBanHangTaiQuayComponent implements OnInit {
         this.getListCTHoaDon('rows');
         this.spinner.hide();
       }
+    }
+  }
+  checkTongTien() {
+    this.tongTien = 0;
+
+    if (this.data.tongTienSanPhamChuaGiam > 0) {
+      this.tongTien = this.tongTien + this.data.tongTienSanPhamChuaGiam;
+    }
+    if (this.data.tongTienGiam > 0) {
+      this.tongTien = this.tongTien - this.data.tongTienGiam;
+    }
+    if (this.data.giaoHang && this.data.phiShip > 0) {
+      this.tongTien = this.tongTien + this.data.phiShip;
+    }
+  }
+  submit(){
+    // check xem có đang bị thiếu hay lỗi gì không
+    // check giỏ hàng có sp không
+    let isFalse = false;
+    if (
+      (this.listDataHoaDonCt && this.listDataHoaDonCt.length === 0) ||
+      this.listDataHoaDonCt === null ||
+      this.listDataHoaDonCt === undefined
+    ) {
+      this.errorService.displayError(
+        'Sản phẩm đang không có trong hóa đơn vui lòng kiểm tra lại',
+        'normal'
+      );
+      isFalse = true;
+      return;
+    }
+    // khách hàng
+    if(!this.data?.khachHang?.id){
+      this.errorService.displayError(
+        'Chưa chọn khách hàng',
+        'normal'
+      );
+      isFalse = true;
+      return;
+    }
+    if(this.data.giaoHang){
+      if(!this.data?.idPhuongXa || !this.data?.idQuanHuyen  || !this.data?.idTinhThanh ){
+        this.errorService.displayError(
+          'Vui lòng cập nhật địa chỉ',
+          'normal'
+        );
+        isFalse = true;
+        return;
+      }
+    }
+    if(!this.data?.tenNguoiNhan ||!this.data?.sdtNguoiNhan ){
+      this.errorService.displayError(
+        'Cập nhật thông tin người nhận hàng',
+        'normal'
+      );
+      isFalse = true;
+      return;
+    }
+    // check san pham
+    if(this.listDataHoaDonCt.length > 0){
+      this.listDataHoaDonCt.map(((item : any) =>{
+        if(item.sanPhamChiTiet.trangThai === 0 ){
+          this.errorService.displayError('Vui lòng kiểm tra lại sản phẩm đang không hoạt động', 'error');
+          isFalse = true;
+          return;
+        }
+        if(item.sanPhamChiTiet.soLuong === 0 ){
+          this.errorService.displayError('Vui lòng kiểm tra lại sản phẩm đã hết hàng', 'error');
+          isFalse = true;
+          return;
+        }
+        if(item.sanPhamChiTiet.soLuong < item.soLuong ){
+          this.errorService.displayError('Vui lòng kiểm tra lại , sản phẩm không đủ để thực hiện thanh toán', 'error');
+          isFalse = true;
+          return;
+        }
+      }))
+    }
+    // kiểm tra lại voucher
+    const today = new Date();
+    if(this.data.vouchers.length > 0){
+      this.data.vouchers.map((item : any) =>{
+        const startDateHoaDonVoucher = new Date(item.ngayBatDau);
+        const endDateHoaDonVoucher = new Date(item.ngayKetThuc);
+        // check ngày
+        if( !(today >= startDateHoaDonVoucher && today <= endDateHoaDonVoucher)){
+          this.errorService.displayError('Vui lòng kiểm tra lại voucher không hoạt động', 'error');
+          isFalse = true;
+          return;
+          }
+        if(item.soLuong === 0){
+          this.errorService.displayError('Vui lòng kiểm tra lại voucher hết lượt dùng', 'error');
+          isFalse = true;
+          return;
+          }
+        if(item.giaTriGiamToiThieu > this. data.tongTienSanPhamChuaGiam){
+          this.errorService.displayError('Vui lòng kiểm tra lại voucher không phù hợp', 'error');
+          isFalse = true;
+          return;
+          }
+      })
+    }
+    if(!isFalse){
+      this.data.tongTien = this.tongTien;
+      const dialogRef = this.dialog.open(FormThanhToanComponent, {
+        data: this.data,
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe(async (result) => {
+        if(result){
+          await this.getListHoaDon('rows');
+          this.data = {};
+          const dialogRef = this.dialog.open(ThanhCongOrThatBaiThanhToanComponent, {
+            data: {
+              vnpOrderInfo : result,
+              responseCode : '00',
+              transactionStatus : '0',
+              status :  true
+              
+            },  disableClose: true,
+          });
+        }
+      });
     }
   }
 }

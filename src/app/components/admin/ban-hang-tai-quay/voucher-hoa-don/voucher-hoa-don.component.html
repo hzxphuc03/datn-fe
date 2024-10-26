@@ -59,8 +59,8 @@
                   <tr>
                     <td>{{ product.ten }}</td>
                     <td>{{ product.phanTramGiam }}</td>
-                    <td>{{ product.giaTriGiamToiThieu }}</td>
-                    <td>{{ product.giamToiDa }}</td>
+                    <td>{{ product.giaTriGiamToiThieu | currency : "VND" : "symbol" : "1.0-0" }}</td>
+                    <td>{{ product.giamToiDa | currency : "VND" : "symbol" : "1.0-0" }}</td>
                     <td>{{ product.soLuong }}</td>
                     <td>
                       <button
@@ -128,8 +128,8 @@
                 <ng-template pTemplate="body" let-product>
                   <tr>
                     <td>{{ product.ten }}</td>
-                    <td>{{ product.phanTramGiam }}</td>
-                    <td>{{ product.giaTriGiamToiThieu }}</td>
+                    <td>{{ product.phanTramGiam | currency : "VND" : "symbol" : "1.0-0" }}</td>
+                    <td>{{ product.giaTriGiamToiThieu | currency : "VND" : "symbol" : "1.0-0" }}</td>
                     <td>{{ product.giamToiDa }}</td>
                     <td>{{ product.soLuong }}</td>
                     <td>
@@ -169,17 +169,18 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-product>
-              <tr [class.endVoucher]="product.isEnd">
+              <tr [class.endVoucher]="product.isEnd" [class.endVoucher]="product.error" *ngIf="!product.isDelete">
                 <td>
                   {{ product.ten }}
-                  <div *ngIf="product.isEnd">Voucher hết hạn</div>
+                  <div *ngIf="product.isEnd">(Voucher hết hạn)</div>
+                  <div *ngIf="product.error">(Voucher không đáp ứng)</div>
                 </td>
                 <td>{{ product.phanTramGiam }}</td>
-                <td>{{ product.giaTriGiamToiThieu }}</td>
-                <td>{{ product.giamToiDa }}</td>
+                <td>{{ product.giaTriGiamToiThieu | currency : "VND" : "symbol" : "1.0-0"}}</td>
+                <td>{{ product.giamToiDa | currency : "VND" : "symbol" : "1.0-0"}}</td>
                 <td>{{ product.soLuong }}</td>
                 <td>
-                  <button class="btn btn-danger">
+                  <button class="btn btn-danger" (click)="delete(product)">
                     <i class="bx bx-message-square-x"></i>
                   </button>
                 </td>

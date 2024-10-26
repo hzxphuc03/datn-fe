@@ -74,6 +74,7 @@
           name="ship" 
           [value]="true" 
           [(ngModel)]="data.giaoHang"
+          (onClick)="checkPTGH()"
           inputId="ingredient1" ></p-radioButton>
           <div><span>Có</span></div>
         </div>
@@ -82,6 +83,7 @@
           name="ship" 
           [value]="false" 
           [(ngModel)]="data.giaoHang" 
+          (onClick)="checkPTGH()"
           inputId="ingredient1" ></p-radioButton>
           <div><span>Không</span></div>
         </div>
@@ -192,8 +194,9 @@
         </span>
         <p-dropdown
           [options]="listPhuongThuc"
-          [(ngModel)]="data.phuongThucThanhToan"
+          [(ngModel)]="data.phuongThucThanhToan.id"
           optionLabel="ten"
+          optionValue="id"
           (onChange)="choseOptionThanhToan()"
           placeholder="Chọn phương thức thanh toán"
         ></p-dropdown>

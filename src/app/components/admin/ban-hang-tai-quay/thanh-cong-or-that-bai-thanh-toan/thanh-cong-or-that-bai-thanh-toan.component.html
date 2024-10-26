@@ -1,0 +1,14 @@
+<div class="form-show">
+    <div class="close" (click)="close()">
+        <i class='bx bx-arrow-back'></i> <span>đóng</span>
+    </div>
+    <div class="header">
+        Thông tin thanh toán hóa đơn
+    </div>
+    <div class="title" *ngIf="getData.status">Thanh toán thành công hóa đơn {{getData.vnpOrderInfo}}</div>
+    <div class="title" *ngIf="!getData.status">Hủy thanh toán hóa đơn {{getData.vnpOrderInfo}}</div>
+    <div class="action">
+        <button class="btn btn-primary" (click)="close()">Đóng</button>
+        <button class="btn btn-primary" *ngIf="getData.status">Vào hóa đơn</button>
+    </div>
+</div>

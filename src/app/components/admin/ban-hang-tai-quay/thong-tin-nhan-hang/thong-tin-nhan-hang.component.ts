@@ -36,8 +36,8 @@ export class ThongTinNhanHangComponent implements OnInit {
   listPhuongThuc: any[] = [];
   phuongThucThanhToanId: any;
 
-  // 
-  isShip : boolean = false;
+  //
+  isShip: boolean = false;
   constructor(
     private matDialogRef: MatDialogRef<ThongTinNhanHangComponent>,
     @Inject(MAT_DIALOG_DATA) public getData: any,
@@ -77,8 +77,7 @@ export class ThongTinNhanHangComponent implements OnInit {
       this.spinner.hide();
     }
   }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   async getListWords(type: string, action?: string): Promise<void> {
     // this.spinner.show();
     if (type && type === 'rows') {
@@ -186,7 +185,7 @@ export class ThongTinNhanHangComponent implements OnInit {
   }
   choseOptionThanhToan() {}
   back() {
-    this.matDialogRef.close();
+    this.matDialogRef.close('done');
   }
   useLocation(item: any) {
     // chỉ khi có tinhThanh hoặc idQuanHuyen
@@ -202,13 +201,15 @@ export class ThongTinNhanHangComponent implements OnInit {
     this.quanXa = item.phuongXa;
   }
   async updateInfoHoaDon() {
-    if (
-      !this.data.idTinhThanh ||
-      !this.data.idQuanHuyen ||
-      !this.data.idPhuongXa
-    ) {
-      this.errorService.displayError('Không để trống địa chỉ', 'error');
-      return;
+    if (this.data.giaoHang) {
+      if (
+        !this.data.idTinhThanh ||
+        !this.data.idQuanHuyen ||
+        !this.data.idPhuongXa
+      ) {
+        this.errorService.displayError('Không để trống địa chỉ', 'error');
+        return;
+      }
     }
     if (
       this.data.tenNguoiNhan === '' ||
@@ -223,6 +224,13 @@ export class ThongTinNhanHangComponent implements OnInit {
       this.errorService.displayError('Đúng định dạng số điện thoại', 'error');
       return;
     }
+    if (!this.data.giaoHang && this.data.phuongThucThanhToan.id === 3) {
+      this.errorService.displayError(
+        'Đơn không ship thì cập nhật lại phương thức giao hàng',
+        'error'
+      );
+      return;
+    }
     const tenTinhThanh = this.listTinhThanh.find(
       (location) => location.ProvinceID === this.data.idTinhThanh
     );
@@ -232,41 +240,55 @@ export class ThongTinNhanHangComponent implements OnInit {
     const tenPhuongXa = this.listQuanXa.find(
       (location) => location.WardCode === this.data.idPhuongXa
     );
-    if (tenTinhThanh && tenQuanHuyen && tenPhuongXa) {
-      const hoaDon = {
+    const updateGiaoHang = await this.hoaDonService
+      .updateTrangThaiGiaoHang({
         idHoaDon: this.data.id,
-        tenNguoiNhan: this.data.tenNguoiNhan,
-        sdtNguoiNhan: this.data.sdtNguoiNhan,
-        idTinhThanh: this.data.idTinhThanh,
-        tinhThanh: tenTinhThanh.ProvinceName,
-        idQuanHuyen: this.data.idQuanHuyen,
-        quanHuyen: tenQuanHuyen.DistrictName,
-        idPhuongXa: this.data.idPhuongXa,
-        phuongXa: tenPhuongXa.WardName,
-        ghiChu: this.data.ghiChu,
-      };
-      const data = await this.hoaDonService.updateDiaChi(hoaDon).toPromise();
-      if (data) {
-        this.errorService.displayError('Cập nhật thành công', 'success');
-      }else{
-        this.errorService.displayError('false', 'error');
-        return
-      }
-      const updateGiaoHang = await this.hoaDonService.updateTrangThaiGiaoHang({
-        idHoaDon : this.data.id,
-        giaohang : this.data.giaoHang
-      }).toPromise();
-      if(updateGiaoHang){
-        this.errorService.displayError('Cập nhật thành công', 'success');
-      }else{
-        this.errorService.displayError('false', 'error');
-        return
-      }
+        giaohang: this.data.giaoHang,
+      })
+      .toPromise();
+    if (updateGiaoHang) {
+      this.errorService.displayError('Cập nhật thành công', 'success');
+    } else {
+      this.errorService.displayError('false', 'error');
+      return;
     }
+    const hoaDon = {
+      idHoaDon: this.data.id,
+      tenNguoiNhan: this.data.tenNguoiNhan,
+      sdtNguoiNhan: this.data.sdtNguoiNhan,
+      idTinhThanh: this.data.giaoHang ? this.data.idTinhThanh : null,
+      tinhThanh: this.data.giaoHang ? tenTinhThanh.ProvinceName : null,
+      idQuanHuyen: this.data.giaoHang ? this.data.idQuanHuyen : null,
+      quanHuyen: this.data.giaoHang ? tenQuanHuyen.DistrictName : null,
+      idPhuongXa: this.data.giaoHang ? this.data.idPhuongXa : null,
+      phuongXa: this.data.giaoHang ? tenPhuongXa.WardName : null,
+      ghiChu: this.data.giaoHang ? this.data.ghiChu : '',
+    };
+    const data = await this.hoaDonService.updateDiaChi(hoaDon).toPromise();
+    if (data) {
+      this.errorService.displayError('Cập nhật thành công', 'success');
+    } else {
+      this.errorService.displayError('false', 'error');
+      return;
+    }
+    const updatePTTT = await this.hoaDonService
+      .updatePhuongThucThanhToan({
+        idHoaDon: this.data.id,
+        idObject: this.data.phuongThucThanhToan.id,
+      })
+      .toPromise();
+    if (updatePTTT) {
+      this.errorService.displayError('Cập nhật thành công', 'success');
+    } else {
+      this.errorService.displayError('false', 'error');
+      return;
+    }
+
     this.matDialogRef.close('done');
   }
   useInfoCustumer() {
     this.data.tenNguoiNhan = this.data.khachHang.hoTen;
     this.data.sdtNguoiNhan = this.data.khachHang.soDienThoai;
   }
+  checkPTGH() {}
 }

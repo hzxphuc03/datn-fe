@@ -1,0 +1,60 @@
+<div class="all-content">
+  <div class="header"><i class='bx bx-arrow-back' (click)="close()"></i> <span (click)="close()">quay lại</span></div>
+  <div class="type-1" *ngIf="typeThanhToan === 1">
+    <div class="title">Thanh toán tại quầy</div>
+    <div class="total-moneny">
+      Tổng tiền : {{ getData.tongTien | currency : "VND" : "symbol" : "1.0-0" }}
+    </div>
+    <span class="p-float-label" style="width: 100%">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="tienKhachTra"
+      />
+      <label for="float-input">Thanh Toán</label>
+    </span>
+    <div class="tien-thua">
+      <span *ngIf="tienKhachTra < getData.tongTien">Khách trả chưa đủ</span>
+      <span *ngIf="tienKhachTra >= getData.tongTien">
+        {{
+          tienKhachTra - getData.tongTien !== 0
+            ? "Tiền thừa :" +
+              (tienKhachTra - getData.tongTien
+                | currency : "VND" : "symbol" : "1.0-0")
+            : "Đã trả đủ"
+        }}
+      </span>
+    </div>
+    <div class="action">
+      <button class="btn btn-primary" style="width: 100%" (click)="thanhToan()">Thanh toán</button>
+    </div>
+  </div>
+  <div class="type-2" *ngIf="typeThanhToan === 2">
+    <div class="title">Thanh toán online</div>
+    <div class="show-all-thanh-toan">
+      <div class="items" *ngFor="let item of allOnlineThanhToan">
+        <div class="item-pay" [class.active]="item.id === isCheckOnlinePay" (click)="isCheckOnlinePay = item.id">
+          <img [src]="item.img" alt="">
+          <div class="name">{{item.title}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="tongTienThanhToan">
+      Tổng tiền thanh toán : {{getData.tongTien  | currency : "VND" : "symbol" : "1.0-0" }}
+    </div>
+    <div class="action">
+      <button class="btn btn-primary" style="width: 100%" (click)="thanhToan()">Thanh toán</button>
+    </div>
+  </div>
+  <div class="type-2 type-3" *ngIf="typeThanhToan === 3">
+    <div class="title">Thanh toán khi nhận hàng</div>
+    <span style="color: red;">Lưu ý : chỉ áp dụng khi giao hàng !</span>
+    <div class="tongTienThanhToan">
+      Tổng tiền thanh toán : {{getData.tongTien  | currency : "VND" : "symbol" : "1.0-0" }}
+    </div>
+    <div class="action">
+      <button class="btn btn-primary" style="width: 100%" (click)="thanhToan()">Xác nhận đơn hàng</button>
+    </div>
+  </div>
+</div>

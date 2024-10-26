@@ -132,3 +132,10 @@
     align-items: center;
   }
 }
+:host ::ng-deep{
+  .error{
+    background: gray !important;
+    color: rgb(138, 38, 38) !important;
+    font-weight: bold !important;
+    }
+}

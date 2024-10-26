@@ -20,6 +20,16 @@ export class HoaDonService {
       })
     );
   }
+  updateAfterOnlinePayment(id: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/update-trang-thai-thanh_toan-online/${id}`,{}).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   getAllCt(params: any): Observable<any> {
     return this.http.get<any>(`${this.urlCT}`, { params }).pipe(
       (res: any) => {
@@ -111,6 +121,26 @@ export class HoaDonService {
   }
   updateDiaChi(params: any): Observable<any> {
     return this.http.put<any>(`${this.url}/add-dia-chi`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  updatePhuongThucThanhToan(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/add-phuong-thuc-thanh-toan`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  thanhToanHoaDOn(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/thanh-toan-tai-quay`, params).pipe(
       (res: any) => {
         return res || null;
       },

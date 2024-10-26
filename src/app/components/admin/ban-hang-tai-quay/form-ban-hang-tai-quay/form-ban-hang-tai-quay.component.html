@@ -90,9 +90,15 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-product>
-            <tr>
+            <tr [class.error]="product.sanPhamChiTiet.trangThai === 0 || product.sanPhamChiTiet.soLuong === 0 || (product.sanPhamChiTiet.soLuong < product.soLuong)"
+  
+            >
               <td>{{ product.id }}</td>
-              <td>{{ product?.hoaDon?.ma }}</td>
+              <td>{{ product?.hoaDon?.ma }}
+                <span *ngIf="product.sanPhamChiTiet.trangThai === 0 ">(Sản phẩm không hoạt động)</span> 
+                <span *ngIf="product.sanPhamChiTiet.soLuong === 0 ">(Sản phẩm đã hết)</span>
+                <span *ngIf="product.soLuong > product.sanPhamChiTiet.soLuong">(Sản phẩm không đủ để thanh toán)(tồn:{{product.sanPhamChiTiet.soLuong}})</span>
+              </td>
               <!-- <td>{{ product?.giaHienHanh }}</td> -->
               <td>
                 {{ product?.giaDaGiam | currency : "VND" : "symbol" : "1.0-0" }}
@@ -229,16 +235,18 @@
         <label for="float-input">Thông tin nhận hàng</label>
       </span>
       <span class="p-float-label" (click)="openVoucher()">
-        <input id="float-input" type="text" pInputText readonly />
+        <input id="float-input" type="text" pInputText readonly [(ngModel)]="thongTinVoucher" />
         <label for="float-input">Giảm giá</label>
       </span>
-      <div class="bill-info">
+      <div class="bill-info" *ngIf="voucherGiamGiaHoaDon.id">
         <span style="font-weight: bold">Voucher hóa đơn :</span>
-        <span> 12.000</span>
+        <span *ngIf="voucherGiamGiaHoaDon.giam !== 'lỗi voucher'">{{voucherGiamGiaHoaDon.giam | currency : "VND" : "symbol" : "1.0-0"}}</span>
+        <span *ngIf="voucherGiamGiaHoaDon.giam === 'lỗi voucher'">{{voucherGiamGiaHoaDon.giam }}</span>
       </div>
-      <div class="bill-info">
+      <div class="bill-info"  *ngIf="voucherGiamGiaVanChuyen.id && data.giaoHang">
         <span style="font-weight: bold">Voucher vận chuyển :</span>
-        <span> 12.000</span>
+        <span *ngIf="voucherGiamGiaVanChuyen.giam !== 'lỗi voucher'">{{voucherGiamGiaVanChuyen.giam | currency : "VND" : "symbol" : "1.0-0"}}</span>
+        <span *ngIf="voucherGiamGiaVanChuyen.giam === 'lỗi voucher'">{{voucherGiamGiaVanChuyen.giam}}</span>
       </div>
       <div class="bill-info" *ngIf="data.giaoHang">
         <span style="font-weight: bold">Tiền ship : </span>
@@ -259,12 +267,12 @@
       <div class="bill-info">
         <span style="font-weight: bold">Tổng thanh toán : </span>
         <span>{{
-          data.tongTienSanPhamChuaGiam - data.tongTienGiam
+          tongTien
             | currency : "VND" : "symbol" : "1.0-0"
         }}</span>
       </div>
       <div class="btn-thanh-toan">
-        <button class="btn btn-primary" style="width: 100%">Thanh toán</button>
+        <button class="btn btn-primary" style="width: 100%" (click)="submit()">{{data.phuongThucThanhToan.ten}}</button>
       </div>
     </div>
   </div>
