@@ -20,6 +20,16 @@ export class HoaDonService {
       })
     );
   }
+  getHDbyId(id: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/get-hoa-don-by-id=hoa-don/${id}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   updateAfterOnlinePayment(id: any): Observable<any> {
     return this.http.put<any>(`${this.url}/update-trang-thai-thanh_toan-online/${id}`,{}).pipe(
       (res: any) => {

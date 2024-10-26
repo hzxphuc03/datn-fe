@@ -69,7 +69,7 @@ export class FormThanhToanComponent implements OnInit {
       tongTien: this.getData.tongTien,
       tongTienSanPhamChuaGiam: this.getData.tongTienSanPhamChuaGiam,
       tongTienGiam: this.getData.tongTienGiam,
-      trangThai: 0,
+      trangThai: 1,
     };
     if (this.typeThanhToan === 1) {
       if (this.tienKhachTra >= this.getData.tongTien) {

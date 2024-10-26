@@ -1,14 +1,59 @@
 <div class="form-show">
-    <div class="close" (click)="close()">
-        <i class='bx bx-arrow-back'></i> <span>đóng</span>
-    </div>
-    <div class="header">
-        Thông tin thanh toán hóa đơn
-    </div>
-    <div class="title" *ngIf="getData.status">Thanh toán thành công hóa đơn {{getData.vnpOrderInfo}}</div>
-    <div class="title" *ngIf="!getData.status">Hủy thanh toán hóa đơn {{getData.vnpOrderInfo}}</div>
-    <div class="action">
-        <button class="btn btn-primary" (click)="close()">Đóng</button>
-        <button class="btn btn-primary" *ngIf="getData.status">Vào hóa đơn</button>
-    </div>
+  <div class="close" (click)="close()">
+    <i class="bx bx-arrow-back"></i> <span>đóng</span>
+  </div>
+  <div class="header">Thông tin thanh toán hóa đơn</div>
+  <div class="" *ngIf="getData.status" style="text-align: center;color: green;">
+    Thanh toán thành công hóa đơn {{ getData.vnpOrderInfo }}
+  </div>  
+  <div class="" *ngIf="!getData.status" style="text-align: center;color: red;">
+    Hủy thanh toán hóa đơn {{ getData.vnpOrderInfo }}
+  </div>
+  <div class="info">
+    <span>Thông tin hóa đơn</span>
+    <ul>
+      <li>Id hóa đơn : {{ data?.id }}</li>
+      <li>Ngày tạo : {{ data?.ngayTao | date : "dd/MM/yyyy"}}</li>
+      <li>Ngày thanh toán : {{ data?.ngayThanhToan | date : "dd/MM/yyyy"}}</li>
+      <li>Tổng tiền chưa giảm : {{ data?.tongTienSanPhamChuaGiam }}</li>
+      <li>Tổng giảm : {{ data?.tongTienGiam }}</li>
+      <li>Tổng tiền thu: {{ data?.tongTien }}</li>
+    </ul>
+    <span>Thông tin khách hàng</span>
+    <ul>
+      <li>Khách hàng : {{ data?.khachHang?.hoTen }}</li>
+    </ul>
+    <span>Thông tin giao hàng</span>
+    <ul>
+      <li>
+        Giao hàng : {{ data?.giaoHang ? "Có" : "Không" }} 
+      </li>
+      <li>
+        Địa chỉ giao hàng :
+        {{
+          data?.tinhThanh
+            ? data?.tinhThanh
+            : "---" + "," + data?.quanHuyen
+            ? data?.quanHuyen
+            : "---" + "," + data?.phuongXa
+            ? data?.phuongXa
+            : "---"
+        }}
+      </li>
+    </ul>
+    <span>Giảm giá sử dụng</span>
+    <ul *ngIf="data?.vouchers">
+      <li *ngFor="let voucher of data?.vouchers">
+        {{ voucher?.ma }}--{{ voucher?.ten }}--{{ voucher?.phanTramGiam }}
+      </li>
+    </ul>
+    <span>Phương thức thanh toán</span>
+    <ul>
+      <li>{{ data?.phuongThucThanhToan?.ten }}</li>
+    </ul>
+  </div>
+  <div class="action">
+    <button class="btn btn-primary" (click)="close()">Đóng</button>
+    <button class="btn btn-primary" *ngIf="getData.status">Vào hóa đơn</button>
+  </div>
 </div>
