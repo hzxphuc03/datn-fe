@@ -252,6 +252,8 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     //   gọi api
   }
   checkVoucher() {
+    this.voucherGiamGiaHoaDon = {};
+    this.voucherGiamGiaVanChuyen = {};
     if (
       (this.listDataHoaDonCt && this.listDataHoaDonCt.length === 0) ||
       this.listDataHoaDonCt === null ||
