@@ -20,8 +20,18 @@ export class HoaDonService {
       })
     );
   }
+  getAllQLHD(params: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/get-all`, { params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   getHDbyId(id: any): Observable<any> {
-    return this.http.get<any>(`${this.url}/get-hoa-don-by-id=hoa-don/${id}`).pipe(
+    return this.http.get<any>(`${this.url}/get-hoa-don-by-id-hoa-don/${id}`).pipe(
       (res: any) => {
         return res || null;
       },
@@ -151,6 +161,16 @@ export class HoaDonService {
   }
   thanhToanHoaDOn(params: any): Observable<any> {
     return this.http.put<any>(`${this.url}/thanh-toan-tai-quay`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  nextStepHoaDonStatus(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/next-step`, params).pipe(
       (res: any) => {
         return res || null;
       },

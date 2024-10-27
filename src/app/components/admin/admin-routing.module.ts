@@ -99,6 +99,14 @@ const routes: Routes = [
     component: fromPagesComponent.FormBanHangTaiQuayComponent,
   },
   {
+    path: 'quan-ly-hoa-don',
+    component: fromPagesComponent.QuanLyHoaDonComponent,
+  },
+  {
+    path: 'quan-ly-hoa-don/:id',
+    component: fromPagesComponent.DetailHoaDonQuanLyComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

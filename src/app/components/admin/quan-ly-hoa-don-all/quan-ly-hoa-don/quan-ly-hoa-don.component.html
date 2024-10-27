@@ -1,0 +1,157 @@
+<div class="manager">
+  <div class="header">
+    <div class="title">Quản lý hóa đơn</div>
+    <div
+      class="action-user"
+      *ngIf="activeIndex !== 0 && activeIndex !== 1 && activeIndex !== 6"
+    >
+      <div *ngIf="haveItemCheck">
+        <button class="btn btn-danger">Hủy hóa đơn</button>
+      </div>
+      <div *ngIf="haveItemCheck">
+        <button class="btn btn-primary" (click)="nextStep()">
+          Cập nhật bước tiếp theo của hóa đơn
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="user-action d-flex align-items-center"
+    style="gap: 20px; justify-content: space-between"
+  >
+    <div class="d-flex" style="gap: 20px">
+      <div class="search">
+        <i class="icon-search-3"></i>
+        <input
+          type="text"
+          placeholder="Search..."
+          (keyup.enter)="filter()"
+          [(ngModel)]="searchQuery.keyWord"
+        />
+      </div>
+      <div class="filter"></div>
+    </div>
+    <div class="table-pagination d-flex mb-3">
+      <div class="flex-grow-1"></div>
+      <div><small class="text-muted">Pages: </small></div>
+      <div>
+        <p-dropdown
+          (onChange)="getListWords('page')"
+          [options]="listPageNumber"
+          [(ngModel)]="searchQuery.page"
+          class="table-pagination-item fsel-select fsel-select-xsm"
+        ></p-dropdown>
+      </div>
+      <!-- <div class="px-3"></div> -->
+      <div>
+        <p-dropdown
+          (onChange)="getListWords('rows')"
+          [options]="[10, 20, 30]"
+          [(ngModel)]="searchQuery.pageSize"
+          class="table-pagination-item fsel-select fsel-select-xsm"
+        ></p-dropdown>
+      </div>
+      <div><small class="text-muted ml-1">Items per page</small></div>
+      <div class="d-flex justify-content-center align-items-center">
+        <span
+          (click)="getListWords('page', 'prev')"
+          class="table-pagination-item btn-prev ml-2"
+        >
+          <i class="bx bx-left-arrow-alt"></i>
+        </span>
+        <span
+          (click)="getListWords('page', 'next')"
+          class="table-pagination-item btn-next"
+        >
+          <i class="bx bx-right-arrow-alt"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="table-view">
+      <div class="items" *ngFor="let action of listIndexActiveStatus">
+        <button
+          class="btn btn"
+          (click)="changeStatusIndex(action.index)"
+          [class.active]="action.index === activeIndex"
+        >
+          {{ action.title }}
+        </button>
+      </div>
+    </div>
+    <p-table
+      [value]="listData"
+      [(selection)]="selectedBill"
+      dataKey="ma"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th
+            style="width: 4rem"
+            *ngIf="activeIndex !== 0 && activeIndex !== 1 && activeIndex !== 6"
+          >
+            <input
+              class="checkbox-item"
+              type="checkbox"
+              [(ngModel)]="isCheckAll"
+              (ngModelChange)="checkAll()"
+            />
+          </th>
+          <th>Mã hóa đơn</th>
+          <th>Ngày tạo</th>
+          <th>Ngày thanh toán</th>
+          <th>Khách hàng</th>
+          <th>Người tạo</th>
+          <th>Tổng tiền</th>
+          <th>Giao hàng</th>
+          <th>Phương thức</th>
+          <th>Thanh toán</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <!-- {{ product.ngayTao | date : "dd/MM/yyyy" }} -->
+        <tr (click)="details(product)">
+          <td
+            *ngIf="activeIndex !== 0 && activeIndex !== 1 && activeIndex !== 6"
+          >
+            <input
+              class="checkbox-item"
+              type="checkbox"
+              [(ngModel)]="product.check"
+              (ngModelChange)="itemCheck()"
+            />
+          </td>
+          <td>{{ product.ma }}</td>
+          <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
+          <td>
+            {{
+              product.ngayThanhToan
+                ? (product.ngayThanhToan | date : "dd/MM/yyyy")
+                : "----"
+            }}
+          </td>
+          <td>{{ product?.khachHang.hoTen }}</td>
+          <td>{{ product?.nhanVien.hoTen }}</td>
+          <td>{{ product?.tongTien }}</td>
+          <td>{{ product?.giaoHang ? product?.phiShip : "Không" }}</td>
+          <td>{{ product.phuongThucThanhToan.ten }}</td>
+          <td>{{ product.thanhToan ? "Đã thanh toán" : "Chưa thanh toán" }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<div class="all-update-popup" *ngIf="loadingItemUpdateStatus.isShow">
+  <div class="loading-hoa-don-step-cap-nhat">
+    <!-- <div class="loading-hoa-don-step-cap-nhat" *ngIf="loadingItemUpdateStatus.isShow"> -->
+    <span class="title">Đang đồng bộ cập nhật</span>
+    <div class="total-item">
+      {{ loadingItemUpdateStatus.itemIndex }}/{{
+        loadingItemUpdateStatus.totalItem
+      }}
+    </div>
+    <span>Vui lòng đợi...</span>
+  </div>
+</div>

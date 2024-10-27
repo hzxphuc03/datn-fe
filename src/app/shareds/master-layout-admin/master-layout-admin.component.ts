@@ -11,7 +11,7 @@ import { ErrorTsService } from '../message/error.service';
 export class MasterLayoutAdminComponent implements OnInit {
   isOpen: boolean = true;
   actionNavItems: any[] = [
-    { icon: 'bx bx-home-circle', name: 'Home', url: '/auth/admin/home' },
+    { icon: 'bx bx-home-circle', name: 'Trang chủ', url: '/auth/admin/home' },
     {
       icon: 'bx bx-home-circle',
       name: 'Sản phẩm',
@@ -54,13 +54,18 @@ export class MasterLayoutAdminComponent implements OnInit {
     },
     {
       icon: 'bx bx-cube',
-      name: 'Voucher',
+      name: 'Phiếu giảm giá',
       url: '/auth/admin/voucher',
     },
     {
       icon: 'bx bx-cube',
       name: 'Bán hàng',
       url: '/auth/admin/ban-hang-tai-quay',
+    },
+    {
+      icon: 'bx bx-cube',
+      name: 'Hóa đơn',
+      url: '/auth/admin/quan-ly-hoa-don',
     },
   ];
   constructor(

@@ -10,7 +10,7 @@ import { TokenService } from 'src/app/services/token.service';
 export class AdminHomePageComponent implements OnInit {
   cities: any[] = [];
   selectedCity: any;
-  letters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  letters: string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
   interval: any = null;
   originalText: string = 'WELLCOME BACK DUY'; // Thay thế với văn bản gốc của bạn
   index: number = 0;
@@ -31,7 +31,7 @@ export class AdminHomePageComponent implements OnInit {
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
-    this.originalText = `WELLCOME BACK ` + decoded.username;
+    this.originalText = `Chào mừng trở lại ` + decoded.username;
 
     this.spinner.show();
     setTimeout(() => {

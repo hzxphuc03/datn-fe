@@ -17,6 +17,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TabViewModule } from 'primeng/tabview';
+import {ButtonModule} from 'primeng/button';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -36,6 +37,7 @@ import { TabViewModule } from 'primeng/tabview';
     InputNumberModule,
     InputTextareaModule,
     TabViewModule,
+    ButtonModule
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],

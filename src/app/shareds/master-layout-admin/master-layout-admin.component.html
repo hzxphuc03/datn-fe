@@ -7,7 +7,7 @@
       alt=""
       style="border-radius: 50%; width: 50px; margin-right: 20px"
     />
-    <div class="logo_name">Manager</div>
+    <div class="logo_name"></div>
     <i
       style="cursor: pointer"
       class="bx bx-menu"
@@ -65,22 +65,22 @@
     <li>
       <a [routerLink]="'/auth/admin/chat'">
         <i class="bx bx-cog"></i>
-        <span class="links_name">{{ "Chat" }}</span>
+        <span class="links_name">{{ "Tin nhắn" }}</span>
       </a>
-      <span class="tooltip">{{ "Chat" }}</span>
+      <span class="tooltip">{{ "Tin nhắn" }}</span>
     </li>
     <li>
       <a>
         <i class="bx bx-cog"></i>
-        <span class="links_name">{{ "Setting" }}</span>
+        <span class="links_name">{{ "Cài đặt" }}</span>
       </a>
-      <span class="tooltip">{{ "Setting" }}</span>
+      <span class="tooltip">{{ "Cài đặt" }}</span>
     </li>
     <li class="profile" (click)="logOut()">
       <div class="profile-details">
         <i class="bx bx-export"></i>
         <div class="name_job">
-          <div class="name">Logout</div>
+          <div class="name">Đăng xuất</div>
         </div>
       </div>
       <i class="bx bx-log-out" id="log_out"></i>

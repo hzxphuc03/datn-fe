@@ -31,6 +31,8 @@ import { ChucVuAddOrEditComponent } from './nhan-viens/chuc-vu/chuc-vu-add-or-ed
 import { ChucVuComponent } from './nhan-viens/chuc-vu/chuc-vu.component';
 import { NhanVienAddOrEditComponent } from './nhan-viens/nhan-vien-add-or-edit/nhan-vien-add-or-edit.component';
 import { NhanVienComponent } from './nhan-viens/nhan-vien/nhan-vien.component';
+import { DetailHoaDonQuanLyComponent } from './quan-ly-hoa-don-all/detail-hoa-don-quan-ly/detail-hoa-don-quan-ly.component';
+import { QuanLyHoaDonComponent } from './quan-ly-hoa-don-all/quan-ly-hoa-don/quan-ly-hoa-don.component';
 import { AddOrDetailTheLoaiComponent } from './the-loai/add-or-detail/add-or-detail.component';
 import { TheLoaiComponent } from './the-loai/the_loai.component';
 import { AddOrDetailComponent } from './thuong-hieu/add-or-detail/add-or-detail.component';
@@ -82,7 +84,9 @@ export const pagesComponents: any[] = [
   AddDiaChiComponent,
   VoucherHoaDonComponent,
   FormThanhToanComponent,
-  ThanhCongOrThatBaiThanhToanComponent
+  ThanhCongOrThatBaiThanhToanComponent,
+  QuanLyHoaDonComponent,
+  DetailHoaDonQuanLyComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -125,3 +129,5 @@ export * from './khach-hang/add-dia-chi/add-dia-chi.component';
 export * from './ban-hang-tai-quay/voucher-hoa-don/voucher-hoa-don.component';
 export * from './ban-hang-tai-quay/form-thanh-toan/form-thanh-toan.component';
 export * from './ban-hang-tai-quay/thanh-cong-or-that-bai-thanh-toan/thanh-cong-or-that-bai-thanh-toan.component';
+export * from './quan-ly-hoa-don-all/quan-ly-hoa-don/quan-ly-hoa-don.component';
+export * from './quan-ly-hoa-don-all/detail-hoa-don-quan-ly/detail-hoa-don-quan-ly.component';

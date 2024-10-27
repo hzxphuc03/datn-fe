@@ -340,7 +340,10 @@
   </div>
   <div class="chi-tiet-san-pham-content">
     <div class="content">
-      <p-table [value]="data?.sanPhamChiTietList">
+      <ul style="margin-top: 8px;">
+        <li>Kích cỡ : theo chuẩn Việt Nam.</li>
+      </ul>
+      <p-table [value]="data?.sanPhamChiTietList" [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
             <th>id</th>
