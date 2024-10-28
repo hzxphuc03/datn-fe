@@ -44,3 +44,61 @@ th {
     font-weight: bold;
   }
 }
+.all-step {
+  margin-top: 20px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.steps {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  align-items: center;
+  height: 100%;
+}
+
+.step {
+  position: relative;
+  flex: 1;
+  padding: 20px;
+  background: #ffffff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  height: 100px;
+}
+
+.step.active {
+  background: linear-gradient(135deg, #66bb6a, #4caf50); /* Gradient màu xanh */
+  color: #ffffff;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Bóng mạnh hơn */
+  transform: scale(1.05); /* Tăng kích thước một chút */
+}
+
+/* Thêm hiệu ứng hover cho bước */
+.step:hover {
+  background: linear-gradient(
+    135deg,
+    #5cbf2a,
+    #4caf50
+  ); /* Gradient màu khi hover */
+  color: #ffffff;
+  transform: scale(1.05); /* Tăng kích thước khi hover */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4); /* Tăng bóng khi hover */
+}
+.step-number {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.step-title {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

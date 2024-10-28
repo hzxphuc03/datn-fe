@@ -1,120 +1,141 @@
 .manager {
-    padding: 20px;
-    .title {
-      font-size: x-large;
-      font-weight: bold;
-    }
-    position: relative;
+  padding: 20px;
+  .title {
+    font-size: x-large;
+    font-weight: bold;
   }
-  .table-pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    font-size: 20px;
-    .bx {
-      font-size: 36px;
-      cursor: pointer;
-    }
-    .table-pagination-item {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-  .content {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-  }
-  .search {
-    padding: 11.5px 20px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    input {
-      border: none !important;
-    }
-    input:focus-visible {
-      border: none;
-      outline: none;
-    }
-  }
-  .dialog {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-  }
-  .add {
-    .btn {
-      border: 1px solid #ced4da;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-    }
-  }
-  .table-view{
-    display: flex;
-    gap: 5px;
-    .btn{
-      border: 1px solid black;
-    }
-    .active{
-      background: gray;
-    }
-  }
-  .checkbox-item{
-    width: 20px;
-    height: 20px;
+  position: relative;
+}
+.table-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  .bx {
+    font-size: 36px;
     cursor: pointer;
   }
-  .action-user{
+  .table-pagination-item {
     display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.content {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+.search {
+  padding: 11.5px 20px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  input {
+    border: none !important;
+  }
+  input:focus-visible {
+    border: none;
+    outline: none;
+  }
+}
+.dialog {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+}
+.add {
+  .btn {
+    border: 1px solid #ced4da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
-    justify-content: flex-end;
-    align-items: center;
+    padding: 12px;
   }
-  .header{
+}
+.table-view {
+  display: flex;
+  gap: 5px;
+  .btn {
+    border: 1px solid black;
+  }
+  .active {
+    background: gray;
+  }
+}
+.checkbox-item {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.action-user {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+:host {
+  .all-update-popup {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu đen với độ mờ 50% */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-  }
-  :host{
-    .all-update-popup{
-      width: 100%;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.5); /* Màu đen với độ mờ 50% */
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    .loading-hoa-don-step-cap-nhat {
+      min-width: 30%;
+      min-height: 30%;
+      background-color: #ced4da;
+      padding: 20px;
+      border-radius: 10px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      position: absolute;
-      top: 0;
-      left: 0;
-      .loading-hoa-don-step-cap-nhat{
-        min-width: 30%;
-        min-height: 30%;
-        background-color: #ced4da;
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 20px;
-        .title{
-          font-size: larger;
-          font-weight: bold;
-        }
-        .total-item{
-          font-size: 22px;
-        }
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+      .title {
+        font-size: larger;
+        font-weight: bold;
+      }
+      .total-item {
+        font-size: 22px;
       }
     }
   }
+}
+.dialog-danger {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  input {
+    width: 100%;
+  }
+  .p-float-label {
+    margin-top: 20px;
+  }
+  .action {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    .btn {
+      width: 50%;
+    }
+  }
+}

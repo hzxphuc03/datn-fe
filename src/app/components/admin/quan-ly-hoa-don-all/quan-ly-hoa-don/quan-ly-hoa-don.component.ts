@@ -10,22 +10,24 @@ import { HoaDonService } from '../../service/hoa-don.service';
 @Component({
   selector: 'app-quan-ly-hoa-don',
   templateUrl: './quan-ly-hoa-don.component.html',
-  styleUrls: ['./quan-ly-hoa-don.component.scss']
+  styleUrls: ['./quan-ly-hoa-don.component.scss'],
 })
 export class QuanLyHoaDonComponent implements OnInit {
-  activeIndex : number = 1;
-  selectedBill : any;
-  listIndexActiveStatus :any[] = [
-    {index : 0 , title : 'Hóa đơn đã hủy'},
-    {index : 1 , title : 'Hóa đơn khởi tạo'},
-    {index : 2 , title : 'Hóa đơn chờ sử lý'},
-    {index : 3 , title : 'Hóa đơn đã nhận'},
-    {index : 4 , title : 'Đóng gói hóa đơn'},
-    {index : 5 , title : 'Hóa đơn vận chuyển'},
-    {index : 6 , title : 'Hóa đơn nhận(hoàn thành)'},
-  ]
- itemSelected : any[] = [];
- isCheckAll : boolean = false;
+  activeIndex: number = 1;
+  selectedBill: any;
+  listIndexActiveStatus: any[] = [
+    { index: 0, title: 'Hóa đơn đã hủy' },
+    { index: 1, title: 'Hóa đơn khởi tạo' },
+    { index: 2, title: 'Hóa đơn chờ sử lý' },
+    { index: 3, title: 'Hóa đơn đã nhận' },
+    { index: 4, title: 'Đóng gói hóa đơn' },
+    { index: 5, title: 'Hóa đơn vận chuyển' },
+    { index: 6, title: 'Hóa đơn nhận(hoàn thành)' },
+  ];
+  titleChangeToZero: string = '';
+  itemSelected: any[] = [];
+  isCheckAll: boolean = false;
+  visible: boolean = false;
   constructor(
     private dialog: MatDialog,
     private errorService: ErrorTsService,
@@ -34,21 +36,21 @@ export class QuanLyHoaDonComponent implements OnInit {
     private tokenService: TokenService,
     private diaChiService: DiaChiServiceService,
     private route: ActivatedRoute,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   searchQuery: any = {};
   listPageNumber: number[] = [];
   listData = [];
   openDialog: boolean = false;
   dataDialog: any;
-  haveItemCheck : boolean = false
-  loadingItemUpdateStatus : any = {
-    isShow : false,
-    itemIndex : 0,
-    totalItem : 0
-  }
-  idNhanVien : any ;
+  haveItemCheck: boolean = false;
+  loadingItemUpdateStatus: any = {
+    isShow: false,
+    itemIndex: 0,
+    totalItem: 0,
+  };
+  idNhanVien: any;
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
     if (decoded && decoded?.user.id) {
@@ -57,13 +59,16 @@ export class QuanLyHoaDonComponent implements OnInit {
     this.getListWords('rows');
   }
 
-  changeStatusIndex(index : any){
+  changeStatusIndex(index: any) {
     this.activeIndex = index;
     this.searchQuery.status = this.activeIndex;
     this.listData = [];
     this.isCheckAll = false;
     this.haveItemCheck = false;
     this.getListWords('rows');
+  }
+  showDialog() {
+    this.visible = true;
   }
 
   async getListWords(type: string, action?: string): Promise<void> {
@@ -131,16 +136,14 @@ export class QuanLyHoaDonComponent implements OnInit {
     this.getListWords('rows');
   }
   details(item: any) {
-
+    this.router.navigate([`/auth/admin/quan-ly-hoa-don/${item.id}`]);
   }
   getAction(event: any) {
     this.openDialog = false;
     this.getListWords('page');
     this.dataDialog = {};
   }
-  add() {
-  
-  }
+  add() {}
   noneClick(event: any) {
     event.stopPropagation();
   }
@@ -152,33 +155,50 @@ export class QuanLyHoaDonComponent implements OnInit {
       this.getListWords('page');
     }
   }
-  onProductSelect(event : any){
+  onProductSelect(event: any) {
     this.itemSelected = event;
-    
   }
-  checkAll(){
-    this.listData.map((item : any) =>{
+  checkAll() {
+    this.listData.map((item: any) => {
       item.check = this.isCheckAll;
-    })
+    });
     this.isHaveItemChecked();
   }
-  itemCheck(){
+  itemCheck() {
     this.isCheckAll = this.areAllChecked();
     this.isHaveItemChecked();
   }
   areAllChecked(): boolean {
-    return this.listData.every((item : any) => item.check);
+    return this.listData.every((item: any) => item.check);
   }
   isHaveItemChecked() {
-    this.haveItemCheck =  this.listData.some((product : any) => product.check);
+    this.haveItemCheck = this.listData.some(
+      (product: any) => product.check === true
+    );
   }
   getCheckedItems(): any[] {
     // hàm lấy những thằng  check bằng true
-    return this.listData.filter((product : any) => product.check);
+    return this.listData.filter((product: any) => product.check);
   }
-  async nextStep(){
+  async nextStep() {}
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  async cancelBill() {
+    if (
+      this.titleChangeToZero === '' ||
+      this.titleChangeToZero === null ||
+      this.titleChangeToZero === undefined
+    ) {
+      this.errorService.displayError(
+        'Vui lòng điền lý do hủy hóa đơn',
+        'error'
+      );
+      return;
+    }
+    this.visible = false;
     const allItem = this.getCheckedItems();
-    if(allItem.length > 0){
+    if (allItem.length > 0) {
       this.loadingItemUpdateStatus.isShow = true;
       this.loadingItemUpdateStatus.totalItem = allItem.length;
       // itemIndex : 0,
@@ -187,15 +207,15 @@ export class QuanLyHoaDonComponent implements OnInit {
         try {
           // Gọi API và đợi kết quả
           this.loadingItemUpdateStatus.itemIndex++;
-          await this.service.nextStepHoaDonStatus(
-            {
+          await this.service
+            .huyHoaDon({
               idNhanVien: this.idNhanVien,
-              idHoaDon:  item.id
-            }
-          ).toPromise();
-        } catch (error) {
-        }
-        
+              idHoaDon: item.id,
+              ghiChu: this.titleChangeToZero,
+            })
+            .toPromise();
+        } catch (error) {}
+
         // Đợi 200ms trước khi chuyển sang item tiếp theo
         await this.delay(1000);
       }
@@ -204,8 +224,6 @@ export class QuanLyHoaDonComponent implements OnInit {
     this.loadingItemUpdateStatus.totalItem = 0;
     this.loadingItemUpdateStatus.itemIndex = 0;
     this.getListWords('rows');
-  }
-  delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    this.titleChangeToZero = '';
   }
 }

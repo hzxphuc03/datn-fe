@@ -6,13 +6,27 @@
         <button class="btn btn-danger">Hủy hóa đơn</button>
       </div>
       <div>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" (click)="nextStep()">
           Cập nhật bước tiếp theo của hóa đơn
         </button>
       </div>
     </div>
   </div>
-  div.
+  <div class="all-step">
+    <div
+      class="steps"
+      *ngFor="let step of listIndexActiveStatus; let i = index"
+    >
+      <div class="step" [ngClass]="{ active: step.index <= currentStep }">
+        <div class="step-title">{{ step.title }}</div>
+      </div>
+      <i
+        class="bx bx-chevrons-right"
+        style="padding: 10px; font-size: 22px"
+        *ngIf="i + 1 !== listIndexActiveStatus.length"
+      ></i>
+    </div>
+  </div>
   <div class="info-hoadon">
     <div class="info">
       <div>

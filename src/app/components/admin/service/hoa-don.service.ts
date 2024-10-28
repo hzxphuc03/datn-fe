@@ -31,24 +31,28 @@ export class HoaDonService {
     );
   }
   getHDbyId(id: any): Observable<any> {
-    return this.http.get<any>(`${this.url}/get-hoa-don-by-id-hoa-don/${id}`).pipe(
-      (res: any) => {
-        return res || null;
-      },
-      catchError((error: any) => {
-        return of(error?.errorJson ? error.errorJson : error.error);
-      })
-    );
+    return this.http
+      .get<any>(`${this.url}/get-hoa-don-by-id-hoa-don/${id}`)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
   updateAfterOnlinePayment(id: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/update-trang-thai-thanh_toan-online/${id}`,{}).pipe(
-      (res: any) => {
-        return res || null;
-      },
-      catchError((error: any) => {
-        return of(error?.errorJson ? error.errorJson : error.error);
-      })
-    );
+    return this.http
+      .put<any>(`${this.url}/update-trang-thai-thanh_toan-online/${id}`, {})
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
   getAllCt(params: any): Observable<any> {
     return this.http.get<any>(`${this.urlCT}`, { params }).pipe(
@@ -69,15 +73,25 @@ export class HoaDonService {
       })
     );
   }
-  updateTrangThaiGiaoHang(params: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/update-trang-thai-giao-hang`, params).pipe(
-      (res: any) => {
-        return res || null;
-      },
+  huyHoaDon(params: any): Observable<any> {
+    return this.http.post<any>(this.url + '/huy-hoa-don', params).pipe(
+      map((res: any) => res || null),
       catchError((error: any) => {
         return of(error?.errorJson ? error.errorJson : error.error);
       })
     );
+  }
+  updateTrangThaiGiaoHang(params: any): Observable<any> {
+    return this.http
+      .put<any>(`${this.url}/update-trang-thai-giao-hang`, params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
   updateSoLuong(params: any): Observable<any> {
     return this.http.post<any>(`${this.urlCT}/add-so-luong`, params).pipe(
@@ -150,14 +164,16 @@ export class HoaDonService {
     );
   }
   updatePhuongThucThanhToan(params: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/add-phuong-thuc-thanh-toan`, params).pipe(
-      (res: any) => {
-        return res || null;
-      },
-      catchError((error: any) => {
-        return of(error?.errorJson ? error.errorJson : error.error);
-      })
-    );
+    return this.http
+      .put<any>(`${this.url}/add-phuong-thuc-thanh-toan`, params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
   thanhToanHoaDOn(params: any): Observable<any> {
     return this.http.put<any>(`${this.url}/thanh-toan-tai-quay`, params).pipe(

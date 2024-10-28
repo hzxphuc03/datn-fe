@@ -82,7 +82,7 @@
       </div>
       <div>
         <span>Thông tin giao hàng</span>
-        <span *ngIf="!data?.giaoHang">: Không giao hàng</span>
+        <span *ngIf="!data?.giaoHang">- Không giao hàng</span>
         <table style="width: 100%" *ngIf="data?.giaoHang">
           <tr>
             <th>Tỉnh thành</th>
@@ -104,7 +104,7 @@
       </div>
       <div>
         <span>Thông tin phiếu giảm giá</span>
-        <span *ngIf="data?.vouchers?.length === 0">: Không áp dụng</span>
+        <span *ngIf="data?.vouchers?.length === 0">- Không áp dụng</span>
         <table style="width: 100%" *ngIf="data?.vouchers?.length > 0">
           <tr>
             <th>Mã</th>

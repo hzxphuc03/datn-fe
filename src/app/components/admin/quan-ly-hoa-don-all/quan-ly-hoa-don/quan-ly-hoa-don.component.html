@@ -6,7 +6,9 @@
       *ngIf="activeIndex !== 0 && activeIndex !== 1 && activeIndex !== 6"
     >
       <div *ngIf="haveItemCheck">
-        <button class="btn btn-danger">Hủy hóa đơn</button>
+        <button class="btn btn-danger" (click)="showDialog()">
+          Hủy hóa đơn
+        </button>
       </div>
       <div *ngIf="haveItemCheck">
         <button class="btn btn-primary" (click)="nextStep()">
@@ -112,18 +114,21 @@
       </ng-template>
       <ng-template pTemplate="body" let-product>
         <!-- {{ product.ngayTao | date : "dd/MM/yyyy" }} -->
-        <tr (click)="details(product)">
+        <tr>
           <td
             *ngIf="activeIndex !== 0 && activeIndex !== 1 && activeIndex !== 6"
           >
             <input
               class="checkbox-item"
               type="checkbox"
+              value="true"
               [(ngModel)]="product.check"
               (ngModelChange)="itemCheck()"
             />
           </td>
-          <td>{{ product.ma }}</td>
+          <td (click)="details(product)">
+            <a>{{ product.ma }}</a>
+          </td>
           <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
           <td>
             {{
@@ -157,3 +162,25 @@
     <span>Vui lòng đợi...</span>
   </div>
 </div>
+<p-dialog
+  header="Edit Profile"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="dialog-danger">
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="text"
+        pInputText
+        [(ngModel)]="titleChangeToZero"
+      />
+      <label for="float-input">Lý do hủy hóa đơn</label>
+    </span>
+    <div class="action">
+      <button class="btn btn-primary" (click)="visible = false">Đóng</button>
+      <button class="btn btn-danger" (click)="cancelBill()">Hủy hóa đơn</button>
+    </div>
+  </div>
+</p-dialog>
