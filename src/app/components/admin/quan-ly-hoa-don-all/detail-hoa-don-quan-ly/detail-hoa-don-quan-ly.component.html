@@ -1,14 +1,17 @@
 <div class="detail">
   <div class="header">
     <div class="title">Quản lý hóa đơn</div>
-    <div class="action">
-      <div>
-        <button class="btn btn-danger">Hủy hóa đơn</button>
+    <div class="action" >
+      <div *ngIf="isShowAction">
+        <button class="btn btn-danger"  (click)="showDialog()">Hủy hóa đơn</button>
       </div>
-      <div>
+      <div *ngIf="isShowAction">
         <button class="btn btn-primary" (click)="nextStep()">
           Cập nhật bước tiếp theo của hóa đơn
         </button>
+      </div>
+      <div>
+        <button class="btn btn-secondary">Lịch sử thao tác</button>
       </div>
     </div>
   </div>
@@ -221,3 +224,25 @@
     </div>
   </div>
 </div>
+<p-dialog
+  header="Edit Profile"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="dialog-danger">
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="text"
+        pInputText
+        [(ngModel)]="titleChangeToZero"
+      />
+      <label for="float-input">Lý do hủy hóa đơn</label>
+    </span>
+    <div class="action">
+      <button class="btn btn-primary" (click)="visible = false">Đóng</button>
+      <button class="btn btn-danger" (click)="cancelBill()">Hủy hóa đơn</button>
+    </div>
+  </div>
+</p-dialog>

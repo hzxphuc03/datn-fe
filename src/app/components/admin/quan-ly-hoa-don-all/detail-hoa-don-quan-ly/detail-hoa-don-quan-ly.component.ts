@@ -19,6 +19,9 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
   currentStep: number = 1; // Bước hiện tại
   intervalId: any;
   idNhanVien: any;
+  isShowAction : boolean = false
+  visible: boolean = false;
+  titleChangeToZero: string = '';
   listIndexActiveStatus: any[] = [
     { index: 0, title: 'Hóa đơn đã hủy' },
     { index: 1, title: 'Hóa đơn khởi tạo' },
@@ -57,6 +60,9 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
         this.router.navigate(['/auth/admin/quan-ly-hoa-don']);
       } else {
         this.data = data.body;
+        if(this.data.trangThai !== 0 && this.data.trangThai !== 1){
+          this.isShowAction = true;
+        }
         this.startIncrement(this.data.trangThai);
         this.spinner.hide();
       }
@@ -96,6 +102,48 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
         // Xử lý đăng nhập thành công
         this.errorService.displayError('Cập nhật thành công', 'success');
         this.detail();
+      }
+    }
+  }
+  showDialog() {
+    this.visible = true;
+  }
+  async cancelBill(){
+    if (
+      this.titleChangeToZero === '' ||
+      this.titleChangeToZero === null ||
+      this.titleChangeToZero === undefined
+    ) {
+      this.errorService.displayError(
+        'Vui lòng điền lý do hủy hóa đơn',
+        'error'
+      );
+      return;
+    }
+    this.visible = false;
+    const { decoded } = this.tokenService.getToken();
+    if (decoded && decoded?.user.id) {
+      this.idNhanVien = decoded?.user.id;
+    }
+    const response = await this.service
+      .huyHoaDon({
+        idNhanVien: this.idNhanVien,
+        idHoaDon: this.data.id,
+        ghiChu: this.titleChangeToZero,
+      })
+      .toPromise();
+    if (response) {
+      if (response.errorCode) {
+        // Xử lý lỗi đăng nhập
+        this.errorService.displayError('Lỗi vui lòng thử lại', 'error');
+        this.titleChangeToZero = '';
+        // Hiển thị thông báo lỗi cho người dùng nếu cần
+      } else {
+        // Xử lý đăng nhập thành công
+        this.errorService.displayError('Cập nhật thành công', 'success');
+        this.isShowAction = false;
+        this.detail();
+        this.titleChangeToZero = '';
       }
     }
   }

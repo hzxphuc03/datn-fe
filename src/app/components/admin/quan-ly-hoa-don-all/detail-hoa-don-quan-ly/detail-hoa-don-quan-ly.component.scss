@@ -102,3 +102,24 @@ th {
   justify-content: center;
   align-items: center;
 }
+.dialog-danger {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  input {
+    width: 100%;
+  }
+  .p-float-label {
+    margin-top: 20px;
+  }
+  .action {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    .btn {
+      width: 50%;
+    }
+  }
+}

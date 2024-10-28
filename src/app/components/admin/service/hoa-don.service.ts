@@ -8,10 +8,21 @@ import { Observable, catchError, map, of } from 'rxjs';
 export class HoaDonService {
   url: string = 'http://localhost:8080/api/hoa_don';
   urlCT: string = 'http://localhost:8080/api/hoa_don_chi_tiet';
+  urlThaoTacHoaDon: string = 'http://localhost:8080/api/thao_tac_hoa_don';
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {
     return this.http.get<any>(`${this.url}`, { params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getAllTTHD(params: any): Observable<any> {
+    return this.http.get<any>(`${this.urlThaoTacHoaDon}`, { params }).pipe(
       (res: any) => {
         return res || null;
       },
