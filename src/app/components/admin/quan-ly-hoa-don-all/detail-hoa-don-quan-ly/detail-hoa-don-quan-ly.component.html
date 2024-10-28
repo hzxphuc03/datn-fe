@@ -1,1 +1,209 @@
-<p>detail-hoa-don-quan-ly works!</p>
+<div class="detail">
+  <div class="header">
+    <div class="title">Quản lý hóa đơn</div>
+    <div class="action">
+      <div>
+        <button class="btn btn-danger">Hủy hóa đơn</button>
+      </div>
+      <div>
+        <button class="btn btn-primary">
+          Cập nhật bước tiếp theo của hóa đơn
+        </button>
+      </div>
+    </div>
+  </div>
+  div.
+  <div class="info-hoadon">
+    <div class="info">
+      <div>
+        <span>Thông tin đơn hàng</span>
+        <table style="width: 100%">
+          <tr>
+            <th>Id hóa đơn</th>
+            <th>Mã hóa đơn</th>
+            <th>Ngày tạo</th>
+            <th>Ngày thanh toán</th>
+            <th>Tổng tiền</th>
+            <th>Loại</th>
+            <th>Trạng thái</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>{{ data?.id }}</td>
+              <td>{{ data?.ma }}</td>
+              <td>{{ data?.ngayTao | date : "dd/MM/yyyy" }}</td>
+              <td>
+                {{
+                  data?.ngayThanhToan
+                    ? (data?.ngayThanhToan | date : "dd/MM/yyyy")
+                    : "--"
+                }}
+              </td>
+              <td>
+                {{ data?.tongTien | currency : "VND" : "symbol" : "1.0-0" }}
+              </td>
+              <td>{{ data?.phuongThucThanhToan?.ten }}</td>
+              <td>
+                {{ data?.thanhToan ? "Đã thanh toán" : "Chưa thanh toán" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <span>Thông tin khách hàng</span>
+        <table style="width: 100%">
+          <tr>
+            <th>Khách hàng</th>
+            <th>Tên người nhận</th>
+            <th>Số điện thoại</th>
+            <th>Vận chuyển (có/không)</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>{{ data?.khachHang?.hoTen }}</td>
+              <td>{{ data?.tenNguoiNhan }}</td>
+              <td>{{ data?.sdtNguoiNhan }}</td>
+              <td>{{ data?.giaoHang ? "Có" : "Không" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <span>Thông tin giao hàng</span>
+        <span *ngIf="!data?.giaoHang">: Không giao hàng</span>
+        <table style="width: 100%" *ngIf="data?.giaoHang">
+          <tr>
+            <th>Tỉnh thành</th>
+            <th>Quận huyện</th>
+            <th>Phường xã</th>
+            <th>Phí vận chuyển</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>{{ data.tinhThanh ? data.tinhThanh : "Không có" }}</td>
+              <td>{{ data.quanHuyen ? data.quanHuyen : "Không có" }}</td>
+              <td>{{ data.phuongXa ? data.phuongXa : "Không có " }}</td>
+              <td>
+                {{ data.phiShip | currency : "VND" : "symbol" : "1.0-0" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <span>Thông tin phiếu giảm giá</span>
+        <span *ngIf="data?.vouchers?.length === 0">: Không áp dụng</span>
+        <table style="width: 100%" *ngIf="data?.vouchers?.length > 0">
+          <tr>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Phần trăm giảm</th>
+            <th>Loại phiếu</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let voucher of data?.vouchers">
+              <td>{{ voucher?.ma }}</td>
+              <td>{{ voucher?.ten }}</td>
+              <td>{{ voucher?.phanTramGiam }}%</td>
+              <td>
+                {{ voucher?.phanTramGiam === 0 ? "Hóa đơn" : "Vận chuyển" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>
+            Tổng tiền giảm :
+            {{ data?.tongTienGiam | currency : "VND" : "symbol" : "1.0-0" }}
+          </li>
+        </ul>
+      </div>
+      <div>
+        <span>Thông tin Sản phẩm</span>
+        <span *ngIf="data?.hoaDonChiTiets?.length === 0">: Không áp dụng</span>
+        <table style="width: 100%" *ngIf="data?.hoaDonChiTiets?.length > 0">
+          <tr>
+            <th>id sản phẩm</th>
+            <th>Tên sản phẩm</th>
+            <th>id chi tiết sản phẩm</th>
+            <th>Giá bán</th>
+            <th>Số lượng</th>
+            <th>Màu sắc</th>
+            <th>Kích cỡ</th>
+            <th>Tổng tiền</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let product of data?.hoaDonChiTiets">
+              <td>{{ product?.sanPhamChiTiet?.sanPham?.id }}</td>
+              <td>{{ product?.sanPhamChiTiet?.sanPham?.ten }}</td>
+              <td>{{ product?.id }}</td>
+              <td>
+                {{ product?.giaDaGiam | currency : "VND" : "symbol" : "1.0-0" }}
+              </td>
+              <td>{{ product?.soLuong }}</td>
+              <td>
+                <div
+                  style="height: 20px; width: 100%"
+                  [ngStyle]="{
+                    'background-color': product?.sanPhamChiTiet?.mauSac?.maMau
+                  }"
+                ></div>
+              </td>
+              <td>{{ product?.sanPhamChiTiet?.kichCo?.ten }}</td>
+              <td>
+                {{
+                  product?.soLuong * product?.giaDaGiam
+                    | currency : "VND" : "symbol" : "1.0-0"
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <span>Tổng tiền</span>
+        <table style="width: 100%">
+          <tr>
+            <th>Tổng tiền sản phẩm</th>
+            <th>Tiền ship</th>
+            <th>Tổng tiền giảm</th>
+            <th>Tổng tiền thanh toán</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>
+                {{
+                  data?.tongTienSanPhamChuaGiam
+                    | currency : "VND" : "symbol" : "1.0-0"
+                }}
+              </td>
+              <td>
+                {{
+                  data?.phiShip
+                    ? (data.phiShip | currency : "VND" : "symbol" : "1.0-0")
+                    : (0 | currency : "VND" : "symbol" : "1.0-0")
+                }}
+              </td>
+              <td>
+                {{
+                  data?.tongTienGiam
+                    ? (data.tongTienGiam
+                      | currency : "VND" : "symbol" : "1.0-0")
+                    : (0 | currency : "VND" : "symbol" : "1.0-0")
+                }}
+              </td>
+              <td>
+                {{
+                  data?.tongTien
+                    ? (data.tongTien | currency : "VND" : "symbol" : "1.0-0")
+                    : (0 | currency : "VND" : "symbol" : "1.0-0")
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

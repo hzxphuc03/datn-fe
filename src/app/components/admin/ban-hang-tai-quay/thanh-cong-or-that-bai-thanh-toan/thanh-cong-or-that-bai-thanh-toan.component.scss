@@ -1,32 +1,59 @@
-.form-show{
-    width: 500px;
+.form-show {
+  // width: ;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 90vh;
+  overflow: auto;
+  .close {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .header {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .action {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    .btn {
+      width: 100%;
+    }
+  }
+}
+table {
+  width: 100%;
+  border-collapse: collapse; /* Gộp viền giữa các ô */
+}
+th,
+td {
+  border: 1px solid #000; /* Viền đen cho ô */
+  padding: 8px; /* Khoảng cách bên trong ô */
+  text-align: left; /* Căn trái cho văn bản */
+}
+th {
+  background-color: #f2f2f2; /* Màu nền cho tiêu đề */
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  div {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    .close{
-        display: flex;
-        gap: 20px;
-        align-items: center;
-        font-size: 18px;
-        cursor: pointer;
-    }
-    .header{
-        text-align: center;
-        font-size: 22px;
-        font-weight: bold;
-    }
-    .title{
-        font-size: 20px;
-        font-weight: bold;
-        text-align: center;
-    }
-    .action{
-        display: flex;
-        gap: 20px;
-        align-items: center;
-        .btn{
-            width: 100%;
-        }
-    }
-
+    gap: 10px;
+  }
+  span {
+    font-weight: bold;
+  }
 }

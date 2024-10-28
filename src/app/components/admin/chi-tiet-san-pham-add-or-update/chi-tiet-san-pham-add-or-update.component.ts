@@ -774,6 +774,22 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
       isDone = false;
       return;
     }
+    const seen = new Set();
+    const duplicates = this.data.sanPhamChiTietList.filter((item: any) => {
+      const key = `${item.mauSac.ten}-${item.kichCo.ten}`;
+      return seen.has(key) ? true : (seen.add(key), false);
+    });
+
+    // Log ra các đối tượng trùng lặp
+    if (duplicates.length > 0) {
+      this.errorService.displayError(
+        `Có sản phẩm đang bị trùng màu hoặc kích cỡ , vui lòng kiểm tra lại !`,
+        'error'
+      );
+      isDone = false;
+      return;
+    }
+    //
     return isDone;
   }
   remove(index: any) {
@@ -789,23 +805,26 @@ export class ChiTietSanPhamAddOrUpdateComponent implements OnInit {
         if (this.data.sanPham.giamGia && this.data.sanPham.giamGia.isOpen) {
           this.data.sanPham.giamGia.isOpen = false;
         }
-      
-        if (this.data.sanPham.thuongHieu && this.data.sanPham.thuongHieu.isOpen) {
+
+        if (
+          this.data.sanPham.thuongHieu &&
+          this.data.sanPham.thuongHieu.isOpen
+        ) {
           this.data.sanPham.thuongHieu.isOpen = false;
         }
-      
+
         if (this.data.sanPham.theLoai && this.data.sanPham.theLoai.isOpen) {
           this.data.sanPham.theLoai.isOpen = false;
         }
-      
+
         if (this.data.sanPham.loaiCo && this.data.sanPham.loaiCo.isOpen) {
           this.data.sanPham.loaiCo.isOpen = false;
         }
-      
+
         if (this.data.sanPham.vatLieu && this.data.sanPham.vatLieu.isOpen) {
           this.data.sanPham.vatLieu.isOpen = false;
         }
-      
+
         if (this.data.sanPham.loaiDe && this.data.sanPham.loaiDe.isOpen) {
           this.data.sanPham.loaiDe.isOpen = false;
         }

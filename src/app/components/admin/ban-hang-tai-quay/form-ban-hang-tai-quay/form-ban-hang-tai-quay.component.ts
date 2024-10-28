@@ -64,33 +64,47 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     private tokenService: TokenService,
     private diaChiService: DiaChiServiceService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
   ngOnInit(): void {
-  this.route.queryParams.subscribe(params => {
+    //
+    // const dialogRef = this.dialog.open(ThanhCongOrThatBaiThanhToanComponent, {
+    //   data: {
+    //     vnpOrderInfo: 2,
+    //     responseCode: '00',
+    //     transactionStatus: '0',
+    //     status: true,
+    //   },
+    //   disableClose: true,
+    // });
+    //
+    this.route.queryParams.subscribe((params) => {
       this.vnpOrderInfo = params['vnp_OrderInfo'];
       const responseCode = params['vnp_ResponseCode'];
       const transactionStatus = params['vnp_TransactionStatus'];
 
       // Xác định trạng thái giao dịch
       if (responseCode === '00' && transactionStatus === '00') {
-        this.transactionStatus =  true;
-      }else{
+        this.transactionStatus = true;
+      } else {
         this.transactionStatus = false;
       }
-      if(this.transactionStatus !== null && this.vnpOrderInfo){
-        const dialogRef = this.dialog.open(ThanhCongOrThatBaiThanhToanComponent, {
-          data: {
-            vnpOrderInfo : this.vnpOrderInfo,
-            responseCode : responseCode,
-            transactionStatus : transactionStatus,
-            status :  this.transactionStatus
-            
-          },  disableClose: true,
-        });
+      if (this.transactionStatus !== null && this.vnpOrderInfo) {
+        const dialogRef = this.dialog.open(
+          ThanhCongOrThatBaiThanhToanComponent,
+          {
+            data: {
+              vnpOrderInfo: this.vnpOrderInfo,
+              responseCode: responseCode,
+              transactionStatus: transactionStatus,
+              status: this.transactionStatus,
+            },
+            disableClose: true,
+          }
+        );
         dialogRef.afterClosed().subscribe(async (result) => {
-          if(result){
-            if(this.transactionStatus){
+          if (result) {
+            if (this.transactionStatus) {
               this.updateStatusHoaDon();
             }
             this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
@@ -105,9 +119,11 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     }
     this.getListHoaDon('rows');
   }
-  async updateStatusHoaDon(){
+  async updateStatusHoaDon() {
     this.spinner.show();
-    const data = await this.hoaDonService.updateAfterOnlinePayment(this.vnpOrderInfo).toPromise();
+    const data = await this.hoaDonService
+      .updateAfterOnlinePayment(this.vnpOrderInfo)
+      .toPromise();
     if (data) {
       if (data?.errorCode) {
         this.errorService.displayError(data.messageError, 'error');
@@ -239,7 +255,7 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     if (data) {
       this.getTotalHoaDonCtPage(data);
       this.listDataHoaDonCt = data.item;
-      await this.getShipPrice();  
+      await this.getShipPrice();
       await this.tinhThongTien();
       await this.checkVoucher();
       await this.checkTongTienGiam();
@@ -324,7 +340,10 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       const endDateVanChuyenVoucher = new Date(
         this.voucherGiamGiaVanChuyen.ngayKetThuc
       );
-      if(this.voucherGiamGiaHoaDon.soLuong === 0 ||this.voucherGiamGiaVanChuyen.soLuong === 0 ){
+      if (
+        this.voucherGiamGiaHoaDon.soLuong === 0 ||
+        this.voucherGiamGiaVanChuyen.soLuong === 0
+      ) {
         this.voucherGiamGiaHoaDon.giam = 'lỗi voucher';
         this.errorService.displayError(
           'có Voucher đang không thỏa mãn điều kiện hóa đơn vui lòng check lại',
@@ -391,15 +410,15 @@ export class FormBanHangTaiQuayComponent implements OnInit {
           this.openVoucher();
         }
       }
-      if(!this.data.giaoHang){
-        this.data.vouchers.map((item : any) => {
-          if(item.theLoai === 1){
+      if (!this.data.giaoHang) {
+        this.data.vouchers.map((item: any) => {
+          if (item.theLoai === 1) {
             this.errorService.displayError(
               'Vui lòng loại bỏ voucher vận chuyển khi không vận chuyển',
               'error'
             );
             this.openVoucher();
-            return
+            return;
           }
         });
       }
@@ -663,7 +682,7 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       this.tongTien = this.tongTien + this.data.phiShip;
     }
   }
-  submit(){
+  submit() {
     // check xem có đang bị thiếu hay lỗi gì không
     // check giỏ hàng có sp không
     let isFalse = false;
@@ -680,25 +699,23 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       return;
     }
     // khách hàng
-    if(!this.data?.khachHang?.id){
-      this.errorService.displayError(
-        'Chưa chọn khách hàng',
-        'normal'
-      );
+    if (!this.data?.khachHang?.id) {
+      this.errorService.displayError('Chưa chọn khách hàng', 'normal');
       isFalse = true;
       return;
     }
-    if(this.data.giaoHang){
-      if(!this.data?.idPhuongXa || !this.data?.idQuanHuyen  || !this.data?.idTinhThanh ){
-        this.errorService.displayError(
-          'Vui lòng cập nhật địa chỉ',
-          'normal'
-        );
+    if (this.data.giaoHang) {
+      if (
+        !this.data?.idPhuongXa ||
+        !this.data?.idQuanHuyen ||
+        !this.data?.idTinhThanh
+      ) {
+        this.errorService.displayError('Vui lòng cập nhật địa chỉ', 'normal');
         isFalse = true;
         return;
       }
     }
-    if(!this.data?.tenNguoiNhan ||!this.data?.sdtNguoiNhan ){
+    if (!this.data?.tenNguoiNhan || !this.data?.sdtNguoiNhan) {
       this.errorService.displayError(
         'Cập nhật thông tin người nhận hàng',
         'normal'
@@ -707,68 +724,91 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       return;
     }
     // check san pham
-    if(this.listDataHoaDonCt.length > 0){
-      this.listDataHoaDonCt.map(((item : any) =>{
-        if(item.sanPhamChiTiet.trangThai === 0 ){
-          this.errorService.displayError('Vui lòng kiểm tra lại sản phẩm đang không hoạt động', 'error');
+    if (this.listDataHoaDonCt.length > 0) {
+      this.listDataHoaDonCt.map((item: any) => {
+        if (item.sanPhamChiTiet.trangThai === 0) {
+          this.errorService.displayError(
+            'Vui lòng kiểm tra lại sản phẩm đang không hoạt động',
+            'error'
+          );
           isFalse = true;
           return;
         }
-        if(item.sanPhamChiTiet.soLuong === 0 ){
-          this.errorService.displayError('Vui lòng kiểm tra lại sản phẩm đã hết hàng', 'error');
+        if (item.sanPhamChiTiet.soLuong === 0) {
+          this.errorService.displayError(
+            'Vui lòng kiểm tra lại sản phẩm đã hết hàng',
+            'error'
+          );
           isFalse = true;
           return;
         }
-        if(item.sanPhamChiTiet.soLuong < item.soLuong ){
-          this.errorService.displayError('Vui lòng kiểm tra lại , sản phẩm không đủ để thực hiện thanh toán', 'error');
+        if (item.sanPhamChiTiet.soLuong < item.soLuong) {
+          this.errorService.displayError(
+            'Vui lòng kiểm tra lại , sản phẩm không đủ để thực hiện thanh toán',
+            'error'
+          );
           isFalse = true;
           return;
         }
-      }))
+      });
     }
     // kiểm tra lại voucher
     const today = new Date();
-    if(this.data.vouchers.length > 0){
-      this.data.vouchers.map((item : any) =>{
+    if (this.data.vouchers.length > 0) {
+      this.data.vouchers.map((item: any) => {
         const startDateHoaDonVoucher = new Date(item.ngayBatDau);
         const endDateHoaDonVoucher = new Date(item.ngayKetThuc);
         // check ngày
-        if( !(today >= startDateHoaDonVoucher && today <= endDateHoaDonVoucher)){
-          this.errorService.displayError('Vui lòng kiểm tra lại voucher không hoạt động', 'error');
+        if (
+          !(today >= startDateHoaDonVoucher && today <= endDateHoaDonVoucher)
+        ) {
+          this.errorService.displayError(
+            'Vui lòng kiểm tra lại voucher không hoạt động',
+            'error'
+          );
           isFalse = true;
           return;
-          }
-        if(item.soLuong === 0){
-          this.errorService.displayError('Vui lòng kiểm tra lại voucher hết lượt dùng', 'error');
+        }
+        if (item.soLuong === 0) {
+          this.errorService.displayError(
+            'Vui lòng kiểm tra lại voucher hết lượt dùng',
+            'error'
+          );
           isFalse = true;
           return;
-          }
-        if(item.giaTriGiamToiThieu > this. data.tongTienSanPhamChuaGiam){
-          this.errorService.displayError('Vui lòng kiểm tra lại voucher không phù hợp', 'error');
+        }
+        if (item.giaTriGiamToiThieu > this.data.tongTienSanPhamChuaGiam) {
+          this.errorService.displayError(
+            'Vui lòng kiểm tra lại voucher không phù hợp',
+            'error'
+          );
           isFalse = true;
           return;
-          }
-      })
+        }
+      });
     }
-    if(!isFalse){
+    if (!isFalse) {
       this.data.tongTien = this.tongTien;
       const dialogRef = this.dialog.open(FormThanhToanComponent, {
         data: this.data,
         disableClose: true,
       });
       dialogRef.afterClosed().subscribe(async (result) => {
-        if(result){
+        if (result) {
           await this.getListHoaDon('rows');
           this.data = {};
-          const dialogRef = this.dialog.open(ThanhCongOrThatBaiThanhToanComponent, {
-            data: {
-              vnpOrderInfo : result,
-              responseCode : '00',
-              transactionStatus : '0',
-              status :  true
-              
-            },  disableClose: true,
-          });
+          const dialogRef = this.dialog.open(
+            ThanhCongOrThatBaiThanhToanComponent,
+            {
+              data: {
+                vnpOrderInfo: result,
+                responseCode: '00',
+                transactionStatus: '0',
+                status: true,
+              },
+              disableClose: true,
+            }
+          );
         }
       });
     }

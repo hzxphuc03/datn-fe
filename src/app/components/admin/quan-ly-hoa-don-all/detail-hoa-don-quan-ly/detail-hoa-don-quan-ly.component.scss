@@ -1,0 +1,46 @@
+.detail {
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .title {
+    font-size: 22px;
+  }
+}
+table {
+  width: 100%;
+  border-collapse: collapse; /* Gộp viền giữa các ô */
+}
+th,
+td {
+  border: 1px solid #000; /* Viền đen cho ô */
+  padding: 8px; /* Khoảng cách bên trong ô */
+  text-align: left; /* Căn trái cho văn bản */
+}
+th {
+  background-color: #f2f2f2; /* Màu nền cho tiêu đề */
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  span {
+    font-weight: bold;
+  }
+}

@@ -26,6 +26,8 @@
     "boxicons": "^2.1.4",
     "concurrently": "^9.0.1",
     "f": "^1.4.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
     "jwt-decode": "^4.0.0",
     "ngx-spinner": "^14.0.0",
     "primeicons": "^6.0.1",

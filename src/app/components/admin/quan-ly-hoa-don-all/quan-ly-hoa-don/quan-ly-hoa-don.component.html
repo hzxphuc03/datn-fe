@@ -132,12 +132,14 @@
                 : "----"
             }}
           </td>
-          <td>{{ product?.khachHang.hoTen }}</td>
-          <td>{{ product?.nhanVien.hoTen }}</td>
+          <td>{{ product?.khachHang?.hoTen }}</td>
+          <td>{{ product?.nhanVien?.hoTen }}</td>
           <td>{{ product?.tongTien }}</td>
           <td>{{ product?.giaoHang ? product?.phiShip : "Không" }}</td>
-          <td>{{ product.phuongThucThanhToan.ten }}</td>
-          <td>{{ product.thanhToan ? "Đã thanh toán" : "Chưa thanh toán" }}</td>
+          <td>{{ product?.phuongThucThanhToan?.ten }}</td>
+          <td>
+            {{ product?.thanhToan ? "Đã thanh toán" : "Chưa thanh toán" }}
+          </td>
         </tr>
       </ng-template>
     </p-table>
