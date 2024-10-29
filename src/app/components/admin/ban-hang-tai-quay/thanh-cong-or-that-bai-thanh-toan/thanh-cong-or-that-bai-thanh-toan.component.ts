@@ -73,4 +73,8 @@ export class ThanhCongOrThatBaiThanhToanComponent implements OnInit {
       pdf.save(`bill-id-${this.data.id}.pdf`);
     });
   }
+  goToHoaDon() {
+    this.matDialogRef.close();
+    this.router.navigate([`/auth/admin/quan-ly-hoa-don/${this.data.id}`]);
+  }
 }

@@ -1,17 +1,25 @@
 <div class="detail">
   <div class="header">
     <div class="title">Quản lý hóa đơn</div>
-    <div class="action" >
+    <div class="action">
       <div *ngIf="isShowAction">
-        <button class="btn btn-danger"  (click)="showDialog()">Hủy hóa đơn</button>
+        <button
+          class="btn btn-danger"
+          (click)="showDialog()"
+          *ngIf="data.trangThai !== 6"
+        >
+          Hủy hóa đơn
+        </button>
       </div>
       <div *ngIf="isShowAction">
-        <button class="btn btn-primary" (click)="nextStep()">
+        <button class="btn btn-primary" (click)="isOkeDialog = true">
           Cập nhật bước tiếp theo của hóa đơn
         </button>
       </div>
       <div>
-        <button class="btn btn-secondary">Lịch sử thao tác</button>
+        <button class="btn btn-secondary" (click)="isHistory = true">
+          Lịch sử thao tác
+        </button>
       </div>
     </div>
   </div>
@@ -225,7 +233,7 @@
   </div>
 </div>
 <p-dialog
-  header="Edit Profile"
+  header="xác nhận hủy"
   [modal]="true"
   [(visible)]="visible"
   [style]="{ width: '25rem' }"
@@ -243,6 +251,76 @@
     <div class="action">
       <button class="btn btn-primary" (click)="visible = false">Đóng</button>
       <button class="btn btn-danger" (click)="cancelBill()">Hủy hóa đơn</button>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog [modal]="true" [(visible)]="isOkeDialog" [style]="{ width: '25rem' }">
+  <div class="dialog-danger">
+    <div
+      class="title"
+      style="font-size: larger; font-weight: bold; text-align: center"
+    >
+      Xác nhận cập nhật hóa đơn
+    </div>
+    <div class="action">
+      <button class="btn btn-secondary" (click)="isOkeDialog = false">
+        Đóng
+      </button>
+      <button class="btn btn-primary" (click)="isOkeNextStep()">
+        Xác nhận
+      </button>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog [modal]="true" [(visible)]="isHistory" [style]="{ width: '50vw' }">
+  <div class="dialog-danger">
+    <p-table [value]="listLichSuThaoTac">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>id hóa đơn</th>
+          <th>Mã người tác động</th>
+          <th>Tên người tác động</th>
+          <th>Ngày tác động</th>
+          <th>Thao tác</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product?.hoaDon?.id }}</td>
+          <td>{{ product?.nhanVien?.ma }}</td>
+          <td>{{ product?.nhanVien?.hoTen }}</td>
+          <td>
+            {{ product?.ngayTao | date : "dd/MM/yyyy" }}
+          </td>
+          <td>
+            {{ product?.thaoTac }}
+          </td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div class="table-pagination d-flex mb-3 pb-4">
+      <div class="flex-grow-1"></div>
+      <div><small class="text-muted ml-1">Items per page</small></div>
+      <div class="d-flex justify-content-center align-items-center">
+        <span
+          (click)="getAllHistory('page', 'prev')"
+          class="table-pagination-item btn-prev ml-2"
+        >
+          <i class="bx bx-left-arrow-alt"></i>
+        </span>
+        <span
+          (click)="getAllHistory('page', 'next')"
+          class="table-pagination-item btn-next"
+        >
+          <i class="bx bx-right-arrow-alt"></i>
+        </span>
+      </div>
+    </div>
+    <div class="action" style="display: flex; justify-content: flex-end">
+      <button class="btn btn-secondary" (click)="isHistory = false">
+        Đóng
+      </button>
     </div>
   </div>
 </p-dialog>

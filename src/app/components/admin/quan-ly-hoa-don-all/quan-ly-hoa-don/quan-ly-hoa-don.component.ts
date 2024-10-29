@@ -18,7 +18,7 @@ export class QuanLyHoaDonComponent implements OnInit {
   listIndexActiveStatus: any[] = [
     { index: 0, title: 'Hóa đơn đã hủy' },
     { index: 1, title: 'Hóa đơn khởi tạo' },
-    { index: 2, title: 'Hóa đơn chờ sử lý' },
+    { index: 2, title: 'Hóa đơn chờ xử lý' },
     { index: 3, title: 'Hóa đơn đã nhận' },
     { index: 4, title: 'Đóng gói hóa đơn' },
     { index: 5, title: 'Hóa đơn vận chuyển' },
@@ -28,6 +28,7 @@ export class QuanLyHoaDonComponent implements OnInit {
   itemSelected: any[] = [];
   isCheckAll: boolean = false;
   visible: boolean = false;
+  isOkeDialog: boolean = false;
   constructor(
     private dialog: MatDialog,
     private errorService: ErrorTsService,
@@ -180,7 +181,28 @@ export class QuanLyHoaDonComponent implements OnInit {
     // hàm lấy những thằng  check bằng true
     return this.listData.filter((product: any) => product.check);
   }
-  async nextStep() {}
+  async nextStep() {
+    this.loadingItemUpdateStatus.isShow = true;
+    this.loadingItemUpdateStatus.totalItem = this.getCheckedItems().length;
+    this.loadingItemUpdateStatus.itemIndex = 0;
+    for (const item of this.getCheckedItems()) {
+      try {
+        this.loadingItemUpdateStatus.itemIndex++;
+        await this.service
+          .nextStepHoaDonStatus({
+            idNhanVien: this.idNhanVien,
+            idHoaDon: item.id,
+          })
+          .toPromise();
+      } catch (error) {}
+      await this.delay(1000);
+    }
+    this.loadingItemUpdateStatus.isShow = false;
+    this.titleChangeToZero = '';
+    this.isCheckAll = false;
+    this.haveItemCheck = false;
+    this.getListWords('page');
+  }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -225,5 +247,9 @@ export class QuanLyHoaDonComponent implements OnInit {
     this.loadingItemUpdateStatus.itemIndex = 0;
     this.getListWords('rows');
     this.titleChangeToZero = '';
+  }
+  isOkeNextStep() {
+    this.nextStep();
+    this.isOkeDialog = false;
   }
 }

@@ -19,13 +19,18 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
   currentStep: number = 1; // Bước hiện tại
   intervalId: any;
   idNhanVien: any;
-  isShowAction : boolean = false
+  isShowAction: boolean = false;
   visible: boolean = false;
+  isOkeDialog: boolean = false;
+  isHistory: boolean = false;
   titleChangeToZero: string = '';
+  listLichSuThaoTac: any[] = [];
+  searchQuery: any = {};
+  listPageNumber: number[] = [];
   listIndexActiveStatus: any[] = [
     { index: 0, title: 'Hóa đơn đã hủy' },
     { index: 1, title: 'Hóa đơn khởi tạo' },
-    { index: 2, title: 'Hóa đơn chờ sử lý' },
+    { index: 2, title: 'Hóa đơn chờ xử lý' },
     { index: 3, title: 'Hóa đơn đã nhận' },
     { index: 4, title: 'Đóng gói hóa đơn' },
     { index: 5, title: 'Hóa đơn vận chuyển' },
@@ -47,6 +52,8 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
       if (this.id) {
         this.isAdd = false;
         this.detail();
+        this.searchQuery.idHoaDon = this.id;
+        this.getAllHistory('rows');
       }
     });
   }
@@ -60,7 +67,7 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
         this.router.navigate(['/auth/admin/quan-ly-hoa-don']);
       } else {
         this.data = data.body;
-        if(this.data.trangThai !== 0 && this.data.trangThai !== 1){
+        if (this.data.trangThai !== 0 && this.data.trangThai !== 1) {
           this.isShowAction = true;
         }
         this.startIncrement(this.data.trangThai);
@@ -108,7 +115,7 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
   showDialog() {
     this.visible = true;
   }
-  async cancelBill(){
+  async cancelBill() {
     if (
       this.titleChangeToZero === '' ||
       this.titleChangeToZero === null ||
@@ -146,5 +153,60 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
         this.titleChangeToZero = '';
       }
     }
+  }
+  isOkeNextStep() {
+    this.nextStep();
+    this.isOkeDialog = false;
+  }
+  async getAllHistory(type: string, action?: string): Promise<void> {
+    // this.spinner.show();
+    if (type && type === 'rows') {
+      this.searchQuery.page = 1;
+    }
+    if (action) {
+      if (action === 'prev' && Number(this.searchQuery.page) > 1) {
+        this.searchQuery.page = Number(this.searchQuery.page) - 1;
+      }
+      if (
+        action === 'next' &&
+        Number(this.searchQuery.page) + 1 <= this.listPageNumber.length
+      ) {
+        this.searchQuery.page = Number(this.searchQuery.page) + 1;
+      }
+    } else {
+      this.searchQuery.page = this.searchQuery.page;
+    }
+    Object.keys(this.searchQuery).forEach((key) => {
+      if (this.searchQuery[key] === null || this.searchQuery[key] === '') {
+        delete this.searchQuery[key];
+      }
+    });
+    this.spinner.show();
+    const data = await this.service.getAllTTHD(this.searchQuery).toPromise();
+    if (data) {
+      this.getTotalPage(data);
+      this.listLichSuThaoTac = data.item;
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
+    }
+
+    //   gọi api
+  }
+  getTotalPage(data: any): number {
+    let totalPage = 0;
+    if (Number(data.totalItem) < Number(data.pageSize)) {
+      totalPage = 1;
+    } else {
+      totalPage = Math.floor(Number(data.totalItem) / Number(data.pageSize));
+      if (Number(data.totalItem) % Number(data.pageSize) > 0) {
+        totalPage = totalPage + 1;
+      }
+    }
+    this.listPageNumber = [];
+    for (let i = 1; i <= totalPage; i++) {
+      this.listPageNumber.push(i);
+    }
+    return totalPage;
   }
 }

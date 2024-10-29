@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
 import { ErrorTsService } from '../message/error.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-master-layout-admin',
   templateUrl: './master-layout-admin.component.html',
   styleUrls: ['./master-layout-admin.component.scss'],
 })
-export class MasterLayoutAdminComponent implements OnInit {
+export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
   isOpen: boolean = true;
+  errorMessage: any | null = null; // Đảm bảo kiểu dữ liệu cho phép null
+  private errorSubscription?: Subscription;
   actionNavItems: any[] = [
     { icon: 'bx bx-home-circle', name: 'Trang chủ', url: '/auth/admin/home' },
     {
@@ -74,7 +77,39 @@ export class MasterLayoutAdminComponent implements OnInit {
     private errorService: ErrorTsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.checkToken();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.checkToken();
+      }
+    });
+    this.errorSubscription = this.errorService
+      .getErrorObservable()
+      .subscribe((message) => {
+        this.errorMessage = message;
+      });
+  }
+  @HostListener('document:click', ['$event'])
+  handleClick(event: MouseEvent) {
+    this.checkToken();
+  }
+  checkToken() {
+    const isExpired = this.tokenService.isTokenExpired();
+    const { decoded } = this.tokenService.getToken();
+    if (decoded) {
+      if (isExpired) {
+        this.errorService.displayError(
+          'hết thời gian đăng nhập, vui lòng đăng nhập lại',
+          'normal'
+        );
+        this.tokenService.removeToken();
+        this.router.navigate(['/auth/shop/login']);
+      }
+    } else {
+      this.router.navigate(['/auth/shop/login']);
+    }
+  }
   openSlide() {
     if (this.isOpen) {
       this.actionNavItems.map((a) => {
@@ -87,5 +122,8 @@ export class MasterLayoutAdminComponent implements OnInit {
     this.tokenService.removeToken();
     this.errorService.displayError('Đăng xuất thành công', 'normal');
     this.router.navigate(['/auth/shop/login']);
+  }
+  ngOnDestroy(): void {
+    this.errorSubscription?.unsubscribe();
   }
 }

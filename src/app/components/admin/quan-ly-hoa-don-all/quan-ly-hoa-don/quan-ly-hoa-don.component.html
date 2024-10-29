@@ -11,7 +11,7 @@
         </button>
       </div>
       <div *ngIf="haveItemCheck">
-        <button class="btn btn-primary" (click)="nextStep()">
+        <button class="btn btn-primary" (click)="isOkeDialog = true">
           Cập nhật bước tiếp theo của hóa đơn
         </button>
       </div>
@@ -181,6 +181,24 @@
     <div class="action">
       <button class="btn btn-primary" (click)="visible = false">Đóng</button>
       <button class="btn btn-danger" (click)="cancelBill()">Hủy hóa đơn</button>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog [modal]="true" [(visible)]="isOkeDialog" [style]="{ width: '25rem' }">
+  <div class="dialog-danger">
+    <div
+      class="title"
+      style="font-size: larger; font-weight: bold; text-align: center"
+    >
+      Xác nhận cập nhật hóa đơn
+    </div>
+    <div class="action">
+      <button class="btn btn-secondary" (click)="isOkeDialog = false">
+        Đóng
+      </button>
+      <button class="btn btn-primary" (click)="isOkeNextStep()">
+        Xác nhận
+      </button>
     </div>
   </div>
 </p-dialog>
