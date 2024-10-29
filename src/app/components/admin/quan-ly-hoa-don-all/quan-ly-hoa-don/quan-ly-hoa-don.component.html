@@ -10,7 +10,7 @@
           Hủy hóa đơn
         </button>
       </div>
-      <div *ngIf="haveItemCheck">
+      <div *ngIf="haveItemCheck && activeIndex !== 6">
         <button class="btn btn-primary" (click)="isOkeDialog = true">
           Cập nhật bước tiếp theo của hóa đơn
         </button>
