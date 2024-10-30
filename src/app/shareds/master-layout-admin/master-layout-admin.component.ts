@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
 import { ErrorTsService } from '../message/error.service';
 import { Subscription } from 'rxjs';
+import { AutoServiceService } from '../auto-service.service';
 
 @Component({
   selector: 'app-master-layout-admin',
@@ -74,7 +75,8 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
   constructor(
     private tokenService: TokenService,
     private router: Router,
-    private errorService: ErrorTsService
+    private errorService: ErrorTsService,
+    private autoVoucher: AutoServiceService
   ) {}
 
   ngOnInit(): void {
@@ -95,20 +97,28 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     this.checkToken();
   }
   checkToken() {
-    const isExpired = this.tokenService.isTokenExpired();
-    const { decoded } = this.tokenService.getToken();
-    if (decoded) {
-      if (isExpired) {
-        this.errorService.displayError(
-          'hết thời gian đăng nhập, vui lòng đăng nhập lại',
-          'normal'
-        );
-        this.tokenService.removeToken();
-        this.router.navigate(['/auth/shop/login']);
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const isExpired = this.tokenService.isTokenExpired();
+        const { decoded } = this.tokenService.getToken();
+        if (decoded) {
+          if (isExpired) {
+            this.errorService.displayError(
+              'hết thời gian đăng nhập, vui lòng đăng nhập lại',
+              'normal'
+            );
+            this.tokenService.removeToken();
+            this.router.navigate(['/auth/shop/login']);
+          }
+        } else {
+          this.router.navigate(['/auth/shop/login']);
+        }
       }
-    } else {
-      this.router.navigate(['/auth/shop/login']);
-    }
+    });
+    this.auto();
+  }
+  async auto() {
+    const voucherAuto = await this.autoVoucher.autoVoucher().toPromise();
   }
   openSlide() {
     if (this.isOpen) {

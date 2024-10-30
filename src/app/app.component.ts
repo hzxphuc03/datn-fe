@@ -23,24 +23,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        const isExpired = this.tokenService.isTokenExpired();
-        const { decoded } = this.tokenService.getToken();
-        if (decoded) {
-          if (isExpired) {
-            this.errorService.displayError(
-              'hết thời gian đăng nhập, vui lòng đăng nhập lại',
-              'normal'
-            );
-            this.tokenService.removeToken();
-            this.router.navigate(['/auth/shop/login']);
-          }
-        } else {
-          this.router.navigate(['/auth/shop/login']);
-        }
-      }
-    });
     this.errorSubscription = this.errorService
       .getErrorObservable()
       .subscribe((message) => {

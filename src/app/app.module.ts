@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,8 +15,15 @@ import { ToastModule } from 'primeng/toast';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SwiperModule } from 'swiper/angular';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ClientLayoutMasterComponent } from './shareds/client-layout-master/client-layout-master.component';
+
 @NgModule({
-  declarations: [AppComponent, MasterLayoutAdminComponent, ChatComponent],
+  declarations: [
+    AppComponent,
+    MasterLayoutAdminComponent,
+    ChatComponent,
+    ClientLayoutMasterComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,9 +38,10 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     ToastModule,
     InputSwitchModule,
     SwiperModule,
-    AutoCompleteModule
+    AutoCompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
