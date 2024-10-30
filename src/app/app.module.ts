@@ -42,6 +42,6 @@ import { ClientLayoutMasterComponent } from './shareds/client-layout-master/clie
   ],
   providers: [],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [],
 })
 export class AppModule {}
