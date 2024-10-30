@@ -29,4 +29,14 @@ export class HomeServoceService {
       })
     );
   }
+  getTop5Moi(): Observable<any> {
+    return this.http.get<any>(`${this.url}/top5-moi`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
 }
