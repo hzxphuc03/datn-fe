@@ -78,7 +78,7 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     //   disableClose: true,
     // });
     //
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(async (params) => {
       this.vnpOrderInfo = params['vnp_OrderInfo'];
       const responseCode = params['vnp_ResponseCode'];
       const transactionStatus = params['vnp_TransactionStatus'];
@@ -86,10 +86,12 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       // Xác định trạng thái giao dịch
       if (responseCode === '00' && transactionStatus === '00') {
         this.transactionStatus = true;
+        await this.updateStatusHoaDon();
       } else {
         this.transactionStatus = false;
       }
       if (this.transactionStatus !== null && this.vnpOrderInfo) {
+
         const dialogRef = this.dialog.open(
           ThanhCongOrThatBaiThanhToanComponent,
           {
@@ -104,9 +106,6 @@ export class FormBanHangTaiQuayComponent implements OnInit {
         );
         dialogRef.afterClosed().subscribe(async (result) => {
           if (result) {
-            if (this.transactionStatus) {
-              this.updateStatusHoaDon();
-            }
             this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
           }
         });

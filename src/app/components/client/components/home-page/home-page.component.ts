@@ -10,13 +10,15 @@ import { SwiperComponent } from 'swiper/angular';
   styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnInit,AfterViewInit {
-  @ViewChild('swiperSlideShow') swiperSlideShow!: SwiperComponent;
+  @ViewChild('swiperSlideShow') swiperRef!: SwiperComponent;
   topsNew: any[] = [];
   topsSale: any[] = [];
   topsSell: any[] = [];
+  private intervalId: any; // Khai báo biến để lưu ID của interval
   public config: SwiperOptions = {
-    modules: [Navigation, Pagination, A11y, Mousewheel],
     autoHeight: true,
+    autoplay : true,
+    loop : true,
     spaceBetween: 20,
     navigation: false,
     pagination: {clickable: true, dynamicBullets: true},
@@ -35,15 +37,32 @@ export class HomePageComponent implements OnInit,AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewInit(){
-}
+  }
+  slideNext() {
+    this.swiperRef.swiperRef.slideNext(); // Gọi slideNext
+  }
+
+  slidePrev() {
+    this.swiperRef.swiperRef.slidePrev(); // Gọi slidePrev
+  }
 
   async ngOnInit() {
+    this.startAutoSlide(); // Bắt đầu tự động chuyển slide khi khởi tạo
     this.spinner.show();
     this.getTop5BanChay();
     this.getTop5GiamGia();
     this.getTop5SanPhamMoi();
     this.spinner.hide();
   }
+  ngOnDestroy() {
+    clearInterval(this.intervalId); // Dọn dẹp interval khi component bị hủy
+  }
+  startAutoSlide() {
+    this.intervalId = setInterval(() => {
+      this.slideNext(); // Gọi slideNext mỗi 2 giây
+    }, 4000);
+  }
+
   async getTop5GiamGia() {
     const data = await this.service.getTop5GiamGia().toPromise();
     if (data) {

@@ -594,8 +594,13 @@
 
     <div class="banner">
       <div class="container">
-        <div class="slider-container has-scrollbar">
+        <div class="slider-container has-scrollbar" style="position: relative;">
+          <div style="position: absolute;width: 100%;display: flex;justify-content: space-between; align-items: center;z-index: 9999;font-size: 30px; color: #fff;">
+            <button (click)="slidePrev()" style="font-size: 40px;color:#fff"><i class='bx bx-chevron-left'></i></button>
+            <button (click)="slideNext()" style="font-size: 40px;color:#fff"><i class='bx bx-chevron-right'></i></button>
+          </div>
           <swiper
+          #swiperSlideShow
           [config]="config"
           >
             <ng-template swiperSlide>
@@ -1507,7 +1512,7 @@
               </div>
             </div>
 
-            <div class="product-showcase">
+            <div class="product-showcase" *ngIf="topsSale.length > 0">
               <h2 class="title">Top Giảm giá</h2>
 
               <div class="showcase-wrapper has-scrollbar">
