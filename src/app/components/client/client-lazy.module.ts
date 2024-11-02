@@ -40,7 +40,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
     ButtonModule,
     DialogModule,
   ],
-  exports: [],
+  exports: [fromPagesComponent.SanPhamAllSearchComponent],
   entryComponents: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

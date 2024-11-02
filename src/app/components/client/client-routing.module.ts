@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'home',
     component: fromPagesComponent.HomePageComponent,
   },
+  {
+    path: 'san-pham',
+    component: fromPagesComponent.SanPhamAllSearchComponent,
+  },
 ];
 @NgModule({
   imports: [ClientLazyModule, RouterModule.forChild(routes)],

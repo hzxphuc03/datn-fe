@@ -1,0 +1,247 @@
+<section class="shop spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="shop__sidebar">
+          <div class="shop__sidebar__search">
+            <div class="form" action="#">
+              <input type="text" [(ngModel)]="searchQuery.keyWord" (keydown.enter)="getListWords('rows')"  placeholder="Search..."  />
+              <button type="submit" (click)="getListWords('rows')">
+                <i class='bx bx-search'></i>
+              </button>
+            </div>
+          </div>
+          <div class="shop__sidebar__accordion">
+            <div class="show-info-check">
+              <div class="title" (click)="isOpenThuongHieu = !isOpenThuongHieu">
+                <span>Thương hiệu</span>
+                <i class='bx bxs-chevron-down' *ngIf="!isOpenThuongHieu"></i>
+                <i class='bx bxs-chevron-up' *ngIf="isOpenThuongHieu"></i>
+              </div>
+              <div class="all-option" [ngClass]="{'open': isOpenThuongHieu}">
+                <div class="items" *ngFor="let item of listThuongHieu">
+                  <div class="option" [class.checkedS]="item.checked" (click)="chon('thuonghieu',item)">
+                    <span>{{item.ten}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="show-info-check">
+              <div class="title" (click)="isOpenVatLieu = !isOpenVatLieu">
+                <span>Vật liệu</span>
+                <i class='bx bxs-chevron-down' *ngIf="!isOpenVatLieu"></i>
+                <i class='bx bxs-chevron-up' *ngIf="isOpenVatLieu"></i>
+              </div>
+              <div class="all-option" [ngClass]="{'open': isOpenVatLieu}">
+                <div class="items" *ngFor="let item of listvatLieu">
+                  <div class="option"  [class.checkedS]="item.checked" (click)="chon('vatlieu',item)">
+                    <span>{{item.ten}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="show-info-check">
+              <div class="title" (click)="isOpenTheLoai = !isOpenTheLoai">
+                <span>Thể loại</span>
+                <i class='bx bxs-chevron-down' *ngIf="!isOpenTheLoai"></i>
+                <i class='bx bxs-chevron-up' *ngIf="isOpenTheLoai"></i>
+              </div>
+              <div class="all-option" [ngClass]="{'open': isOpenTheLoai}">
+                <div class="items" *ngFor="let item of listTheLoai">
+                  <div class="option" [class.checkedS]="item.checked" (click)="chon('theloai',item)">
+                    <span>{{item.ten}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="show-info-check">
+              <div class="title" (click)="isOpenLoaiDe = !isOpenLoaiDe">
+                <span>Loại đế</span>
+                <i class='bx bxs-chevron-down' *ngIf="!isOpenLoaiDe"></i>
+                <i class='bx bxs-chevron-up' *ngIf="isOpenLoaiDe"></i>
+              </div>
+              <div class="all-option" [ngClass]="{'open': isOpenLoaiDe}">
+                <div class="items" *ngFor="let item of listLoaiDe">
+                  <div class="option" [class.checkedS]="item.checked" (click)="chon('loaide',item)">
+                    <span>{{item.ten}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="show-info-check">
+              <div class="title" (click)="isOpenLoaiCo = !isOpenLoaiCo">
+                <span>Loại cổ</span>
+                <i class='bx bxs-chevron-down' *ngIf="!isOpenLoaiCo"></i>
+                <i class='bx bxs-chevron-up' *ngIf="isOpenLoaiCo"></i>
+              </div>
+              <div class="all-option" [ngClass]="{'open': isOpenLoaiCo}">
+                <div class="items" *ngFor="let item of listLoaiCo">
+                  <div class="option" [class.checkedS]="item.checked" (click)="chon('loaico',item)">
+                    <span>{{item.ten}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="khoangGia">
+            <div class="title-sub">
+              Khoảng giá : 
+            </div>
+            <div class="input">
+              <input type="number" [min]="0" (keydown.enter)="getListWords('rows')" [(ngModel)]="searchQuery.giaThapNhat"  placeholder="Từ">
+              <i class='bx bx-minus'></i>
+              <input type="number"[min]="0" (keydown.enter)="getListWords('rows')"  [(ngModel)]="searchQuery.giaCaoNhat"  placeholder="Đến">
+            </div>
+            <div style="width: 100%;" class="action" *ngIf="searchQuery.giaThapNhat && searchQuery.giaCaoNhat">
+              <button (click)="getListWords('rows')" class="btn btn-primary" style="width: 100%;border: 1px solid gray;color: black;padding: 10px;">Search</button>
+            </div>
+          </div>
+          <div class="shop__sidebar__accordion" style="margin-top: 60px;">
+            <div class="show-info-check">
+              <div class="title" (click)="isOpenGiamGia = !isOpenGiamGia">
+                <span>Giảm giá</span>
+                <i class='bx bxs-chevron-down' *ngIf="!isOpenGiamGia"></i>
+                <i class='bx bxs-chevron-up' *ngIf="isOpenGiamGia"></i>
+              </div>
+              <div class="all-option" [ngClass]="{'open': isOpenGiamGia}">
+                <div class="items" *ngFor="let item of listGiamGia">
+                  <div class="option" [class.checkedS]="item.checked" (click)="chon('giamgia',item)">
+                    <span>{{item.ten}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="shop__product__option">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="shop__product__option__left">
+                <p>Showing 1–12 of 126 results</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="product-container">
+          <div class="container">
+            <div class="product-main">
+              <div class="product-grid">
+                <div class="showcase" *ngFor="let item of listData">
+                  <div class="showcase-banner">
+                    <img
+                      style="height: 250px"
+                      [src]="item?.hinhAnh"
+                      alt="Mens Winter Leathers Jackets"
+                      width="300"
+                      class="product-img default"
+                    />
+                    <img
+                      style="height: 240px"
+                      [src]="item?.hinhAnh"
+                      alt="Mens Winter Leathers Jackets"
+                      width="300"
+                      class="product-img hover"
+                    />
+
+                    <p class="showcase-badge somesong" *ngIf="item.isSales">
+                      {{ item.giamGia.mucGiam }}%
+                    </p>
+                    <p
+                      class="showcase-badge angle pink"
+                      *ngIf="item.status === 'NEW'"
+                    >
+                      new
+                    </p>
+                    <p
+                      class="showcase-badge angle black"
+                      *ngIf="item.status === 'SALE'"
+                    >
+                      sale
+                    </p>
+
+                    <div class="showcase-actions">
+                      <button class="btn-action">
+                        <ion-icon name="heart-outline"></ion-icon>
+                      </button>
+
+                      <button class="btn-action">
+                        <ion-icon name="eye-outline"></ion-icon>
+                      </button>
+
+                      <!-- <button class="btn-action">
+                                    <ion-icon name="repeat-outline"></ion-icon>
+                                  </button> -->
+
+                      <button class="btn-action">
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="showcase-content">
+                    <a class="showcase-category">{{ item.ten }}</a>
+
+                    <a>
+                      <h3 class="showcase-title">{{ item.moTa }}</h3>
+                    </a>
+
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                    </div>
+                    <div class="price-box" *ngIf="item.isSales">
+                      <p class="price">
+                        {{
+                          item?.giaThapNhat -
+                            (item?.giaThapNhat * item?.giamGia.mucGiam) / 100
+                            | currency : "VND" : "symbol" : "1.0-0"
+                        }}
+                      </p>
+
+                      <del
+                        >{{
+                          item?.giaThapNhat
+                            | currency : "VND" : "symbol" : "1.0-0"
+                        }}
+                      </del>
+                    </div>
+                    <div class="price-box" *ngIf="!item.isSales">
+                      <p class="price">
+                        {{
+                          item?.giaThapNhat
+                            | currency : "VND" : "symbol" : "1.0-0"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="product__pagination">
+                  <div class="pagination">
+                    <button class="abc" (click)="previousPage()"><i class='bx bx-caret-left' ></i></button>
+                    <button *ngFor="let page of pages" 
+                            (click)="onPageChange(page)" 
+                            [class.displayNone]="page === undefined || page === null || page === ''"
+                            [class.disabled]="currentPage === page || page === '...'">
+                      {{ page }}
+                    </button>
+                    <button class="abc" (click)="nextPage()"><i class='bx bx-caret-right'></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

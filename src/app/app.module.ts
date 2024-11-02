@@ -22,7 +22,7 @@ import { ClientLayoutMasterComponent } from './shareds/client-layout-master/clie
     AppComponent,
     MasterLayoutAdminComponent,
     ChatComponent,
-    ClientLayoutMasterComponent,
+    ClientLayoutMasterComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +42,6 @@ import { ClientLayoutMasterComponent } from './shareds/client-layout-master/clie
   ],
   providers: [],
   bootstrap: [AppComponent],
-  schemas: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
