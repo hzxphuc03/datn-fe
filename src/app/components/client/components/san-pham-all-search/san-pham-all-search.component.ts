@@ -33,6 +33,7 @@ export class SanPhamAllSearchComponent implements OnInit {
 
   ngOnInit(): void {
     // this.searchQuery.pageSize = 2;
+    this.searchQuery.sort = 1;
     this.getListWords('rows');
     this.getAllvatLieu(); 
     this.getAlltheLoai();

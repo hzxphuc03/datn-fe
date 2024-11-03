@@ -7,10 +7,21 @@ import { catchError, Observable, of } from 'rxjs';
 })
 export class LoginServiceService {
   url: string = 'http://localhost:8080/api/auth/nhan_vien_login';
+  urlkh: string = 'http://localhost:8080/api/auth/khach_hang_login';
   constructor(private http: HttpClient) {}
 
   login(params: any): Observable<any> {
     return this.http.post<any>(`${this.url}`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  loginKH(params: any): Observable<any> {
+    return this.http.post<any>(`${this.urlkh}`, params).pipe(
       (res: any) => {
         return res || null;
       },

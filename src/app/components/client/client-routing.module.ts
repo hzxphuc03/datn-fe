@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'san-pham',
     component: fromPagesComponent.SanPhamAllSearchComponent,
   },
+  {
+    path: 'san-pham/:id',
+    component: fromPagesComponent.DetailProductComponent,
+  },
 ];
 @NgModule({
   imports: [ClientLazyModule, RouterModule.forChild(routes)],

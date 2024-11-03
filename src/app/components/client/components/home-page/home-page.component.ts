@@ -17,6 +17,7 @@ import SwiperCore, {
 } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { interval, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -73,7 +74,8 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   constructor(
     private service: HomeServoceService,
     private spinner: NgxSpinnerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router : Router
   ) {}
   ngAfterViewInit() {}
   slideNext() {
@@ -253,5 +255,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
     });
   }
-
+  goToDetailSanPham(item : any){
+    this.router.navigate([`/g4/shop/san-pham/${item}`]);
+  }
 }

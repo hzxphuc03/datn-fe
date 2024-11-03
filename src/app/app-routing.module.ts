@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MasterLayoutAdminComponent } from './shareds/master-layout-admin/master-layout-admin.component';
 import { LoginComponent } from './components/admin';
 import { ClientLayoutMasterComponent } from './shareds/client-layout-master/client-layout-master.component';
+import { LoginClientComponent } from './components/client';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'auth/shop/login',
     component: LoginComponent,
+  },
+  {
+    path: 'g4/shop/login',
+    component: LoginClientComponent,
   },
   {
     path: '', // Route cho trang chủ

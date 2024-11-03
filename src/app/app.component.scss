@@ -24,19 +24,31 @@
   z-index: 9999;
 }
 .error {
-  background-color: red;
-  color: #fff;
-  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffe7e6;
+  border: solid #ff5757;
+  border-width: 0 0 0 6px;
+  color: #ff5757;
 }
 .success {
-  background-color: green;
-  color: #fff;
-  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #e4f8f0;
+  border: solid #1ea97c;
+  border-width: 0 0 0 6px;
+  color: #1ea97c;
 }
 .normal {
-  background-color: gray;
-  color: #fff;
-  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #e9e9ff;
+  border: solid #696cff;
+  border-width: 0 0 0 6px;
+  color: #696cff;
 }
 .mess {
   padding: 5px 20px;
@@ -51,10 +63,10 @@
 @keyframes showUp {
   0% {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateX(-20px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }

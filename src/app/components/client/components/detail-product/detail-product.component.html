@@ -1,0 +1,275 @@
+<div class="all-chi-tiet-san-pham">
+  <div class="header"></div>
+  <div class="product-detail">
+    <div class="product-image">
+      <div class="cation">
+        <button (click)="slidePrev()" style="font-size: 40px; color: #fff">
+          <i class="bx bx-chevron-left"></i>
+        </button>
+        <button (click)="slideNext()" style="font-size: 40px; color: #fff">
+          <i class="bx bx-chevron-right"></i>
+        </button>
+      </div>
+      <swiper
+        #swiperSlideShow
+        [config]="config"
+        [loop]="true"
+        style="width: 100%"
+      >
+        <ng-template
+          swiperSlide
+          class="swiper-slide"
+          *ngFor="let img of listImg"
+        >
+          <img
+            [src]="img"
+            alt=""
+            style="height: 500px; width: 80%; border-radius: 10px"
+          />
+        </ng-template>
+      </swiper>
+      <div class="small-swiper" style="width: 100%">
+        <swiper
+          #swiperSlideShow
+          [slidesPerView]="3"
+          [spaceBetween]="10"
+          [loop]="false"
+        >
+          <ng-template
+            swiperSlide
+            class="swiper-slide"
+            *ngFor="let img of listImg"
+          >
+            <div
+              style="
+                height: 120px;
+                padding: 10px;
+                background-color: white;
+                width: 100%;
+                border-radius: 10px;
+                box-shadow: inset 0 0 15px rgba(255, 140, 140, 0.8),
+                  inset 0 0 30px rgba(255, 140, 140, 0.5);
+              "
+            >
+              <img
+                [src]="img"
+                alt=""
+                style="
+                  height: 100%;
+                  border-radius: 10px;
+                  width: 100%;
+                  border: 1px solid #ff8c8c;
+                "
+              />
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="title">
+        <span> {{ getData?.sanPham.ten }}</span>
+        <div class="voucher">
+          <div class="title" *ngIf="isGiamGia">
+            Giảm
+            {{ getData.sanPham.giamGia.mucGiam }}%
+          </div>
+        </div>
+      </div>
+      <div class="price">
+        <span style="font-size: 18px; font-weight: 300; color: black">Giao động khoảng : </span>
+        <span
+          *ngIf="isGiamGia"
+          style="font-size: 18px; font-weight: 300; color: black"
+        >
+          ({{ fromMoneny | currency : "VND" : "symbol" : "1.0-0" }}đ -
+          {{ toMoneny | currency : "VND" : "symbol" : "1.0-0" }}đ)</span
+        >
+        <span
+          style="font-size: 18px; font-weight: 300; color: black"
+          [class.giamGiaClass]="isGiamGia"
+        >
+          ({{
+            getData?.sanPham.giaThapNhat
+              | currency : "VND" : "symbol" : "1.0-0"
+          }}đ -
+          {{
+            getData?.sanPham.giaCaoNhat | currency : "VND" : "symbol" : "1.0-0"
+          }}đ)</span
+        >
+      </div>
+      <div class="price-item" style="font-size: 24px; color: black">
+        <span *ngIf="!isGiamGia">
+          {{
+            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.giaBan
+              | currency : "VND" : "symbol" : "1.0-0"
+          }}
+        </span>
+        <div
+          *ngIf="isGiamGia"
+          style="display: flex; align-items: center; gap: 10px"
+        >
+          <span>
+            {{
+              coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+                ?.giaBan -
+                (coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+                  ?.giaBan *
+                  phanTramGiam) /
+                  100 | currency : "VND" : "symbol" : "1.0-0"
+            }}
+          </span>
+          <div
+            [class.giamGiaClass]="isGiamGia"
+            style="font-size: 16px; opacity: 0.7"
+          >
+            {{
+              coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.giaBan
+                | currency : "VND" : "symbol" : "1.0-0"
+            }}
+          </div>
+        </div>
+      </div>
+      <!-- thông tin sản phẩm -->
+       <div style="margin-top: 15px;">
+        <span>
+          <i class='bx bx-subdirectory-right'></i><span style="font-weight: bold;"> Mô tả :</span> {{ getData?.sanPham.moTa }}
+        </span>
+       </div>
+       <div class="product-info-2" style="margin-bottom: 15px;">
+        <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Bề mặt sử dụng:</span> {{ getData?.sanPham.beMatSuDung }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Công nghệ:</span> {{ getData?.sanPham.congNghe }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Kiểu dáng:</span> {{ getData?.sanPham.kieuDang }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Loại cổ:</span> {{ getData?.sanPham.loaiCo?.ten }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Loại đế:</span> {{ getData?.sanPham.loaiDe?.ten }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Thể loại:</span> {{ getData?.sanPham?.theLoai?.ten }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Thương hiệu:</span> {{ getData?.sanPham?.thuongHieu?.ten }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Vật liệu:</span> {{ getData?.sanPham?.vatLieu?.ten }}
+      </div>
+      <div class="info-item">
+          <i class='bx bx-subdirectory-right'></i>
+          <span class="label">Trọng lượng:</span> {{ getData?.sanPham?.trongLuong }} (g)
+      </div>
+    </div>
+      <div
+        class="coler-size"
+        style="display: flex; gap: 10px; flex-direction: column"
+      >
+        <div
+          class="colers-and-size"
+          style="
+            display: flex;
+            gap: 20px;
+            justify-content: flex-start;
+            align-items: center;
+          "
+        >
+          <span>Màu sắc:</span>
+          <div
+            class="colers"
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            *ngFor="let item of coler; let i = index"
+            [class.active-coler]="i + 1 === indexActiveColer"
+          >
+            <div
+              (click)="indexActiveColer = i + 1; indexActiveSize = 1"
+              style="
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                cursor: pointer;
+              "
+              [ngStyle]="{
+                'background-color': item.coler
+              }"
+            ></div>
+          </div>
+        </div>
+        <div class="sizes" style="margin-top: 5px;">
+          <span>Kích cỡ</span>
+          <div
+            class="item-size"
+            *ngFor="
+              let size of coler[indexActiveColer - 1]?.listSize;
+              let indexSize = index
+            "
+            [class.active-size]="indexSize + 1 === indexActiveSize"
+          >
+            <div
+              style="
+                height: 40px;
+                width: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              (click)="indexActiveSize = indexSize + 1"
+            >
+              {{ size.size }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="show-soluong" style="margin-top: 10px;"
+        *ngIf="
+          coler[indexActiveColer - 1] &&
+          coler[indexActiveColer - 1].listSize &&
+          coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+        "
+      >
+        <span >
+          Sản phẩm có sẵn :
+          {{
+            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong
+          }}</span
+        >
+      </div>
+      <div class="action-soluong" style="margin-top: 10px;">
+        <p-inputNumber 
+          [(ngModel)]="soLuongBuy" 
+          [showButtons]="true" 
+          buttonLayout="horizontal" 
+          inputId="horizontal" 
+          spinnerMode="horizontal" 
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" 
+          decrementButtonIcon="pi pi-minus" [min]="1" [max]=" coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong"></p-inputNumber>
+      </div>
+      <div class="user-action">
+        <button class="btn one">Thêm vào giỏ hàng</button>
+        <button class="btn two">Mua ngay</button>
+      </div>
+    </div>
+  </div>
+</div>

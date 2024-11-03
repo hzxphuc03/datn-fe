@@ -119,7 +119,9 @@
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
               <div class="shop__product__option__left">
-                <p>Showing 1–12 of 126 results</p>
+                <div><span class="titles">Sắp xếp theo : </span></div>
+                <div *ngIf="searchQuery.sort === 1"><i class='bx bx-trending-down' (click)="searchQuery.sort = 0;getListWords('rows')"></i> <span (click)="searchQuery.sort = 0;getListWords('rows')">Giảm dần</span></div>
+                <div *ngIf="searchQuery.sort === 0"><i class='bx bx-trending-up' (click)="searchQuery.sort = 1;getListWords('rows')"></i> <span (click)="searchQuery.sort = 1;getListWords('rows')">Tăng dần</span></div>
               </div>
             </div>
           </div>
