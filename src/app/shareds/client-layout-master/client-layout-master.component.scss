@@ -3376,11 +3376,43 @@ input {
     border: none !important;
   }
 }
-.somesong{
+.somesong {
   right: 10px !important;
   left: unset !important;
   width: 56px !important;
   display: flex !important;
-  justify-content: center !important; 
+  justify-content: center !important;
   padding: 4px !important;
+}
+.optionsSearch {
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  background: #787878;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 999;
+  opacity: 0; /* Bắt đầu với độ mờ 0 */
+  animation: fadeIn 0.3s ease-in-out forwards; /* Thêm animation khi phần tử hiện lên */
+  .option-search-results {
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px); /* Đẩy lên một chút */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Trở về vị trí ban đầu */
+  }
+}
+.option-search-results:hover {
+  background-color: #999999;
 }

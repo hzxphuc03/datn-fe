@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginServiceService } from 'src/app/components/admin/service/login-service.service';
 import { TokenService } from 'src/app/services/token.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
@@ -7,17 +7,24 @@ import { ErrorTsService } from 'src/app/shareds/message/error.service';
 @Component({
   selector: 'app-login-client',
   templateUrl: './login-client.component.html',
-  styleUrls: ['./login-client.component.scss']
+  styleUrls: ['./login-client.component.scss'],
 })
 export class LoginClientComponent implements OnInit {
   username: string = '';
   password: string = '';
-  constructor( private loginService: LoginServiceService,
+  backUrl: string | null = null;
+  constructor(
+    private loginService: LoginServiceService,
     private errorService: ErrorTsService,
     private tokenService: TokenService,
-    private router: Router) { }
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.backUrl = params['backurl'] || null;
+    });
   }
   async onSubmit() {
     if (!this.username && !this.password) {
@@ -48,7 +55,11 @@ export class LoginClientComponent implements OnInit {
             const isExpired = this.tokenService.isTokenExpired();
             // Xử lý đăng nhập thành công
             this.errorService.displayError('Đăng nhập thành công', 'success');
-            this.router.navigate(['/g4/shop']);
+            if (this.backUrl !== null) {
+              this.router.navigate([this.backUrl]);
+            } else {
+              this.router.navigate(['/g4/shop']);
+            }
           }
         },
         (err) => {

@@ -147,4 +147,14 @@ export class HomeServoceService {
       })
     );
   }
+  getTimKiem(text: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/tim-kiem/${text}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
 }

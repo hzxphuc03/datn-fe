@@ -1,1 +1,118 @@
-<div class="gio-hang"></div>
+<div class="gio-hang">
+  <div class="header">
+    <div class="title">Giỏ hàng</div>
+  </div>
+  <div class="contents" style="display: flex; min-height: 800px">
+    <div class="left">
+      <div class="header-content" style="position: relative; padding-top: 25px">
+        <div class="progress" [attr.data-click]="currentStep">
+          <div
+            class="progress-bar"
+            [ngStyle]="{ width: progressWidth + '%' }"
+          ></div>
+          <div class="all-step">
+            <div class="step" *ngFor="let step of steps; let i = index">
+              <div class="show-step" [class.active-step]="i < currentStep">
+                {{ i + 1 }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content" *ngIf="currentStep === 1">
+          <div class="header">Giỏ hàng chi tiết</div>
+          <div class="all-content"></div>
+        </div>
+        <div class="content" *ngIf="currentStep === 2">
+          <div class="header">Thông tin giao hàng</div>
+          <div class="all-content"></div>
+        </div>
+        <div class="content" *ngIf="currentStep === 3">
+          <div class="header">Phiếu giảm giá</div>
+          <div class="all-content"></div>
+        </div>
+        <div class="content" *ngIf="currentStep === 4">
+          <div class="header">Thông tin hóa đơn</div>
+          <div class="all-content"></div>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="info-don-hang">
+        <div class="header">Thông tin thanh toán</div>
+        <div class="info">
+          <div class="item">
+            <span>Tổng tiền (sản phẩm) </span>
+            <div class="icon">
+              <i class="bx bx-last-page"></i>
+              <span>1000</span>
+            </div>
+          </div>
+          <div class="item">
+            <span>Tổng tiền (giảm) </span>
+            <div class="icon">
+              <i class="bx bx-last-page"></i>
+              <span>200</span>
+            </div>
+          </div>
+          <div class="item">
+            <span>Tổng tiền (sau khi giảm) </span>
+            <div class="icon">
+              <i class="bx bx-last-page"></i>
+              <span>9800</span>
+            </div>
+          </div>
+          <div class="item">
+            <span>Phương thức thanh toán</span>
+            <div class="icon">
+              <i class="bx bx-last-page"></i>
+              <span>Sau khi nhận hàng</span>
+            </div>
+          </div>
+          <div class="item">
+            <span>Địa chỉ giao hàng</span>
+            <div class="icon">
+              <i class="bx bx-last-page"></i>
+              <span>Đông khê , Đan Phượng , Hà Nội</span>
+            </div>
+          </div>
+          <div class="item">
+            <span>Địa chỉ (cụ thể)</span>
+            <div class="icon">
+              <i class="bx bx-last-page"></i>
+              <span>Số nhà 2 </span>
+            </div>
+          </div>
+          <div class="item">
+            <span>Thông tin người nhận hàng</span>
+            <div class="icon">
+              <div style="display: flex; align-items: center; gap: 10px">
+                <i class="bx bx-last-page"></i>Số điện thoại :
+              </div>
+              <span> 0981816647 </span>
+            </div>
+            <div class="icon">
+              <div style="display: flex; align-items: center; gap: 10px">
+                <i class="bx bx-last-page"></i> Người nhận :
+              </div>
+
+              <span> Nguyễn Khánh Duy </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action">
+        <button
+          class="button back"
+          (click)="prev()"
+          [class.disabled]="currentStep === 1"
+        >
+          <i style="font-size: 37px" class="bx bx-chevron-left"></i>
+        </button>
+        <button class="button next" (click)="next()">
+          <span *ngIf="currentStep === steps.length">Xác nhận thanh toán</span>
+          <span *ngIf="currentStep !== steps.length"> Bước tiếp theo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

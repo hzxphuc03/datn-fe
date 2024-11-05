@@ -102,7 +102,9 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd) {
         const isExpired = this.tokenService.isTokenExpired();
         const { decoded } = this.tokenService.getToken();
-        if (decoded.role !== 'Admin' || decoded.role !== 'NhanVien') {
+        const a = this.tokenService.getToken();
+        if (a.decoded.role !== 'Admin' && a.decoded.role !== 'NhanVien') {
+          this.tokenService.removeToken();
           this.router.navigate(['/auth/shop/login']);
           return;
         }

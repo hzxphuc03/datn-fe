@@ -27,31 +27,31 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #ffe7e6;
-  border: solid #ff5757;
-  border-width: 0 0 0 6px;
-  color: #ff5757;
+  background: rgba(254, 242, 242, 0.95);
+  border: solid #fecaca;
+  border-width: 1px;
+  color: #dc2626;
 }
 .success {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #e4f8f0;
-  border: solid #1ea97c;
-  border-width: 0 0 0 6px;
-  color: #1ea97c;
+  background: rgba(240, 253, 244, 0.95);
+  border: solid #bbf7d0;
+  border-width: 1px;
+  color: #16a34a;
 }
 .normal {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #e9e9ff;
-  border: solid #696cff;
-  border-width: 0 0 0 6px;
-  color: #696cff;
+  background: rgba(239, 246, 255, 0.95);
+  border: solid #bfdbfe;
+  border-width: 1px;
+  color: #2563eb;
 }
 .mess {
-  padding: 5px 20px;
+  padding: 10px 20px;
   border-radius: 10px;
   font-size: 20px;
   display: flex;

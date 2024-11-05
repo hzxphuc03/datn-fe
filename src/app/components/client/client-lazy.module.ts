@@ -19,6 +19,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { ClinetCardOnlineComponent } from './components/clinet-card-online/clinet-card-online.component';
+import { AccordionModule } from 'primeng/accordion';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -40,6 +41,7 @@ import { ClinetCardOnlineComponent } from './components/clinet-card-online/cline
     TabViewModule,
     ButtonModule,
     DialogModule,
+    AccordionModule,
   ],
   exports: [fromPagesComponent.SanPhamAllSearchComponent],
   entryComponents: [],
