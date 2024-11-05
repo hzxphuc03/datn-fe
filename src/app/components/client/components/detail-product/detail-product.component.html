@@ -77,7 +77,9 @@
         </div>
       </div>
       <div class="price">
-        <span style="font-size: 18px; font-weight: 300; color: black">Giao động khoảng : </span>
+        <span style="font-size: 18px; font-weight: 300; color: black"
+          >Giao động khoảng :
+        </span>
         <span
           *ngIf="isGiamGia"
           style="font-size: 18px; font-weight: 300; color: black"
@@ -131,49 +133,56 @@
         </div>
       </div>
       <!-- thông tin sản phẩm -->
-       <div style="margin-top: 15px;">
+      <div style="margin-top: 15px">
         <span>
-          <i class='bx bx-subdirectory-right'></i><span style="font-weight: bold;"> Mô tả :</span> {{ getData?.sanPham.moTa }}
+          <i class="bx bx-subdirectory-right"></i
+          ><span style="font-weight: bold"> Mô tả :</span>
+          {{ getData?.sanPham.moTa }}
         </span>
-       </div>
-       <div class="product-info-2" style="margin-bottom: 15px;">
+      </div>
+      <div class="product-info-2" style="margin-bottom: 15px">
         <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
-          <span class="label">Bề mặt sử dụng:</span> {{ getData?.sanPham.beMatSuDung }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
+          <i class="bx bx-subdirectory-right"></i>
+          <span class="label">Bề mặt sử dụng:</span>
+          {{ getData?.sanPham.beMatSuDung }}
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
           <span class="label">Công nghệ:</span> {{ getData?.sanPham.congNghe }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
           <span class="label">Kiểu dáng:</span> {{ getData?.sanPham.kieuDang }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
+        </div>
+        <div class="info-item" #targetElement>
+          <i class="bx bx-subdirectory-right"></i>
           <span class="label">Loại cổ:</span> {{ getData?.sanPham.loaiCo?.ten }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
           <span class="label">Loại đế:</span> {{ getData?.sanPham.loaiDe?.ten }}
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
+          <span class="label">Thể loại:</span>
+          {{ getData?.sanPham?.theLoai?.ten }}
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
+          <span class="label">Thương hiệu:</span>
+          {{ getData?.sanPham?.thuongHieu?.ten }}
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
+          <span class="label">Vật liệu:</span>
+          {{ getData?.sanPham?.vatLieu?.ten }}
+        </div>
+        <div class="info-item">
+          <i class="bx bx-subdirectory-right"></i>
+          <span class="label">Trọng lượng:</span>
+          {{ getData?.sanPham?.trongLuong }} (g)
+        </div>
       </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
-          <span class="label">Thể loại:</span> {{ getData?.sanPham?.theLoai?.ten }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
-          <span class="label">Thương hiệu:</span> {{ getData?.sanPham?.thuongHieu?.ten }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
-          <span class="label">Vật liệu:</span> {{ getData?.sanPham?.vatLieu?.ten }}
-      </div>
-      <div class="info-item">
-          <i class='bx bx-subdirectory-right'></i>
-          <span class="label">Trọng lượng:</span> {{ getData?.sanPham?.trongLuong }} (g)
-      </div>
-    </div>
       <div
         class="coler-size"
         style="display: flex; gap: 10px; flex-direction: column"
@@ -214,7 +223,7 @@
             ></div>
           </div>
         </div>
-        <div class="sizes" style="margin-top: 5px;">
+        <div class="sizes" style="margin-top: 5px">
           <span>Kích cỡ</span>
           <div
             class="item-size"
@@ -240,31 +249,37 @@
         </div>
       </div>
       <div
-        class="show-soluong" style="margin-top: 10px;"
+        class="show-soluong"
+        style="margin-top: 10px"
         *ngIf="
           coler[indexActiveColer - 1] &&
           coler[indexActiveColer - 1].listSize &&
           coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
         "
       >
-        <span >
+        <span>
           Sản phẩm có sẵn :
           {{
             coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong
           }}</span
         >
       </div>
-      <div class="action-soluong" style="margin-top: 10px;">
-        <p-inputNumber 
-          [(ngModel)]="soLuongBuy" 
-          [showButtons]="true" 
-          buttonLayout="horizontal" 
-          inputId="horizontal" 
-          spinnerMode="horizontal" 
+      <div class="action-soluong" style="margin-top: 10px">
+        <p-inputNumber
+          [(ngModel)]="soLuongBuy"
+          [showButtons]="true"
+          buttonLayout="horizontal"
+          inputId="horizontal"
+          spinnerMode="horizontal"
           decrementButtonClass="p-button-danger"
           incrementButtonClass="p-button-success"
-          incrementButtonIcon="pi pi-plus" 
-          decrementButtonIcon="pi pi-minus" [min]="1" [max]=" coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong"></p-inputNumber>
+          incrementButtonIcon="pi pi-plus"
+          decrementButtonIcon="pi pi-minus"
+          [min]="1"
+          [max]="
+            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong
+          "
+        ></p-inputNumber>
       </div>
       <div class="user-action">
         <button class="btn one">Thêm vào giỏ hàng</button>

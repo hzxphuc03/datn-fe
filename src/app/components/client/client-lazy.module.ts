@@ -18,6 +18,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { ClinetCardOnlineComponent } from './components/clinet-card-online/clinet-card-online.component';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [

@@ -1,15 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HoaDonService } from 'src/app/components/admin/service/hoa-don.service';
 import { CTSPServiceService } from 'src/app/components/admin/service/sp-ctsp-service.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
-import { SwiperOptions ,  
+import {
+  SwiperOptions,
   A11y,
   Autoplay,
   Mousewheel,
   Navigation,
-  Pagination,} from 'swiper';
+  Pagination,
+} from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 interface Size {
   size: string; // Hoặc 'any' nếu bạn không chắc chắn về kiểu
@@ -28,11 +30,12 @@ interface Color {
 @Component({
   selector: 'app-detail-product',
   templateUrl: './detail-product.component.html',
-  styleUrls: ['./detail-product.component.scss']
+  styleUrls: ['./detail-product.component.scss'],
 })
 export class DetailProductComponent implements OnInit {
   @ViewChild('swiperSlideShow') swiperRef!: SwiperComponent;
-  id : any;
+  @ViewChild('targetElement') targetElement!: ElementRef;
+  id: any;
   getData: any;
   coler: Color[] = [];
   indexActiveColer: number = 1;
@@ -42,7 +45,7 @@ export class DetailProductComponent implements OnInit {
     autoHeight: true,
     spaceBetween: 20,
     navigation: false,
-    pagination: { clickable: true},
+    pagination: { clickable: true },
     slidesPerView: 1,
     centeredSlides: true,
     breakpoints: {
@@ -58,21 +61,27 @@ export class DetailProductComponent implements OnInit {
   soLuongWantToAdd: number = 0;
   fromMoneny: number = 0;
   toMoneny: number = 0;
-  soLuongBuy : number = 1;
+  soLuongBuy: number = 1;
   private intervalId: any; // Khai báo biến để lưu ID của interval
-  constructor(private route: ActivatedRoute,private errorService: ErrorTsService,
+  constructor(
+    private route: ActivatedRoute,
+    private errorService: ErrorTsService,
     private service: CTSPServiceService,
     private spinner: NgxSpinnerService,
-    private serverHD: HoaDonService) { }
+    private serverHD: HoaDonService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
       if (this.id) {
-        this.getAll(this.id);  
+        this.getAll(this.id);
       }
-  });
-  this.startAutoSlide();
+    });
+    this.startAutoSlide();
+    setTimeout(() => {
+      this.scrollToTarget();
+    }, 200);
   }
   startAutoSlide() {
     this.intervalId = setInterval(() => {
@@ -89,6 +98,12 @@ export class DetailProductComponent implements OnInit {
       this.imgs();
       this.spinner.hide();
     }
+  }
+  scrollToTarget() {
+    this.targetElement.nativeElement.scrollIntoView({
+      behavior: 'smooth', // Cuộn mượt mà
+      block: 'center', // Vị trí cuộn đến
+    });
   }
   checkVoucher() {
     if (this.getData && this.getData.sanPham.giamGia) {
@@ -157,9 +172,7 @@ export class DetailProductComponent implements OnInit {
       });
     }
   }
-  async addSPToGHCT() {
-
-  }
+  async addSPToGHCT() {}
   slideNext() {
     this.swiperRef.swiperRef.slideNext(); // Gọi slideNext
   }

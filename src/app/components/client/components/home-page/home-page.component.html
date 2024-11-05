@@ -26,7 +26,7 @@
               <i class="bx bx-chevron-right"></i>
             </button>
           </div>
-          <swiper #swiperSlideShow [config]="config">
+          <swiper #swiperSlideShow [config]="config1">
             <ng-template swiperSlide>
               <div class="slider-item">
                 <img
@@ -475,7 +475,7 @@
           - PRODUCT FEATURED
         -->
 
-          <div class="product-featured">
+          <div class="product-featured" *ngIf="giamGiaSau">
             <h2 class="title">Giảm sâu nhất trong ngày</h2>
 
             <div class="showcase-wrapper has-scrollbar">
@@ -624,7 +624,10 @@
                       <ion-icon name="heart-outline"></ion-icon>
                     </button>
 
-                    <button class="btn-action" (click)="goToDetailSanPham(item.id)">
+                    <button
+                      class="btn-action"
+                      (click)="goToDetailSanPham(item.id)"
+                    >
                       <ion-icon name="eye-outline"></ion-icon>
                     </button>
 
@@ -632,14 +635,22 @@
                       <ion-icon name="repeat-outline"></ion-icon>
                     </button> -->
 
-                    <button class="btn-action">
+                    <button
+                      class="btn-action"
+                      (click)="openFasterDialogDetail(item.id)"
+                    >
                       <ion-icon name="add-circle-outline"></ion-icon>
                     </button>
                   </div>
                 </div>
 
                 <div class="showcase-content">
-                  <a class="showcase-category" style="cursor: pointer;" (click)="goToDetailSanPham(item.id)">{{ item.ten }}</a>
+                  <a
+                    class="showcase-category"
+                    style="cursor: pointer"
+                    (click)="goToDetailSanPham(item.id)"
+                    >{{ item.ten }}</a
+                  >
 
                   <a>
                     <h3 class="showcase-title">{{ item.moTa }}</h3>

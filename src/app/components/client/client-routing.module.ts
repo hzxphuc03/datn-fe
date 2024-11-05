@@ -16,6 +16,10 @@ const routes: Routes = [
     component: fromPagesComponent.SanPhamAllSearchComponent,
   },
   {
+    path: 'gio-hang',
+    component: fromPagesComponent.ClinetCardOnlineComponent,
+  },
+  {
     path: 'san-pham/:id',
     component: fromPagesComponent.DetailProductComponent,
   },

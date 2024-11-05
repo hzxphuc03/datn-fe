@@ -77,10 +77,11 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     private router: Router,
     private errorService: ErrorTsService,
     private autoVoucher: AutoServiceService
-  ) {}
+  ) {
+    this.checkToken();
+  }
 
   ngOnInit(): void {
-    this.checkToken();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkToken();
@@ -101,6 +102,10 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd) {
         const isExpired = this.tokenService.isTokenExpired();
         const { decoded } = this.tokenService.getToken();
+        if (decoded.role !== 'Admin' || decoded.role !== 'NhanVien') {
+          this.router.navigate(['/auth/shop/login']);
+          return;
+        }
         if (decoded) {
           if (isExpired) {
             this.errorService.displayError(

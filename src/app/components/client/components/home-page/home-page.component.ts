@@ -18,6 +18,8 @@ import SwiperCore, {
 import { SwiperComponent } from 'swiper/angular';
 import { interval, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { FasterDetailComponent } from '../faster-detail/faster-detail.component';
 
 @Component({
   selector: 'app-home-page',
@@ -26,42 +28,74 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit, AfterViewInit {
   itemCategory = [
-    {img : 'https://static.vecteezy.com/system/resources/previews/023/871/219/original/jordan-brand-logo-symbol-design-clothes-sportwear-illustration-with-black-background-free-vector.jpg',name:'Jodan'},
-    {img : 'https://tse2.mm.bing.net/th?id=OIP.EU9eW6G8cb7vKHpH7bb2aAHaEK&pid=Api&P=0&h=220' , name:'Nike'},
-    {img : 'https://vectorified.com/image/adidas-logo-vector-3.png' , name:'Adidas'},
-    {img : 'https://brandlogos.net/wp-content/uploads/2022/03/balenciaga-logo-brandlogos.net_.png' , name:'Balenciaga'},
-    {img : 'http://tous-logos.com/wp-content/uploads/2017/04/Vans-logo.png' , name:'Vans '},
-    {img : 'https://static.vecteezy.com/system/resources/previews/022/101/105/non_2x/supreme-logo-transparent-free-png.png' , name:'Supreme'},
-    {img : 'https://logolook.net/wp-content/uploads/2022/04/Converse-Logo-1977.png' , name:'Converse'},
-    {img : 'https://logos-world.net/wp-content/uploads/2020/03/Asics-Emblem.png' , name:'Asics'},
-    {img : 'https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png' , name:'Puma'},
-    {img : 'https://logos-world.net/wp-content/uploads/2020/09/Fila-Symbol.png' , name:'Fila'},
-  ]
+    {
+      img: 'https://static.vecteezy.com/system/resources/previews/023/871/219/original/jordan-brand-logo-symbol-design-clothes-sportwear-illustration-with-black-background-free-vector.jpg',
+      name: 'Jodan',
+    },
+    {
+      img: 'https://tse2.mm.bing.net/th?id=OIP.EU9eW6G8cb7vKHpH7bb2aAHaEK&pid=Api&P=0&h=220',
+      name: 'Nike',
+    },
+    {
+      img: 'https://vectorified.com/image/adidas-logo-vector-3.png',
+      name: 'Adidas',
+    },
+    {
+      img: 'https://brandlogos.net/wp-content/uploads/2022/03/balenciaga-logo-brandlogos.net_.png',
+      name: 'Balenciaga',
+    },
+    {
+      img: 'http://tous-logos.com/wp-content/uploads/2017/04/Vans-logo.png',
+      name: 'Vans ',
+    },
+    {
+      img: 'https://static.vecteezy.com/system/resources/previews/022/101/105/non_2x/supreme-logo-transparent-free-png.png',
+      name: 'Supreme',
+    },
+    {
+      img: 'https://logolook.net/wp-content/uploads/2022/04/Converse-Logo-1977.png',
+      name: 'Converse',
+    },
+    {
+      img: 'https://logos-world.net/wp-content/uploads/2020/03/Asics-Emblem.png',
+      name: 'Asics',
+    },
+    {
+      img: 'https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png',
+      name: 'Puma',
+    },
+    {
+      img: 'https://logos-world.net/wp-content/uploads/2020/09/Fila-Symbol.png',
+      name: 'Fila',
+    },
+  ];
   @ViewChild('swiperSlideShow') swiperRef!: SwiperComponent;
   @ViewChild('swiperSlideShowCategory') swiperRefCategory!: SwiperComponent;
   topsNew: any[] = [];
   topsSale: any[] = [];
   topsSell: any[] = [];
   allTheLoai: any[] = [];
+  allSpTheLoai: any[] = [];
   //
   giamGiaSau: any;
   days: number = 0;
   hours: number = 0;
   minutes: number = 0;
   seconds: number = 0;
+  theLoaiParams: any = {};
   private timerSubscription: Subscription = new Subscription();
   //
-  get12update : any[] = [];
+  get12update: any[] = [];
   //
   private intervalId: any; // Khai báo biến để lưu ID của interval
   private intervalIdAc: any; // Khai báo biến để lưu ID của interval
-  public config: SwiperOptions = {
+  public config1: SwiperOptions = {
     autoHeight: true,
     autoplay: true,
     loop: true,
     spaceBetween: 20,
     navigation: false,
-    pagination: { clickable: true},
+    pagination: { clickable: true },
     slidesPerView: 1,
     centeredSlides: true,
     breakpoints: {
@@ -75,7 +109,8 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     private service: HomeServoceService,
     private spinner: NgxSpinnerService,
     private cdr: ChangeDetectorRef,
-    private router : Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
   ngAfterViewInit() {}
   slideNext() {
@@ -99,9 +134,9 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     this.getTop5SanPhamMoi();
     this.getSanPhamSaleSauNhat();
     this.get12SanPhamMoiCapNhat();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.spinner.hide();
-    },1000)
+    }, 1000);
   }
   ngOnDestroy() {
     clearInterval(this.intervalId); // Dọn dẹp interval khi component bị hủy
@@ -210,29 +245,42 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       this.startCountdown();
     }
   }
-  async get12SanPhamMoiCapNhat(){
+  async get12SanPhamMoiCapNhat() {
     const data = await this.service.getTop12UpdateMoiNhat().toPromise();
     if (data) {
       // custum data
-      data.map((item : any) =>{
-        item.status = (new Date().getTime() - new Date(item.ngayTao).getTime()) < (7 * 24 * 60 * 60 * 1000) ? 'NEW' : item.status;
+      data.map((item: any) => {
+        item.status =
+          new Date().getTime() - new Date(item.ngayTao).getTime() <
+          7 * 24 * 60 * 60 * 1000
+            ? 'NEW'
+            : item.status;
         const today = new Date().setHours(0, 0, 0, 0);
-        item.status = (today >= new Date(item.giamGia?.ngayBatDau).getTime() && today <= new Date(item.giamGia?.ngayKetThuc).getTime()) ? 'SALE' : item.status;
-        item.isSales = (today >= new Date(item.giamGia?.ngayBatDau).getTime() && today <= new Date(item.giamGia?.ngayKetThuc).getTime()) ? true : false;
-      })
-      this.get12update = data;      
+        item.status =
+          today >= new Date(item.giamGia?.ngayBatDau).getTime() &&
+          today <= new Date(item.giamGia?.ngayKetThuc).getTime()
+            ? 'SALE'
+            : item.status;
+        item.isSales =
+          today >= new Date(item.giamGia?.ngayBatDau).getTime() &&
+          today <= new Date(item.giamGia?.ngayKetThuc).getTime()
+            ? true
+            : false;
+      });
+      this.get12update = data;
     }
   }
-  
-  async getAllTheLoai(){
+
+  async getAllTheLoai() {
     const data = await this.service.getAllTheLoai().toPromise();
     if (data) {
       // custum data
       this.allTheLoai = data;
-      
+      this.theLoaiParams.theLoaiId = this.allTheLoai[0].id;
+      this.getTop5SPByTheLoai();
     }
   }
-  
+
   startCountdown() {
     const endDate = new Date(this.giamGiaSau.giamGia.ngayKetThuc).getTime();
 
@@ -250,12 +298,30 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       }
 
       this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      this.hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
       this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
     });
   }
-  goToDetailSanPham(item : any){
+  goToDetailSanPham(item: any) {
     this.router.navigate([`/g4/shop/san-pham/${item}`]);
+  }
+  async getTop5SPByTheLoai() {
+    const data = await this.service
+      .getTop5TheoTheLoai(this.theLoaiParams)
+      .toPromise();
+    if (data) {
+      // custum data
+      this.allSpTheLoai = data;
+    }
+  }
+  openFasterDialogDetail(id: any) {
+    const dialogRef = this.dialog.open(FasterDetailComponent, {
+      data: {
+        id: id,
+      },
+    });
   }
 }
