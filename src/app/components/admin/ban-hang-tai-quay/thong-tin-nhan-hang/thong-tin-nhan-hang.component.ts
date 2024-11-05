@@ -6,11 +6,11 @@ import {
 } from '@angular/material/dialog';
 import { KhachHangServiceService } from '../../service/khach-hang-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AddDiaChiComponent } from '../../khach-hang/add-dia-chi/add-dia-chi.component';
 import { DiaChiServiceService } from 'src/app/shareds/dia-chi-service.service';
 import { PhuongThucThanhToanService } from '../../service/phuong-thuc-thanh-toan.service';
 import { HoaDonService } from '../../service/hoa-don.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
+import { AddDiaChiComponent } from 'src/app/components/client';
 
 @Component({
   selector: 'app-thong-tin-nhan-hang',
