@@ -37,6 +37,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     {id : 2 , title : 'Online'},
     {id : 3 , title : 'Thanh toán sau khi nhận hàng'},
   ]
+  productList: { sanPham: any, chiTietSanPham: any[] , isShow : boolean}[] = [];
   //
   constructor(
     private service: MuaHangService,
@@ -140,10 +141,26 @@ export class ClinetCardOnlineComponent implements OnInit {
       .getGoHangByIdKH(decoded.user.id)
       .toPromise();
     if (data) {
-      this.listGh = data.item;
+      this.listGh = data;
+      this.productList = this.groupByProductId(this.listGh);
+      console.log(this.productList);
+      
       // this.listGh = data;
       this.spinner.hide();
     }
+  }
+  groupByProductId(data: any[]): { sanPham: any, chiTietSanPham: any[] , isShow : boolean }[] {
+    const result: { [key: number]: { sanPham: any, chiTietSanPham: any[] , isShow : boolean } } = {};
+
+    for (const item of data) {
+      const productId = item.sanPhamChiTiet.sanPham.id;
+      if (!result[productId]) {
+        result[productId] = { sanPham: item.sanPhamChiTiet.sanPham, chiTietSanPham: [] , isShow : true };
+      }
+      result[productId].chiTietSanPham.push(item.sanPhamChiTiet);
+    }
+
+    return Object.values(result);
   }
   checkToken() {
     const isExpired = this.tokenService.isTokenExpired();
@@ -233,5 +250,29 @@ export class ClinetCardOnlineComponent implements OnInit {
   }
   choseOptionThanhToan(){
     
+  }
+  checkAll(event : any , item : any){
+    event.stopPropagation();
+    item.chiTietSanPham.map((a : any)=>{
+      a.isChecked = item.sanPham.isCheckAll;
+    })
+    this.tinhhTongTien();
+    
+  }
+  checkDetail(event : any , item : any){
+    event.stopPropagation();
+    item.sanPham.isCheckAll =  item.chiTietSanPham.every((item : any) => item.isChecked === true);
+    this.tinhhTongTien();
+  }
+  tinhhTongTien(){
+    let tongTien = 0;
+    this.productList.map((item : any) =>{
+      item.chiTietSanPham.map((detail : any) =>{
+        if(detail.isChecked){
+          tongTien += detail.giaBan * detail.soLuong
+        }
+      })
+    })
+    this.data.tongTien = tongTien;
   }
 }

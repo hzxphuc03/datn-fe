@@ -114,14 +114,14 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   ) {}
   ngAfterViewInit() {}
   slideNext() {
-    this.swiperRef.swiperRef.slideNext(); // Gọi slideNext
+    this.swiperRef?.swiperRef?.slideNext(); // Gọi slideNext
   }
   slideNextAc() {
-    this.swiperRefCategory.swiperRef.slideNext(); // Gọi slideNext
+    this.swiperRefCategory?.swiperRef?.slideNext(); // Gọi slideNext
   }
 
   slidePrev() {
-    this.swiperRef.swiperRef.slidePrev(); // Gọi slidePrev
+    this.swiperRef?.swiperRef?.slidePrev(); // Gọi slidePrev
   }
 
   async ngOnInit() {

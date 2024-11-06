@@ -191,6 +191,8 @@ export class DetailProductComponent implements OnInit {
       .themSanPhamVaoGioHang(param)
       .toPromise();
     if (data) {
+      console.log(data);
+      
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
       } else {
@@ -219,9 +221,9 @@ export class DetailProductComponent implements OnInit {
     }
   }
   slideNext() {
-    this.swiperRef.swiperRef.slideNext(); // Gọi slideNext
+    this.swiperRef?.swiperRef?.slideNext(); // Gọi slideNext
   }
   slidePrev() {
-    this.swiperRef.swiperRef.slidePrev(); // Gọi slidePrev
+    this.swiperRef?.swiperRef?.slidePrev(); // Gọi slidePrev
   }
 }

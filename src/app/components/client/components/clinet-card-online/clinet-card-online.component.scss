@@ -166,3 +166,87 @@
     border-radius: 10px;
   }
 }
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+.product-table th, .product-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+.product-table th {
+  background-color: #fbbbbb;
+  color: white;
+}
+
+.product-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.product-table tr:hover {
+  background-color: #ddd;
+}
+
+.product-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.color-swatch {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.content-product {
+  margin-bottom: 10px;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.item-header:hover {
+  background-color: #e0e0e0;
+}
+
+.all-product-details {
+  max-height: 0; /* Ẩn nội dung */
+  overflow: hidden; /* Ẩn bất kỳ nội dung nào tràn ra ngoài */
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 10px; /* Padding mặc định khi đóng */
+}
+
+.all-product-details.isCloseHeaderProduct {
+  max-height: 10000px; /* Chiều cao tối đa khi mở, điều chỉnh theo nội dung */
+  padding: 10px; /* Padding khi mở */
+  background-color: #f1f1f1; /* Màu nền khi mở */
+}
+.content-scroll{
+  padding: 10px;
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 7px;
+  }
+}

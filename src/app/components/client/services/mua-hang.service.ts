@@ -19,7 +19,7 @@ export class MuaHangService {
     );
   }
   getGoHangByIdKH(id: any): Observable<any> {
-    return this.http.get<any>(`${this.urlGh}?idKhachHang=${id}`).pipe(
+    return this.http.get<any>(`${this.urlGh}/${id}`).pipe(
       (res: any) => {
         return res || null;
       },

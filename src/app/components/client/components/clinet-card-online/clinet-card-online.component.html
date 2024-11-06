@@ -3,7 +3,7 @@
     <div class="title">Giỏ hàng</div>
   </div>
   <div class="contents" style="display: flex; min-height: 800px">
-    <div class="left">
+    <div class="left" style="height: 100%; width: 100%">
       <div class="header-content" style="position: relative; padding-top: 25px">
         <div class="progress" [attr.data-click]="currentStep">
           <div
@@ -18,9 +18,110 @@
             </div>
           </div>
         </div>
-        <div class="content" *ngIf="currentStep === 1">
-          <div class="header">Giỏ hàng chi tiết</div>
-          <div class="all-content"></div>
+        <div
+          class="content content-scroll"
+          style="
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 800px;
+            overflow: auto;
+            flex-wrap: nowrap;
+          "
+          *ngIf="currentStep === 1"
+        >
+          <div class="header" style="font-size: 23px">Giỏ hàng chi tiết</div>
+          <div class="all-content">
+            <div class="contents" style="height: 100%; overflow: auto">
+              <div class="content-product" *ngFor="let item of productList">
+                <div class="item-header">
+                  <div
+                    class="item"
+                    style="display: flex; align-items: center; gap: 20px"
+                  >
+                    <input
+                      style="height: 20px; width: 20px"
+                      type="checkbox"
+                      [name]="item.sanPham.id"
+                      [(ngModel)]="item.sanPham.isCheckAll"
+                      (change)="checkAll($event, item)"
+                    />
+                  </div>
+                  <div style="display: flex; justify-content: space-between;width: 100%;padding-left: 20px;"  (click)="item.isShow = !item.isShow">
+                    <span> {{ item?.sanPham?.ten }}</span>
+                    <div class="icon">
+                      <i class="bx bx-caret-down" *ngIf="item.isShow"></i>
+                      <i class="bx bxs-up-arrow" *ngIf="!item.isShow"></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="all-product-details"
+                  [class.isCloseHeaderProduct]="item.isShow"
+                >
+                  <table class="product-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Id sản phẩm</th>
+                        <th>Hình ảnh</th>
+                        <th>Giá sản phẩm (1)</th>
+                        <th>Số lượng</th>
+                        <th>Kích cỡ</th>
+                        <th>Màu sắc</th>
+                        <th>Tổng tiền (sản phẩm)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let detail of item.chiTietSanPham">
+                        <td>
+                          <input
+                            style="height: 20px; width: 20px"
+                            type="checkbox"
+                            [name]="detail.id"
+                            [(ngModel)]="detail.isChecked"
+                            (change)="checkDetail($event, item)"
+                          />
+                        </td>
+                        <td>{{ detail.id }}</td>
+                        <td>
+                          <img
+                            class="product-image"
+                            [src]="detail.hinhAnh"
+                            alt=""
+                          />
+                        </td>
+                        <td>
+                          {{
+                            detail.giaBan
+                              | currency : "VND" : "symbol" : "1.0-0"
+                          }}
+                        </td>
+                        <td>{{ detail.soLuong }}</td>
+                        <td>{{ detail.kichCo.ten }}</td>
+                        <td>
+                          <div
+                            *ngIf="detail.mauSac.maMau"
+                            class="color-swatch"
+                            [ngStyle]="{
+                              'background-color': detail.mauSac.maMau
+                            }"
+                          ></div>
+                        </td>
+                        <td>
+                          {{
+                            detail.soLuong * detail.giaBan
+                              | currency : "VND" : "symbol" : "1.0-0"
+                          }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div
           class="content"
@@ -33,73 +134,76 @@
             style="display: flex; gap: 10px; flex-direction: column"
           >
             <div class="right">
-              <div class="loaction-option" style="display: flex;flex-direction: column;gap: 10px;">
-                <div class="d-flex" style="width: 100%;gap: 10px;">
+              <div
+                class="loaction-option"
+                style="display: flex; flex-direction: column; gap: 10px"
+              >
+                <div class="d-flex" style="width: 100%; gap: 10px">
                   <p-dropdown
-                  [options]="listTinhThanh"
-                  [(ngModel)]="data.idTinhThanh"
-                  optionLabel="ProvinceName"
-                  optionValue="ProvinceID"
-                  [filter]="true"
-                  filterBy="ProvinceName"
-                  [showClear]="true"
-                  placeholder="Chọn tỉnh thành"
-                  (onChange)="changeTinhThanh()"
-                >
-                  <ng-template pTemplate="selectedItem" let-selectedOption>
-                    <div class="flex align-items-center gap-2">
-                      <div>{{ selectedOption.ProvinceName }}</div>
-                    </div>
-                  </ng-template>
-                  <ng-template let-location pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                      <div>{{ location.ProvinceName }}</div>
-                    </div>
-                  </ng-template>
-                </p-dropdown>
-                <p-dropdown
-                  [options]="listQuanHuyen"
-                  [(ngModel)]="data.idQuanHuyen"
-                  optionLabel="DistrictName"
-                  optionValue="DistrictID"
-                  [filter]="true"
-                  filterBy="DistrictName"
-                  [showClear]="true"
-                  placeholder="Chọn quận huyện"
-                  (onChange)="changeQuanHuyen()"
-                >
-                  <ng-template pTemplate="selectedItem" let-selectedOption>
-                    <div class="flex align-items-center gap-2">
-                      <div>{{ selectedOption.DistrictName }}</div>
-                    </div>
-                  </ng-template>
-                  <ng-template let-location pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                      <div>{{ location.DistrictName }}</div>
-                    </div>
-                  </ng-template>
-                </p-dropdown>
-                <p-dropdown
-                  [options]="listQuanXa"
-                  [(ngModel)]="data.idPhuongXa"
-                  optionLabel="WardName"
-                  optionValue="WardCode"
-                  [filter]="true"
-                  filterBy="WardName"
-                  [showClear]="true"
-                  placeholder="Chọn phường xã"
-                >
-                  <ng-template pTemplate="selectedItem" let-selectedOption>
-                    <div class="flex align-items-center gap-2">
-                      <div>{{ selectedOption.WardName }}</div>
-                    </div>
-                  </ng-template>
-                  <ng-template let-location pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                      <div>{{ location.WardName }}</div>
-                    </div>
-                  </ng-template>
-                </p-dropdown>
+                    [options]="listTinhThanh"
+                    [(ngModel)]="data.idTinhThanh"
+                    optionLabel="ProvinceName"
+                    optionValue="ProvinceID"
+                    [filter]="true"
+                    filterBy="ProvinceName"
+                    [showClear]="true"
+                    placeholder="Chọn tỉnh thành"
+                    (onChange)="changeTinhThanh()"
+                  >
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ selectedOption.ProvinceName }}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-location pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ location.ProvinceName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                  <p-dropdown
+                    [options]="listQuanHuyen"
+                    [(ngModel)]="data.idQuanHuyen"
+                    optionLabel="DistrictName"
+                    optionValue="DistrictID"
+                    [filter]="true"
+                    filterBy="DistrictName"
+                    [showClear]="true"
+                    placeholder="Chọn quận huyện"
+                    (onChange)="changeQuanHuyen()"
+                  >
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ selectedOption.DistrictName }}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-location pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ location.DistrictName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                  <p-dropdown
+                    [options]="listQuanXa"
+                    [(ngModel)]="data.idPhuongXa"
+                    optionLabel="WardName"
+                    optionValue="WardCode"
+                    [filter]="true"
+                    filterBy="WardName"
+                    [showClear]="true"
+                    placeholder="Chọn phường xã"
+                  >
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ selectedOption.WardName }}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-location pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ location.WardName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
                 </div>
                 <span class="p-float-label">
                   <textarea
@@ -113,29 +217,36 @@
                   ></textarea>
                   <label for="float-input">Ghi chú</label>
                 </span>
-                <div class="use-user" (click)="useInfoCustumer()" style="cursor: pointer;">
+                <div
+                  class="use-user"
+                  (click)="useInfoCustumer()"
+                  style="cursor: pointer"
+                >
                   <a>sử dụng thông tin khách hàng</a>
                 </div>
-               <div class="d-flex" style="display: flex;align-items: center;gap: 10px;">
-                <span class="p-float-label">
-                  <input
-                    id="float-input"
-                    type="text"
-                    pInputText
-                    [(ngModel)]="data.tenNguoiNhan"
-                  />
-                  <label for="float-input">Tên người nhận</label>
-                </span>
-                <span class="p-float-label">
-                  <input
-                    id="float-input"
-                    type="text"
-                    pInputText
-                    [(ngModel)]="data.sdtNguoiNhan"
-                  />
-                  <label for="float-input">Số điện thoại người nhận</label>
-                </span>
-               </div>
+                <div
+                  class="d-flex"
+                  style="display: flex; align-items: center; gap: 10px"
+                >
+                  <span class="p-float-label">
+                    <input
+                      id="float-input"
+                      type="text"
+                      pInputText
+                      [(ngModel)]="data.tenNguoiNhan"
+                    />
+                    <label for="float-input">Tên người nhận</label>
+                  </span>
+                  <span class="p-float-label">
+                    <input
+                      id="float-input"
+                      type="text"
+                      pInputText
+                      [(ngModel)]="data.sdtNguoiNhan"
+                    />
+                    <label for="float-input">Số điện thoại người nhận</label>
+                  </span>
+                </div>
                 <p-dropdown
                   [options]="optionPhuongThucThanhToan"
                   [(ngModel)]="data.phuongThucThanhToan"
@@ -240,7 +351,7 @@
               <i class="bx bx-last-page"></i>
               <span>{{
                 data?.tongTien
-                  ? data?.tongTien
+                  ? (data?.tongTien | currency : "VND" : "symbol" : "1.0-0")
                   : (0 | currency : "VND" : "symbol" : "1.0-0")
               }}</span>
             </div>
