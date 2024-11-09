@@ -6,13 +6,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HoaDonService } from 'src/app/components/admin/service/hoa-don.service';
 import { CTSPServiceService } from 'src/app/components/admin/service/sp-ctsp-service.service';
+import { TokenService } from 'src/app/services/token.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
+import { MuaHangService } from '../../services/mua-hang.service';
 interface Size {
   size: string; // Hoặc 'any' nếu bạn không chắc chắn về kiểu
   id: number;
@@ -70,7 +72,9 @@ export class FasterDetailComponent implements OnInit {
     private errorService: ErrorTsService,
     private service: CTSPServiceService,
     private spinner: NgxSpinnerService,
-    private serverHD: HoaDonService
+    private tokenService: TokenService,
+    private router: Router,
+    private gioHangService: MuaHangService
   ) {
     this.id = this.data.id;
   }
@@ -172,7 +176,49 @@ export class FasterDetailComponent implements OnInit {
       });
     }
   }
-  async addSPToGHCT() {}
+  async addSPToGHCT() {
+    this.checkToken();
+    const { decoded } = this.tokenService.getToken();
+    const param = {
+      soLuong: this.soLuongBuy,
+      idKhachhang: decoded.user.id,
+      idSanPhamChiTiet:
+        this.coler[this.indexActiveColer - 1].listSize[this.indexActiveSize - 1]
+          ?.idSP,
+    };
+    const data = await this.gioHangService
+      .themSanPhamVaoGioHang(param)
+      .toPromise();
+    if (data) {
+      console.log(data);
+      
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+      } else {
+        this.errorService.displayError(
+          `Thêm vào giỏ hàng thành công`,
+          'success'
+        );
+      }
+    }
+  }
+  checkToken() {
+    const isExpired = this.tokenService.isTokenExpired();
+    const { decoded } = this.tokenService.getToken();
+    const currentUrl = this.router.url;
+    if (decoded) {
+      if (isExpired || decoded.role !== 'KhachHang') {
+        this.tokenService.removeToken();
+        this.router.navigate(['/g4/shop/login'], {
+          queryParams: { backurl: currentUrl },
+        });
+      }
+    } else {
+      this.router.navigate(['/g4/shop/login'], {
+        queryParams: { backurl: currentUrl },
+      });
+    }
+  }
   slideNext() {
     this.swiperRef.swiperRef.slideNext(); // Gọi slideNext
   }

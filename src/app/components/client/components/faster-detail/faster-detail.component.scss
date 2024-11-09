@@ -159,23 +159,24 @@
     font-weight: bold; /* Đặt chữ in đậm */
   }
 }
-.user-action {
+.user-action{
   width: 100%;
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
   gap: 10px;
-  .btn {
+  .btn{
     width: 30%;
     border: 1px solid #ff8c8c;
     padding: 10px 5px;
   }
-  .one {
+  .one{
     background-color: #ff8c8c;
     border: 1px solid gray;
     color: #fff;
-  }
-  .two {
+
+  } 
+  .two{
     background-color: gray;
     border: 1px solid #ff8c8c;
     color: #fff;

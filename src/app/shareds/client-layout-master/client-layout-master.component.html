@@ -85,7 +85,7 @@
             class="optionsSearch"
             *ngIf="searchControl.value && isOpenSearch"
           >
-            <div class="option-search-results">
+            <div class="option-search-results" (click)="sanPham();this.isOpenSearch = false;">
               <span>{{ searchControl.value }}</span>
               <ion-icon name="search-outline"></ion-icon>
             </div>

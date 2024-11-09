@@ -93,7 +93,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     this.getGioHang();
     this.getAllTinhThanh();
     this.getAllDiaChi('rows');
-    this.data.optionPhuongThucThanhToan = 3;
+    this.data.phuongThucThanhToan = 3;
     this.getAllVoucher();
   }
   async getAllDiaChi(type: string, action?: string): Promise<void> {
@@ -161,18 +161,18 @@ export class ClinetCardOnlineComponent implements OnInit {
     return ((this.currentStep - 1) / (this.steps.length - 1)) * 100;
   }
   next(): void {
-    // if(this.currentStep === 1){
-    //   if(!this.data.tongTien|| this.data.tongTien === 0){
-    //     this.errorService.displayError('Vui lòng chọn sản phẩm để sang bước tiếp theo','normal')
-    //     return;
-    //   }
-    // }
-    // if(this.currentStep === 2){
-    //   if(!this.data.idTinhThanh || !this.data.idPhuongXa || !this.data.idQuanHuyen || !this.data.tenNguoiNhan || !this.data.sdtNguoiNhan){
-    //     this.errorService.displayError('Vui lòng không để trống thông tin giao hàng','normal')
-    //     return;
-    //   }
-    // }
+    if(this.currentStep === 1){
+      if(!this.data.tongTien|| this.data.tongTien === 0){
+        this.errorService.displayError('Vui lòng chọn sản phẩm để sang bước tiếp theo','normal')
+        return;
+      }
+    }
+    if(this.currentStep === 2){
+      if(!this.data.idTinhThanh || !this.data.idPhuongXa || !this.data.idQuanHuyen || !this.data.tenNguoiNhan || !this.data.sdtNguoiNhan){
+        this.errorService.displayError('Vui lòng không để trống thông tin giao hàng','normal')
+        return;
+      }
+    }
     if (this.currentStep < this.steps.length) {
       this.currentStep++;
     }
@@ -614,7 +614,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       }
     })
     //check api
-    if(this.data.optionPhuongThucThanhToan === 3){
+    if(this.data.phuongThucThanhToan === 3){
       const data = await this.service.thanhToan3(orderDetails).toPromise();
       if (data?.errorCode) {
         this.errorService.displayError(data.messageError, 'error');
@@ -627,21 +627,22 @@ export class ClinetCardOnlineComponent implements OnInit {
         this.getGioHang();
         this.getAllTinhThanh();
         this.getAllDiaChi('rows');
-        this.data.optionPhuongThucThanhToan = 3;
+        this.data.phuongThucThanhToan = 3;
         this.getAllVoucher();
+        this.currentStep = 1;
     }
   }
     
-    if(this.data.optionPhuongThucThanhToan === 2){
+    if(this.data.phuongThucThanhToan === 2){
       // run url
-      const data = await this.service.thanhToan3(orderDetails).toPromise();
+      const data = await this.service.thanhToan2(orderDetails).toPromise();
       if (data?.errorCode) {
         this.errorService.displayError(data.messageError, 'error');
       } else {
-        console.log(data);
+        this.openCenteredPopup(data.body);
         
       }
-      // this.openCenteredPopup('http://localhost:4200/thanh-toan-online-res');
+      
     }
    
   }
@@ -658,6 +659,10 @@ export class ClinetCardOnlineComponent implements OnInit {
   }
   thanhToanOnline(idhd : any , trangThai : any){
     // gọi api ở đây bú bú bú 
+    if(trangThai){
+    }else{
+      this.errorService.displayError('bạn đã hủy thanh toán','normal')
+    }
   }
   async deleteAll(){
     const dialogRef = this.dialog.open(DialogConfirmComponent, {

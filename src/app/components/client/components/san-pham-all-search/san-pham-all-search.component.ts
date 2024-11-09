@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeServoceService } from '../../services/home-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-san-pham-all-search',
@@ -29,7 +30,7 @@ export class SanPhamAllSearchComponent implements OnInit {
   // phân trang
   totalPages: number = 12; // Tổng số trang
   currentPage: number = 1;  // Trang hiện tại
-  constructor(  private service: HomeServoceService,  private spinner: NgxSpinnerService,) { }
+  constructor(  private service: HomeServoceService,  private spinner: NgxSpinnerService,private router : Router) { }
 
   ngOnInit(): void {
     // this.searchQuery.pageSize = 2;
@@ -296,5 +297,8 @@ previousPage(): void {
     this.searchQuery.page =  this.currentPage;
     this.getListWords('');
   }
+}
+goToDetailSanPham(item: any) {
+  this.router.navigate([`/g4/shop/san-pham/${item}`]);
 }
 }

@@ -168,25 +168,21 @@
                         <ion-icon name="heart-outline"></ion-icon>
                       </button>
 
-                      <button class="btn-action">
+                      <button class="btn-action"  (click)="goToDetailSanPham(item.id)">
                         <ion-icon name="eye-outline"></ion-icon>
                       </button>
 
                       <!-- <button class="btn-action">
                                     <ion-icon name="repeat-outline"></ion-icon>
                                   </button> -->
-
-                      <button class="btn-action">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                      </button>
                     </div>
                   </div>
 
                   <div class="showcase-content">
-                    <a class="showcase-category">{{ item.ten }}</a>
+                    <a class="showcase-category" (click)="goToDetailSanPham(item.id)">{{ item.ten }}</a>
 
                     <a>
-                      <h3 class="showcase-title">{{ item.moTa }}</h3>
+                      <h3 class="showcase-title" (click)="goToDetailSanPham(item.id)">{{ item.moTa }}</h3>
                     </a>
 
                     <div class="showcase-rating">
