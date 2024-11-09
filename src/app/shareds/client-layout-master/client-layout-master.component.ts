@@ -6,6 +6,7 @@ import { ErrorTsService } from '../message/error.service';
 import { HomeServoceService } from 'src/app/components/client/services/home-service.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { DataService } from 'src/app/components/client/services/data.service';
 
 @Component({
   selector: 'app-client-layout-master',
@@ -17,15 +18,32 @@ export class ClientLayoutMasterComponent implements OnInit {
   isOpenSearch: boolean = false;
   searchControl = new FormControl();
   searchResults: any[] = []; // Biến để lưu kết quả tìm kiếm
+  isOpenUser : boolean = false;
+  idKhachHang : any;
+  countGioHang : any = 0;
+  receivedData: string = '';
   constructor(
     private tokenService: TokenService,
     private router: Router,
     private errorService: ErrorTsService,
     private autoVoucher: AutoServiceService,
-    private service: HomeServoceService
+    private service: HomeServoceService,
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
+    this.receivedData = this.dataService.getData();
+    // Lắng nghe các thay đổi từ service
+    this.dataService.data$.subscribe(data => {
+      this.receivedData = data; // Cập nhật dữ liệu khi có thay đổi
+      this.getGioHang();
+    });
+    const { decoded } = this.tokenService.getToken();
+    if (!decoded) {
+      this.router.navigate(['/g4/shop/login']);
+    }
+    this.idKhachHang = decoded.user.id;
+    this.getGioHang();
     this.checkToken();
     this.searchControl.valueChanges
       .pipe(
@@ -72,6 +90,7 @@ export class ClientLayoutMasterComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   onClick(event: MouseEvent): void {
     const searchInput = document.getElementById('search-input');
+    const openUserActive = document.getElementById('open-user-active');
     const optionsSearch = document.querySelector('.optionsSearch');
 
     // Kiểm tra nếu nhấp ra ngoài input và danh sách kết quả
@@ -83,6 +102,21 @@ export class ClientLayoutMasterComponent implements OnInit {
     ) {
       this.isOpenSearch = false; // Đóng hộp tìm kiếm
     }
+    if (
+      openUserActive &&
+      !openUserActive.contains(event.target as Node)
+    ) {
+      this.isOpenUser = false; // Đóng hộp tìm kiếm
+    }
+
+  }
+  async getGioHang(){
+    const data = await this.service.getSoluongGioHang(this.idKhachHang).toPromise();
+    if(data){
+      this.countGioHang = data;
+      console.log(data);
+      
+    }
   }
 
   home() {
@@ -93,5 +127,16 @@ export class ClientLayoutMasterComponent implements OnInit {
   }
   sanPham() {
     this.router.navigate(['/g4/shop/san-pham']);
+  }
+  goVoucher() {
+    this.router.navigate(['/g4/shop/phieu-giam-gia']);
+  }
+  goDiaChi() {
+    this.router.navigate(['/g4/shop/dia-chi']);
+  }
+  logOut(){
+    this.tokenService.removeToken();
+    this.errorService.displayError('Đăng xuất thành công', 'normal');
+    this.router.navigate(['/g4/shop/login']);
   }
 }

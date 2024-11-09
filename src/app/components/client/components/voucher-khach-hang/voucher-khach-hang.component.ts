@@ -38,6 +38,7 @@ export class VoucherKhachHangComponent implements OnInit {
     this.getAllVoucher();
   }
   async getAllVoucher() {
+    this.spinner.show();
     const data = await this.service
       .getVoucherKhachHang(this.searchQuery.idKhachHang)
       .toPromise();
@@ -61,6 +62,7 @@ export class VoucherKhachHangComponent implements OnInit {
         }
       });
       this.listVoucherKhanhHang = newDataGop;
+      this.spinner.hide();
     }
   }
 

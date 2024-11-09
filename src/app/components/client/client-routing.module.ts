@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'san-pham/:id',
     component: fromPagesComponent.DetailProductComponent,
   },
+  {
+    path: 'dia-chi',
+    component: fromPagesComponent.DiaChiKhachHangComponent,
+  },
 ];
 @NgModule({
   imports: [ClientLazyModule, RouterModule.forChild(routes)],

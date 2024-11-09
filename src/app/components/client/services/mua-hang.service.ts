@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,10 +10,11 @@ export class MuaHangService {
   urlGh: string = 'http://localhost:8080/api/gio_hang_chi_tiet';
   urlGhKH: string = 'http://localhost:8080/api/gio_hang';
   urlKhVoucher ='http://localhost:8080/api/voucher_khach_hang'
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private dataService: DataService) {}
   themSanPhamVaoGioHang(params: any): Observable<any> {
     return this.http.post<any>(`${this.urlGh}/add`, params).pipe(
       (res: any) => {
+        this.dataService.updateData('this.value');
         return res || null;
       },
       catchError((error: any) => {

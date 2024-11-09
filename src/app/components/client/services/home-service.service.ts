@@ -13,6 +13,7 @@ export class HomeServoceService {
   urlLoaiDe = 'http://localhost:8080/api/loai_de';
   urlLoaiCo = 'http://localhost:8080/api/loai_co';
   urlGiamGia = 'http://localhost:8080/api/giam_gia';
+  urlGioHang = 'http://localhost:8080/api/gio_hang'
   constructor(private http: HttpClient) {}
 
   getTop5BanChay(): Observable<any> {
@@ -59,6 +60,16 @@ export class HomeServoceService {
   }
   getTop5Moi(): Observable<any> {
     return this.http.get<any>(`${this.url}/top5-moi`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getTop5MoiTheoTheLoi(id : any): Observable<any> {
+    return this.http.get<any>(`${this.url}/top5-san-pham-theo-the-loai?theLoaiId=${id}`).pipe(
       (res: any) => {
         return res || null;
       },
@@ -149,6 +160,16 @@ export class HomeServoceService {
   }
   getTimKiem(text: any): Observable<any> {
     return this.http.get<any>(`${this.url}/tim-kiem/${text}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getSoluongGioHang(id: any): Observable<any> {
+    return this.http.get<any>(`${this.urlGioHang}/get_so_luong/${id}`).pipe(
       (res: any) => {
         return res || null;
       },

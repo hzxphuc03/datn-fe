@@ -72,6 +72,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   @ViewChild('swiperSlideShow') swiperRef!: SwiperComponent;
   @ViewChild('swiperSlideShowCategory') swiperRefCategory!: SwiperComponent;
   topsNew: any[] = [];
+  topsTheLoai : any[] = [];
   topsSale: any[] = [];
   topsSell: any[] = [];
   allTheLoai: any[] = [];
@@ -238,6 +239,33 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       this.topsNew = data; // Gán dữ liệu đã cập nhật vào topsSale
     }
   }
+  async getTop5SanPhamMoiTheoTheLhoai(id : any) {
+    const data = await this.service.getTop5MoiTheoTheLoi(id).toPromise();
+    if (data) {
+      const today = new Date();
+      data.map((item: any) => {
+        // Kiểm tra xem có giảm giá không
+        if (item.giamGia && item.giamGia.id) {
+          const start = new Date(item.giamGia.ngayBatDau);
+          const end = new Date(item.giamGia.ngayKetThuc);
+          // Kiểm tra nếu hôm nay nằm trong khoảng giảm giá
+          if (today >= start && today <= end) {
+            item.isSales = true; // Gán true nếu đang trong thời gian giảm giá
+            item.afterSaleHighest =
+              item.giaCaoNhat - (item.giaCaoNhat * item.giamGia.mucGiam) / 100;
+            item.afterSaleLowst =
+              item.giaThapNhat -
+              (item.giaThapNhat * item.giamGia.mucGiam) / 100;
+          } else {
+            item.isSales = false; // Gán false nếu không còn trong thời gian giảm giá
+          }
+        } else {
+          item.isSales = false; // Không có thông tin giảm giá
+        }
+      });
+      this.topsTheLoai = data; // Gán dữ liệu đã cập nhật vào topsSale   
+    }
+  }
   async getSanPhamSaleSauNhat() {
     const data = await this.service.getTopGiamGiaSau().toPromise();
     if (data) {
@@ -276,8 +304,8 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     if (data) {
       // custum data
       this.allTheLoai = data;
-      this.theLoaiParams.theLoaiId = this.allTheLoai[0].id;
-      this.getTop5SPByTheLoai();
+      this.getTop5SanPhamMoiTheoTheLhoai(this.allTheLoai[0].id);
+      // this.getTop5SPByTheLoai();
     }
   }
 
@@ -314,7 +342,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       .toPromise();
     if (data) {
       // custum data
-      this.allSpTheLoai = data;
+      this.allSpTheLoai = data;      
     }
   }
   openFasterDialogDetail(id: any) {

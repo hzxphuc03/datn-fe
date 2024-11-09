@@ -28,13 +28,12 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
   searchQuery: any = {};
   listPageNumber: number[] = [];
   listIndexActiveStatus: any[] = [
-    { index: 0, title: 'Hóa đơn đã hủy' },
-    { index: 1, title: 'Hóa đơn khởi tạo' },
     { index: 2, title: 'Hóa đơn chờ xử lý' },
     { index: 3, title: 'Hóa đơn đã nhận' },
     { index: 4, title: 'Đóng gói hóa đơn' },
-    { index: 5, title: 'Hóa đơn vận chuyển' },
-    { index: 6, title: 'Hóa đơn nhận(hoàn thành)' },
+    { index: 5, title: 'Hóa đơn đang vận chuyển' },
+    { index: 6, title: 'Hóa đơn hoàn thành)' },
+    { index: 0, title: 'Hóa đơn đã hủy' },
   ];
   constructor(
     private route: ActivatedRoute,

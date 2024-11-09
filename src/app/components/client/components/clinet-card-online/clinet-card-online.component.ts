@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddDiaChiComponent, DialogConfirmComponent } from 'src/app/components/admin';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { BroadcastService } from 'src/app/services/broadcast.service';
+import { DataService } from '../../services/data.service';
 interface Item {
   name: string;
   quantity: number;
@@ -75,7 +76,8 @@ export class ClinetCardOnlineComponent implements OnInit {
     private serviceDiaChi: KhachHangServiceService,
     private dialog: MatDialog,
     private errorService: ErrorTsService,
-    private broadcastService: BroadcastService
+    private broadcastService: BroadcastService,
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -198,6 +200,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       .toPromise();
     if (data) {
       this.listGh = data;
+      this.dataService.updateData('');
       this.listGh.map((item: any) => {
         // nếu có giảm giá
         if (item.sanPhamChiTiet.sanPham.giamGia?.id) {
@@ -730,6 +733,7 @@ export class ClinetCardOnlineComponent implements OnInit {
         const data = await this.service.DeleteAll(this.searchQuery.idKhachHang).toPromise();
         if(data){
           this.errorService.displayError('Xóa sản phẩm thành công','normal');
+          this.dataService.updateData('');
           await this.getGioHang();
           this.tinhhTongTien();
           this.getShipPrice();
@@ -761,6 +765,7 @@ export class ClinetCardOnlineComponent implements OnInit {
         Promise.all(deletePromises)
           .then(async () => {
             this.errorService.displayError('Xóa sản phẩm thành công', 'normal');
+            this.dataService.updateData('');
              await this.getGioHang();
              this.tinhhTongTien();
              this.getShipPrice();

@@ -1,0 +1,63 @@
+<div class="left" style="padding: 30px;">
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; width: 100%; justify-content: space-between">
+        <div style="display: flex; gap: 20px">
+          <span>Thông tin địa chỉ khách hàng</span>
+          <button
+            class="btn btn-primary"
+            (click)="addLocation(); visible = false"
+          >
+            <i class="bx bx-location-plus"></i>
+          </button>
+        </div>
+        <div class="table-pagination d-flex">
+          <div class="flex-grow-1"></div>
+          <div class="d-flex justify-content-center align-items-center">
+            <span
+              (click)="getAllDiaChi('page', 'prev')"
+              class="table-pagination-item btn-prev ml-2"
+            >
+              <i class="bx bx-left-arrow-alt"></i>
+            </span>
+            <span
+              (click)="getAllDiaChi('page', 'next')"
+              class="table-pagination-item btn-next"
+            >
+              <i class="bx bx-right-arrow-alt"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p-table
+        [value]="listData"
+        [rowHover]="true"
+        styleClass="p-datatable-gridlines"
+        [scrollable]="true"
+        scrollHeight="calc(90vh - 100px)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <td>Tỉnh thành</td>
+            <td>Quận huyện</td>
+            <td>Phường xã</td>
+            <td>Ghi chú</td>
+            <!-- <td>Sử dụng</td> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{ product.tinhThanh }}</td>
+            <td>{{ product.quanHuyen }}</td>
+            <td>{{ product.phuongXa }}</td>
+            <td>{{ product.ghiChu }}</td>
+            <td>
+              <!-- <button class="btn btn-primary" (click)="useLocation(product)">
+                <i class="bx bxs-check-circle"></i>
+              </button> -->
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>

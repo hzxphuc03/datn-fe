@@ -15,6 +15,7 @@ import {
 } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { MuaHangService } from '../../services/mua-hang.service';
+import { DataService } from '../../services/data.service';
 interface Size {
   size: string; // Hoặc 'any' nếu bạn không chắc chắn về kiểu
   id: number;
@@ -73,7 +74,8 @@ export class DetailProductComponent implements OnInit {
     private serverHD: HoaDonService,
     private tokenService: TokenService,
     private router: Router,
-    private gioHangService: MuaHangService
+    private gioHangService: MuaHangService,
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -191,11 +193,10 @@ export class DetailProductComponent implements OnInit {
       .themSanPhamVaoGioHang(param)
       .toPromise();
     if (data) {
-      console.log(data);
-      
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
       } else {
+        this.dataService.updateData('');
         this.errorService.displayError(
           `Thêm vào giỏ hàng thành công`,
           'success'

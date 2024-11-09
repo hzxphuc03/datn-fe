@@ -142,7 +142,7 @@
 
             <ul class="sidebar-menu-category-list">
               <li class="sidebar-menu-category" *ngFor="let item of allTheLoai">
-                <button class="sidebar-accordion-menu" data-accordion-btn>
+                <button class="sidebar-accordion-menu" data-accordion-btn (click)="getTop5SanPhamMoiTheoTheLhoai(item.id)">
                   <div class="menu-title-flex">
                     <i class="bx bx-subdirectory-right"></i>
 
@@ -160,125 +160,55 @@
           <div class="product-showcase">
             <h3 class="showcase-heading">GỢI Ý theo thể loại</h3>
 
-            <div class="showcase-wrapper">
+            <div class="showcase-wrapper has-scrollbar">
               <div class="showcase-container">
-                <div class="showcase">
+                <div
+                  class="showcase"
+                  (click)="goToDetailSanPham(sale.id)"
+                  style="cursor: pointer"
+                  style="cursor: pointer"
+                  *ngFor="let sale of topsTheLoai"
+                >
                   <a class="showcase-img-box">
                     <img
-                      src="./assets/images/products/1.jpg"
-                      alt="baby fabric shoes"
-                      width="75"
-                      height="75"
+                      [src]="sale.hinhAnh"
+                      alt=""
                       class="showcase-img"
+                      width="70"
+                      height="70"
                     />
                   </a>
 
                   <div class="showcase-content">
                     <a>
-                      <h4 class="showcase-title">baby fabric shoes</h4>
+                      <h4 class="showcase-title">
+                        {{ sale.ten }}
+                      </h4>
                     </a>
 
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
+                    <!-- <a class="showcase-category"
+                      ><span>{{ sale.moTa }}</span></a
+                    > -->
+
+                    <div class="price-box" *ngIf="sale.isSales">
+                      <p class="price">
+                        {{
+                          sale.afterSaleLowst
+                            | currency : "VND" : "symbol" : "1.0-0"
+                        }}
+                      </p>
+                      <del>{{
+                        sale.giaThapNhat
+                          | currency : "VND" : "symbol" : "1.0-0"
+                      }}</del>
                     </div>
-
-                    <div class="price-box">
-                      <del>$5.00</del>
-                      <p class="price">$4.00</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="showcase">
-                  <a class="showcase-img-box">
-                    <img
-                      src="./assets/images/products/2.jpg"
-                      alt="men's hoodies t-shirt"
-                      class="showcase-img"
-                      width="75"
-                      height="75"
-                    />
-                  </a>
-
-                  <div class="showcase-content">
-                    <a>
-                      <h4 class="showcase-title">men's hoodies t-shirt</h4>
-                    </a>
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star-half-outline"></ion-icon>
-                    </div>
-
-                    <div class="price-box">
-                      <del>$17.00</del>
-                      <p class="price">$7.00</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="showcase">
-                  <a class="showcase-img-box">
-                    <img
-                      src="./assets/images/products/3.jpg"
-                      alt="girls t-shirt"
-                      class="showcase-img"
-                      width="75"
-                      height="75"
-                    />
-                  </a>
-
-                  <div class="showcase-content">
-                    <a>
-                      <h4 class="showcase-title">girls t-shirt</h4>
-                    </a>
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star-half-outline"></ion-icon>
-                    </div>
-
-                    <div class="price-box">
-                      <del>$5.00</del>
-                      <p class="price">$3.00</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="showcase">
-                  <a class="showcase-img-box">
-                    <img
-                      src="./assets/images/products/4.jpg"
-                      alt="woolen hat for men"
-                      class="showcase-img"
-                      width="75"
-                      height="75"
-                    />
-                  </a>
-
-                  <div class="showcase-content">
-                    <a>
-                      <h4 class="showcase-title">woolen hat for men</h4>
-                    </a>
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                    </div>
-
-                    <div class="price-box">
-                      <del>$15.00</del>
-                      <p class="price">$12.00</p>
+                    <div class="price-box" *ngIf="!sale.isSales">
+                      <p class="price">
+                        {{
+                          sale.giaThapNhat
+                            | currency : "VND" : "symbol" : "1.0-0"
+                        }}
+                      </p>
                     </div>
                   </div>
                 </div>
