@@ -82,7 +82,13 @@ export class ClinetCardOnlineComponent implements OnInit {
     this.broadcastService.data$.subscribe(data => {
       if (data) {
         // nhận được dữ liệu kho thành toán thành công
-        this.thanhToanOnline(data.idhd , data.message)
+        if(data.message){
+          this.thanhToanOnline(data.message)
+        }else{
+          setTimeout(()=>{
+            this.errorService.displayError('Bạn đã hủy thanh toán','normal')
+          },10)
+        }    
       }
     });
     const { decoded } = this.tokenService.getToken();
@@ -591,7 +597,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       tongTienSanPhamChuaGiam: this.data.tongTien,
       tongTienGiam: this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen,
       idGioHangChiTietList: [] as any[],
-      idVoucherList: [] as any[],
+      idVoucherKhachHangList: [] as any[],
       idKhachHang: this.searchQuery.idKhachHang
     };
     // push list gio hàng chi tiết vào 
@@ -605,12 +611,12 @@ export class ClinetCardOnlineComponent implements OnInit {
     //  thêm voucher vào giỏ hàng
     this.listVoucherKhanhHang.voucherHoaDon.map((a :any) =>{
       if(a.isChecked){
-        orderDetails.idVoucherList.push(a.id)
+        orderDetails.idVoucherKhachHangList.push(a.id)
       }
     })
     this.listVoucherKhanhHang.voucherVanCHuyen.map((a :any) =>{
       if(a.isChecked){
-        orderDetails.idVoucherList.push(a.id)
+        orderDetails.idVoucherKhachHangList.push(a.id)
       }
     })
     //check api
@@ -647,8 +653,8 @@ export class ClinetCardOnlineComponent implements OnInit {
    
   }
   openCenteredPopup(url: any) {
-    const width = Math.floor(window.innerWidth * 0.9);  // Chiều rộng 90% màn hình
-    const height = Math.floor(window.innerHeight * 0.9); // Chiều cao 90% màn hình
+    const width = Math.floor(window.innerWidth * 0.8);  // Chiều rộng 90% màn hình
+    const height = Math.floor(window.innerHeight * 0.8); // Chiều cao 90% màn hình
     
     // Tính toán vị trí để căn giữa
     const left = (window.innerWidth / 2) - (width / 2);
@@ -657,9 +663,57 @@ export class ClinetCardOnlineComponent implements OnInit {
     // Mở cửa sổ popup
     window.open(url, '_blank', `width=${width},height=${height},top=${top},left=${left}`);
   }
-  thanhToanOnline(idhd : any , trangThai : any){
+  async thanhToanOnline( trangThai : any){
+    const orderDetails = {
+      ghiChu: this.data.ghiChu,
+      tenNguoiNhan:  this.data.tenNguoiNhan,
+      sdtNguoiNhan:  this.data.sdtNguoiNhan,
+      idTinhThanh:  this.data.idTinhThanh,
+      tinhThanh:  this.data.tinhThanh,
+      idQuanHuyen:  this.data.idQuanHuyen,
+      quanHuyen:  this.data.quanHuyen,
+      idPhuongXa:  this.data.idPhuongXa,
+      phuongXa:  this.data.phuongXa,
+      phiShip: this.data.phiShip,
+      tongTien: this.data.tongTien +  this.data.phiShip - (this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen),
+      tongTienSanPhamChuaGiam: this.data.tongTien,
+      tongTienGiam: this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen,
+      idGioHangChiTietList: [] as any[],
+      idVoucherKhachHangList: [] as any[],
+      idKhachHang: this.searchQuery.idKhachHang
+    };
+    // push list gio hàng chi tiết vào 
+    this.productList.map((item : any) =>{
+      item.chiTietSanPham.map((product : any) =>{
+        if(product.isChecked){
+          orderDetails.idGioHangChiTietList.push(product.id)
+        }
+      })
+    })
+    //  thêm voucher vào giỏ hàng
+    this.listVoucherKhanhHang.voucherHoaDon.map((a :any) =>{
+      if(a.isChecked){
+        orderDetails.idVoucherKhachHangList.push(a.id)
+      }
+    })
+    this.listVoucherKhanhHang.voucherVanCHuyen.map((a :any) =>{
+      if(a.isChecked){
+        orderDetails.idVoucherKhachHangList.push(a.id)
+      }
+    })
     // gọi api ở đây bú bú bú 
     if(trangThai){
+      const data = await this.service.thanhToan2End(orderDetails).toPromise();
+      if(data){
+        this.errorService.displayError('Đã thanh toán thành công','succes');
+        this.data = {};
+        this.getGioHang();
+        this.getAllTinhThanh();
+        this.getAllDiaChi('rows');
+        this.data.phuongThucThanhToan = 3;
+        this.getAllVoucher();
+        this.currentStep = 1;
+      }
     }else{
       this.errorService.displayError('bạn đã hủy thanh toán','normal')
     }

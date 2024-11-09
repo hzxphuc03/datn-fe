@@ -20,6 +20,10 @@ const routes: Routes = [
     component: fromPagesComponent.ClinetCardOnlineComponent,
   },
   {
+    path: 'phieu-giam-gia',
+    component: fromPagesComponent.VoucherKhachHangComponent,
+  },
+  {
     path: 'san-pham/:id',
     component: fromPagesComponent.DetailProductComponent,
   },

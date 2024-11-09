@@ -80,4 +80,14 @@ export class MuaHangService {
       })
     );
   }
+  thanhToan2End(params : any): Observable<any> {
+    return this.http.put<any>(`${this.urlGhKH}/thanh-toan-thanh-cong`,params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
 }
