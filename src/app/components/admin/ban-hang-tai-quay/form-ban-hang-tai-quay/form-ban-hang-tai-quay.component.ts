@@ -85,10 +85,9 @@ export class FormBanHangTaiQuayComponent implements OnInit {
 
       // Xác định trạng thái giao dịch
       if (responseCode === '00' && transactionStatus === '00') {
-        this.transactionStatus = true;
-        await this.updateStatusHoaDon();
+        this.transactionStatus = true; // Giao dịch thành công
       } else {
-        this.transactionStatus = false;
+        this.transactionStatus = false; // Giao dịch thất bại
       }
       if (this.transactionStatus !== null && this.vnpOrderInfo) {
 

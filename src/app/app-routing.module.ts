@@ -4,6 +4,7 @@ import { MasterLayoutAdminComponent } from './shareds/master-layout-admin/master
 import { LoginComponent } from './components/admin';
 import { ClientLayoutMasterComponent } from './shareds/client-layout-master/client-layout-master.component';
 import { LoginClientComponent } from './components/client';
+import { FormThanhCongHayThatBaiComponent } from './shareds/form-thanh-cong-hay-that-bai/form-thanh-cong-hay-that-bai.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: 'g4/shop/login',
     component: LoginClientComponent,
+  },
+  {
+    path: 'thanh-toan-online-res',
+    component: FormThanhCongHayThatBaiComponent,
   },
   {
     path: '', // Route cho trang chủ

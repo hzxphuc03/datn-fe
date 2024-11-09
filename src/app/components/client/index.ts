@@ -13,7 +13,7 @@ export const pagesComponents: any[] = [
   DetailProductComponent,
   FasterDetailComponent,
   ClinetCardOnlineComponent,
-  AddDiaChiComponent
+  AddDiaChiComponent,
 ];
 
 export * from './components/home-page/home-page.component';

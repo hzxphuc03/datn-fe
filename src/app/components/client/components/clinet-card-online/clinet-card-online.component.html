@@ -31,7 +31,12 @@
           "
           *ngIf="currentStep === 1"
         >
-          <div class="header" style="font-size: 23px">Giỏ hàng chi tiết</div>
+          <div class="header" style="font-size: 23px;display: flex;justify-content: space-between;align-items: center;"><div>Giỏ hàng chi tiết</div>
+            <div style="display: flex;gap: 20px;">
+              <button class="btn btn-danger" (click)="deleteAll()">Xóa tất cả</button>
+              <button class="btn btn-danger" (click)="deleteChose()" *ngIf="this.data.tongTien && this.data.tongTien > 0">Xóa sản phẩm đã chọn</button>
+            </div>
+          </div>
           <div class="all-content">
             <div class="contents" style="height: 100%; overflow: auto">
               <div class="content-product" *ngFor="let item of productList">
@@ -48,7 +53,15 @@
                       (change)="checkAll($event, item)"
                     />
                   </div>
-                  <div style="display: flex; justify-content: space-between;width: 100%;padding-left: 20px;"  (click)="item.isShow = !item.isShow">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      width: 100%;
+                      padding-left: 20px;
+                    "
+                    (click)="item.isShow = !item.isShow"
+                  >
                     <span> {{ item?.sanPham?.ten }}</span>
                     <div class="icon">
                       <i class="bx bx-caret-down" *ngIf="item.isShow"></i>
@@ -67,6 +80,8 @@
                         <th>Id sản phẩm</th>
                         <th>Hình ảnh</th>
                         <th>Giá sản phẩm (1)</th>
+                        <th>Giảm giá</th>
+                        <th>Giá sản phẩm (sau giảm)</th>
                         <th>Số lượng</th>
                         <th>Kích cỡ</th>
                         <th>Màu sắc</th>
@@ -88,30 +103,40 @@
                         <td>
                           <img
                             class="product-image"
-                            [src]="detail.hinhAnh"
+                            [src]="detail.sanPhamChiTiet.hinhAnh"
                             alt=""
                           />
                         </td>
                         <td>
                           {{
-                            detail.giaBan
+                            detail.giaHienHanh
+                              | currency : "VND" : "symbol" : "1.0-0"
+                          }}
+                        </td>
+                        <td>
+                          {{ detail.isSale ? detail.mucGiam : "Không" }}
+                        </td>
+                        <td>
+                          {{
+                            detail.giaDaGiam
                               | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </td>
                         <td>{{ detail.soLuong }}</td>
-                        <td>{{ detail.kichCo.ten }}</td>
+                        <td>{{ detail.sanPhamChiTiet.kichCo.ten }}</td>
                         <td>
                           <div
-                            *ngIf="detail.mauSac.maMau"
+                            *ngIf="detail.sanPhamChiTiet.mauSac.maMau"
                             class="color-swatch"
                             [ngStyle]="{
-                              'background-color': detail.mauSac.maMau
+                              'background-color':
+                                detail.sanPhamChiTiet.mauSac.maMau
                             }"
                           ></div>
                         </td>
                         <td>
                           {{
-                            detail.soLuong * detail.giaBan
+                            detail.soLuong * detail.giaDaGiam
                               | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </td>
@@ -128,7 +153,21 @@
           style="display: flex; flex-direction: column; gap: 5px"
           *ngIf="currentStep === 2"
         >
-          <div class="header">Thông tin giao hàng</div>
+          <div
+            class="header"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <span>Thông tin giao hàng</span>
+            <div class="icon">
+              <button class="btn btn-primary" (click)="visible = true">
+                Chọn địa chỉ của khách hàng
+              </button>
+            </div>
+          </div>
           <div
             class="all-content"
             style="display: flex; gap: 10px; flex-direction: column"
@@ -136,9 +175,21 @@
             <div class="right">
               <div
                 class="loaction-option"
-                style="display: flex; flex-direction: column; gap: 10px"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                  width: 100%;
+                "
               >
-                <div class="d-flex" style="width: 100%; gap: 10px">
+                <div
+                  style="
+                    width: 100%;
+                    gap: 20px;
+                    display: flex;
+                    flex-direction: column;
+                  "
+                >
                   <p-dropdown
                     [options]="listTinhThanh"
                     [(ngModel)]="data.idTinhThanh"
@@ -192,6 +243,7 @@
                     filterBy="WardName"
                     [showClear]="true"
                     placeholder="Chọn phường xã"
+                    (onChange)="changePhuongXa()"
                   >
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                       <div class="flex align-items-center gap-2">
@@ -215,18 +267,35 @@
                     pInputTextarea
                     [(ngModel)]="data.ghiChu"
                   ></textarea>
-                  <label for="float-input">Ghi chú</label>
+                  <label for="float-input"
+                    >Ghi chú cụ thể (địa chỉ hoặc ghi chú)</label
+                  >
                 </span>
                 <div
                   class="use-user"
                   (click)="useInfoCustumer()"
-                  style="cursor: pointer"
+                  style="
+                    cursor: pointer;
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    text-decoration: underline;
+                  "
                 >
-                  <a>sử dụng thông tin khách hàng</a>
+                  <a>
+                    <i class="bx bx-user-check"></i>
+                    <span>sử dụng thông tin khách hàng</span></a
+                  >
                 </div>
                 <div
                   class="d-flex"
-                  style="display: flex; align-items: center; gap: 10px"
+                  style="
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    flex-direction: column;
+                  "
                 >
                   <span class="p-float-label">
                     <input
@@ -258,86 +327,129 @@
               </div>
               <div class="luu-y"></div>
             </div>
-            <div class="left">
-              <div style="display: flex; flex-direction: column; gap: 20px">
+          </div>
+        </div>
+        <div class="content" style="display: flex;flex-direction: column;gap: 20px;" *ngIf="currentStep === 3">
+          <div class="header">Phiếu giảm giá</div>
+          <div class="content" style="    height: 800px;
+    overflow: auto;" >
+            <div style="display: flex;flex-direction: column;gap: 30px; width: 100%;">
+              <div style="display: flex;flex-direction: column;gap: 20px;width: 100%;">
+                <div>
+                  <div style="font-weight: bold;">Phiếu giảm giá hóa đơn</div>
+                <div class="small">chỉ được chọn 1</div>
+                </div>
                 <div
-                  style="
-                    display: flex;
-                    width: 100%;
-                    justify-content: space-between;
-                  "
+                class="item-voucher"
+                [class.isDisableVoucher]="!voucher.isUse || voucher.soLuong < 1 ||  !voucher.sale"
+                [class.isUserVoucher]="voucher.isChecked"
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 10px;
+                  border: 1px solid gray;
+                  border-radius: 10px;
+                  width: 100%;
+                  position: relative;
+                "
+                *ngFor="let voucher of listVoucherKhanhHang?.voucherHoaDon"
+              >
+              <div class="voucherEnd" *ngIf="!voucher.isUse || voucher.soLuong < 1 || !voucher.sale" style="position: absolute;top: 50px;left: 30%;rotate: 14deg;color: black;font-size: 23px;">
+                Không đáp ứng yêu cầu
+              </div>
+                <div
+                  class="left"
+                  style="width: 50%; display: flex; flex-direction: column; gap: 20px"
                 >
-                  <div style="display: flex; gap: 20px">
-                    <span>Thông tin địa chỉ khách hàng</span>
-                    <button class="btn btn-primary" (click)="addLocation()">
-                      <i class="bx bx-location-plus"></i>
-                    </button>
+                  <div class="title" style="font-size: 34px">
+                    {{ voucher?.voucher?.phanTramGiam }}%
                   </div>
-                  <div class="table-pagination d-flex">
-                    <div class="flex-grow-1"></div>
-                    <div
-                      class="d-flex justify-content-center align-items-center"
-                    >
-                      <span
-                        (click)="getAllDiaChi('page', 'prev')"
-                        class="table-pagination-item btn-prev ml-2"
-                      >
-                        <i class="bx bx-left-arrow-alt"></i>
-                      </span>
-                      <span
-                        (click)="getAllDiaChi('page', 'next')"
-                        class="table-pagination-item btn-next"
-                      >
-                        <i class="bx bx-right-arrow-alt"></i>
-                      </span>
-                    </div>
+                  <div class="ma" style="font-size: small">
+                    {{ voucher?.keySuKien }}-{{ voucher?.voucher?.ma }}
                   </div>
                 </div>
-
-                <p-table
-                  [value]="listData"
-                  [rowHover]="true"
-                  styleClass="p-datatable-gridlines"
-                  [scrollable]="true"
-                  scrollHeight="calc(90vh - 100px)"
+                <div
+                  class="right"
+                  style="width: 200px; display: flex; flex-direction: column; gap: 20"
                 >
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <td>Tỉnh thành</td>
-                      <td>Quận huyện</td>
-                      <td>Phường xã</td>
-                      <td>Ghi chú</td>
-                      <td>Sử dụng</td>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-product>
-                    <tr>
-                      <td>{{ product.tinhThanh }}</td>
-                      <td>{{ product.quanHuyen }}</td>
-                      <td>{{ product.phuongXa }}</td>
-                      <td>{{ product.ghiChu }}</td>
-                      <td>
-                        <button
-                          class="btn btn-primary"
-                          (click)="useLocation(product)"
-                        >
-                          <i class="bx bxs-check-circle"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </ng-template>
-                </p-table>
+                  <div>{{ voucher?.voucher?.ten }}</div>
+                  <div>
+                   <span>
+                    Giảm tối đa :{{
+                      voucher?.voucher?.giamToiDa | currency : "VND" : "symbol" : "1.0-0"
+                    }}
+                   </span>
+                   
+                  </div>
+                  <div>Giảm từ đơn tối thiểu : {{ voucher?.voucher?.giaTriGiamToiThieu  | currency : "VND" : "symbol" : "1.0-0"}}</div>
+                  <div>HSD : {{ voucher?.ngayKetThuc | date : "dd/MM/yyyy" }}</div>
+                </div>
+                <div class="action">
+                  <button class="btn btn-primary" *ngIf="!voucher.isChecked" (click)="useVoucher(voucher , 'bill')">Sử dụng</button>
+                  <button class="btn btn-primary" *ngIf="voucher.isChecked"  (click)="useVoucher(voucher , 'bill')">Hủy sử dụng</button>
+                </div>
+              </div>
+              </div>
+              <div style="display: flex;flex-direction: column;gap: 20px;width: 100%;">
+                <div>
+                  <div style="font-weight: bold;">Phiếu giảm giá vận chuyển</div>
+                  <div class="small">chỉ được chọn 1</div>
+                </div>
+                <div
+                class="item-voucher"
+                [class.isDisableVoucher]="!voucher.isUse || voucher.soLuong < 1 ||  !voucher.sale"
+                [class.isUserVoucher]="voucher.isChecked"
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 10px;
+                  border: 1px solid gray;
+                  border-radius: 10px;
+                  width: 100%;
+                  position: relative;
+                "
+                *ngFor="let voucher of listVoucherKhanhHang?.voucherVanCHuyen"
+              >
+              <div class="voucherEnd" *ngIf="!voucher.isUse || voucher.soLuong < 1 || !voucher.sale" style="position: absolute;top: 50px;left: 30%;rotate: 14deg;color: black;font-size: 23px;">
+                Không đáp ứng yêu cầu
+              </div>
+                <div
+                  class="left"
+                  style="width: 50%; display: flex; flex-direction: column; gap: 20"
+                >
+                  <div class="title" style="font-size: 34px">
+                    {{ voucher?.voucher?.phanTramGiam }}%
+                  </div>
+                  <div class="ma" style="font-size: small">
+                    {{ voucher?.keySuKien }}-{{ voucher?.voucher?.ma }}
+                  </div>
+                </div>
+                <div
+                  class="right"
+                  style="width: 200px; display: flex; flex-direction: column; gap: 20"
+                >
+                  <div>{{ voucher?.voucher?.ten }}</div>
+                  <div>
+                   <span>
+                    Giảm tối đa :{{
+                      voucher?.voucher?.giamToiDa | currency : "VND" : "symbol" : "1.0-0"
+                    }}
+                   </span>
+                   
+                  </div>
+                  <div>Giảm từ đơn tối thiểu : {{ voucher?.voucher?.giaTriGiamToiThieu  | currency : "VND" : "symbol" : "1.0-0"}}</div>
+                  <div>HSD : {{ voucher?.ngayKetThuc | date : "dd/MM/yyyy" }}</div>
+                </div>
+                <div class="action">
+                  <button class="btn btn-primary" *ngIf="!voucher.isChecked" (click)="useVoucher(voucher , 'ship')">Sử dụng</button>
+                  <button class="btn btn-primary" *ngIf="voucher.isChecked" (click)="useVoucher(voucher , 'ship')">Hủy sử dụng</button>
+                </div>
+              </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="content" *ngIf="currentStep === 3">
-          <div class="header">Phiếu giảm giá</div>
-          <div class="all-content"></div>
-        </div>
-        <div class="content" *ngIf="currentStep === 4">
-          <div class="header">Thông tin hóa đơn</div>
-          <div class="all-content"></div>
         </div>
       </div>
     </div>
@@ -362,19 +474,19 @@
               <div style="display: flex; align-items: center; gap: 10px">
                 <i class="bx bx-last-page"></i>Voucher hóa đơn :
               </div>
-              <span> {{ 0 | currency : "VND" : "symbol" : "1.0-0" }} </span>
+              <span> {{ data.giamGiaHoaDon | currency : "VND" : "symbol" : "1.0-0" }} </span>
             </div>
             <div class="icon">
               <div style="display: flex; align-items: center; gap: 10px">
                 <i class="bx bx-last-page"></i>Voucher vận chuyển :
               </div>
-              <span> {{ 0 | currency : "VND" : "symbol" : "1.0-0" }} </span>
+              <span> {{data.giamGiaVanChuyen | currency : "VND" : "symbol" : "1.0-0" }} </span>
             </div>
             <div class="icon">
               <div style="display: flex; align-items: center; gap: 10px">
                 <i class="bx bx-last-page"></i>Tổng giảm :
               </div>
-              <span> {{ 0 | currency : "VND" : "symbol" : "1.0-0" }} </span>
+              <span> {{ data.giamGiaHoaDon + data.giamGiaVanChuyen | currency : "VND" : "symbol" : "1.0-0" }} </span>
             </div>
           </div>
           <div class="item">
@@ -397,7 +509,7 @@
               <span>
                 {{
                   data.phiShip
-                    ? data.phiShip
+                    ? (data.phiShip | currency : "VND" : "symbol" : "1.0-0")
                     : (0 | currency : "VND" : "symbol" : "1.0-0")
                 }}
               </span>
@@ -407,7 +519,11 @@
             <span>Phương thức thanh toán</span>
             <div class="icon">
               <i class="bx bx-last-page"></i>
-              <span>Sau khi nhận hàng</span>
+              <span>{{
+                data.phuongThucThanhToan === 2
+                  ? "Thanh toán online"
+                  : "Thanh toán khi nhận hàng"
+              }}</span>
             </div>
           </div>
           <div class="item">
@@ -423,7 +539,7 @@
             </div>
           </div>
           <div class="item">
-            <span>Địa chỉ (cụ thể)</span>
+            <span>Ghi chú</span>
             <div class="icon">
               <i class="bx bx-last-page"></i>
               <span>{{ data?.ghiChu ? data?.ghiChu : "Chưa chọn" }}</span>
@@ -435,14 +551,27 @@
               <div style="display: flex; align-items: center; gap: 10px">
                 <i class="bx bx-last-page"></i>Số điện thoại :
               </div>
-              <span> 0981816647 </span>
+              <span>
+                {{ data.sdtNguoiNhan ? data.sdtNguoiNhan : "-----" }}
+              </span>
             </div>
             <div class="icon">
               <div style="display: flex; align-items: center; gap: 10px">
                 <i class="bx bx-last-page"></i> Người nhận :
               </div>
 
-              <span> Nguyễn Khánh Duy </span>
+              <span>
+                {{ data.tenNguoiNhan ? data.tenNguoiNhan : "-----" }}
+              </span>
+            </div>
+            <div class="icon">
+              <div style="display: flex; align-items: center; gap: 10px">
+                <i class="bx bx-last-page"></i> Tổng thanh toán
+              </div>
+
+              <span>
+                {{ data.tongTien?(data.tongTien + data.phiShip -( data.giamGiaHoaDon + data.giamGiaVanChuyen)  | currency : "VND" : "symbol" : "1.0-0") : "-----" }}
+              </span>
             </div>
           </div>
         </div>
@@ -455,11 +584,98 @@
         >
           <i style="font-size: 37px" class="bx bx-chevron-left"></i>
         </button>
-        <button class="button next" (click)="next()">
-          <span *ngIf="currentStep === steps.length">Xác nhận thanh toán</span>
-          <span *ngIf="currentStep !== steps.length"> Bước tiếp theo</span>
-        </button>
+        <div style="width: 100%;" *ngIf="currentStep !== steps.length">
+          <button class="button next" (click)="next()">
+            <span > Bước tiếp theo</span>
+          </button>
+        </div>
+        <div style="width: 100%;"  *ngIf="currentStep === steps.length"v>
+          <button class="button next" (click)="submitThanhToan()">
+            <span >Xác nhận thanh toán</span>
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
+<!-- dialog -->
+<p-dialog
+  header="Edit Profile"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '40vw' }"
+>
+  <div class="left">
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; width: 100%; justify-content: space-between">
+        <div style="display: flex; gap: 20px">
+          <span>Thông tin địa chỉ khách hàng</span>
+          <button
+            class="btn btn-primary"
+            (click)="addLocation(); visible = false"
+          >
+            <i class="bx bx-location-plus"></i>
+          </button>
+        </div>
+        <div class="table-pagination d-flex">
+          <div class="flex-grow-1"></div>
+          <div class="d-flex justify-content-center align-items-center">
+            <span
+              (click)="getAllDiaChi('page', 'prev')"
+              class="table-pagination-item btn-prev ml-2"
+            >
+              <i class="bx bx-left-arrow-alt"></i>
+            </span>
+            <span
+              (click)="getAllDiaChi('page', 'next')"
+              class="table-pagination-item btn-next"
+            >
+              <i class="bx bx-right-arrow-alt"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p-table
+        [value]="listData"
+        [rowHover]="true"
+        styleClass="p-datatable-gridlines"
+        [scrollable]="true"
+        scrollHeight="calc(90vh - 100px)"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <td>Tỉnh thành</td>
+            <td>Quận huyện</td>
+            <td>Phường xã</td>
+            <td>Ghi chú</td>
+            <td>Sử dụng</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{ product.tinhThanh }}</td>
+            <td>{{ product.quanHuyen }}</td>
+            <td>{{ product.phuongXa }}</td>
+            <td>{{ product.ghiChu }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="useLocation(product)">
+                <i class="bx bxs-check-circle"></i>
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Thông báo thanh toán"
+  [modal]="true"
+  [(visible)]="visibleThanhToan"
+  [style]="{ width: '40vw' }">
+  <div class="all-conent">
+    <div class="title"></div>
+  </div>
+</p-dialog>
