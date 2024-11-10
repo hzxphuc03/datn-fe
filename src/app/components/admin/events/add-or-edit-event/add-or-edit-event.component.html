@@ -1,0 +1,289 @@
+<div class="all-conttent">
+  <div class="header">
+    <div class="title">Chi tiết sự kiện</div>
+    <div  *ngIf="isAdd">
+      <button class="btn btn-primary" (click)="add()">Thêm mới</button>
+    </div>
+   <div *ngIf="!isAdd">
+    <button class="btn btn-primary" (click)="update()" >Cập nhật</button>
+   </div>
+
+  </div>
+
+  <div class="all-content-add-edit">
+    <div class="left">
+      <div class="sub-title" style="font-weight: bold">
+        Lưu ý điều khoản sử dụng :
+      </div>
+      <ul>
+        <li>Đây là cập nhật chi tiết sự kiện thuộc sự kiện cấu hình cả năm</li>
+        <li>Trong quá trình diễn ra sự kiện không chỉnh sửa</li>
+        <li>
+          Khi bắt đầu sự kiện :
+          <ul>
+            <li>
+              Thêm vào phiếu giảm giá số lượng theo trường (Số lượng giảm giá
+              của mỗi phiếu)
+            </li>
+            <li>
+              Thời hạn của phiếu hết hạn theo trường (Thời gian hết hạn mỗi
+              phiếu)
+            </li>
+          </ul>
+        </li>
+        <li>key của sự kiện sẽ dựa theo mã và năm để phân biệt</li>
+        <li>
+          Sau khi khách hàng thêm phiếu vào giỏ hàng hạn sử dụng sẽ được tính
+          theo trường (Thời gian hết hạn mỗi phiếu) (cấu hình chung)
+        </li>
+        <li>Số lượng giảm giá của mỗi phiếu sẽ nhỏ hơn hoặc bằng 2000</li>
+        <li>
+          Thời gian hết hạn của mỗi phiếu là đơn vị ngày và không lớn hơn 1
+          tháng (30 ngày)
+        </li>
+        <li>
+          Những voucher được sử dụng bởi sự sự kiện sẽ không được chỉnh sửa
+        </li>
+      </ul>
+    </div>
+    <div class="all-content-su-kien right">
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.tenSuKien"
+        />
+        <label for="float-input">Tên sự kiện</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          readonly
+          [(ngModel)]="data.maSuKien"
+        />
+        <label for="float-input">Mã sự kiện</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          readonly
+          [(ngModel)]="data.keySuKien"
+        />
+        <label for="float-input">Khóa sự kiện</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="number"
+          pInputText
+          [(ngModel)]="data.donViPhieuGiamGia"
+        />
+        <label for="float-input">Số lượng giảm giá của mỗi phiếu</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type=" number"
+          pInputText
+          [(ngModel)]="data.thoiGianHetHanPhieu"
+        />
+        <label for="float-input">Thời gian hết hạn mỗi phiếu</label>
+      </span>
+      <span class="p-float-label textarea-p-float-label">
+        <textarea style="width: 100%;"
+          name=""
+          id="loat-input"
+          pInputText
+          [(ngModel)]="data.moTa"
+        ></textarea>
+        <label for="float-input">Mô tả</label>
+      </span>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 20px">
+    <div style="font-weight: bold">Chọn tháng của sự kiện :</div>
+    <div class="thang" style="display: flex; gap: 10px; flex-wrap: wrap">
+      <div
+        class="option-thang"
+        *ngFor="let month of thangSuKien"
+        style="width: 90px; height: 40px; display: flex"
+      >
+        <div (click)="month.isCheck = !month.isCheck"
+          class="option"
+          [class.disable]="month.check"
+          [class.isCheck]="month.isCheck"
+          style="
+            width: 100%;
+            height: 100%;
+            border: 1px solid gray;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          {{ month.thang }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="phieuGiamGia">
+    <div class="header">
+      <div class="sub-tiile" style="font-weight: bold">
+        Phiếu giảm giá (áp dụng cho sự kiện)
+      </div>
+      <div style="display: flex; gap: 10px">
+        <button class="btn btn-primary" (click)="visible = true">Chọn phiếu giảm giá</button>
+      </div>
+
+    </div>
+    <p-table [value]="listVoucherToEvent">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>id voucher</th>
+          <th>Tên Voucher</th>
+          <th>Thể loại phiếu</th>
+          <th>Phần trăm giảm</th>
+          <th>Giảm hóa đơn từ</th>
+          <th>Giảm  tối đa</th>
+          <th>Số lượng</th>
+          <th>Trạng thái</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.id }}</td>
+          <td>{{ product.ten }}</td>
+          <td>{{ 'Phiếu giảm giá sự kiện (hóa đơn)' }}</td>
+          <td>{{ product.phanTramGiam }}</td>
+          <td>{{ product.giaTriGiamToiThieu }}</td>
+          <td>{{ product.giamToiDa }}</td>
+          <td>{{ product.soLuong }}</td>
+          <td>
+            <!-- <p-inputSwitch
+            (onChange)="changeStatus(product)"
+            [(ngModel)]="product.status"
+            (click)="noneClick($event)"
+          ></p-inputSwitch> -->
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog header="Bảng phiếu giảm giá sự kiện" [modal]="true" [(visible)]="visible" [style]="{ width: '60vw', height : '80vh'}">
+  <button class="btn btn-primary" (click)="visible2 = true">Thêm phiếu giảm giá</button>
+  <div class="content">
+    <p-table [value]="listData">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>id</th>
+          <th>Tên Voucher</th>
+          <th>Thể loại phiếu</th>
+          <th>Phần trăm giảm</th>
+          <th>Giảm hóa đơn từ</th>
+          <th>Giảm  tối đa</th>
+          <th>Số lượng</th>
+          <th>Trạng thái</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.id }}</td>
+          <td>{{ product.ten }}</td>
+          <td>{{ 'Phiếu giảm giá sự kiện (hóa đơn)' }}</td>
+          <td>{{ product.phanTramGiam }}</td>
+          <td>{{ product.giaTriGiamToiThieu }}</td>
+          <td>{{ product.giamToiDa }}</td>
+          <td>{{ product.soLuong }}</td>
+          <td><button class="btn btn-primary" (click)="addVoucherToSuKien(product)">Thêm vào sự kiện</button></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="table-pagination d-flex mb-3 pb-4">
+    <div class="flex-grow-1"></div>
+    <div><small class="text-muted">Pages: </small></div>
+    <div>
+      <p-dropdown
+        (onChange)="getListWords('page')"
+        [options]="listPageNumber"
+        [(ngModel)]="searchQuery.page"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <!-- <div class="px-3"></div> -->
+    <div>
+      <p-dropdown
+        (onChange)="getListWords('rows')"
+        [options]="[10, 20, 30]"
+        [(ngModel)]="searchQuery.pageSize"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <div><small class="text-muted ml-1">Items per page</small></div>
+    <div class="d-flex justify-content-center align-items-center">
+      <span
+        (click)="getListWords('page', 'prev')"
+        class="table-pagination-item btn-prev ml-2"
+      >
+        <i class="bx bx-left-arrow-alt"></i>
+      </span>
+      <span
+        (click)="getListWords('page', 'next')"
+        class="table-pagination-item btn-next"
+      >
+        <i class="bx bx-right-arrow-alt"></i>
+      </span>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog header="Bảng phiếu giảm giá sự kiện" [modal]="true" [(visible)]="visible2" [style]="{ width: '60vw'}">
+  <div style="width: 100%;height: 100%;
+  display: flex; flex-direction: column;gap: 10px;justify-content: space-between;">
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="text"
+        pInputText
+        [(ngModel)]="paramPhieuGiamGia.ten"
+      />
+      <label for="float-input">Tên phiếu giảm gái</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="paramPhieuGiamGia.phanTramGiam"
+      />
+      <label for="float-input">Phần trăm giảm</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="paramPhieuGiamGia.giamToiDa"
+      />
+      <label for="float-input">Giảm tối đa</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="number"
+        pInputText
+        [(ngModel)]="paramPhieuGiamGia.giaTriGiamToiThieu"
+      />
+      <label for="float-input">giaTriGiamToiThieu</label>
+    </span>
+    <button class="btn btn-primary" (click)="addMoreVoucher()">Thêm mới phiếu giảm giá</button>
+  </div>
+</p-dialog>

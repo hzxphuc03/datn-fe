@@ -107,6 +107,18 @@ const routes: Routes = [
     component: fromPagesComponent.DetailHoaDonQuanLyComponent,
   },
   {
+    path: 'event',
+    component: fromPagesComponent.EventComponent,
+  },
+  {
+    path: 'event-add',
+    component: fromPagesComponent.AddOrEditEventComponent,
+  },
+  {
+    path: 'event/:id',
+    component: fromPagesComponent.AddOrEditEventComponent,
+  },
+  {
     path: 'chat',
     component: ChatComponent,
   },

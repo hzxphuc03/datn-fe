@@ -71,6 +71,11 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       name: 'Hóa đơn',
       url: '/auth/admin/quan-ly-hoa-don',
     },
+    {
+      icon: 'bx bx-cube',
+      name: 'Sự kiện',
+      url: '/auth/admin/event',
+    },
   ];
   constructor(
     private tokenService: TokenService,

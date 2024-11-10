@@ -120,8 +120,8 @@
               <ion-icon name="person-outline"></ion-icon>
             </button>
             <div class="optional" *ngIf="isOpenUser">
-              <div class="option">Thông tin khách hàng</div>
-              <div class="option" (click)="goDiaChi()">Địa chỉ</div>
+              <div class="option" (click)="isOpenUser = false ">Thông tin khách hàng</div>
+              <div class="option" (click)="isOpenUser = false ;goDiaChi()">Địa chỉ</div>
               <div class="option" (click)="isOpenUser = false ;logOut()">Đăng xuất</div>
             </div>
           </div>

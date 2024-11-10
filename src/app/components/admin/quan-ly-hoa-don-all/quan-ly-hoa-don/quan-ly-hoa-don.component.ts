@@ -20,7 +20,7 @@ export class QuanLyHoaDonComponent implements OnInit {
     // { index: 3, title: 'Hóa đơn đã nhận' },
     { index: 4, title: 'Đóng gói hóa đơn' },
     { index: 5, title: 'Hóa đơn đang vận chuyển' },
-    { index: 6, title: 'Hóa đơn hoàn thành)' },
+    { index: 6, title: 'Hóa đơn hoàn thành' },
     { index: 0, title: 'Hóa đơn đã hủy' },
   ];
   titleChangeToZero: string = '';

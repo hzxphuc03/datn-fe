@@ -1,3 +1,4 @@
+import { from } from 'rxjs';
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
 import { ChiTietSanPhamDetailBanHangComponent } from './ban-hang-tai-quay/chi-tiet-san-pham-detail-ban-hang/chi-tiet-san-pham-detail-ban-hang.component';
 import { ChiTietSanPhamBanHangComponent } from './ban-hang-tai-quay/chi-tiet-san-pham/chi-tiet-san-pham.component';
@@ -10,6 +11,7 @@ import { VoucherHoaDonComponent } from './ban-hang-tai-quay/voucher-hoa-don/vouc
 import { ChiTietSanPhamAddOrUpdateComponent } from './chi-tiet-san-pham-add-or-update/chi-tiet-san-pham-add-or-update.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
+import { EventComponent } from './events/event/event.component';
 import { GiamGiaAddOrEditComponent } from './giam-gia/giam-gia-add-or-edit/giam-gia-add-or-edit.component';
 import { GiamGiaComponent } from './giam-gia/giam-gia.component';
 import { AddDiaChiComponent } from './khach-hang/add-dia-chi/add-dia-chi.component';
@@ -41,6 +43,7 @@ import { AddOrEditVatLieuComponent } from './vat-lieu/add-or-edit-vat-lieu/add-o
 import { VatLieuComponent } from './vat-lieu/vat-lieu.component';
 import { VoucherAddOrEditComponent } from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
 import { VoucherComponent } from './vouchers/voucher/voucher.component';
+import { AddOrEditEventComponent } from './events/add-or-edit-event/add-or-edit-event.component';
 
 export const pagesComponents: any[] = [
   AdminHomePageComponent,
@@ -86,7 +89,9 @@ export const pagesComponents: any[] = [
   FormThanhToanComponent,
   ThanhCongOrThatBaiThanhToanComponent,
   QuanLyHoaDonComponent,
-  DetailHoaDonQuanLyComponent
+  DetailHoaDonQuanLyComponent,
+  EventComponent,
+  AddOrEditEventComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -131,3 +136,5 @@ export * from './ban-hang-tai-quay/form-thanh-toan/form-thanh-toan.component';
 export * from './ban-hang-tai-quay/thanh-cong-or-that-bai-thanh-toan/thanh-cong-or-that-bai-thanh-toan.component';
 export * from './quan-ly-hoa-don-all/quan-ly-hoa-don/quan-ly-hoa-don.component';
 export * from './quan-ly-hoa-don-all/detail-hoa-don-quan-ly/detail-hoa-don-quan-ly.component';
+export * from './events/event/event.component';
+export * from './events/add-or-edit-event/add-or-edit-event.component';
