@@ -3,6 +3,7 @@ import { ClinetCardOnlineComponent } from './components/clinet-card-online/cline
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { DetailProductComponent } from './components/detail-product/detail-product.component';
 import { DiaChiKhachHangComponent } from './components/dia-chi-khach-hang/dia-chi-khach-hang.component';
+import { EventPageComponent } from './components/event-page/event-page.component';
 import { FasterDetailComponent } from './components/faster-detail/faster-detail.component';
 import { GtComponent } from './components/gt/gt.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
@@ -28,6 +29,7 @@ export const pagesComponents: any[] = [
   Trung0tamHoTroComponent,
   GtComponent,
   ContactUsComponent,
+  EventPageComponent
 ];
 
 export * from './components/home-page/home-page.component';
@@ -44,3 +46,4 @@ export * from './components/info-custumer/all-content-info/all-content-info.comp
 export * from './components/info-custumer/trung0tam-ho-tro/trung0tam-ho-tro.component';
 export * from './components/gt/gt.component';
 export * from './components/contact-us/contact-us.component';
+export * from './components/event-page/event-page.component';

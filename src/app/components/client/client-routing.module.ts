@@ -39,6 +39,10 @@ const routes: Routes = [
     path: 'lien-he',
     component: fromPagesComponent.ContactUsComponent,
   },
+  {
+    path: 'su-kien-thang',
+    component: fromPagesComponent.EventPageComponent,
+  },
 ];
 @NgModule({
   imports: [ClientLazyModule, RouterModule.forChild(routes)],

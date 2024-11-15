@@ -14,6 +14,7 @@ export class HomeServoceService {
   urlLoaiCo = 'http://localhost:8080/api/loai_co';
   urlGiamGia = 'http://localhost:8080/api/giam_gia';
   urlGioHang = 'http://localhost:8080/api/gio_hang'
+  urlSuKien = 'http://localhost:8080/api/su_kien'
   constructor(private http: HttpClient) {}
 
   getTop5BanChay(): Observable<any> {
@@ -170,6 +171,16 @@ export class HomeServoceService {
   }
   getSoluongGioHang(id: any): Observable<any> {
     return this.http.get<any>(`${this.urlGioHang}/get_so_luong/${id}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getEvent(): Observable<any> {
+    return this.http.get<any>(`${this.urlSuKien}/get-su-kien-active`).pipe(
       (res: any) => {
         return res || null;
       },

@@ -142,7 +142,11 @@
 
             <ul class="sidebar-menu-category-list">
               <li class="sidebar-menu-category" *ngFor="let item of allTheLoai">
-                <button class="sidebar-accordion-menu" data-accordion-btn (click)="getTop5SanPhamMoiTheoTheLhoai(item.id)">
+                <button
+                  class="sidebar-accordion-menu"
+                  data-accordion-btn
+                  (click)="getTop5SanPhamMoiTheoTheLhoai(item.id)"
+                >
                   <div class="menu-title-flex">
                     <i class="bx bx-subdirectory-right"></i>
 
@@ -198,8 +202,7 @@
                         }}
                       </p>
                       <del>{{
-                        sale.giaThapNhat
-                          | currency : "VND" : "symbol" : "1.0-0"
+                        sale.giaThapNhat | currency : "VND" : "symbol" : "1.0-0"
                       }}</del>
                     </div>
                     <div class="price-box" *ngIf="!sale.isSales">
@@ -221,6 +224,87 @@
           <!--
           - PRODUCT MINIMAL
         -->
+          <div class="event" *ngIf="isHaveEvent">
+            <div class="title" style="border: none; margin-bottom: 0px;display: flex;gap: 10px; align-items: center; ">
+             <span> Sự kiện</span> <div style="background: red;border-radius: 10px;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;color: #fff;" >Hot</div>
+            </div>
+            <div
+              class="event-title"
+              style="
+                height: 300px;
+                width: 100%;
+                border: 1px solid gray;
+                border-radius: 12px;
+                margin-bottom: 20px;
+              "
+              (click)="goToSuKien()"
+            >
+              <div style="position: relative; width: 100%; height: 100%">
+                <img class="abc"
+                  src="{{ eventData.hinhAnh }}"
+                  alt=""
+                  style="width: 100%; height: 100%; border-radius: 9px"
+                />
+                <div
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: rgba(0, 0, 0, 0.6);
+                    border-radius: 9px;
+                    height: 100%;
+                    width: 100%;
+                  "
+                >
+                  <div
+                    class="left"
+                    style="
+                      width: 100%;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                      gap: 10px;
+                      justify-content: center;
+                      padding: 20px;
+                    "
+                  >
+                    <div class="sub-title" style="color: #fff; font-size: 26px">
+                      {{ eventData.maSuKien }}
+                    </div>
+                    <div
+                      class="title1"
+                      style="font-size: 32px; color: #fff; border: none"
+                    >
+                      {{ eventData.tenSuKien }}
+                    </div>
+                    <div
+                      class="small-title"
+                      style="color: #fff; font-size: 16px"
+                    >
+                      {{ eventData.moTa }}
+                    </div>
+                    <img
+                      style="
+                          position: absolute;
+                          width: 200px;
+                          right: -38px;
+                          top: 39px;
+                          transform: rotate(224deg);
+                          border-radius: 72%;
+                      "
+                      src="https://s3-sgn10.fptcloud.com/fsel/Images/pngtreevectorpaintedgoldenbowpngimage_1338635_6752_1731682021887removebgpreview_7513_1731682078914.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div class="" style="cursor: pointer;display: flex;gap: 10px;align-items: center;position: absolute;right: 20px;bottom: 20px;font-size: 15px; color: #fff;">
+                  <span> Chi tiết sự kiện </span> <i class='bx bx-right-arrow-alt'></i>
+                  </div>
+              </div>
+            </div>
+          </div>
 
           <div class="product-minimal">
             <div class="product-showcase">
@@ -461,7 +545,12 @@
                       </del>
                     </div>
 
-                    <button class="add-cart-btn" (click)="openFasterDialogDetail(giamGiaSau.id)">Thêm vào giỏ hàng</button>
+                    <button
+                      class="add-cart-btn"
+                      (click)="openFasterDialogDetail(giamGiaSau.id)"
+                    >
+                      Thêm vào giỏ hàng
+                    </button>
 
                     <div class="showcase-status">
                       <div class="wrapper">

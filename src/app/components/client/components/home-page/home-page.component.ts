@@ -84,6 +84,8 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   minutes: number = 0;
   seconds: number = 0;
   theLoaiParams: any = {};
+  isHaveEvent : boolean = false;
+  eventData : any;
   private timerSubscription: Subscription = new Subscription();
   //
   get12update: any[] = [];
@@ -135,6 +137,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     this.getTop5SanPhamMoi();
     this.getSanPhamSaleSauNhat();
     this.get12SanPhamMoiCapNhat();
+    this.getEvent();
     setTimeout(() => {
       this.spinner.hide();
     }, 1000);
@@ -351,5 +354,18 @@ export class HomePageComponent implements OnInit, AfterViewInit {
         id: id,
       },
     });
+  }
+  async getEvent(){
+    const data = await this.service.getEvent().toPromise();
+    if(data.body.errorCode === 400){
+      this.isHaveEvent = false;
+    }else{
+      this.eventData = data.body;
+      this.isHaveEvent = true;  
+    }
+    
+  }
+  goToSuKien(){
+    this.router.navigate(['/g4/shop/su-kien-thang'])
   }
 }
