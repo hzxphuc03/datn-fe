@@ -1,0 +1,98 @@
+.all-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  .uploadimg {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid gray;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Để đảm bảo mọi thứ nằm gọn trong border-radius */
+  }
+
+  .uploadimg img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .editIMG {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Canh giữa nội dung theo chiều dọc */
+    height: 40px;
+    width: 100%;
+    background-color: gray; /* Màu nền xám */
+    border-radius: 0 0 50% 50%; /* Bo tròn phần dưới */
+    color: white; /* Màu chữ */
+  }
+}
+.content {
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 500px;
+}
+:host ::ng-deep {
+  .p-float-label {
+    display: flex;
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
+  .p-calendar,
+  p-calendar {
+    width: 100% !important;
+  }
+
+  .p-calendar .p-datepicker {
+    border: 1px solid gray;
+  }
+}
+.all-content {
+  display: flex;
+  gap: 20px;
+  .img {
+    width: 300px;
+  }
+}
+.uploadimg {
+  padding: 10px;
+  cursor: pointer;
+  max-height: 500px;
+  min-height: 200px;
+  width: 100%;
+  border: 1px dashed black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  img {
+    max-height: 300px;
+    max-width: 100%;
+  }
+}
+.action-header {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  .btn {
+    border: 1px solid black;
+  }
+}

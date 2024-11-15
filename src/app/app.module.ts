@@ -22,7 +22,7 @@ import { ClientLayoutMasterComponent } from './shareds/client-layout-master/clie
     AppComponent,
     MasterLayoutAdminComponent,
     ChatComponent,
-    ClientLayoutMasterComponent
+    ClientLayoutMasterComponent,
   ],
   imports: [
     BrowserModule,

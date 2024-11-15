@@ -1,0 +1,126 @@
+<div class="all-content">
+  <div class="item-sanpham">
+    <label class="uploadimg" for="upload-file">
+      <img [src]="data?.hinhAnh" alt="" *ngIf="data?.hinhAnh" />
+      <span *ngIf="!data?.hinhAnh">UploadFile</span>
+      <div class="editIMG" *ngIf="data?.hinhAnh">Sửa</div>
+    </label>
+    <input
+      type="file"
+      id="upload-file"
+      accept="image/*"
+      style="display: none"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+  <div class="content">
+    <span class="p-float-label">
+      <input id="float-input" type="text" pInputText [(ngModel)]="data.hoTen" />
+      <label for="float-input">Tên khách hàng</label>
+    </span>
+    <span class="p-float-label">
+      <input
+        id="float-input"
+        type="text"
+        pInputText
+        [(ngModel)]="data.ma"
+        readonly
+        disabled="true"
+      />
+      <label for="float-input">Mã khách hàng</label>
+    </span>
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      "
+    >
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.custumSdt"
+          readonly
+          disabled="true"
+        />
+        <label for="float-input">Số điện thoại</label>
+      </span>
+      <button class="btn btn-primary" style="height: 100%">
+        <i class="bx bx-edit-alt"></i>
+      </button>
+    </div>
+    <span class="p-float-label">
+      <p-calendar
+        [(ngModel)]="data.ngaySinh"
+        inputId="float-input"
+      ></p-calendar>
+      <label for="float-input">Ngày sinh</label>
+    </span>
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      "
+    >
+      <span class="p-float-label">
+        <input
+          id="float-input"
+          type="text"
+          pInputText
+          [(ngModel)]="data.custumEmail"
+          readonly
+          disabled="true"
+        />
+        <label for="float-input">Email</label>
+      </span>
+      <button class="btn btn-primary" style="height: 100%">
+        <i class="bx bx-edit-alt"></i>
+      </button>
+    </div>
+    <span class="p-float-label" style="width: 100%">
+      <div style="width: 200px">Giới tính :</div>
+      <div style="width: 100%; display: flex">
+        <div class="flex align-items-center" style="width: 100%; gap: 20px">
+          <p-radioButton
+            name="pizza"
+            value="1"
+            [(ngModel)]="data.gioiTinh"
+            inputId="ingredient1"
+          ></p-radioButton>
+          <label style="margin-left: 20px" for="ingredient1" class="ml-2">
+            Nam
+          </label>
+        </div>
+        <div class="flex align-items-center" style="width: 100%">
+          <p-radioButton
+            name="pizza"
+            value="2"
+            [(ngModel)]="data.gioiTinh"
+            inputId="ingredient1"
+          ></p-radioButton>
+          <label style="margin-left: 20px" for="ingredient1" class="ml-2">
+            Nữ
+          </label>
+        </div>
+      </div>
+    </span>
+    <div
+      class="btn-action"
+      style="
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      "
+    >
+      <button class="btn btn-primary" (click)="updateThongTinKhachHang()">
+        Lưu
+      </button>
+    </div>
+  </div>
+</div>

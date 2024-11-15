@@ -114,10 +114,10 @@
               <ion-icon name="basket-outline"></ion-icon>
               <span class="count">{{ countGioHang }}</span>
             </button>
-            <button class="action-btn" (click)="goVoucher()">
+            <!-- <button class="action-btn" (click)="goVoucher()">
               <ion-icon name="pricetags-outline"></ion-icon>
               <span class="count">0</span>
-            </button>
+            </button> -->
           </div>
           <div
             class="option-drop-down"
@@ -132,11 +132,8 @@
                 *ngIf="isLoginKhachHang"
                 style="display: flex; flex-direction: column"
               >
-                <div class="option" (click)="isOpenUser = false">
+                <div class="option" (click)="isOpenUser = false; goToInfo()">
                   Thông tin khách hàng
-                </div>
-                <div class="option" (click)="isOpenUser = false; goDiaChi()">
-                  Địa chỉ
                 </div>
                 <div class="option" (click)="isOpenUser = false; logOut()">
                   Đăng xuất
@@ -163,7 +160,7 @@
             <a class="menu-title" (click)="sanPham()">Sản Phẩm</a>
           </li>
           <li class="menu-category">
-            <a class="menu-title">Thông tin</a>
+            <a class="menu-title" (click)="goToGioiThieu()">Giới thiệu</a>
           </li>
 
           <li class="menu-category">
@@ -171,7 +168,7 @@
           </li>
 
           <li class="menu-category">
-            <a class="menu-title">Liên hệ</a>
+            <a class="menu-title" (click)="goToLienHe()">Liên hệ</a>
           </li>
         </ul>
       </div>

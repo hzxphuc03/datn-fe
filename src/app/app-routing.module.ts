@@ -46,8 +46,9 @@ const routes: Routes = [
     component: FormThanhCongHayThatBaiComponent,
   },
   {
-    path: '', // Route cho trang chủ
-    component: LoginClientComponent,
+    path: '',
+    redirectTo: '/g4/shop/home',
+    pathMatch: 'full',
   },
 ];
 

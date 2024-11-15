@@ -119,6 +119,7 @@ export class AddOrEditEventComponent implements OnInit {
     const param = {
       tenSuKien: this.data.tenSuKien,
       thangHoatDong: [] as any[],
+      hinhAnh: this.data.hinhAnh,
       donViPhieuGiamGia: this.data.donViPhieuGiamGia,
       thoiGianHetHanPhieu: this.data.thoiGianHetHanPhieu,
       moTa: this.data.moTa,
@@ -193,6 +194,7 @@ export class AddOrEditEventComponent implements OnInit {
     const param = {
       id: this.id,
       tenSuKien: this.data.tenSuKien,
+      hinhAnh: this.data.hinhAnh,
       thangHoatDong: [] as any[],
       donViPhieuGiamGia: this.data.donViPhieuGiamGia,
       thoiGianHetHanPhieu: this.data.thoiGianHetHanPhieu,

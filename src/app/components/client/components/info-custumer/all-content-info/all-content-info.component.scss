@@ -1,0 +1,77 @@
+.show-info-check {
+  margin-top: 10px;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .all-option {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: 100%;
+  }
+  .items {
+    width: 100%;
+  }
+  .option {
+    color: black;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-bottom: 1px solid gray;
+    position: relative;
+  }
+  .option::after {
+    content: ""; /* Tạo nội dung trống */
+    display: block; /* Hiển thị như một khối */
+    height: 2px; /* Chiều cao của đường viền */
+    background: linear-gradient(
+      90deg,
+      #ff8c8c,
+      #ff1493
+    ); /* Gradient từ màu hồng sáng sang hồng đậm */
+    width: 0; /* Bắt đầu với chiều rộng 0 */
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    left: 0; /* Canh trái */
+    bottom: 0; /* Canh dưới */
+    transition: width 0.3s ease; /* Hiệu ứng chuyển tiếp cho chiều rộng */
+  }
+
+  .option:hover::after {
+    width: 100%; /* Mở rộng chiều rộng khi hover */
+  }
+  .option:hover {
+    color: #ff8c8c; /* Màu chữ hồng khi hover */
+    font-weight: bold;
+  }
+}
+.all-option {
+  overflow: hidden; /* Ẩn phần bên ngoài khi không mở */
+  transition: max-height 0.5s ease; /* Hiệu ứng chuyển tiếp cho chiều cao */
+  max-height: 0; /* Chiều cao ban đầu là 0 */
+}
+
+.all-option.open {
+  max-height: 500px; /* Chiều cao tối đa khi mở (có thể điều chỉnh) */
+}
+.checkedS {
+  color: #ff8c8c !important; /* Màu chữ hồng khi hover */
+  font-weight: bold !important;
+  border-bottom: 3px solid #ff8c8c !important;
+}
+.all-content {
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  .left {
+    width: 20%;
+  }
+  .right {
+    width: 100%;
+    height: 700px;
+    overflow: auto;
+  }
+}

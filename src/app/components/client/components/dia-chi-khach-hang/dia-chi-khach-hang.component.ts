@@ -13,7 +13,7 @@ import { AddDiaChiComponent } from '../add-dia-chi/add-dia-chi.component';
 @Component({
   selector: 'app-dia-chi-khach-hang',
   templateUrl: './dia-chi-khach-hang.component.html',
-  styleUrls: ['./dia-chi-khach-hang.component.scss']
+  styleUrls: ['./dia-chi-khach-hang.component.scss'],
 })
 export class DiaChiKhachHangComponent implements OnInit {
   steps = [1, 2, 3]; // Danh sách các bước
@@ -37,7 +37,7 @@ export class DiaChiKhachHangComponent implements OnInit {
   //
   visible: boolean = false;
   visibleVoucher: boolean = false;
-  visibleThanhToan : boolean = false;
+  visibleThanhToan: boolean = false;
   optionPhuongThucThanhToan = [
     { id: 2, title: 'Online' },
     { id: 3, title: 'Thanh toán sau khi nhận hàng' },
@@ -57,11 +57,30 @@ export class DiaChiKhachHangComponent implements OnInit {
     private dialog: MatDialog,
     private errorService: ErrorTsService,
     private broadcastService: BroadcastService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    const isExpired = this.tokenService.isTokenExpired();
     const { decoded } = this.tokenService.getToken();
-    if (!decoded) {
+    const a = this.tokenService.getToken();
+    if (a.decoded === null) {
+      this.router.navigate(['/g4/shop/login']);
+    }
+    if (a.decoded.role !== 'KhachHang') {
+      this.tokenService.removeToken();
+      this.router.navigate(['/g4/shop/login']);
+      return;
+    }
+    if (decoded) {
+      if (isExpired) {
+        this.errorService.displayError(
+          'hết thời gian đăng nhập, vui lòng đăng nhập lại',
+          'normal'
+        );
+        this.tokenService.removeToken();
+        this.router.navigate(['/g4/shop/login']);
+      }
+    } else {
       this.router.navigate(['/g4/shop/login']);
     }
     this.searchQuery.idKhachHang = decoded.user.id;
@@ -138,5 +157,4 @@ export class DiaChiKhachHangComponent implements OnInit {
     }
     return totalPage;
   }
-
 }

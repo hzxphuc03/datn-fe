@@ -28,8 +28,16 @@ const routes: Routes = [
     component: fromPagesComponent.DetailProductComponent,
   },
   {
-    path: 'dia-chi',
-    component: fromPagesComponent.DiaChiKhachHangComponent,
+    path: 'khach-hang',
+    component: fromPagesComponent.AllContentInfoComponent,
+  },
+  {
+    path: 'gioi-thieu',
+    component: fromPagesComponent.GtComponent,
+  },
+  {
+    path: 'lien-he',
+    component: fromPagesComponent.ContactUsComponent,
   },
 ];
 @NgModule({

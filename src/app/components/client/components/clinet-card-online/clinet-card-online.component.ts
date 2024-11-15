@@ -731,6 +731,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       const data = await this.service.thanhToan2End(orderDetails).toPromise();
       if (data) {
         this.errorService.displayError('Đã thanh toán thành công', 'succes');
+        console.log(data);
         this.data = {};
         this.getGioHang();
         this.getAllTinhThanh();
@@ -741,6 +742,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       }
     } else {
       this.errorService.displayError('bạn đã hủy thanh toán', 'normal');
+      this.currentStep = 1;
     }
   }
   async deleteAll() {

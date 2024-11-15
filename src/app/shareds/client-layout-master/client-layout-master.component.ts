@@ -48,14 +48,13 @@ export class ClientLayoutMasterComponent implements OnInit {
     } else {
       this.isLoginKhachHang = false;
     }
-    console.log(this.isLoginKhachHang);
 
     this.receivedData = this.dataService.getData();
 
     // Lắng nghe các thay đổi từ service
     this.dataService.data$.subscribe((data: any) => {
       this.receivedData = data; // Cập nhật dữ liệu khi có thay đổi
-      this.getGioHang(decoded.user.id);
+      this.getGioHang(decoded?.user?.id);
     });
 
     this.searchControl.valueChanges
@@ -127,6 +126,15 @@ export class ClientLayoutMasterComponent implements OnInit {
   }
   goDiaChi() {
     this.router.navigate(['/g4/shop/dia-chi']);
+  }
+  goToInfo() {
+    this.router.navigate(['/g4/shop/khach-hang']);
+  }
+  goToGioiThieu() {
+    this.router.navigate(['/g4/shop/gioi-thieu']);
+  }
+  goToLienHe() {
+    this.router.navigate(['/g4/shop/lien-he']);
   }
   logOut() {
     this.tokenService.removeToken();
