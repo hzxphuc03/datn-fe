@@ -1,11 +1,11 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
 import { AutoServiceService } from '../auto-service.service';
 import { ErrorTsService } from '../message/error.service';
 import { HomeServoceService } from 'src/app/components/client/services/home-service.service';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { DataService } from 'src/app/components/client/services/data.service';
 
 @Component({
@@ -18,9 +18,9 @@ export class ClientLayoutMasterComponent implements OnInit {
   isOpenSearch: boolean = false;
   searchControl = new FormControl();
   searchResults: any[] = []; // Biến để lưu kết quả tìm kiếm
-  isOpenUser : boolean = false;
-  idKhachHang : any;
-  countGioHang : any = 0;
+  isOpenUser: boolean = false;
+  idKhachHang: any;
+  countGioHang: any = 0;
   receivedData: string = '';
   constructor(
     private tokenService: TokenService,
@@ -28,23 +28,36 @@ export class ClientLayoutMasterComponent implements OnInit {
     private errorService: ErrorTsService,
     private autoVoucher: AutoServiceService,
     private service: HomeServoceService,
-    private dataService: DataService
+    private dataService: DataService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.receivedData = this.dataService.getData();
-    // Lắng nghe các thay đổi từ service
-    this.dataService.data$.subscribe(data => {
-      this.receivedData = data; // Cập nhật dữ liệu khi có thay đổi
-      this.getGioHang();
-    });
     const { decoded } = this.tokenService.getToken();
-    if (!decoded) {
-      this.router.navigate(['/g4/shop/login']);
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        const navigationEndEvent = event as NavigationEnd; // Type assertion
+        // console.log('URL changed to:', navigationEndEvent.url);
+        // Thực hiện hành động khi URL thay đổi
+      });
+
+    this.idKhachHang = decoded?.user?.id;
+    if (this.idKhachHang) {
+      this.isLoginKhachHang = true;
+    } else {
+      this.isLoginKhachHang = false;
     }
-    this.idKhachHang = decoded.user.id;
-    this.getGioHang();
-    this.checkToken();
+    console.log(this.isLoginKhachHang);
+
+    this.receivedData = this.dataService.getData();
+
+    // Lắng nghe các thay đổi từ service
+    this.dataService.data$.subscribe((data: any) => {
+      this.receivedData = data; // Cập nhật dữ liệu khi có thay đổi
+      this.getGioHang(decoded.user.id);
+    });
+
     this.searchControl.valueChanges
       .pipe(
         debounceTime(200), // Đợi 200ms sau khi người dùng ngừng nhập
@@ -67,22 +80,6 @@ export class ClientLayoutMasterComponent implements OnInit {
         }
       );
   }
-  checkToken() {
-    const isExpired = this.tokenService.isTokenExpired();
-    const { decoded } = this.tokenService.getToken();
-    if (decoded) {
-      if (isExpired) {
-        this.errorService.displayError(
-          'hết thời gian đăng nhập, vui lòng đăng nhập lại',
-          'normal'
-        );
-        this.tokenService.removeToken();
-        this.isLoginKhachHang = false;
-      }
-    } else {
-      this.isLoginKhachHang = false;
-    }
-  }
   goDetail(id: any) {
     this.isOpenSearch = false;
     this.router.navigate([`/g4/shop/san-pham/${id}`]);
@@ -102,21 +99,18 @@ export class ClientLayoutMasterComponent implements OnInit {
     ) {
       this.isOpenSearch = false; // Đóng hộp tìm kiếm
     }
-    if (
-      openUserActive &&
-      !openUserActive.contains(event.target as Node)
-    ) {
+    if (openUserActive && !openUserActive.contains(event.target as Node)) {
       this.isOpenUser = false; // Đóng hộp tìm kiếm
     }
-
   }
-  async getGioHang(){
-    const data = await this.service.getSoluongGioHang(this.idKhachHang).toPromise();
-    if(data){
-      this.countGioHang = data;
-      console.log(data);
-      
-    }
+  async getGioHang(id: any) {
+    const data = await this.service.getSoluongGioHang(id).toPromise();
+    // if (data) {
+    this.countGioHang = data;
+    // }
+  }
+  logIn() {
+    this.router.navigate(['/g4/shop/login']);
   }
 
   home() {
@@ -134,7 +128,7 @@ export class ClientLayoutMasterComponent implements OnInit {
   goDiaChi() {
     this.router.navigate(['/g4/shop/dia-chi']);
   }
-  logOut(){
+  logOut() {
     this.tokenService.removeToken();
     this.errorService.displayError('Đăng xuất thành công', 'normal');
     this.router.navigate(['/g4/shop/login']);

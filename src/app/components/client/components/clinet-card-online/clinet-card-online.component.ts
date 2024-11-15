@@ -6,7 +6,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DiaChiServiceService } from 'src/app/shareds/dia-chi-service.service';
 import { KhachHangServiceService } from 'src/app/components/admin/service/khach-hang-service.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AddDiaChiComponent, DialogConfirmComponent } from 'src/app/components/admin';
+import {
+  AddDiaChiComponent,
+  DialogConfirmComponent,
+} from 'src/app/components/admin';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { BroadcastService } from 'src/app/services/broadcast.service';
 import { DataService } from '../../services/data.service';
@@ -57,7 +60,7 @@ export class ClinetCardOnlineComponent implements OnInit {
   //
   visible: boolean = false;
   visibleVoucher: boolean = false;
-  visibleThanhToan : boolean = false;
+  visibleThanhToan: boolean = false;
   optionPhuongThucThanhToan = [
     { id: 2, title: 'Online' },
     { id: 3, title: 'Thanh toán sau khi nhận hàng' },
@@ -81,16 +84,16 @@ export class ClinetCardOnlineComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.broadcastService.data$.subscribe(data => {
+    this.broadcastService.data$.subscribe((data) => {
       if (data) {
         // nhận được dữ liệu kho thành toán thành công
-        if(data.message){
-          this.thanhToanOnline(data.message)
-        }else{
-          setTimeout(()=>{
-            this.errorService.displayError('Bạn đã hủy thanh toán','normal')
-          },10)
-        }    
+        if (data.message) {
+          this.thanhToanOnline(data.message);
+        } else {
+          setTimeout(() => {
+            this.errorService.displayError('Bạn đã hủy thanh toán', 'normal');
+          }, 10);
+        }
       }
     });
     const { decoded } = this.tokenService.getToken();
@@ -169,15 +172,27 @@ export class ClinetCardOnlineComponent implements OnInit {
     return ((this.currentStep - 1) / (this.steps.length - 1)) * 100;
   }
   next(): void {
-    if(this.currentStep === 1){
-      if(!this.data.tongTien|| this.data.tongTien === 0){
-        this.errorService.displayError('Vui lòng chọn sản phẩm để sang bước tiếp theo','normal')
+    if (this.currentStep === 1) {
+      if (!this.data.tongTien || this.data.tongTien === 0) {
+        this.errorService.displayError(
+          'Vui lòng chọn sản phẩm để sang bước tiếp theo',
+          'normal'
+        );
         return;
       }
     }
-    if(this.currentStep === 2){
-      if(!this.data.idTinhThanh || !this.data.idPhuongXa || !this.data.idQuanHuyen || !this.data.tenNguoiNhan || !this.data.sdtNguoiNhan){
-        this.errorService.displayError('Vui lòng không để trống thông tin giao hàng','normal')
+    if (this.currentStep === 2) {
+      if (
+        !this.data.idTinhThanh ||
+        !this.data.idPhuongXa ||
+        !this.data.idQuanHuyen ||
+        !this.data.tenNguoiNhan ||
+        !this.data.sdtNguoiNhan
+      ) {
+        this.errorService.displayError(
+          'Vui lòng không để trống thông tin giao hàng',
+          'normal'
+        );
         return;
       }
     }
@@ -394,7 +409,6 @@ export class ClinetCardOnlineComponent implements OnInit {
     });
     this.data.tongTien = tongTien;
     this.updateVoucherList();
-    
   }
   async getShipPrice() {
     if (
@@ -517,35 +531,39 @@ export class ClinetCardOnlineComponent implements OnInit {
     }
     this.tinhToanVoucherHoaDon();
   }
-  tinhToanVoucherHoaDon(){
+  tinhToanVoucherHoaDon() {
     this.data.giamGiaHoaDon = 0;
     this.data.giamGiaVanChuyen = 0;
-      this.listVoucherKhanhHang.voucherHoaDon.map((item : any) =>{
-        if(item.isChecked){
-          const discountValueByPercentage =  (this.data.tongTien * item.voucher.phanTramGiam) / 100;
-          if(discountValueByPercentage <= item.voucher.giamToiDa){
-            this.data.giamGiaHoaDon = discountValueByPercentage
-          }else{
-            this.data.giamGiaHoaDon = item.voucher.giamToiDa
-          }
+    this.listVoucherKhanhHang.voucherHoaDon.map((item: any) => {
+      if (item.isChecked) {
+        const discountValueByPercentage =
+          (this.data.tongTien * item.voucher.phanTramGiam) / 100;
+        if (discountValueByPercentage <= item.voucher.giamToiDa) {
+          this.data.giamGiaHoaDon = discountValueByPercentage;
+        } else {
+          this.data.giamGiaHoaDon = item.voucher.giamToiDa;
         }
-      })
-      this.listVoucherKhanhHang.voucherVanCHuyen.map((item : any) =>{
-        if(item.isChecked){
-          const discountValueByPercentage = (this.data.tienShip * item.voucher.phanTramGiam) / 100;
-          if(discountValueByPercentage <= item.voucher.giamToiDa){
-            this.data.giamGiaVanChuyen = discountValueByPercentage
-          }else{
-            this.data.giamGiaVanChuyen = item.voucher.giamToiDa
-          }
+      }
+    });
+    this.listVoucherKhanhHang.voucherVanCHuyen.map((item: any) => {
+      if (item.isChecked) {
+        const discountValueByPercentage =
+          (this.data.tienShip * item.voucher.phanTramGiam) / 100;
+        if (discountValueByPercentage <= item.voucher.giamToiDa) {
+          this.data.giamGiaVanChuyen = discountValueByPercentage;
+        } else {
+          this.data.giamGiaVanChuyen = item.voucher.giamToiDa;
         }
-      })
+      }
+    });
   }
   updateVoucherList() {
     //
     // kiểm tra voucher hiện tại có phù hợp với giá tiền hay không
     if (this.voucherHoaDon) {
-      if (this.data.tongTien < this.voucherHoaDon?.voucher?.giaTriGiamToiThieu) {
+      if (
+        this.data.tongTien < this.voucherHoaDon?.voucher?.giaTriGiamToiThieu
+      ) {
         this.voucherHoaDon.isUse = false;
       } else {
         this.voucherHoaDon.isUse = true;
@@ -562,14 +580,14 @@ export class ClinetCardOnlineComponent implements OnInit {
     }
     if (!this.data.tongTien) {
       this.data.tinhhTongTien = 0;
-    }  
+    }
     if (!this.data.phiShip) {
       this.data.phiShip = 0;
-    }  
-    this.listVoucherKhanhHang?.voucherHoaDon.map((item: any) => {    
+    }
+    this.listVoucherKhanhHang?.voucherHoaDon.map((item: any) => {
       if (this.data.tongTien >= item.voucher.giaTriGiamToiThieu) {
         item.isUse = true;
-      }else{
+      } else {
         item.isUse = false;
         item.isChecked = false;
       }
@@ -577,61 +595,61 @@ export class ClinetCardOnlineComponent implements OnInit {
     this.listVoucherKhanhHang?.voucherVanCHuyen.map((item: any) => {
       if (this.data.phiShip >= item.voucher.giaTriGiamToiThieu) {
         item.isUse = true;
-      }else{
+      } else {
         item.isUse = false;
         item.isChecked = false;
       }
     });
     this.tinhToanVoucherHoaDon();
   }
-  async submitThanhToan(){
+  async submitThanhToan() {
     const orderDetails = {
       ghiChu: this.data.ghiChu,
-      tenNguoiNhan:  this.data.tenNguoiNhan,
-      sdtNguoiNhan:  this.data.sdtNguoiNhan,
-      idTinhThanh:  this.data.idTinhThanh,
-      tinhThanh:  this.data.tinhThanh,
-      idQuanHuyen:  this.data.idQuanHuyen,
-      quanHuyen:  this.data.quanHuyen,
-      idPhuongXa:  this.data.idPhuongXa,
-      phuongXa:  this.data.phuongXa,
+      tenNguoiNhan: this.data.tenNguoiNhan,
+      sdtNguoiNhan: this.data.sdtNguoiNhan,
+      idTinhThanh: this.data.idTinhThanh,
+      tinhThanh: this.data.tinhThanh,
+      idQuanHuyen: this.data.idQuanHuyen,
+      quanHuyen: this.data.quanHuyen,
+      idPhuongXa: this.data.idPhuongXa,
+      phuongXa: this.data.phuongXa,
       phiShip: this.data.phiShip,
-      tongTien: this.data.tongTien +  this.data.phiShip - (this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen),
+      tongTien:
+        this.data.tongTien +
+        this.data.phiShip -
+        (this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen),
       tongTienSanPhamChuaGiam: this.data.tongTien,
       tongTienGiam: this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen,
       idGioHangChiTietList: [] as any[],
       idVoucherKhachHangList: [] as any[],
-      idKhachHang: this.searchQuery.idKhachHang
+      idKhachHang: this.searchQuery.idKhachHang,
     };
-    // push list gio hàng chi tiết vào 
-    this.productList.map((item : any) =>{
-      item.chiTietSanPham.map((product : any) =>{
-        if(product.isChecked){
-          orderDetails.idGioHangChiTietList.push(product.id)
+    // push list gio hàng chi tiết vào
+    this.productList.map((item: any) => {
+      item.chiTietSanPham.map((product: any) => {
+        if (product.isChecked) {
+          orderDetails.idGioHangChiTietList.push(product.id);
         }
-      })
-    })
+      });
+    });
     //  thêm voucher vào giỏ hàng
-    this.listVoucherKhanhHang.voucherHoaDon.map((a :any) =>{
-      if(a.isChecked){
-        orderDetails.idVoucherKhachHangList.push(a.id)
+    this.listVoucherKhanhHang.voucherHoaDon.map((a: any) => {
+      if (a.isChecked) {
+        orderDetails.idVoucherKhachHangList.push(a.id);
       }
-    })
-    this.listVoucherKhanhHang.voucherVanCHuyen.map((a :any) =>{
-      if(a.isChecked){
-        orderDetails.idVoucherKhachHangList.push(a.id)
+    });
+    this.listVoucherKhanhHang.voucherVanCHuyen.map((a: any) => {
+      if (a.isChecked) {
+        orderDetails.idVoucherKhachHangList.push(a.id);
       }
-    })
+    });
     //check api
-    if(this.data.phuongThucThanhToan === 3){
+    if (this.data.phuongThucThanhToan === 3) {
       const data = await this.service.thanhToan3(orderDetails).toPromise();
       if (data?.errorCode) {
         this.errorService.displayError(data.messageError, 'error');
       } else {
-        this.errorService.displayError(
-          'Tạo hóa đơn thành công',
-          'sussces'
-        );
+        this.errorService.displayError('Tạo hóa đơn thành công', 'sussces');
         this.data = {};
         this.getGioHang();
         this.getAllTinhThanh();
@@ -639,76 +657,80 @@ export class ClinetCardOnlineComponent implements OnInit {
         this.data.phuongThucThanhToan = 3;
         this.getAllVoucher();
         this.currentStep = 1;
+      }
     }
-  }
-    
-    if(this.data.phuongThucThanhToan === 2){
+
+    if (this.data.phuongThucThanhToan === 2) {
       // run url
       const data = await this.service.thanhToan2(orderDetails).toPromise();
       if (data?.errorCode) {
         this.errorService.displayError(data.messageError, 'error');
       } else {
         this.openCenteredPopup(data.body);
-        
       }
-      
     }
-   
   }
   openCenteredPopup(url: any) {
-    const width = Math.floor(window.innerWidth * 0.8);  // Chiều rộng 90% màn hình
+    const width = Math.floor(window.innerWidth * 0.8); // Chiều rộng 90% màn hình
     const height = Math.floor(window.innerHeight * 0.8); // Chiều cao 90% màn hình
-    
+
     // Tính toán vị trí để căn giữa
-    const left = (window.innerWidth / 2) - (width / 2);
-    const top = (window.innerHeight / 2) - (height / 2);
-    
+    const left = window.innerWidth / 2 - width / 2;
+    const top = window.innerHeight / 2 - height / 2;
+
     // Mở cửa sổ popup
-    window.open(url, '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+    window.open(
+      url,
+      '_blank',
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
   }
-  async thanhToanOnline( trangThai : any){
+  async thanhToanOnline(trangThai: any) {
     const orderDetails = {
       ghiChu: this.data.ghiChu,
-      tenNguoiNhan:  this.data.tenNguoiNhan,
-      sdtNguoiNhan:  this.data.sdtNguoiNhan,
-      idTinhThanh:  this.data.idTinhThanh,
-      tinhThanh:  this.data.tinhThanh,
-      idQuanHuyen:  this.data.idQuanHuyen,
-      quanHuyen:  this.data.quanHuyen,
-      idPhuongXa:  this.data.idPhuongXa,
-      phuongXa:  this.data.phuongXa,
+      tenNguoiNhan: this.data.tenNguoiNhan,
+      sdtNguoiNhan: this.data.sdtNguoiNhan,
+      idTinhThanh: this.data.idTinhThanh,
+      tinhThanh: this.data.tinhThanh,
+      idQuanHuyen: this.data.idQuanHuyen,
+      quanHuyen: this.data.quanHuyen,
+      idPhuongXa: this.data.idPhuongXa,
+      phuongXa: this.data.phuongXa,
       phiShip: this.data.phiShip,
-      tongTien: this.data.tongTien +  this.data.phiShip - (this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen),
+      tongTien:
+        this.data.tongTien +
+        this.data.phiShip -
+        (this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen),
       tongTienSanPhamChuaGiam: this.data.tongTien,
       tongTienGiam: this.data.giamGiaHoaDon + this.data.giamGiaVanChuyen,
       idGioHangChiTietList: [] as any[],
       idVoucherKhachHangList: [] as any[],
-      idKhachHang: this.searchQuery.idKhachHang
+      idKhachHang: this.searchQuery.idKhachHang,
     };
-    // push list gio hàng chi tiết vào 
-    this.productList.map((item : any) =>{
-      item.chiTietSanPham.map((product : any) =>{
-        if(product.isChecked){
-          orderDetails.idGioHangChiTietList.push(product.id)
+    // push list gio hàng chi tiết vào
+    this.productList.map((item: any) => {
+      item.chiTietSanPham.map((product: any) => {
+        if (product.isChecked) {
+          orderDetails.idGioHangChiTietList.push(product.id);
         }
-      })
-    })
+      });
+    });
     //  thêm voucher vào giỏ hàng
-    this.listVoucherKhanhHang.voucherHoaDon.map((a :any) =>{
-      if(a.isChecked){
-        orderDetails.idVoucherKhachHangList.push(a.id)
+    this.listVoucherKhanhHang.voucherHoaDon.map((a: any) => {
+      if (a.isChecked) {
+        orderDetails.idVoucherKhachHangList.push(a.id);
       }
-    })
-    this.listVoucherKhanhHang.voucherVanCHuyen.map((a :any) =>{
-      if(a.isChecked){
-        orderDetails.idVoucherKhachHangList.push(a.id)
+    });
+    this.listVoucherKhanhHang.voucherVanCHuyen.map((a: any) => {
+      if (a.isChecked) {
+        orderDetails.idVoucherKhachHangList.push(a.id);
       }
-    })
-    // gọi api ở đây bú bú bú 
-    if(trangThai){
+    });
+    // gọi api ở đây bú bú bú
+    if (trangThai) {
       const data = await this.service.thanhToan2End(orderDetails).toPromise();
-      if(data){
-        this.errorService.displayError('Đã thanh toán thành công','succes');
+      if (data) {
+        this.errorService.displayError('Đã thanh toán thành công', 'succes');
         this.data = {};
         this.getGioHang();
         this.getAllTinhThanh();
@@ -717,11 +739,11 @@ export class ClinetCardOnlineComponent implements OnInit {
         this.getAllVoucher();
         this.currentStep = 1;
       }
-    }else{
-      this.errorService.displayError('bạn đã hủy thanh toán','normal')
+    } else {
+      this.errorService.displayError('bạn đã hủy thanh toán', 'normal');
     }
   }
-  async deleteAll(){
+  async deleteAll() {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       data: {
         inputTitle: `Bạn có muốn xóa toàn bộ sản phẩm ?`,
@@ -730,9 +752,12 @@ export class ClinetCardOnlineComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        const data = await this.service.DeleteAll(this.searchQuery.idKhachHang).toPromise();
-        if(data){
-          this.errorService.displayError('Xóa sản phẩm thành công','normal');
+        const data = await this.service
+          .DeleteAll(this.searchQuery.idKhachHang)
+          .toPromise();
+        if (data) {
+          this.errorService.displayError('Xóa sản phẩm thành công', 'normal');
+          debugger;
           this.dataService.updateData('');
           await this.getGioHang();
           this.tinhhTongTien();
@@ -742,7 +767,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       }
     });
   }
-  async deleteChose(){
+  async deleteChose() {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       data: {
         inputTitle: `Bạn có muốn xóa những sản phẩm ?`,
@@ -753,27 +778,34 @@ export class ClinetCardOnlineComponent implements OnInit {
       if (result) {
         // Tạo một mảng để lưu trữ các promise
         const deletePromises = this.productList.map((item: any) => {
-          return Promise.all(item.chiTietSanPham.map(async (product: any) => {
-            if (product.isChecked) {
-              const data = await this.service.DeleteChose(product.id).toPromise();
-              return data; // Trả về kết quả của mỗi promise
-            }
-          }));
+          return Promise.all(
+            item.chiTietSanPham.map(async (product: any) => {
+              if (product.isChecked) {
+                const data = await this.service
+                  .DeleteChose(product.id)
+                  .toPromise();
+                return data; // Trả về kết quả của mỗi promise
+              }
+            })
+          );
         });
-      
+
         // Chờ tất cả các promise hoàn thành
         Promise.all(deletePromises)
           .then(async () => {
             this.errorService.displayError('Xóa sản phẩm thành công', 'normal');
             this.dataService.updateData('');
-             await this.getGioHang();
-             this.tinhhTongTien();
-             this.getShipPrice();
-             this.data.giamGiaVanChuyen = 0;
+            await this.getGioHang();
+            this.tinhhTongTien();
+            this.getShipPrice();
+            this.data.giamGiaVanChuyen = 0;
           })
-          .catch(error => {
+          .catch((error) => {
             // Xử lý lỗi nếu có
-            this.errorService.displayError('Có lỗi xảy ra khi xóa sản phẩm', 'error');
+            this.errorService.displayError(
+              'Có lỗi xảy ra khi xóa sản phẩm',
+              'error'
+            );
             console.error(error);
           });
       }

@@ -85,7 +85,10 @@
             class="optionsSearch"
             *ngIf="searchControl.value && isOpenSearch"
           >
-            <div class="option-search-results" (click)="sanPham();this.isOpenSearch = false;">
+            <div
+              class="option-search-results"
+              (click)="sanPham(); this.isOpenSearch = false"
+            >
               <span>{{ searchControl.value }}</span>
               <ion-icon name="search-outline"></ion-icon>
             </div>
@@ -102,37 +105,57 @@
         </div>
 
         <div class="header-user-actions">
-          <button class="action-btn">
+          <!-- <button class="action-btn">
             <ion-icon name="heart-outline"></ion-icon>
             <span class="count">0</span>
-          </button>
-
-          <button class="action-btn" (click)="gioHang()">
-            <ion-icon name="basket-outline"></ion-icon>
-            <span class="count">{{countGioHang}}</span>
-          </button>
-          <button class="action-btn" (click)="goVoucher()">
-            <ion-icon name="pricetags-outline"></ion-icon>
-            <span class="count">0</span>
-          </button>
-          <div class="option-drop-down" style="position: relative;" id="open-user-active">
+          </button> -->
+          <div *ngIf="isLoginKhachHang" style="display: flex; gap: 15px">
+            <button class="action-btn" (click)="gioHang()">
+              <ion-icon name="basket-outline"></ion-icon>
+              <span class="count">{{ countGioHang }}</span>
+            </button>
+            <button class="action-btn" (click)="goVoucher()">
+              <ion-icon name="pricetags-outline"></ion-icon>
+              <span class="count">0</span>
+            </button>
+          </div>
+          <div
+            class="option-drop-down"
+            style="position: relative"
+            id="open-user-active"
+          >
             <button class="action-btn" (click)="isOpenUser = !isOpenUser">
               <ion-icon name="person-outline"></ion-icon>
             </button>
             <div class="optional" *ngIf="isOpenUser">
-              <div class="option" (click)="isOpenUser = false ">Thông tin khách hàng</div>
-              <div class="option" (click)="isOpenUser = false ;goDiaChi()">Địa chỉ</div>
-              <div class="option" (click)="isOpenUser = false ;logOut()">Đăng xuất</div>
+              <div
+                *ngIf="isLoginKhachHang"
+                style="display: flex; flex-direction: column"
+              >
+                <div class="option" (click)="isOpenUser = false">
+                  Thông tin khách hàng
+                </div>
+                <div class="option" (click)="isOpenUser = false; goDiaChi()">
+                  Địa chỉ
+                </div>
+                <div class="option" (click)="isOpenUser = false; logOut()">
+                  Đăng xuất
+                </div>
+              </div>
+              <div *ngIf="!isLoginKhachHang" style="width: 100%">
+                <div class="option" (click)="isOpenUser = false; logIn()">
+                  Đăng nhập
+                </div>
+              </div>
             </div>
           </div>
-         
         </div>
       </div>
     </div>
 
     <nav class="desktop-navigation-menu">
       <div class="container">
-        <ul class="desktop-menu-category-list" style="cursor: pointer;">
+        <ul class="desktop-menu-category-list" style="cursor: pointer">
           <li class="menu-category">
             <a class="menu-title" (click)="home()">Trang chủ</a>
           </li>

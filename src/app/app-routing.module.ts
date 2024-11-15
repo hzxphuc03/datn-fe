@@ -47,7 +47,7 @@ const routes: Routes = [
   },
   {
     path: '', // Route cho trang chủ
-    component: LoginComponent,
+    component: LoginClientComponent,
   },
 ];
 

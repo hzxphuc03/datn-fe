@@ -3416,11 +3416,11 @@ input {
 .option-search-results:hover {
   background-color: #999999;
 }
-.option-drop-down{
-  .optional{
+.option-drop-down {
+  .optional {
     position: absolute;
     z-index: 9999;
-    width: 250px;
+    width: 220px;
     background: #fff;
     padding: 20px;
     border-radius: 20px;
@@ -3429,44 +3429,44 @@ input {
     display: flex;
     flex-direction: column;
     opacity: 0;
-    animation: abc  0.3s forwards ;
+    animation: abc 0.3s forwards;
     // gap: 20px;
-        .option{
-          cursor: pointer;
-          font-size: 18px;
-          font-weight: bold;
-        }
-        .option {
-          display: inline-block; /* Để border-bottom chỉ ảnh hưởng đến chiều rộng nội dung */
-          position: relative; /* Để định vị pseudo-element */
-          padding: 10px 0; /* Khoảng cách trên và dưới */
-          font-size: 18px; /* Kích thước font chữ */
-          cursor: pointer; /* Hiển thị con trỏ chuột khi hover */
-        }
-        
-        .option::after {
-          content: ''; /* Tạo một pseudo-element */
-          position: absolute; /* Định vị tương đối với phần tử cha */
-          left: 0; /* Bắt đầu từ bên trái */
-          right: 0; /* Kéo dài đến bên phải */
-          bottom: 0; /* Đặt ở dưới cùng */
-          height: 2px; /* Độ dày của đường viền */
-          background: #ff8c8c; /* Màu sắc của đường viền */
-          transform: scaleX(0); /* Bắt đầu từ 0 */
-          transition: transform 0.3s ease; /* Hiệu ứng chuyển tiếp */
-        }
-        
-        .option:hover::after {
-          transform: scaleX(1); /* Mở rộng đường viền khi hover */
-        }
+    .option {
+      cursor: pointer;
+      font-size: 16px !important;
+      font-weight: bold;
+    }
+    .option {
+      display: inline-block; /* Để border-bottom chỉ ảnh hưởng đến chiều rộng nội dung */
+      position: relative; /* Để định vị pseudo-element */
+      padding: 10px 0; /* Khoảng cách trên và dưới */
+      font-size: 18px; /* Kích thước font chữ */
+      cursor: pointer; /* Hiển thị con trỏ chuột khi hover */
+    }
+
+    .option::after {
+      content: ""; /* Tạo một pseudo-element */
+      position: absolute; /* Định vị tương đối với phần tử cha */
+      left: 0; /* Bắt đầu từ bên trái */
+      right: 0; /* Kéo dài đến bên phải */
+      bottom: 0; /* Đặt ở dưới cùng */
+      height: 2px; /* Độ dày của đường viền */
+      background: #ff8c8c; /* Màu sắc của đường viền */
+      transform: scaleX(0); /* Bắt đầu từ 0 */
+      transition: transform 0.3s ease; /* Hiệu ứng chuyển tiếp */
+    }
+
+    .option:hover::after {
+      transform: scaleX(1); /* Mở rộng đường viền khi hover */
+    }
   }
 }
 @keyframes abc {
-  0%{
+  0% {
     opacity: 0;
     transform: translateY(-20px);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0);
   }

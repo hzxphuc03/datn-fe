@@ -4,6 +4,7 @@ import { EventService } from '../../service/event.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { forkJoin } from 'rxjs';
+import { UploadImgService } from '../../service/upload-img.service';
 
 @Component({
   selector: 'app-add-or-edit-event',
@@ -22,12 +23,17 @@ export class AddOrEditEventComponent implements OnInit {
   listPageNumber: any;
   paramPhieuGiamGia: any = {};
   listVoucherToEvent: any[] = [];
+  optionStatus: any = [
+    { value: 0, name: 'Giảm hóa đơn' },
+    { value: 1, name: 'Giảm giá ship' },
+  ];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private service: EventService,
     private errorService: ErrorTsService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private serviceIMG: UploadImgService
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +48,18 @@ export class AddOrEditEventComponent implements OnInit {
       }
     });
     this.getListWords('rows');
+  }
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      if (file) {
+        const post = await this.serviceIMG.upload(file, 'Images').toPromise();
+        if (post) {
+          this.data.hinhAnh = post.result;
+        }
+      }
+    }
   }
   async getDetail() {
     // get detail
