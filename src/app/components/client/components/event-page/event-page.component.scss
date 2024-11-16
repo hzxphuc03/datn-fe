@@ -1,0 +1,169 @@
+.left {
+    cursor: pointer;
+    // animation: bounce 3s infinite; /* Nhún lên xuống nhẹ nhàng */
+  }
+  
+  .left:hover .title1,
+  .left:hover .small-title,
+  .left:hover .sub-title {
+    animation: grow 0.3s forwards; /* Tăng kích thước khi hover */
+  }
+  
+  /* Animation nhún lên xuống */
+  .event{
+    position: relative;
+      z-index: 0;
+      display: block;
+      overflow: hidden;
+      transition: 1s;
+      border-radius: 20px;
+    &::after {
+          position: absolute;
+          content: " ";
+          display: block;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: -110%;
+          background-color: rgba(255, 255, 255, 0.1);
+          transition: 0.4s;
+          transform: skewX(10deg);
+          border-radius: 20px;
+      }
+      &:hover::after {
+          left: 120%;
+      }
+  }
+  .all-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    
+  }
+  .time-count-down{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .all-time{
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .time-title{
+    color: #ff8c8c;
+    font-weight: 700;
+    font-size: 23px;
+  }
+  .item-count{
+    .item{
+      width: 100px;
+      height: 100px;
+      background-color: #ff8c8c;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      // gap: 5px;
+      .title{
+        color: #fff;
+        font-weight: 600;
+        font-size: 20px;
+      }
+      .sub-title{
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+  .all-voucher {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các item xuống dòng */
+    justify-content: space-between; /* Căn trái các item */
+    width: 100%;
+  }
+  
+  .item-vouchers {
+    margin-top: 20p;
+    height: 140px;
+    display: flex;
+    border-radius: 20px;
+    justify-content: space-between;
+    background-color: #ff8c8c;
+    width: 31%; /* Chiều rộng cố định cho mỗi item */
+    min-width: 200px;
+    margin: 10px; /* Khoảng cách giữa các item */
+    box-sizing: border-box; /* Đảm bảo padding và border nằm trong chiều rộng */
+    .ball{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+     .item-ball{
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border-radius: 50%;
+     }
+    }
+  }
+  
+  .item-voucher {
+    padding: 10px;
+    text-align: center; /* Căn giữa nội dung */
+    border-radius: 5px; /* Bo góc cho item */
+    width: 100%;
+    display: flex;
+    .left{
+      width: 25%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative; /* Để đường viền đứt đoạn có thể được căn chỉnh */
+      flex-direction: column;
+      .title{
+        font-size: 32px;
+        color: #fff;
+        font-weight: bold;
+      }
+      .sub-title{
+        font-size: 12px;
+        color: #fff;
+        font-weight: 600;
+      }
+      
+    }
+    .left::after{
+      content: ""; /* Tạo một pseudo-element */
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1px; /* Độ dày của đường viền */
+      height: 100%; /* Chiều cao của đường viền */
+      background-image: linear-gradient(to bottom, transparent 50%, #ddd 50%);
+      background-size: 1px 10px; /* Kích thước của các đoạn đứt */
+      background-repeat: repeat-y; /* Lặp lại dọc */
+    }
+    .right{
+      width: 75%;
+      height: 100%;
+    }
+
+  } 
+  .btn:hover{
+    background-color: #ff8c8c !important;
+    border: 1px solid gray;
+    color: #fff;
+  }
+.disable{
+  opacity: 0.4;
+  pointer-events: none;
+}
+  

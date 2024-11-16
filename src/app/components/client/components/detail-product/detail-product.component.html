@@ -210,7 +210,7 @@
             [class.active-coler]="i + 1 === indexActiveColer"
           >
             <div
-              (click)="indexActiveColer = i + 1; indexActiveSize = 1"
+              (click)="change(i + 1)"
               style="
                 height: 20px;
                 width: 20px;
@@ -224,7 +224,7 @@
           </div>
         </div>
         <div class="sizes" style="margin-top: 5px">
-          <span>Kích cỡ</span>
+          <span>Kích cỡ:</span>
           <div
             class="item-size"
             *ngFor="
@@ -241,6 +241,7 @@
                 justify-content: center;
                 align-items: center;
               "
+              [class.disable]="size.trangThai === 0 || size.soLuong === 0"
               (click)="indexActiveSize = indexSize + 1"
             >
               {{ size.size }}

@@ -11,7 +11,7 @@
           Hủy hóa đơn
         </button>
       </div>
-      <div *ngIf="isShowAction">
+      <div *ngIf="isShowAction && data.trangThai !== 6">
         <button class="btn btn-primary" (click)="isOkeDialog = true">
           Cập nhật bước tiếp theo của hóa đơn
         </button>
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="all-step">
+  <div class="all-step" *ngIf="isShowAction">
     <div
       class="steps"
       *ngFor="let step of listIndexActiveStatus; let i = index"
@@ -38,6 +38,7 @@
       ></i>
     </div>
   </div>
+  <div *ngIf="!isShowAction" style="font-size: 28px;color: red;font-weight:600 ;">Hóa đơn đã bị Hủy!!</div>
   <div class="info-hoadon">
     <div class="info">
       <div>

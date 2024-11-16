@@ -157,4 +157,12 @@ export class DiaChiKhachHangComponent implements OnInit {
     }
     return totalPage;
   }
+  async change(id: any){
+    this.spinner.show();
+    const data = await this.serviceDiaChi.updateDiaChiMacDinh(id).toPromise();
+    if(data){
+      this.getAllDiaChi('rows');
+      this.spinner.hide();
+    }
+  }
 }

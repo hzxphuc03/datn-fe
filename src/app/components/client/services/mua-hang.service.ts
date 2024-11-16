@@ -22,6 +22,17 @@ export class MuaHangService {
       })
     );
   }
+  capNhatSoLuongGioHang(params: any): Observable<any> {
+    return this.http.post<any>(`${this.urlGh}/add-so-luong`, params).pipe(
+      (res: any) => {
+        this.dataService.updateData('this.value');
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   DeleteAll(idkh: any): Observable<any> {
     return this.http.delete<any>(`${this.urlGh}/delete-All/${idkh}`).pipe(
       (res: any) => {

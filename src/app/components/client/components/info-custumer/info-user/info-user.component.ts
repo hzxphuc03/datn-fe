@@ -7,6 +7,7 @@ import { DataService } from '../../../services/data.service';
 import { HomeServoceService } from '../../../services/home-service.service';
 import { InfoService } from '../../../services/info.service';
 import { UploadImgService } from 'src/app/components/admin/service/upload-img.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-info-user',
@@ -24,7 +25,8 @@ export class InfoUserComponent implements OnInit {
     private service: InfoService,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private serviceIMG: UploadImgService
+    private serviceIMG: UploadImgService,
+    private spinner : NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -87,5 +89,15 @@ export class InfoUserComponent implements OnInit {
       }
     }
   }
-  updateThongTinKhachHang() {}
+  async updateThongTinKhachHang() {
+    const data = await this.service.udpate(this.data).toPromise();
+        if (data) {
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+      }else{
+        this.errorService.displayError('Cập nhật thành công', 'success');
+        this.getKh();
+      }
+    }
+  }
 }

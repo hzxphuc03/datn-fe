@@ -23,6 +23,7 @@ interface Size {
   soLuong: any;
   giaBan: any;
   hinhAnh: any;
+  trangThai : any;
 }
 
 interface Color {
@@ -157,6 +158,7 @@ export class DetailProductComponent implements OnInit {
             soLuong: item.soLuong,
             giaBan: item.giaBan,
             hinhAnh: item.hinhAnh,
+            trangThai : item.trangThai
           });
 
           this.coler.push(coler); // Thêm đối tượng vào mảng
@@ -173,11 +175,23 @@ export class DetailProductComponent implements OnInit {
               soLuong: item.soLuong,
               giaBan: item.giaBan,
               hinhAnh: item.hinhAnh,
+              trangThai : item.trangThai
             });
           }
         }
       });
     }
+    const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
+    if (listSize) {
+      listSize.some((item, index) => {
+          if (item.trangThai !== 0) {
+              this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
+              return true; // Dừng vòng lặp
+          }
+          return false; // Tiếp tục vòng lặp
+      });
+  }
+    
   }
   async addSPToGHCT() {
     this.checkToken();
@@ -226,5 +240,19 @@ export class DetailProductComponent implements OnInit {
   }
   slidePrev() {
     this.swiperRef?.swiperRef?.slidePrev(); // Gọi slidePrev
+  }
+  change(index : any){
+    this.indexActiveColer =  index;
+    const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
+    if (listSize) {
+      listSize.some((item, index) => {
+          if (item.trangThai !== 0) {
+              this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
+              return true; // Dừng vòng lặp
+          }
+          return false; // Tiếp tục vòng lặp
+      });
+  }
+
   }
 }

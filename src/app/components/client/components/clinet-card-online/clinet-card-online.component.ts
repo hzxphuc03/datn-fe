@@ -39,7 +39,11 @@ interface Data {
   styleUrls: ['./clinet-card-online.component.scss'],
 })
 export class ClinetCardOnlineComponent implements OnInit {
-  steps = [1, 2, 3]; // Danh sách các bước
+  steps = [
+    {step : 1 , title :'Bước chọn sản phẩm'},
+    {step : 2 , title :'Bước cập nhật địa chỉ giao hàng'},
+    {step : 3 , title :'Bước sử dụng phiếu giảm giá'},
+  ]; // Danh sách các bước
   currentStep = 1; // Bước hiện tại
   listGh: any[] = [];
   isSomeThingCheck: boolean = false;
@@ -812,5 +816,28 @@ export class ClinetCardOnlineComponent implements OnInit {
           });
       }
     });
+  }
+  async editSoLuong(item : any){
+    this.spinner.show();
+    const params = {
+      idGioHangChiTiet: item.id,
+      soLuong: item.changeSoLuong
+    }
+    const data = await this.service.capNhatSoLuongGioHang(params).toPromise();
+    if (data) {
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+        this.spinner.hide();
+      }else{
+        this.errorService.displayError('Cập nhật số lượng thành công', 'sussces');
+        item.soLuong = item.changeSoLuong;
+        this.tinhhTongTien();
+        this.getShipPrice();
+        this.spinner.hide();
+        this.dataService.updateData('');
+        item.isEdit = false ;
+      }
+      
+    }
   }
 }

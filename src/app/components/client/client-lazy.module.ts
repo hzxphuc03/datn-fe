@@ -18,6 +18,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -40,6 +41,7 @@ import { AccordionModule } from 'primeng/accordion';
     ButtonModule,
     DialogModule,
     AccordionModule,
+    TooltipModule
   ],
   exports: [fromPagesComponent.SanPhamAllSearchComponent],
   entryComponents: [],

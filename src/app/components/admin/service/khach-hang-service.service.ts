@@ -70,6 +70,16 @@ export class KhachHangServiceService {
       })
     );
   }
+  updateDiaChiMacDinh(id: any): Observable<any> {
+    return this.http.get<any>(`${this.urlDiaChi}/set-mac-dinh/${id}`,).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   udpateStatus(id: number, status: number): Observable<any> {
     const params = new HttpParams().set('status', status.toString());
     return this.http

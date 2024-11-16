@@ -20,8 +20,8 @@ export class InfoService {
       })
     );
   }
-  udpate(id: any): Observable<any> {
-    return this.http.get<any>(`${this.url}/${id}`).pipe(
+  udpate(params : any): Observable<any> {
+    return this.http.put<any>(`${this.url}/update-khach-hang`,params).pipe(
       (res: any) => {
         return res || null;
       },

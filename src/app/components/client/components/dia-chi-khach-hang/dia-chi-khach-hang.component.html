@@ -42,7 +42,7 @@
             <td>Quận huyện</td>
             <td>Phường xã</td>
             <td>Ghi chú</td>
-            <!-- <td>Sử dụng</td> -->
+            <td>Mặc định</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
@@ -52,9 +52,10 @@
             <td>{{ product.phuongXa }}</td>
             <td>{{ product.ghiChu }}</td>
             <td>
-              <!-- <button class="btn btn-primary" (click)="useLocation(product)">
-                <i class="bx bxs-check-circle"></i>
-              </button> -->
+               <p-inputSwitch (onChange)="change(product.id)"
+              
+              [(ngModel)]="product.macDinh"
+            ></p-inputSwitch>
             </td>
           </tr>
         </ng-template>

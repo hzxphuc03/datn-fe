@@ -1,1 +1,148 @@
-<p>event-page works!</p>
+<div class="all-content">
+    <div class="event" *ngIf="isHaveEvent">
+        <div class="title" style="border: none; margin-bottom: 0px;display: flex;gap: 10px; align-items: center; ">
+        </div>
+        <div
+          class="event-title"
+          style="
+            height: 400px;
+            width: 100%;
+            border: 1px solid gray;
+            border-radius: 20px;
+          "
+        >
+          <div style="position: relative; width: 100%; height: 100%;border-radius: 20px;">
+            <img class="abc"
+              src="{{ eventData.hinhAnh }}"
+              alt=""
+              style="width: 100%; height: 100%; border-radius: 9px"
+            />
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.6);
+                border-radius: 9px;
+                height: 100%;
+                width: 100%;
+                border-radius: 20px;
+              "
+            >
+              <div
+                class="left"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                  justify-content: center;
+                  padding: 20px;
+                  border-radius: 20px;
+                "
+              >
+                <div class="sub-title" style="color: #fff; font-size: 26px">
+                  {{ eventData.maSuKien }}
+                </div>
+                <div
+                  class="title1"
+                  style="font-size: 32px; color: #fff; border: none"
+                >
+                  {{ eventData.tenSuKien }}
+                </div>
+                <div
+                  class="small-title"
+                  style="color: #fff; font-size: 16px"
+                >
+                  {{ eventData.moTa }}
+                </div>
+                <img
+                  style="
+                      position: absolute;
+                      width: 200px;
+                      right: -38px;
+                      top: 39px;
+                      transform: rotate(224deg);
+                      border-radius: 72%;
+                  "
+                  src="https://s3-sgn10.fptcloud.com/fsel/Images/pngtreevectorpaintedgoldenbowpngimage_1338635_6752_1731682021887removebgpreview_7513_1731682078914.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="time-count-down">
+        <div class="all-time">
+            <div class="time-title" style="color: black;text-align: center;">
+                Nhanh tay! Khuyến mãi kết thúc vào:
+            </div>
+           <div class="item-count" style="display: flex;gap: 20px;">
+            <div class="item">
+                <div class="title">{{countdown?.days}}</div>
+                <div class="sub-title">Ngày</div>
+            </div>
+            <div class="item">
+                <div class="title">{{countdown?.hours}}</div>
+                <div class="sub-title">Giờ</div>
+            </div>
+            <div class="item">
+                <div class="title">{{countdown?.minutes}}</div>
+                <div class="sub-title">Phút</div>
+            </div>
+            <div class="item">
+                <div class="title">{{countdown?.seconds}}</div>
+                <div class="sub-title">Giây</div>
+            </div>
+           </div>
+        </div>
+        <div class="sub-title" >Sự kiện bắt đầu từ {{thoiGianSuKien.startDate}} và kết thúc lúc {{thoiGianSuKien.endDate}}</div>
+      </div>
+      <div class="title" style="font-size: 18px;font-weight: bold">
+        Phiếu giảm giá dành cho khách hàng tham gia sự kiện :
+      </div>
+      <div class="all-voucher">
+        <div class="item-vouchers" *ngFor="let v of listVoucher" style="cursor: pointer;" [class.disable]="v.custumerUser || v.voucher.soLuong === 0">
+          <div class="ball" style="margin-left: -15px;">  <div class="item-ball"></div></div>
+          <div class="item-voucher" style="color: #fff !important;">
+            <div class="left">
+              <div class="title">{{v.voucher.phanTramGiam}}%</div>
+              <div class="sub-title">sl:{{v.voucher.soLuong}}</div>
+            </div>
+            <div class="right" style="padding: 10px;display: flex;justify-content: center;align-items: center;">
+              <div class="" style="display: flex;gap: 10px;flex-direction: column;text-align: start;justify-content: center;">
+                <div>Áp dụng : {{v.voucher.theLoai===1?'Vận chuyển':'Hóa đơn'}}</div>
+                <div>Ngày sử dụng : hết ngày {{denNgaySuDung | date : "dd/MM/yyyy" }}</div>
+                <div style="display: flex;gap: 5px;">
+                  <span>Giảm từ : {{v.voucher.giaTriGiamToiThieu | currency : "VND" : "symbol" : "1.0-0"}}</span>
+                  <span>Giảm tối đa {{v.voucher.giamToiDa | currency : "VND" : "symbol" : "1.0-0"}}</span>
+                </div>
+               </div>
+            </div>
+          </div>  
+          <div class="ball" style="margin-right: -15px;">
+            <div class="item-ball">
+              <button class="btn" style="width: 100%;
+              height: 100%;
+              border: 1px solid gray;
+              border-radius: 50%;
+              margin: 0;
+              padding: 0;" [class.disable]="v.custumerUser || v.voucher.soLuong === 0" (click)="addToVoucherKhachHang(v.chiPhieuGiamGiaSuKien.id)">Lưu</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="end-content">
+        <div class="title" style="font-size: 16px;font-weight: bold;">*Lưu ý thể lệ</div>
+        <ul>
+          <li>Khi tham gia sự kiện mỗi phiếu giảm giá khách hàng chỉ được lưu 1.</li>
+          <li>Hạn sử dụng của phiếu giảm giá sẽ là từ ngày thêm vào đến ngày được cấu hình.</li>
+          <li>Sau khi thêm phiếu hoặc số lượng đã hết thì phiếu sẽ tự động vào trạng thái ẩn.</li>
+          <li>Chúc quý khách có 1 ngày vui vẻ <3</li>
+        </ul>
+      </div>
+</div>

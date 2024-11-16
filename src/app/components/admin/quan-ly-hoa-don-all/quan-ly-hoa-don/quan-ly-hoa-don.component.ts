@@ -13,7 +13,7 @@ import { HoaDonService } from '../../service/hoa-don.service';
   styleUrls: ['./quan-ly-hoa-don.component.scss'],
 })
 export class QuanLyHoaDonComponent implements OnInit {
-  activeIndex: number = 1;
+  activeIndex: number = 2;
   selectedBill: any;
   listIndexActiveStatus: any[] = [
     { index: 2, title: 'Hóa đơn chờ xử lý' },
@@ -56,6 +56,7 @@ export class QuanLyHoaDonComponent implements OnInit {
     if (decoded && decoded?.user.id) {
       this.idNhanVien = decoded?.user.id;
     }
+    this.searchQuery.status = this.activeIndex;
     this.getListWords('rows');
   }
 

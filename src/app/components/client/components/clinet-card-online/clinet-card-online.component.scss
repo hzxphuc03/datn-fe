@@ -275,3 +275,9 @@
   pointer-events: none !important;
   color: black !important;
 }
+:host ::ng-deep{
+  .p-inputnumber-buttons-horizontal .p-inputnumber-input{
+    width: 50px;
+    text-align: center;
+  }
+}
