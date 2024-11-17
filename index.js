@@ -1,7 +1,7 @@
 const app = require('express')();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer, {
-  cors: {origin : '*'}
+  cors: {origin: '*'}
 });
 
 const port = 3200;
@@ -12,6 +12,11 @@ io.on('connection', (socket) => {
   socket.on('message', (message) => {
     console.log(message);
     io.emit('message', `${socket.id.substr(0, 2)}: ${message}`);
+  });
+
+  socket.on('notification', (notification) => {
+    console.log(notification);
+    io.emit('notification', `${socket.id.substr(0, 2)}: ${notification}`); // Phát thông báo
   });
 
   socket.on('disconnect', () => {

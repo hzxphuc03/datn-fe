@@ -1,0 +1,83 @@
+<div
+  class="all-content"
+  style="width: 100%; display: flex; flex-direction: column; gap: 20px"
+>
+  <div
+    class="header"
+    style="display: flex; justify-content: space-between; align-items: center"
+  >
+    <div class="title" style="font-size: 22px; font-weight: bold">
+      Đánh giá sản phẩm
+    </div>
+    <div class="action">
+      <button class="btn btn-primary" (click)="visible = true">
+        Đánh giá tất cả
+      </button>
+    </div>
+  </div>
+  <div class="list-danh-gia">
+    <!-- đánh gái table -->
+  </div>
+</div>
+<p-dialog
+  header="Đánh giá sản phẩm"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '50vw', height: '90vh' }"
+>
+  <div class="contents" style="width: 100%; height: 100%;display: flex;flex-direction: column;gap: 10px;">
+    <div class="title" style="font-weight: 600;">Chọn ảnh (tối đa 5 ảnh)</div>
+    <div
+      class="all-item-file-img"
+      style="width: 100%; display: flex; flex-wrap: wrap;gap: 20px;"
+    >
+      <div
+        class="item"
+        *ngFor="let a of data.listHinhAnh; let i = index"
+        style="display: flex; gap: 10px"
+      >
+        <div
+          class="img-item"
+          style="width: 100px; height: 100px; display: flex"
+        >
+          <img [src]="a" alt="" style="width: 100%; height: 100%;border: 1px solid gray;border-radius: 20px;display: flex;justify-content: center ; align-items: center;" />
+        </div>
+      </div>
+      <div class="item" >
+        <label class="uploadimg" for="upload-file" style="width: 100px; height: 100px;border: 1px solid gray;border-radius: 20px;display: flex;justify-content: center ; align-items: center;">
+            <span>UploadFile</span>
+          </label>
+      </div>
+    </div>
+    <div class="item">
+      <input
+        type="file"
+        id="upload-file"
+        multiple
+        accept="image/*"
+        style="display: none"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+    <div class="ratings">
+        <div class="title" style="font-weight: 600;">Đánh giá sản phẩm</div>
+        <div class="rating">
+            <label for="radio-1" aria-label="Rating 1">
+              <input type="radio" name="rating" id="radio-1" class="sr-only" [(ngModel)]="data.sao" value="1">
+            </label>
+            <label for="radio-2" aria-label="Rating 2">
+              <input type="radio" name="rating" id="radio-2" class="sr-only" [(ngModel)]="data.sao" value="2">
+            </label>
+            <label for="radio-3" aria-label="Rating 3">
+              <input type="radio" name="rating" id="radio-3" class="sr-only" [(ngModel)]="data.sao" value="3">
+            </label>
+            <label for="radio-4" aria-label="Rating 4">
+              <input type="radio" name="rating" id="radio-4" class="sr-only" [(ngModel)]="data.sao" value="4">
+            </label>
+            <label for="radio-5" aria-label="Rating 5">
+              <input type="radio" name="rating" id="radio-5" class="sr-only" [(ngModel)]="data.sao" value="5">
+            </label>
+          </div>
+    </div>
+  </div>
+</p-dialog>

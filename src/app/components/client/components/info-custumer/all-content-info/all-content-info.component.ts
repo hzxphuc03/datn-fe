@@ -14,6 +14,7 @@ export class AllContentInfoComponent implements OnInit {
     'Địa chỉ',
     'Cài đặt chung',
     'Trung tâm hỗ trợ',
+    'Đánh giá sản phẩm'
   ];
 
   selectedIndex: number | null = 0;
