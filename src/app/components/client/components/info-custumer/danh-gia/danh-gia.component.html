@@ -23,7 +23,7 @@
   header="Đánh giá sản phẩm"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '50vw', height: '90vh' }"
+  [style]="{ width: '50vw' }"
 >
   <div class="contents" style="width: 100%; height: 100%;display: flex;flex-direction: column;gap: 10px;">
     <div class="title" style="font-weight: 600;">Chọn ảnh (tối đa 5 ảnh)</div>
@@ -79,5 +79,16 @@
             </label>
           </div>
     </div>
+    <span class="p-float-label textarea-p-float-label">
+      <textarea
+        style="width: 100%"
+        name=""
+        id="loat-input"
+        pInputText
+        [(ngModel)]="data.cmt"
+        placeholder="đánh giá của bạn"
+      ></textarea>
+    </span>
+    <button class="btn btn-primary">Đánh giá</button>
   </div>
 </p-dialog>

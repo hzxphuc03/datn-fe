@@ -16,6 +16,7 @@ export class HomeServoceService {
   urlGioHang = 'http://localhost:8080/api/gio_hang'
   urlSuKien = 'http://localhost:8080/api/su_kien'
   urlSuKienVoucher = 'http://localhost:8080/api/lich_su_su_dung'
+  urlThongBao = 'http://localhost:8080/api/thong_bao'
   constructor(private http: HttpClient) {}
 
   getTop5BanChay(): Observable<any> {
@@ -192,6 +193,16 @@ export class HomeServoceService {
   }
   getAllVoucherByKh(id : any): Observable<any> {
     return this.http.get<any>(`${this.urlSuKienVoucher}/voucher-trang-thai-su-dung-by-khach-hang/${id}`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getNumberThongBao(id : any): Observable<any> {
+    return this.http.get<any>(`${this.urlThongBao}/get-count-thong-bao/${id}`).pipe(
       (res: any) => {
         return res || null;
       },

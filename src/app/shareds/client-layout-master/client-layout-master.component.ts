@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
 import { AutoServiceService } from '../auto-service.service';
@@ -7,20 +7,24 @@ import { HomeServoceService } from 'src/app/components/client/services/home-serv
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { DataService } from 'src/app/components/client/services/data.service';
+import { ChatService } from '../chat/chat.service';
+import { WebsocketService } from '../websocket.service';
 
 @Component({
   selector: 'app-client-layout-master',
   templateUrl: './client-layout-master.component.html',
   styleUrls: ['./client-layout-master.component.scss'],
 })
-export class ClientLayoutMasterComponent implements OnInit {
+export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
   isLoginKhachHang: boolean = true;
   isOpenSearch: boolean = false;
   searchControl = new FormControl();
   searchResults: any[] = []; // Biến để lưu kết quả tìm kiếm
   isOpenUser: boolean = false;
+  isOpenUserNoti: boolean = false;
   idKhachHang: any;
   countGioHang: any = 0;
+  countThongBao: any = 0;
   receivedData: string = '';
   constructor(
     private tokenService: TokenService,
@@ -29,8 +33,14 @@ export class ClientLayoutMasterComponent implements OnInit {
     private autoVoucher: AutoServiceService,
     private service: HomeServoceService,
     private dataService: DataService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private chatService: ChatService,
+    private websocketService: WebsocketService
+  ) {
+
+    
+  }
+  notifications: string[] = [];  // Mảng chứa các thông báo
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
@@ -48,7 +58,7 @@ export class ClientLayoutMasterComponent implements OnInit {
     } else {
       this.isLoginKhachHang = false;
     }
-
+    this.getAllNoti();
     this.receivedData = this.dataService.getData();
 
     // Lắng nghe các thay đổi từ service
@@ -78,6 +88,23 @@ export class ClientLayoutMasterComponent implements OnInit {
           console.error('Error fetching search results:', error); // Xử lý lỗi
         }
       );
+       // Kết nối WebSocket và lắng nghe thông báo
+    this.websocketService.connect()
+    .then(() => {
+      console.log('WebSocket connection established');
+    })
+    .catch((error) => {
+      console.error('Error establishing WebSocket connection', error);
+    });
+
+  // Lắng nghe thông báo từ WebSocket qua getter
+  this.websocketService.getStompClient().onConnect = (frame) => {
+    this.websocketService.getStompClient().subscribe('/topic/notifications', (message) => {
+      this.notifications.push(message.body);
+      this.getThongBao();
+      
+    });
+  };
   }
   goDetail(id: any) {
     this.isOpenSearch = false;
@@ -87,6 +114,7 @@ export class ClientLayoutMasterComponent implements OnInit {
   onClick(event: MouseEvent): void {
     const searchInput = document.getElementById('search-input');
     const openUserActive = document.getElementById('open-user-active');
+    const openUserActiveNoti = document.getElementById('open-user-active-noti');
     const optionsSearch = document.querySelector('.optionsSearch');
 
     // Kiểm tra nếu nhấp ra ngoài input và danh sách kết quả
@@ -101,6 +129,9 @@ export class ClientLayoutMasterComponent implements OnInit {
     if (openUserActive && !openUserActive.contains(event.target as Node)) {
       this.isOpenUser = false; // Đóng hộp tìm kiếm
     }
+    if (openUserActiveNoti && !openUserActiveNoti.contains(event.target as Node)) {
+      this.isOpenUserNoti = false; // Đóng hộp tìm kiếm
+    }
   }
   async getGioHang(id: any) {
     const data = await this.service.getSoluongGioHang(id).toPromise();
@@ -108,10 +139,20 @@ export class ClientLayoutMasterComponent implements OnInit {
     this.countGioHang = data;
     // }
   }
+  getAllNoti(){
+    // lấy số lượng noti
+    // lấy những thông báo noti
+    this.getThongBao();
+  }
+  async getThongBao(){
+    const data = await this.service.getNumberThongBao(this.idKhachHang).toPromise();
+    if(data){
+      this.countThongBao = data;
+    }
+  }
   logIn() {
     this.router.navigate(['/g4/shop/login']);
   }
-
   home() {
     this.router.navigate(['/g4/shop']);
   }
@@ -140,5 +181,9 @@ export class ClientLayoutMasterComponent implements OnInit {
     this.tokenService.removeToken();
     this.errorService.displayError('Đăng xuất thành công', 'normal');
     this.router.navigate(['/g4/shop/login']);
+  }
+  ngOnDestroy(): void {
+    // Đảm bảo đóng kết nối khi component bị hủy
+    this.websocketService.disconnect();
   }
 }

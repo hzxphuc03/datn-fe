@@ -110,14 +110,28 @@
             <span class="count">0</span>
           </button> -->
           <div *ngIf="isLoginKhachHang" style="display: flex; gap: 15px">
+            <div
+            class="option-drop-down"
+            style="position: relative"
+            id="open-user-active-noti"
+          >
+            <button class="action-btn" (click)="isOpenUserNoti = !isOpenUserNoti">
+              <ion-icon name="notifications-outline"></ion-icon>
+              <span class="count">{{countThongBao}}</span>
+            </button>
+            <div class="optional" style="width: 400px;    right: -170px;" *ngIf="isOpenUserNoti">
+              <div
+                *ngIf="isLoginKhachHang"
+                style="display: flex; flex-direction: column"
+              >
+                1 list thông báo
+              </div>
+            </div>
+          </div>
             <button class="action-btn" (click)="gioHang()">
               <ion-icon name="basket-outline"></ion-icon>
               <span class="count">{{ countGioHang }}</span>
             </button>
-            <!-- <button class="action-btn" (click)="goVoucher()">
-              <ion-icon name="pricetags-outline"></ion-icon>
-              <span class="count">0</span>
-            </button> -->
           </div>
           <div
             class="option-drop-down"
