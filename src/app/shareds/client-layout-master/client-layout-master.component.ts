@@ -9,6 +9,7 @@ import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { DataService } from 'src/app/components/client/services/data.service';
 import { ChatService } from '../chat/chat.service';
 import { WebsocketService } from '../websocket.service';
+import { NgxSpinnerService, Spinner } from 'ngx-spinner';
 
 @Component({
   selector: 'app-client-layout-master',
@@ -26,6 +27,10 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
   countGioHang: any = 0;
   countThongBao: any = 0;
   receivedData: string = '';
+  //
+  searchQuery: any = {};
+  listPageNumber: number[] = [];
+  listData : any[] = [];
   constructor(
     private tokenService: TokenService,
     private router: Router,
@@ -35,7 +40,8 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
     private chatService: ChatService,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private spinner : NgxSpinnerService
   ) {
 
     
@@ -53,6 +59,7 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
       });
 
     this.idKhachHang = decoded?.user?.id;
+    this.searchQuery.idKhachHang = this.idKhachHang
     if (this.idKhachHang) {
       this.isLoginKhachHang = true;
     } else {
@@ -64,6 +71,7 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     // Lắng nghe các thay đổi từ service
     this.dataService.data$.subscribe((data: any) => {
       this.receivedData = data; // Cập nhật dữ liệu khi có thay đổi
+      this.searchQuery.page = 1;
       this.getGioHang(decoded?.user?.id);
     });
 
@@ -101,8 +109,9 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
   this.websocketService.getStompClient().onConnect = (frame) => {
     this.websocketService.getStompClient().subscribe('/topic/notifications', (message) => {
       this.notifications.push(message.body);
-      this.getThongBao();
-      
+      if(this.idKhachHang+'' === message.body){
+        this.getAllNoti();
+      }
     });
   };
   }
@@ -142,13 +151,76 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
   getAllNoti(){
     // lấy số lượng noti
     // lấy những thông báo noti
+    this.searchQuery.pageSize  = 10;
+    this.getListWords('rows');
     this.getThongBao();
+  }
+  async getListWords(type: string, action?: string): Promise<void> {
+    // this.spinner.show();
+    if (type && type === 'rows') {
+      this.searchQuery.page = 1;
+    }
+    if (action) {
+      if (action === 'prev' && Number(this.searchQuery.page) > 1) {
+        this.searchQuery.page = Number(this.searchQuery.page) - 1;
+      }
+      if (
+        action === 'next' &&
+        Number(this.searchQuery.page) + 1 <= this.listPageNumber.length
+      ) {
+        this.searchQuery.page = Number(this.searchQuery.page) + 1;
+      }
+    } else {
+      this.searchQuery.page = this.searchQuery.page;
+    }
+    Object.keys(this.searchQuery).forEach((key) => {
+      if (this.searchQuery[key] === null || this.searchQuery[key] === '') {
+        delete this.searchQuery[key];
+      }
+    });
+    this.spinner.show();
+    const data = await this.service.getThongBaoByIDKH(this.searchQuery).toPromise();
+    if (data) {
+      this.getTotalPage(data);
+      this.listData = data.item;
+      if (this.listData.length) {
+        this.listData?.map((item: any) => {
+          if (item.trangThai === 1) {
+            item.status = true;
+          } else {
+            item.status = false;
+          }
+        });
+      }
+
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
+    }
+
+    //   gọi api
+  }
+  getTotalPage(data: any): number {
+    let totalPage = 0;
+    if (Number(data.totalItem) < Number(data.pageSize)) {
+      totalPage = 1;
+    } else {
+      totalPage = Math.floor(Number(data.totalItem) / Number(data.pageSize));
+      if (Number(data.totalItem) % Number(data.pageSize) > 0) {
+        totalPage = totalPage + 1;
+      }
+    }
+    this.listPageNumber = [];
+    for (let i = 1; i <= totalPage; i++) {
+      this.listPageNumber.push(i);
+    }
+    return totalPage;
   }
   async getThongBao(){
     const data = await this.service.getNumberThongBao(this.idKhachHang).toPromise();
-    if(data){
+    // if(data){
       this.countThongBao = data;
-    }
+    // }
   }
   logIn() {
     this.router.navigate(['/g4/shop/login']);
@@ -181,6 +253,33 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     this.tokenService.removeToken();
     this.errorService.displayError('Đăng xuất thành công', 'normal');
     this.router.navigate(['/g4/shop/login']);
+  }
+  async goToMessUrl(item: any) {
+    const data = await this.service.docThongBaoTheoId(item.id).toPromise();
+    if (data) {
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+    }
+  }
+   this.getAllNoti();
+        this.router.navigate([item.url.split('?')[0]], {
+          queryParams: { activeItem: item.url.split('?')[1]?.split('=')[1] }
+        });
+        this.isOpenUserNoti = false;
+  }
+  async readAll(){
+    const data = await this.service.docTatCaThongBaoTheoIDKH(this.idKhachHang).toPromise();
+    if (data) {
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+      } else {
+        this.getAllNoti();
+        this.errorService.displayError(
+          `Đọc tất cả thành công`,
+          'success'
+        );
+      }
+    }
   }
   ngOnDestroy(): void {
     // Đảm bảo đóng kết nối khi component bị hủy

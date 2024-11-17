@@ -3419,7 +3419,7 @@ input {
 .option-drop-down {
   .optional {
     position: absolute;
-    z-index: 9999;
+    z-index: 999;
     width: 220px;
     background: #fff;
     padding: 20px;
@@ -3470,4 +3470,8 @@ input {
     opacity: 1;
     transform: translateY(0);
   }
+}
+.item-noti:hover{
+  background: gray !important;
+  color: #fff !important;
 }

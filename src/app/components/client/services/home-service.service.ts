@@ -211,6 +211,36 @@ export class HomeServoceService {
       })
     );
   }
+  getThongBaoByIDKH(params : any): Observable<any> {
+    return this.http.get<any>(`${this.urlThongBao}/get-thong-bao`,{ params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  docTatCaThongBaoTheoIDKH(id : any): Observable<any> {
+    return this.http.get<any>(`${this.urlThongBao}/set-thong-bao-da-doc/${id}`,).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  docThongBaoTheoId(id : any): Observable<any> {
+    return this.http.get<any>(`${this.urlThongBao}/set-thong-bao-tung-cai/${id}`,).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   addVoucherEvent(params : any): Observable<any> {
     return this.http.post<any>(`${this.urlSuKienVoucher}/add`, params).pipe(
       (res: any) => {

@@ -1,5 +1,8 @@
 <div>
-  <header>
+  <header style="position: fixed;
+  width: 100vw;
+  z-index: 1000;
+  background: #fff;">
     <div class="header-top">
       <div class="container">
         <ul class="header-social-container">
@@ -124,7 +127,38 @@
                 *ngIf="isLoginKhachHang"
                 style="display: flex; flex-direction: column"
               >
-                1 list thông báo
+              <div class="d-flex align-items-center" style="justify-content: flex-end;">
+                <span
+                  (click)="getListWords('page', 'prev')"
+                  class="table-pagination-item btn-prev ml-2"
+                >
+                  <i class="bx bx-left-arrow-alt" style="font-size: 25px;"></i>
+                </span>
+                <span
+                  (click)="getListWords('page', 'next')"
+                  class="table-pagination-item btn-next"
+                >
+                  <i class="bx bx-right-arrow-alt"  style="font-size: 25px;"></i>
+                </span>
+              </div>
+                <div class="haeders" style="display: flex;justify-content:space-between;padding: 10px 0;border-bottom: 1px solid gray;align-items: center;">
+                  <div class="title2" style="font-weight: bold;">Thông báo khách hàng</div>
+                  <button class="btn" style="color: black;border: 1px solid gray;padding: 3px 10px;" (click)="readAll()">Đọc tất cả</button>
+                </div>
+                <div class="items" *ngFor="let items of listData" style="width: 100%;display: flex;flex-direction: column;gap: 5px;">
+                  <div class="all-content item-noti" style="height: 70px; position: relative;display: flex;justify-content: space-between;align-items: center;cursor: pointer;padding: 10px 5px;" (click)="goToMessUrl(items)"> 
+                    <div class="left" style="width: 90%;position: relative;">
+                      <i class='bx bx-radio-circle-marked' style="    position: absolute;
+                      right: -11px;
+                      top: -5px;
+                      color: blue;" [pTooltip]="'Chưa đọc'"  *ngIf="!items.daDoc"></i>
+                      {{ items?.noiDung }}
+                    </div>
+                    <div class="right">
+                      <i class='bx bx-right-arrow-alt'></i>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -423,7 +457,8 @@
       </div>
     </nav>
   </header>
-  <router-outlet></router-outlet>
+  <div style="height: 195px;width: 100%;"></div>
+  <router-outlet style="padding-top: 195px;"></router-outlet>
   <footer>
     <div class="footer-category">
       <div class="container">

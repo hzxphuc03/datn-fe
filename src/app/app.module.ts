@@ -16,6 +16,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { SwiperModule } from 'swiper/angular';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ClientLayoutMasterComponent } from './shareds/client-layout-master/client-layout-master.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ClientLayoutMasterComponent } from './shareds/client-layout-master/clie
     InputSwitchModule,
     SwiperModule,
     AutoCompleteModule,
+    TooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent],

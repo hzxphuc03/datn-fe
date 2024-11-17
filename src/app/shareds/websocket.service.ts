@@ -32,8 +32,6 @@ export class WebsocketService {
 
         // Lắng nghe thông báo từ backend qua topic /topic/notifications
         this.stompClient.subscribe('/topic/notifications', (message) => {
-          console.log('Received message: ', message.body);
-
           // Bạn có thể xử lý thông báo tại đây hoặc chuyển dữ liệu về Component
         });
       };
