@@ -1,6 +1,10 @@
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { io } from 'socket.io-client';
 
+@Injectable({
+  providedIn: 'root' // Đảm bảo service này được cung cấp ở root
+})
 export class ChatService {
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
   public notification$: BehaviorSubject<string> = new BehaviorSubject(''); // Thêm BehaviorSubject cho thông báo

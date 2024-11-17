@@ -20,11 +20,18 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.chatService.getNewMessage().subscribe((message: string) => {
       // kiểm tra người nhận có phải là mình không để load lại tin nhắn oke
+      console.log(message);
       this.messageList.push(message);
+    });
+    this.chatService.getNewNotification().subscribe((notification: string) => {
+      // kiểm tra người nhận có phải là mình không để load lại tin nhắn oke
+      console.log(notification);
+      
+      // this.messageList.push(notification);
     });
   }
   sendMessage() {
-    this.chatService.sendMessage(this.newMessage);
+    this.chatService.sendNotification(this.newMessage);
     this.newMessage = '';
   }
 }
