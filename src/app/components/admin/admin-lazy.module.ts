@@ -20,6 +20,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { EditorModule } from 'primeng/editor';
+import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -41,7 +42,7 @@ import { EditorModule } from 'primeng/editor';
     TabViewModule,
     ButtonModule,
     DialogModule,
-    EditorModule
+    EditorModule,
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],

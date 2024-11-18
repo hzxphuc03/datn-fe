@@ -40,7 +40,7 @@ import { TooltipModule } from 'primeng/tooltip';
     InputSwitchModule,
     SwiperModule,
     AutoCompleteModule,
-    TooltipModule
+    TooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
