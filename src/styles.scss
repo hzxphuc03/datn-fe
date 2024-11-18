@@ -9,6 +9,8 @@
 @import 'swiper/scss/pagination';
 @import 'swiper/css/thumbs';
 @import 'swiper/css/autoplay';
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
 * {
   font-family: "Inter", sans-serif;
 }

@@ -19,6 +19,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { EditorModule } from 'primeng/editor';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -40,6 +41,7 @@ import { DialogModule } from 'primeng/dialog';
     TabViewModule,
     ButtonModule,
     DialogModule,
+    EditorModule
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],

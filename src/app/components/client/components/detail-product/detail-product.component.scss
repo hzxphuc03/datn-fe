@@ -186,3 +186,17 @@
   opacity: 0.3;
   pointer-events: none;
 }
+:host ::ng-deep{
+  p-accordion{
+    width: 100%;
+  }
+  .p-rating .p-rating-icon.pi-star-fill{
+    color: yellow;
+  }
+  .inner-mo-ta{
+    width: 100%;
+    img{
+      width: 100% !important;
+    }
+  }
+}

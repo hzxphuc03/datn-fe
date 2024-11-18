@@ -29,7 +29,7 @@ interface Size {
 interface Color {
   coler: string;
   id: number;
-  listSize: Size[]; // Mảng chứa các kích thước
+  listSize: any[]; // Mảng chứa các kích thước
 }
 @Component({
   selector: 'app-detail-product',
@@ -45,6 +45,7 @@ export class DetailProductComponent implements OnInit {
   indexActiveColer: number = 1;
   indexActiveSize: number = 1;
   listImg: string[] = [];
+  totalItem : any = 0;
   public config: SwiperOptions = {
     autoHeight: true,
     spaceBetween: 20,
@@ -66,6 +67,9 @@ export class DetailProductComponent implements OnInit {
   fromMoneny: number = 0;
   toMoneny: number = 0;
   soLuongBuy: number = 1;
+  danhGiaParams : any = {};
+  listData : any[] = [];
+  listPageNumber : any[] = [];
   private intervalId: any; // Khai báo biến để lưu ID của interval
   constructor(
     private route: ActivatedRoute,
@@ -83,9 +87,12 @@ export class DetailProductComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
       if (this.id) {
+        this.danhGiaParams.idSanPham  = this.id;
         this.getAll(this.id);
       }
     });
+    this.getListDataDanhGia('rows');;
+    
     this.startAutoSlide();
     setTimeout(() => {
       this.scrollToTarget();
@@ -151,7 +158,7 @@ export class DetailProductComponent implements OnInit {
           };
 
           // Thêm kích thước vào listSize
-          coler.listSize.push({
+          coler?.listSize.push({
             size: item.kichCo.ten, // Giả định ten là string
             id: item.kichCo.id, // Giả định id là number
             idSP: item.id,
@@ -168,7 +175,7 @@ export class DetailProductComponent implements OnInit {
             (a: Color) => a.coler === item?.mauSac.maMau
           );
           if (existingColor) {
-            existingColor.listSize.push({
+            existingColor?.listSize.push({
               size: item.kichCo.ten,
               id: item.kichCo.id,
               idSP: item.id,
@@ -183,7 +190,7 @@ export class DetailProductComponent implements OnInit {
     }
     const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
     if (listSize) {
-      listSize.some((item, index) => {
+      listSize?.some((item, index) => {
           if (item.trangThai !== 0) {
               this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
               return true; // Dừng vòng lặp
@@ -200,7 +207,7 @@ export class DetailProductComponent implements OnInit {
       soLuong: this.soLuongBuy,
       idKhachhang: decoded.user.id,
       idSanPhamChiTiet:
-        this.coler[this.indexActiveColer - 1].listSize[this.indexActiveSize - 1]
+        this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]
           ?.idSP,
     };
     const data = await this.gioHangService
@@ -245,7 +252,7 @@ export class DetailProductComponent implements OnInit {
     this.indexActiveColer =  index;
     const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
     if (listSize) {
-      listSize.some((item, index) => {
+      listSize?.some((item, index) => {
           if (item.trangThai !== 0) {
               this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
               return true; // Dừng vòng lặp
@@ -254,5 +261,62 @@ export class DetailProductComponent implements OnInit {
       });
   }
 
+  }
+  async getListDataDanhGia(type: string, action?: string): Promise<void> {
+    // this.spinner.show();
+    if (type && type === 'rows') {
+      this.danhGiaParams.page = 1;
+    }
+    if (action) {
+      if (action === 'prev' && Number(this.danhGiaParams.page) > 1) {
+        this.danhGiaParams.page = Number(this.danhGiaParams.page) - 1;
+      }
+      if (
+        action === 'next' &&
+        Number(this.danhGiaParams.page) + 1 <= this.listPageNumber.length
+      ) {
+        this.danhGiaParams.page = Number(this.danhGiaParams.page) + 1;
+      }
+    } else {
+      this.danhGiaParams.page = this.danhGiaParams.page;
+    }
+    Object.keys(this.danhGiaParams).forEach((key) => {
+      if (this.danhGiaParams[key] === null || this.danhGiaParams[key] === '') {
+        delete this.danhGiaParams[key];
+      }
+    });
+    this.spinner.show();
+    const data = await this.service.getAllDanhGia(this.danhGiaParams).toPromise();
+    if (data) {
+      this.getTotalPage(data);
+      if (data.item.length) {
+        data.item?.map((item: any) => {
+          this.listData.push(item);
+        });
+      }
+
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
+    }
+
+    //   gọi api
+  }
+  getTotalPage(data: any): number {
+    let totalPage = 0;
+    this.totalItem = data.totalItem;
+    if (Number(data.totalItem) < Number(data.pageSize)) {
+      totalPage = 1;
+    } else {
+      totalPage = Math.floor(Number(data.totalItem) / Number(data.pageSize));
+      if (Number(data.totalItem) % Number(data.pageSize) > 0) {
+        totalPage = totalPage + 1;
+      }
+    }
+    this.listPageNumber = [];
+    for (let i = 1; i <= totalPage; i++) {
+      this.listPageNumber.push(i);
+    }
+    return totalPage;
   }
 }

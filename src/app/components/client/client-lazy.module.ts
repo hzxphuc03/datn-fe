@@ -19,6 +19,9 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { AccordionModule } from 'primeng/accordion';
 import { TooltipModule } from 'primeng/tooltip';
+import { RatingModule } from 'primeng/rating';
+import { ImageModule } from 'primeng/image';
+import { EditorModule } from 'primeng/editor';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -41,7 +44,10 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     DialogModule,
     AccordionModule,
-    TooltipModule
+    TooltipModule,
+    RatingModule,
+    ImageModule,
+    EditorModule
   ],
   exports: [fromPagesComponent.SanPhamAllSearchComponent],
   entryComponents: [],

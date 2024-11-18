@@ -12,6 +12,8 @@ import { ThuongHieuServiceService } from 'src/app/components/admin/service/thuon
 import { UploadImgService } from 'src/app/components/admin/service/upload-img.service';
 import { VatLieuServiceService } from 'src/app/components/admin/service/vat-lieu-service.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
+import { HomeServoceService } from '../../../services/home-service.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-danh-gia',
@@ -19,11 +21,14 @@ import { ErrorTsService } from 'src/app/shareds/message/error.service';
   styleUrls: ['./danh-gia.component.scss']
 })
 export class DanhGiaComponent implements OnInit {
-  visible: boolean = true;
+  visible: boolean = false;
+  visibleAll: boolean = false;
   data : any = {};
+  danhGias : any[] = [];
+  idKhachHang: any;
   constructor( private route: ActivatedRoute,
     private router: Router,
-    private service: CTSPServiceService,
+    private service: HomeServoceService,
     private serviceGiamGia: GiamGiaServiceService,
     private spinner: NgxSpinnerService,
     private serviceThuongHieu: ThuongHieuServiceService,
@@ -34,10 +39,67 @@ export class DanhGiaComponent implements OnInit {
     private serviceIMG: UploadImgService,
     private serviceKichCo: KIchCoServiceService,
     private dialog: MatDialog,
+    private tokenService: TokenService,
     private errorService: ErrorTsService) { }
 
   ngOnInit(): void {
+    const isExpired = this.tokenService.isTokenExpired();
+    const { decoded } = this.tokenService.getToken();
+    const a = this.tokenService.getToken();
+    if (a.decoded === null) {
+      this.router.navigate(['/g4/shop/login']);
+    }
+    if (a.decoded.role !== 'KhachHang') {
+      this.tokenService.removeToken();
+      this.router.navigate(['/g4/shop/login']);
+      return;
+    }
+    if (decoded) {
+      if (isExpired) {
+        this.errorService.displayError(
+          'hết thời gian đăng nhập, vui lòng đăng nhập lại',
+          'normal'
+        );
+        this.tokenService.removeToken();
+        this.router.navigate(['/g4/shop/login']);
+      }
+    } else {
+      this.router.navigate(['/g4/shop/login']);
+    }
+    this.idKhachHang = decoded.user.id;
     this.data.listHinhAnh = [];
+    this.data.idKhachHang = this.idKhachHang as Number ;
+    this.getAllDanhGia();
+  }
+
+  async getAllDanhGia(){
+    const data = await this.service.getTatCaSpCHuaDanhGiaByIdKh(this.idKhachHang).toPromise();
+    if(data){
+      this.danhGias = data;
+    }
+  }
+  async danhGiaAll(){
+    this.data.idSanPham = 0;
+    const data = await this.service.danhGiaAll(this.data).toPromise();
+    if(data){
+      this.errorService.displayError('Đánh giá tất cả thành công', 'sussces');
+        this.visibleAll = false;
+        this.data = {};
+        this.getAllDanhGia();
+        this.spinner.hide();
+    }
+    // danhGiaAll
+  }
+  async danhGiaDon(){
+    const data = await this.service.danhGiaSinger(this.data).toPromise();
+    if(data){
+      this.errorService.displayError('Đánh giá tất cả thành công', 'sussces');
+        this.visible = false;
+        this.data = {};
+        this.getAllDanhGia();
+        this.spinner.hide();
+    }
+    // danhGiaAll
   }
 
   showDialog() {

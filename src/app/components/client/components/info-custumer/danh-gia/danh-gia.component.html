@@ -10,13 +10,38 @@
       Đánh giá sản phẩm
     </div>
     <div class="action">
-      <button class="btn btn-primary" (click)="visible = true">
+      <button class="btn btn-primary" (click)="visibleAll = true">
         Đánh giá tất cả
       </button>
     </div>
   </div>
+  <div class="the-le">
+    *Lưu ý : 
+    <ul>
+      <li>Chỉ được phép đánh giá sản phẩm khi thuộc hóa đơn chưa quá 7 ngày !!</li>
+      <li>Mỗi sản phẩm được đánh giá 1 lần mỗi hóa đơn</li>
+    </ul>
+  </div>
   <div class="list-danh-gia">
     <!-- đánh gái table -->
+    <p-table [value]="danhGias" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Mã sản phẩm</th>
+              <th>Hình ảnh</th>
+              <th>Tên sản phảm</th>
+              <th>Thao tác</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+          <tr>
+              <td>{{ product.ma }}</td>
+              <td><img [src]="product.hinhAnh" alt="" style="width: 50px;height: 50px;border-radius: 10px;"></td>
+              <td>{{ product.ten }}</td>
+              <td><button class="btn btn-primary" (click)="data.idSanPham = product.id ; visible = true;">Đánh giá</button></td>
+          </tr>
+      </ng-template>
+  </p-table>
   </div>
 </div>
 <p-dialog
@@ -85,10 +110,83 @@
         name=""
         id="loat-input"
         pInputText
-        [(ngModel)]="data.cmt"
+        [(ngModel)]="data.binhLuan"
         placeholder="đánh giá của bạn"
       ></textarea>
     </span>
-    <button class="btn btn-primary">Đánh giá</button>
+    <button class="btn btn-primary" (click)="danhGiaDon()">Đánh giá</button>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Đánh giá tất sản phẩm"
+  [modal]="true"
+  [(visible)]="visibleAll"
+  [style]="{ width: '50vw' }"
+>
+  <div class="contents" style="width: 100%; height: 100%;display: flex;flex-direction: column;gap: 10px;">
+    <div class="title" style="font-weight: 600;">Chọn ảnh (tối đa 5 ảnh)</div>
+    <div
+      class="all-item-file-img"
+      style="width: 100%; display: flex; flex-wrap: wrap;gap: 20px;"
+    >
+      <div
+        class="item"
+        *ngFor="let a of data.listHinhAnh; let i = index"
+        style="display: flex; gap: 10px"
+      >
+        <div
+          class="img-item"
+          style="width: 100px; height: 100px; display: flex"
+        >
+          <img [src]="a" alt="" style="width: 100%; height: 100%;border: 1px solid gray;border-radius: 20px;display: flex;justify-content: center ; align-items: center;" />
+        </div>
+      </div>
+      <div class="item" >
+        <label class="uploadimg" for="upload-file" style="width: 100px; height: 100px;border: 1px solid gray;border-radius: 20px;display: flex;justify-content: center ; align-items: center;">
+            <span>UploadFile</span>
+          </label>
+      </div>
+    </div>
+    <div class="item">
+      <input
+        type="file"
+        id="upload-file"
+        multiple
+        accept="image/*"
+        style="display: none"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+    <div class="ratings">
+        <div class="title" style="font-weight: 600;">Đánh giá sản phẩm</div>
+        <div class="rating">
+            <label for="radio-1" aria-label="Rating 1">
+              <input type="radio" name="rating" id="radio-1" class="sr-only" [(ngModel)]="data.sao" value="1">
+            </label>
+            <label for="radio-2" aria-label="Rating 2">
+              <input type="radio" name="rating" id="radio-2" class="sr-only" [(ngModel)]="data.sao" value="2">
+            </label>
+            <label for="radio-3" aria-label="Rating 3">
+              <input type="radio" name="rating" id="radio-3" class="sr-only" [(ngModel)]="data.sao" value="3">
+            </label>
+            <label for="radio-4" aria-label="Rating 4">
+              <input type="radio" name="rating" id="radio-4" class="sr-only" [(ngModel)]="data.sao" value="4">
+            </label>
+            <label for="radio-5" aria-label="Rating 5">
+              <input type="radio" name="rating" id="radio-5" class="sr-only" [(ngModel)]="data.sao" value="5">
+            </label>
+          </div>
+    </div>
+    <span class="p-float-label textarea-p-float-label">
+      <textarea
+        style="width: 100%"
+        name=""
+        id="loat-input"
+        pInputText
+        [(ngModel)]="data.binhLuan"
+        placeholder="đánh giá của bạn"
+      ></textarea>
+    </span>
+    <button class="btn btn-primary" (click)="danhGiaAll()">Đánh giá</button>
   </div>
 </p-dialog>

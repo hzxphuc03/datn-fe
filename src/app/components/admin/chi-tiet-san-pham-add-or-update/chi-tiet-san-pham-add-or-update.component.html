@@ -326,21 +326,17 @@
         </span>
       </div>
       <div class="d-flex" style="gap: 20px">
-        <span class="p-float-label textarea-p-float-label">
-          <textarea
-            name=""
-            id="loat-input"
-            pInputText
-            [(ngModel)]="data?.sanPham.moTa"
-          ></textarea>
-          <label for="float-input">Mô tả</label>
-        </span>
+        <p-editor
+        [(ngModel)]="data.sanPham.moTa"
+        [style]="{ height: '320px' }"
+        placeholder="Mô tả"
+      ></p-editor>
       </div>
     </div>
   </div>
   <div class="chi-tiet-san-pham-content">
     <div class="content">
-      <ul style="margin-top: 8px;">
+      <ul style="margin-top: 8px">
         <li>Kích cỡ : theo chuẩn Việt Nam.</li>
       </ul>
       <p-table [value]="data?.sanPhamChiTietList" [rowHover]="true">

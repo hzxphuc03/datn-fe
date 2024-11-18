@@ -134,11 +134,6 @@
       </div>
       <!-- thông tin sản phẩm -->
       <div style="margin-top: 15px">
-        <span>
-          <i class="bx bx-subdirectory-right"></i
-          ><span style="font-weight: bold"> Mô tả :</span>
-          {{ getData?.sanPham.moTa }}
-        </span>
       </div>
       <div class="product-info-2" style="margin-bottom: 15px">
         <div class="info-item">
@@ -286,8 +281,82 @@
         <button class="btn one" (click)="addSPToGHCT()">
           Thêm vào giỏ hàng
         </button>
-        <button class="btn two">Mua ngay</button>
+        <button class="btn two">Mua ngay</button> 
       </div>
     </div>
   </div>
+  <div style="width: 100%; display: flex;justify-content: center;align-items: center;flex-direction: column;gap: 60px;">
+    <div style="width: 80%; display: flex;flex-direction: column;gap: 40px;">
+      <div class="title" style="font-size: 18px;font-weight: bold;">*Mô tả</div>
+      <div class="inner-mo-ta" [innerHTML]="getData?.sanPham?.moTa"></div>
+    </div>
+    <div class="some-thing-off-size" style="width: 80%">
+      <div class="title" style="font-size: 19px; font-weight: bold;">*Hướng dẫn cách đo kích cỡ dày (tiêu chuẩn Việt Nam)</div>
+      <div class="" style="display: flex;gap: 20px;">
+        <div class="img-size">
+          <img style="width: 400px;"
+          src="https://liretro.vn/wp-content/uploads/2023/06/Bang-size-2-1024x1024.jpg"
+          alt=""
+        />
+        </div>
+        <p-accordion [activeIndex]="0" >
+          <p-accordionTab header="Bước 1: Đặt một mảnh giấy lên trên sàn nhà">
+            <p>
+              Bạn sẽ sử dụng mảnh giấy này để vẽ bàn chân mình lên trên, do đó đừng sử dụng thảm hay bất cứ vật dụng khác có chất liệu khó vẽ nhé!
+            </p>
+          </p-accordionTab>
+          <p-accordionTab header="Bước 2: Đặt bàn chân trần ngay ngắn lên trên mặt giấy">
+            <p>
+              Bạn có thể ngồi trên ghế hoặc đứng im, miễn là giữ cho bàn chân cố định và đặt bàn chân vuông góc với mép giấy. Đảm bảo rằng nền nhà là mặt phẳng để việc đo đạc chính xác nhất.
+            </p>
+          </p-accordionTab>
+          <p-accordionTab header="Bước 3: Vẽ bàn chân">
+            <p>
+              Sử dụng bút chì hoặc bút bi để vẽ theo mép bàn chân như hình vẽ. Hãy đảm bảo rằng khi kết thúc, hình bàn chân nằm giữa mặt giấy hình chữ nhật.
+            </p>
+          </p-accordionTab>
+          <p-accordionTab header="Bước 4: Phác thảo bàn chân bằng đường thẳng">
+            <p>
+              Sử dụng thước kẻ, vẽ một đường thẳng bên cạnh mỗi mặt bàn chân: cạnh ngón chân, gót chân và hai bên.
+            </p>
+          </p-accordionTab>
+          <p-accordionTab header="Bước 5: Đo chiều dài và độ rộng bàn chân">
+            <p>
+              Sử dụng thước kẻ, đo chiều dài và chiều rộng của hình vuông mà bạn vừa vẽ bao quanh hình bàn chân. Ghi lại số liệu vừa đo được
+            </p>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+      
+    </div>
+  </div>
+<div class="something" style="width: 100%;display: flex;justify-content: center;align-items: center;">
+  <div style="display: flex;gap: 50px;flex-direction: column;padding: 20px;width: 80%;">
+    <div class="title" style="font-size: 18px;font-weight: bold;margin-bottom: 50px;">Đánh giá sản phẩm</div>
+    <div class="items-danh-gia" style="display: flex;gap: 50px;width: 100%;" *ngFor="let item of listData">
+      <div class="left" style="display: flex;justify-items: flex-end;">
+        <img [src]="item?.idKhachHang?.hinhAnh" alt="" style="height: 80px;width: 80px;border-radius: 50%;border: 1px solid gray;"  />
+      </div>
+      <div class="right" style="width: 90%;display: flex;flex-direction: column;gap: 4px;">
+        <div style="font-weight: 600;">{{ item?.idKhachHang?.hoTen }}</div>
+        <div><p-rating [(ngModel)]="item.sao" [cancel]="false" [disabled]="true"></p-rating></div>
+        <div>{{ item.ngayTao | date: "dd/MM/yyyy HH:mm:ss" }}</div>
+        <div>Đánh giá:{{item.binhLuan?item.binhLuan:'Không đánh giá'}}</div>
+        <div class="imgs" style="display: flex;gap: 10px;">
+          <div class="img" *ngFor="let img of item.hinhAnhComment">
+            <p-image
+            [src]="img.anh" 
+            alt="Image" 
+            width="100"
+            height="100" 
+            [preview]="true" ></p-image>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="" style="width: 100%;display: flex; justify-content: center;align-items: center;margin-bottom: 50px;margin-top: 20px;" *ngIf="listData.length !== totalItem">
+  <div class="xemthem" style="display: flex; justify-content: center;align-items: center;cursor: pointer;" (click)="danhGiaParams.page = danhGiaParams.page + 1;this.getListDataDanhGia('rows');">xem thêm <i class='bx bxs-down-arrow-alt'></i></div>
+</div>
 </div>
