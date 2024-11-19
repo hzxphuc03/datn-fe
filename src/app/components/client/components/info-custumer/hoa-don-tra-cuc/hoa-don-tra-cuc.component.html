@@ -1,0 +1,77 @@
+<div class="all-content">
+    <div class="title" style="font-size: 20px; font-weight: bold;">Đơn hàng của bạn</div>
+    <div class="bill">
+        <div class="content">
+            <p-table [value]="listData">
+              <ng-template pTemplate="header">
+                <tr>
+                 <th>Mã hóa đơn</th>
+                 <th>Ngày tạo</th>
+                 <th>Ngày thanh toán</th>
+                 <th>Tổng tiền</th>
+                 <th>Phương thức thanh toán</th>
+                 <th>Thanh toán<th>
+                 <th>Ghi chú</th>
+                 <th>Trạng thái</th>
+                 <th></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-product>
+                <tr (click)="details(product)">
+                    <td>{{product.ma}}</td>
+                    <td>{{product.ngayTao | date : "dd/MM/yyyy"}}</td>
+                    <td>{{ product.ngayThanhToan?(product.ngayThanhToan | date : "dd/MM/yyyy"):'-------'}}</td>
+                    <td>{{product.tongTien}}</td>
+                    <td>{{product.phuongThucThanhToan.ten}}</td>
+                    <td>{{product.thanhToan?'Đã thanh toán':'Chưa thanh toán'}}</td>
+                    <td>{{product.ghiChu}}</td>
+                    <td *ngIf="product.trangThai === 1">Chờ sử lý</td>
+                    <td *ngIf="product.trangThai === 2">Chờ sử lý</td>
+                    <td *ngIf="product.trangThai === 3">Hóa đơn đang được đóng gói</td>
+                    <td *ngIf="product.trangThai === 4">Hóa đơn đang được đóng gói</td>
+                    <td *ngIf="product.trangThai === 5">Hóa đơn đang vận chuyển</td>
+                    <td *ngIf="product.trangThai === 6">Hóa đơn hoàn thành</td>
+                    <td *ngIf="product.trangThai === 0">Hóa đơn đã hủy</td>
+                    <td><button class="btn btn-primary">Chi tiết</button></td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div class="table-pagination d-flex mb-3 pb-4">
+            <div class="flex-grow-1"></div>
+            <div><small class="text-muted">Pages: </small></div>
+            <div>
+              <p-dropdown
+                (onChange)="getListWords('page')"
+                [options]="listPageNumber"
+                [(ngModel)]="searchQuery.page"
+                class="table-pagination-item fsel-select fsel-select-xsm"
+              ></p-dropdown>
+            </div>
+            <!-- <div class="px-3"></div> -->
+            <div>
+              <p-dropdown
+                (onChange)="getListWords('rows')"
+                [options]="[10, 20, 30]"
+                [(ngModel)]="searchQuery.pageSize"
+                class="table-pagination-item fsel-select fsel-select-xsm"
+              ></p-dropdown>
+            </div>
+            <div><small class="text-muted ml-1">Items per page</small></div>
+            <div class="d-flex justify-content-center align-items-center">
+              <span
+                (click)="getListWords('page', 'prev')"
+                class="table-pagination-item btn-prev ml-2"
+              >
+                <i class="bx bx-left-arrow-alt"></i>
+              </span>
+              <span
+                (click)="getListWords('page', 'next')"
+                class="table-pagination-item btn-next"
+              >
+                <i class="bx bx-right-arrow-alt"></i>
+              </span>
+            </div>
+          </div>
+    </div>
+</div>

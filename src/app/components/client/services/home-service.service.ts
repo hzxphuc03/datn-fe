@@ -18,6 +18,7 @@ export class HomeServoceService {
   urlSuKienVoucher = 'http://localhost:8080/api/lich_su_su_dung'
   urlThongBao = 'http://localhost:8080/api/thong_bao'
   urlDanhGia = 'http://localhost:8080/api/danh_gia_san_pham'
+  urlHoaDon = 'http://localhost:8080/api/hoa_don'
   constructor(private http: HttpClient) {}
 
   getTop5BanChay(): Observable<any> {
@@ -274,6 +275,16 @@ export class HomeServoceService {
   }
   danhGiaSinger(params : any): Observable<any> {
     return this.http.post<any>(`${this.urlDanhGia}/danh-gia-tung-san-pham`,params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getHoaDonByIdKH(params : any): Observable<any> {
+    return this.http.get<any>(`${this.urlHoaDon}/get-hoa-don-by-khach-hang`,params).pipe(
       (res: any) => {
         return res || null;
       },

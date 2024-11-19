@@ -1,0 +1,17 @@
+.table-pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 20px;
+    .bx {
+      font-size: 36px;
+      cursor: pointer;
+    }
+    .table-pagination-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }

@@ -9,6 +9,7 @@ import { GtComponent } from './components/gt/gt.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { AllContentInfoComponent } from './components/info-custumer/all-content-info/all-content-info.component';
 import { DanhGiaComponent } from './components/info-custumer/danh-gia/danh-gia.component';
+import { HoaDonTraCucComponent } from './components/info-custumer/hoa-don-tra-cuc/hoa-don-tra-cuc.component';
 import { InfoUserComponent } from './components/info-custumer/info-user/info-user.component';
 import { Trung0tamHoTroComponent } from './components/info-custumer/trung0tam-ho-tro/trung0tam-ho-tro.component';
 import { LoginClientComponent } from './components/login-client/login-client.component';
@@ -31,7 +32,8 @@ export const pagesComponents: any[] = [
   GtComponent,
   ContactUsComponent,
   EventPageComponent,
-  DanhGiaComponent
+  DanhGiaComponent,
+  HoaDonTraCucComponent
 ];
 
 export * from './components/home-page/home-page.component';
@@ -50,3 +52,4 @@ export * from './components/gt/gt.component';
 export * from './components/contact-us/contact-us.component';
 export * from './components/event-page/event-page.component';
 export * from './components/info-custumer/danh-gia/danh-gia.component';
+export * from './components/info-custumer/hoa-don-tra-cuc/hoa-don-tra-cuc.component';
