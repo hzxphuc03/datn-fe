@@ -316,4 +316,18 @@ export class HomeServoceService {
         })
       );
   }
+  getDetailHoaDonByIdHD(id: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this.urlHoaDon}/get-hoa-don-chi-tiet-cho-view-khach-hang/${id}`
+      )
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
 }

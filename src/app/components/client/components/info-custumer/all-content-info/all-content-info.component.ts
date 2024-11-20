@@ -9,7 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AllContentInfoComponent implements OnInit {
   options = [
     'Tài khoản và bảo mật',
-    'Đơn hàng',
+    'Tra cứu đơn hàng',
+    'Tất cả đơn hàng',
     'Phiếu giảm giá',
     'Địa chỉ',
     'Cài đặt chung',
@@ -39,7 +40,7 @@ export class AllContentInfoComponent implements OnInit {
     this.selectedIndex = index;
     // Cập nhật URL với tham số activeItem
     this.router.navigate([], {
-      queryParams: { activeItem: index },
+      queryParams: { activeItem: index, idhd: null },
       queryParamsHandling: 'merge', // Giữ lại các tham số khác nếu có
     });
   }

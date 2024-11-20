@@ -13,6 +13,7 @@ import { VatLieuServiceService } from 'src/app/components/admin/service/vat-lieu
 import { TokenService } from 'src/app/services/token.service';
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { HomeServoceService } from '../../../services/home-service.service';
+import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-hoa-don-tra-cuc',
@@ -24,6 +25,7 @@ export class HoaDonTraCucComponent implements OnInit {
   searchQuery: any = {};
   listPageNumber: number[] = [];
   listData = [];
+  idhd: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +42,8 @@ export class HoaDonTraCucComponent implements OnInit {
     private serviceKichCo: KIchCoServiceService,
     private dialog: MatDialog,
     private tokenService: TokenService,
-    private errorService: ErrorTsService
+    private errorService: ErrorTsService,
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +72,9 @@ export class HoaDonTraCucComponent implements OnInit {
     }
     this.idKhachHang = decoded.user.id;
     this.getListWords('rows');
+    this.dataService.data$.subscribe((data: any) => {
+      this.getListWords('load');
+    });
   }
   async getListWords(type: string, action?: string): Promise<void> {
     // this.spinner.show();
@@ -134,5 +140,10 @@ export class HoaDonTraCucComponent implements OnInit {
     }
     return totalPage;
   }
-  details(item: any) {}
+  details(item: any) {
+    this.router.navigate([], {
+      queryParams: { activeItem: 1, idhd: item.id },
+      queryParamsHandling: 'merge', // Giữ lại các tham số khác nếu có
+    });
+  }
 }

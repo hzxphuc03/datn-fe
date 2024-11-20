@@ -16,7 +16,7 @@ import { NgxSpinnerService, Spinner } from 'ngx-spinner';
   templateUrl: './client-layout-master.component.html',
   styleUrls: ['./client-layout-master.component.scss'],
 })
-export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
+export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
   isLoginKhachHang: boolean = true;
   isOpenSearch: boolean = false;
   searchControl = new FormControl();
@@ -30,7 +30,7 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
   //
   searchQuery: any = {};
   listPageNumber: number[] = [];
-  listData : any[] = [];
+  listData: any[] = [];
   constructor(
     private tokenService: TokenService,
     private router: Router,
@@ -41,12 +41,9 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     private activatedRoute: ActivatedRoute,
     private chatService: ChatService,
     private websocketService: WebsocketService,
-    private spinner : NgxSpinnerService
-  ) {
-
-    
-  }
-  notifications: string[] = [];  // Mảng chứa các thông báo
+    private spinner: NgxSpinnerService
+  ) {}
+  notifications: string[] = []; // Mảng chứa các thông báo
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
@@ -59,7 +56,7 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
       });
 
     this.idKhachHang = decoded?.user?.id;
-    this.searchQuery.idKhachHang = this.idKhachHang
+    this.searchQuery.idKhachHang = this.idKhachHang;
     if (this.idKhachHang) {
       this.isLoginKhachHang = true;
     } else {
@@ -96,24 +93,28 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
           console.error('Error fetching search results:', error); // Xử lý lỗi
         }
       );
-       // Kết nối WebSocket và lắng nghe thông báo
-    this.websocketService.connect()
-    .then(() => {
-      console.log('WebSocket connection established');
-    })
-    .catch((error) => {
-      console.error('Error establishing WebSocket connection', error);
-    });
+    // Kết nối WebSocket và lắng nghe thông báo
+    this.websocketService
+      .connect()
+      .then(() => {
+        console.log('WebSocket connection established');
+      })
+      .catch((error) => {
+        console.error('Error establishing WebSocket connection', error);
+      });
 
-  // Lắng nghe thông báo từ WebSocket qua getter
-  this.websocketService.getStompClient().onConnect = (frame) => {
-    this.websocketService.getStompClient().subscribe('/topic/notifications', (message) => {
-      this.notifications.push(message.body);
-      if(this.idKhachHang+'' === message.body){
-        this.getAllNoti();
-      }
-    });
-  };
+    // Lắng nghe thông báo từ WebSocket qua getter
+    this.websocketService.getStompClient().onConnect = (frame) => {
+      this.websocketService
+        .getStompClient()
+        .subscribe('/topic/notifications', (message) => {
+          this.notifications.push(message.body);
+          if (this.idKhachHang + '' === message.body) {
+            this.dataService.updateData('');
+            this.getAllNoti();
+          }
+        });
+    };
   }
   goDetail(id: any) {
     this.isOpenSearch = false;
@@ -138,7 +139,10 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     if (openUserActive && !openUserActive.contains(event.target as Node)) {
       this.isOpenUser = false; // Đóng hộp tìm kiếm
     }
-    if (openUserActiveNoti && !openUserActiveNoti.contains(event.target as Node)) {
+    if (
+      openUserActiveNoti &&
+      !openUserActiveNoti.contains(event.target as Node)
+    ) {
       this.isOpenUserNoti = false; // Đóng hộp tìm kiếm
     }
   }
@@ -148,10 +152,10 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     this.countGioHang = data;
     // }
   }
-  getAllNoti(){
+  getAllNoti() {
     // lấy số lượng noti
     // lấy những thông báo noti
-    this.searchQuery.pageSize  = 10;
+    this.searchQuery.pageSize = 10;
     this.getListWords('rows');
     this.getThongBao();
   }
@@ -179,7 +183,9 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
       }
     });
     this.spinner.show();
-    const data = await this.service.getThongBaoByIDKH(this.searchQuery).toPromise();
+    const data = await this.service
+      .getThongBaoByIDKH(this.searchQuery)
+      .toPromise();
     if (data) {
       this.getTotalPage(data);
       this.listData = data.item;
@@ -216,10 +222,12 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     }
     return totalPage;
   }
-  async getThongBao(){
-    const data = await this.service.getNumberThongBao(this.idKhachHang).toPromise();
+  async getThongBao() {
+    const data = await this.service
+      .getNumberThongBao(this.idKhachHang)
+      .toPromise();
     // if(data){
-      this.countThongBao = data;
+    this.countThongBao = data;
     // }
   }
   logIn() {
@@ -259,25 +267,24 @@ export class ClientLayoutMasterComponent implements OnInit ,OnDestroy  {
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
+      }
     }
+    this.getAllNoti();
+    this.router.navigate([item.url.split('?')[0]], {
+      queryParams: { activeItem: item.url.split('?')[1]?.split('=')[1] },
+    });
+    this.isOpenUserNoti = false;
   }
-   this.getAllNoti();
-        this.router.navigate([item.url.split('?')[0]], {
-          queryParams: { activeItem: item.url.split('?')[1]?.split('=')[1] }
-        });
-        this.isOpenUserNoti = false;
-  }
-  async readAll(){
-    const data = await this.service.docTatCaThongBaoTheoIDKH(this.idKhachHang).toPromise();
+  async readAll() {
+    const data = await this.service
+      .docTatCaThongBaoTheoIDKH(this.idKhachHang)
+      .toPromise();
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
       } else {
         this.getAllNoti();
-        this.errorService.displayError(
-          `Đọc tất cả thành công`,
-          'success'
-        );
+        this.errorService.displayError(`Đọc tất cả thành công`, 'success');
       }
     }
   }
