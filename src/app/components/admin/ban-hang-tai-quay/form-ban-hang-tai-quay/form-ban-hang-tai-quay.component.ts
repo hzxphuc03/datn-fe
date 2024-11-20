@@ -91,23 +91,27 @@ export class FormBanHangTaiQuayComponent implements OnInit {
       }
       if (this.transactionStatus !== null && this.vnpOrderInfo) {
         if (this.transactionStatus) {
-          const dialogRef = this.dialog.open(
-            ThanhCongOrThatBaiThanhToanComponent,
-            {
-              data: {
-                vnpOrderInfo: this.vnpOrderInfo,
-                responseCode: responseCode,
-                transactionStatus: transactionStatus,
-                status: this.transactionStatus,
-              },
-              disableClose: true,
-            }
-          );
-          dialogRef.afterClosed().subscribe(async (result) => {
-            if (result) {
-              this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
-            }
-          });
+          const data = await this.hoaDonService.updateAfterOnlinePayment(this.vnpOrderInfo).toPromise();
+          if(data){
+            const dialogRef = this.dialog.open(
+              ThanhCongOrThatBaiThanhToanComponent,
+              {
+                data: {
+                  vnpOrderInfo: this.vnpOrderInfo,
+                  responseCode: responseCode,
+                  transactionStatus: transactionStatus,
+                  status: this.transactionStatus,
+                },
+                disableClose: true,
+              }
+            );
+            dialogRef.afterClosed().subscribe(async (result) => {
+              if (result) {
+                this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
+              }
+            });
+          }
+
         }
       }
     });
