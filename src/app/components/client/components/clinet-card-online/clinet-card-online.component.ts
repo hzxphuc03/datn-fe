@@ -13,6 +13,7 @@ import {
 import { ErrorTsService } from 'src/app/shareds/message/error.service';
 import { BroadcastService } from 'src/app/services/broadcast.service';
 import { DataService } from '../../services/data.service';
+import { ThanhToanThanhCongComponent } from '../thanh-toan-thanh-cong/thanh-toan-thanh-cong.component';
 interface Item {
   name: string;
   quantity: number;
@@ -40,9 +41,9 @@ interface Data {
 })
 export class ClinetCardOnlineComponent implements OnInit {
   steps = [
-    {step : 1 , title :'Bước chọn sản phẩm'},
-    {step : 2 , title :'Bước cập nhật địa chỉ giao hàng'},
-    {step : 3 , title :'Bước sử dụng phiếu giảm giá'},
+    { step: 1, title: 'Bước chọn sản phẩm' },
+    { step: 2, title: 'Bước cập nhật địa chỉ giao hàng' },
+    { step: 3, title: 'Bước sử dụng phiếu giảm giá' },
   ]; // Danh sách các bước
   currentStep = 1; // Bước hiện tại
   listGh: any[] = [];
@@ -92,6 +93,7 @@ export class ClinetCardOnlineComponent implements OnInit {
       if (data) {
         // nhận được dữ liệu kho thành toán thành công
         if (data.message) {
+          this.spinner.show();
           this.thanhToanOnline(data.message);
         } else {
           setTimeout(() => {
@@ -649,6 +651,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     });
     //check api
     if (this.data.phuongThucThanhToan === 3) {
+      this.spinner.show();
       const data = await this.service.thanhToan3(orderDetails).toPromise();
       if (data?.errorCode) {
         this.errorService.displayError(data.messageError, 'error');
@@ -661,6 +664,16 @@ export class ClinetCardOnlineComponent implements OnInit {
         this.data.phuongThucThanhToan = 3;
         this.getAllVoucher();
         this.currentStep = 1;
+        const dialogRef = this.dialog.open(ThanhToanThanhCongComponent, {
+          data: data,
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+          }
+        });
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 1000);
       }
     }
 
@@ -732,10 +745,10 @@ export class ClinetCardOnlineComponent implements OnInit {
     });
     // gọi api ở đây bú bú bú
     if (trangThai) {
+      this.spinner.show();
       const data = await this.service.thanhToan2End(orderDetails).toPromise();
-      if (data) {
+      if (!data.body.errorCode) {
         this.errorService.displayError('Đã thanh toán thành công', 'succes');
-        console.log(data);
         this.data = {};
         this.getGioHang();
         this.getAllTinhThanh();
@@ -743,10 +756,23 @@ export class ClinetCardOnlineComponent implements OnInit {
         this.data.phuongThucThanhToan = 3;
         this.getAllVoucher();
         this.currentStep = 1;
+        const dialogRef = this.dialog.open(ThanhToanThanhCongComponent, {
+          data: data,
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+          }
+        });
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 1000);
       }
     } else {
       this.errorService.displayError('bạn đã hủy thanh toán', 'normal');
       this.currentStep = 1;
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 1000);
     }
   }
   async deleteAll() {
@@ -817,27 +843,28 @@ export class ClinetCardOnlineComponent implements OnInit {
       }
     });
   }
-  async editSoLuong(item : any){
+  async editSoLuong(item: any) {
     this.spinner.show();
     const params = {
       idGioHangChiTiet: item.id,
-      soLuong: item.changeSoLuong
-    }
+      soLuong: item.changeSoLuong,
+    };
     const data = await this.service.capNhatSoLuongGioHang(params).toPromise();
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
-        this.spinner.hide();
-      }else{
-        this.errorService.displayError('Cập nhật số lượng thành công', 'sussces');
+      } else {
+        this.errorService.displayError(
+          'Cập nhật số lượng thành công',
+          'sussces'
+        );
         item.soLuong = item.changeSoLuong;
         this.tinhhTongTien();
         this.getShipPrice();
         this.spinner.hide();
         this.dataService.updateData('');
-        item.isEdit = false ;
+        item.isEdit = false;
       }
-      
     }
   }
 }

@@ -1,0 +1,41 @@
+<div
+  class="dialog"
+  style="
+    width: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+  "
+>
+  <img
+    style="width: 200px; text-align: center"
+    src="https://s3-sgn10.fptcloud.com/fsel/Images/State_6958_1732084682054.png"
+    alt=""
+  />
+  <div
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 10px;
+    "
+  >
+    <div class="title" style="font-size: 32px; font-weight: 600">
+      Đặt hàng thành công
+    </div>
+    <div class="sub-title">Đây là mã hóa đơn của bạn :{{ data.body.id }}</div>
+  </div>
+  <div style="width: 100%; display: flex; gap: 20px">
+    <button class="btn btn-danger" style="width: 100%" (click)="close()">
+      Đóng
+    </button>
+    <button class="btn btn-primary" style="width: 100%" (click)="goto()">
+      Đi đến hóa đơn
+    </button>
+  </div>
+</div>
