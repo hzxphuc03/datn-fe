@@ -17,16 +17,16 @@ import { HomeServoceService } from '../../../services/home-service.service';
 @Component({
   selector: 'app-hoa-don-tra-cuc',
   templateUrl: './hoa-don-tra-cuc.component.html',
-  styleUrls: ['./hoa-don-tra-cuc.component.scss']
+  styleUrls: ['./hoa-don-tra-cuc.component.scss'],
 })
 export class HoaDonTraCucComponent implements OnInit {
-
-  idKhachHang : any ;
+  idKhachHang: any;
   searchQuery: any = {};
   listPageNumber: number[] = [];
   listData = [];
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private service: HomeServoceService,
     private serviceGiamGia: GiamGiaServiceService,
@@ -40,7 +40,8 @@ export class HoaDonTraCucComponent implements OnInit {
     private serviceKichCo: KIchCoServiceService,
     private dialog: MatDialog,
     private tokenService: TokenService,
-    private errorService: ErrorTsService) { }
+    private errorService: ErrorTsService
+  ) {}
 
   ngOnInit(): void {
     const isExpired = this.tokenService.isTokenExpired();
@@ -67,7 +68,6 @@ export class HoaDonTraCucComponent implements OnInit {
       this.router.navigate(['/g4/shop/login']);
     }
     this.idKhachHang = decoded.user.id;
-    this.searchQuery.idKhachHang = this.idKhachHang;
     this.getListWords('rows');
   }
   async getListWords(type: string, action?: string): Promise<void> {
@@ -94,7 +94,10 @@ export class HoaDonTraCucComponent implements OnInit {
       }
     });
     this.spinner.show();
-    const data = await this.service.getHoaDonByIdKH(this.searchQuery).toPromise();
+    this.searchQuery.idKhachHang = this.idKhachHang;
+    const data = await this.service
+      .getHoaDonByIdKH(this.searchQuery)
+      .toPromise();
     if (data) {
       this.getTotalPage(data);
       this.listData = data.item;
@@ -131,7 +134,5 @@ export class HoaDonTraCucComponent implements OnInit {
     }
     return totalPage;
   }
-  details(item : any){
-    
-  }
+  details(item: any) {}
 }

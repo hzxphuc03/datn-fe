@@ -1,120 +1,156 @@
-<div class="content" style="display: flex;flex-direction: column;gap: 20px;padding: 20px;">
-    <div class="header" style="font-size: 40px;">Phiếu giảm giá</div>
-    <div class="content" style="
-overflow: auto;" >
-      <div style="display: flex;gap: 30px; width: 100%;">
-        <div style="display: flex;flex-direction: column;gap: 20px;width: 100%;">
-          <div>
-            <div style="font-weight: bold">Phiếu giảm giá hóa đơn</div>
-          
-          </div>
-          <div
-          class="item-voucher"
-          [class.isDisableVoucher]="voucher.soLuong < 1 || !voucher.sale"
-          [class.isUserVoucher]="voucher.isChecked"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid gray;
-            border-radius: 10px;
-            width: 100%;
-            position: relative;
-          "
-          *ngFor="let voucher of listVoucherKhanhHang?.voucherHoaDon"
-        >
-        <div class="voucherEnd" *ngIf="voucher.soLuong < 1 || !voucher.sale" style="position: absolute;top: 50px;left: 30%;rotate: 14deg;color: black;font-size: 23px;">
-          Không đáp ứng yêu cầu
+<div
+  class="content"
+  style="display: flex; flex-direction: column; gap: 20px; padding: 20px"
+>
+  <div class="header" style="font-size: 40px">Phiếu giảm giá</div>
+  <div class="content" style="overflow: auto">
+    <div style="display: flex; gap: 30px; width: 100%">
+      <div
+        style="display: flex; flex-direction: column; gap: 20px; width: 100%"
+      >
+        <div>
+          <div style="font-weight: bold">Phiếu giảm giá hóa đơn</div>
         </div>
+        <div class="all-voucher">
           <div
-            class="left"
-            style="width: 50%; display: flex; flex-direction: column; gap: 20px"
+            class="item-vouchers"
+            *ngFor="let v of listVoucherKhanhHang?.voucherHoaDon"
+            style="cursor: pointer"
+            [class.disable]="v.soLuong < 1 || !v.sale"
           >
-            <div class="title" style="font-size: 34px">
-              {{ voucher?.voucher?.phanTramGiam }}%
+            <div class="ball" style="margin-left: -15px">
+              <div class="item-ball"></div>
             </div>
-            <div class="ma" style="font-size: small">
-              {{ voucher?.keySuKien }}-{{ voucher?.voucher?.ma }}
+            <div class="item-voucher" style="color: #fff !important">
+              <div class="left">
+                <div class="title">{{ v.voucher.phanTramGiam }}%</div>
+                <div class="sub-title">Số lượng:{{ v.soLuong }}</div>
+              </div>
+              <div
+                class="right"
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <div
+                  class=""
+                  style="
+                    display: flex;
+                    gap: 10px;
+                    flex-direction: column;
+                    text-align: start;
+                    justify-content: center;
+                  "
+                >
+                  <div>
+                    Áp dụng :
+                    {{ v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn" }}
+                  </div>
+                  <div>
+                    Hạn sử dụng :
+                    {{ v.ngayKetThuc | date : "dd/MM/yyyy" }}
+                  </div>
+                  <div style="display: flex; gap: 5px">
+                    <span
+                      >Giảm từ :
+                      {{
+                        v.voucher.giaTriGiamToiThieu
+                          | currency : "VND" : "symbol" : "1.0-0"
+                      }}</span
+                    >
+                    <span
+                      >Giảm tối đa
+                      {{
+                        v.voucher.giamToiDa
+                          | currency : "VND" : "symbol" : "1.0-0"
+                      }}</span
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="ma" style="font-size: small">
-              số lượng :{{ voucher?.soLuong }}
+            <div class="ball" style="margin-right: -15px">
+              <div class="item-ball"></div>
             </div>
           </div>
+        </div>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; gap: 20px; width: 100%"
+      >
+        <div>
+          <div style="font-weight: bold">Phiếu giảm giá vận chuyển</div>
+        </div>
+        <div class="all-voucher">
           <div
-            class="right"
-            style="width: 200px; display: flex; flex-direction: column; gap: 20px"
+            class="item-vouchers"
+            *ngFor="let v of listVoucherKhanhHang?.voucherVanCHuyen"
+            style="cursor: pointer"
+            [class.disable]="v.soLuong < 1 || !v.sale"
           >
-            <div>{{ voucher?.voucher?.ten }}</div>
-            <div>
-             <span>
-              Giảm tối đa :{{
-                voucher?.voucher?.giamToiDa | currency : "VND" : "symbol" : "1.0-0"
-              }}
-             </span>
-             
+            <div class="ball" style="margin-left: -15px">
+              <div class="item-ball"></div>
             </div>
-            <div>Giảm từ đơn tối thiểu : {{ voucher?.voucher?.giaTriGiamToiThieu  | currency : "VND" : "symbol" : "1.0-0"}}</div>
-            <div>HSD : {{ voucher?.ngayKetThuc | date : "dd/MM/yyyy" }}</div>
+            <div class="item-voucher" style="color: #fff !important">
+              <div class="left">
+                <div class="title">{{ v.voucher.phanTramGiam }}%</div>
+                <div class="sub-title">Số lượng :{{ v.soLuong }}</div>
+              </div>
+              <div
+                class="right"
+                style="
+                  padding: 10px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <div
+                  class=""
+                  style="
+                    display: flex;
+                    gap: 10px;
+                    flex-direction: column;
+                    text-align: start;
+                    justify-content: center;
+                  "
+                >
+                  <div>
+                    Áp dụng :
+                    {{ v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn" }}
+                  </div>
+                  <div>
+                    Hạn sử dụng :
+                    {{ v.ngayKetThuc | date : "dd/MM/yyyy" }}
+                  </div>
+                  <div style="display: flex; gap: 5px">
+                    <span
+                      >Giảm từ :
+                      {{
+                        v.voucher.giaTriGiamToiThieu
+                          | currency : "VND" : "symbol" : "1.0-0"
+                      }}</span
+                    >
+                    <span
+                      >Giảm tối đa
+                      {{
+                        v.voucher.giamToiDa
+                          | currency : "VND" : "symbol" : "1.0-0"
+                      }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ball" style="margin-right: -15px">
+              <div class="item-ball"></div>
+            </div>
           </div>
-        </div>
-        </div>
-        <div style="display: flex;flex-direction: column;gap: 20px;width: 100%;">
-          <div>
-            <div style="font-weight: bold;">Phiếu giảm giá vận chuyển</div>
-            
-          </div>
-          <div
-          class="item-voucher"
-          [class.isDisableVoucher]="voucher.soLuong < 1 || !voucher.sale"
-          [class.isUserVoucher]="voucher.isChecked"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid gray;
-            border-radius: 10px;
-            width: 100%;
-            position: relative;
-          "
-          *ngFor="let voucher of listVoucherKhanhHang?.voucherVanCHuyen"
-        >
-        <div class="voucherEnd" *ngIf="voucher.soLuong < 1 || !voucher.sale" style="position: absolute;top: 50px;left: 30%;rotate: 14deg;color: black;font-size: 23px;">
-          Không đáp ứng yêu cầu
-        </div>
-          <div
-            class="left"
-            style="width: 50%; display: flex; flex-direction: column; gap: 20px"
-          >
-            <div class="title" style="font-size: 34px">
-              {{ voucher?.voucher?.phanTramGiam }}%
-            </div>
-            <div class="ma" style="font-size: small">
-              {{ voucher?.keySuKien }}-{{ voucher?.voucher?.ma }}
-            </div>
-            <div class="ma" style="font-size: small">
-              số lượng :{{ voucher?.soLuong }}
-            </div>
-          </div>
-          <div
-            class="right"
-            style="width: 200px; display: flex; flex-direction: column; gap: 20px"
-          >
-            <div>{{ voucher?.voucher?.ten }}</div>
-            <div>
-             <span>
-              Giảm tối đa :{{
-                voucher?.voucher?.giamToiDa | currency : "VND" : "symbol" : "1.0-0"
-              }}
-             </span>
-             
-            </div>
-            <div>Giảm từ đơn tối thiểu : {{ voucher?.voucher?.giaTriGiamToiThieu  | currency : "VND" : "symbol" : "1.0-0"}}</div>
-            <div>HSD : {{ voucher?.ngayKetThuc | date : "dd/MM/yyyy" }}</div>
-          </div>
-        </div>
         </div>
       </div>
     </div>
   </div>
+</div>

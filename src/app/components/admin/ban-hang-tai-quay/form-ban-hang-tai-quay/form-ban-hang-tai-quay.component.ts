@@ -90,24 +90,25 @@ export class FormBanHangTaiQuayComponent implements OnInit {
         this.transactionStatus = false; // Giao dịch thất bại
       }
       if (this.transactionStatus !== null && this.vnpOrderInfo) {
-
-        const dialogRef = this.dialog.open(
-          ThanhCongOrThatBaiThanhToanComponent,
-          {
-            data: {
-              vnpOrderInfo: this.vnpOrderInfo,
-              responseCode: responseCode,
-              transactionStatus: transactionStatus,
-              status: this.transactionStatus,
-            },
-            disableClose: true,
-          }
-        );
-        dialogRef.afterClosed().subscribe(async (result) => {
-          if (result) {
-            this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
-          }
-        });
+        if (this.transactionStatus) {
+          const dialogRef = this.dialog.open(
+            ThanhCongOrThatBaiThanhToanComponent,
+            {
+              data: {
+                vnpOrderInfo: this.vnpOrderInfo,
+                responseCode: responseCode,
+                transactionStatus: transactionStatus,
+                status: this.transactionStatus,
+              },
+              disableClose: true,
+            }
+          );
+          dialogRef.afterClosed().subscribe(async (result) => {
+            if (result) {
+              this.router.navigate(['/auth/admin/ban-hang-tai-quay']);
+            }
+          });
+        }
       }
     });
     this.data.khachHang = {};
