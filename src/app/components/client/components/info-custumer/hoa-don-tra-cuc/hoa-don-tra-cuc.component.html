@@ -2,6 +2,42 @@
   <div class="title" style="font-size: 20px; font-weight: bold">
     Đơn hàng của bạn
   </div>
+  <div class="table-pagination d-flex mb-3 pb-4">
+    <div class="flex-grow-1"></div>
+    <div><small class="text-muted">Pages: </small></div>
+    <div>
+      <p-dropdown
+        (onChange)="getListWords('page')"
+        [options]="listPageNumber"
+        [(ngModel)]="searchQuery.page"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <!-- <div class="px-3"></div> -->
+    <div>
+      <p-dropdown
+        (onChange)="getListWords('rows')"
+        [options]="[10, 20, 30]"
+        [(ngModel)]="searchQuery.pageSize"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <div><small class="text-muted ml-1">Items per page</small></div>
+    <div class="d-flex justify-content-center align-items-center">
+      <span
+        (click)="getListWords('page', 'prev')"
+        class="table-pagination-item btn-prev ml-2"
+      >
+        <i class="bx bx-left-arrow-alt"></i>
+      </span>
+      <span
+        (click)="getListWords('page', 'next')"
+        class="table-pagination-item btn-next"
+      >
+        <i class="bx bx-right-arrow-alt"></i>
+      </span>
+    </div>
+  </div>
   <div class="bill">
     <div class="content">
       <p-table [value]="listData">
@@ -46,42 +82,6 @@
           </tr>
         </ng-template>
       </p-table>
-    </div>
-    <div class="table-pagination d-flex mb-3 pb-4">
-      <div class="flex-grow-1"></div>
-      <div><small class="text-muted">Pages: </small></div>
-      <div>
-        <p-dropdown
-          (onChange)="getListWords('page')"
-          [options]="listPageNumber"
-          [(ngModel)]="searchQuery.page"
-          class="table-pagination-item fsel-select fsel-select-xsm"
-        ></p-dropdown>
-      </div>
-      <!-- <div class="px-3"></div> -->
-      <div>
-        <p-dropdown
-          (onChange)="getListWords('rows')"
-          [options]="[10, 20, 30]"
-          [(ngModel)]="searchQuery.pageSize"
-          class="table-pagination-item fsel-select fsel-select-xsm"
-        ></p-dropdown>
-      </div>
-      <div><small class="text-muted ml-1">Items per page</small></div>
-      <div class="d-flex justify-content-center align-items-center">
-        <span
-          (click)="getListWords('page', 'prev')"
-          class="table-pagination-item btn-prev ml-2"
-        >
-          <i class="bx bx-left-arrow-alt"></i>
-        </span>
-        <span
-          (click)="getListWords('page', 'next')"
-          class="table-pagination-item btn-next"
-        >
-          <i class="bx bx-right-arrow-alt"></i>
-        </span>
-      </div>
     </div>
   </div>
 </div>

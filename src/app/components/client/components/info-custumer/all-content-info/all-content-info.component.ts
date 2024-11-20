@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -14,9 +14,9 @@ export class AllContentInfoComponent implements OnInit {
     'Địa chỉ',
     'Cài đặt chung',
     'Trung tâm hỗ trợ',
-    'Đánh giá sản phẩm'
+    'Đánh giá sản phẩm',
   ];
-
+  @ViewChild('targetElement') targetElement!: ElementRef;
   selectedIndex: number | null = 0;
   constructor(private router: Router, private route: ActivatedRoute) {
     // Lấy tham số từ URL khi trang được tải
@@ -27,8 +27,14 @@ export class AllContentInfoComponent implements OnInit {
       }
     });
   }
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Cuộn lên trên cùng với hiệu ứng mượt
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.scrollToTop();
+  }
+
   selectOption(index: number) {
     this.selectedIndex = index;
     // Cập nhật URL với tham số activeItem

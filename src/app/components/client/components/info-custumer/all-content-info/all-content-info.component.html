@@ -1,36 +1,39 @@
-<div
-  class="title"
-  style="font-weight: bold; padding-left: 20px; font-size: 20px"
->
-  Thông tin khách hàng
-</div>
-<div class="all-content">
-  <!-- option-list.component.html -->
-  <div class="left">
-    <div class="show-info-check">
-      <div class="all-option" [ngClass]="{ open: true }">
-        <div class="items" *ngFor="let item of options; let i = index">
-          <div
-            class="option"
-            [class.checkedS]="selectedIndex === i"
-            (click)="selectOption(i)"
-          >
-            <span>{{ item }}</span>
+<div>
+  <div
+    #targetElement
+    class="title"
+    style="font-weight: bold; padding-left: 20px; font-size: 20px"
+  >
+    Thông tin khách hàng
+  </div>
+  <div class="all-content">
+    <!-- option-list.component.html -->
+    <div class="left">
+      <div class="show-info-check">
+        <div class="all-option" [ngClass]="{ open: true }">
+          <div class="items" *ngFor="let item of options; let i = index">
+            <div
+              class="option"
+              [class.checkedS]="selectedIndex === i"
+              (click)="selectOption(i)"
+            >
+              <span>{{ item }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="right">
-    <app-info-user *ngIf="selectedIndex === 0"></app-info-user>
-    <app-hoa-don-tra-cuc *ngIf="selectedIndex === 1"></app-hoa-don-tra-cuc>
-    <app-voucher-khach-hang
-      *ngIf="selectedIndex === 2"
-    ></app-voucher-khach-hang>
-    <app-dia-chi-khach-hang
-      *ngIf="selectedIndex === 3" 
-    ></app-dia-chi-khach-hang>
-    <app-trung0tam-ho-tro *ngIf="selectedIndex === 5"></app-trung0tam-ho-tro>
-    <app-danh-gia *ngIf="selectedIndex === 6"></app-danh-gia>
+    <div class="right">
+      <app-info-user *ngIf="selectedIndex === 0"></app-info-user>
+      <app-hoa-don-tra-cuc *ngIf="selectedIndex === 1"></app-hoa-don-tra-cuc>
+      <app-voucher-khach-hang
+        *ngIf="selectedIndex === 2"
+      ></app-voucher-khach-hang>
+      <app-dia-chi-khach-hang
+        *ngIf="selectedIndex === 3"
+      ></app-dia-chi-khach-hang>
+      <app-trung0tam-ho-tro *ngIf="selectedIndex === 5"></app-trung0tam-ho-tro>
+      <app-danh-gia *ngIf="selectedIndex === 6"></app-danh-gia>
+    </div>
   </div>
 </div>
