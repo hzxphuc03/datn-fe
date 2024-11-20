@@ -12,10 +12,15 @@
           ></div>
           <div class="all-step">
             <div class="step" *ngFor="let step of steps; let i = index">
-              <div class="show-step" [class.active-step]="i < currentStep" [pTooltip]="step.title" tooltipPosition="bottom">
-                  {{ step.step }}
+              <div
+                class="show-step"
+                [class.active-step]="i < currentStep"
+                [pTooltip]="step.title"
+                tooltipPosition="bottom"
+              >
+                {{ step.step }}
               </div>
-          </div>
+            </div>
           </div>
         </div>
         <div
@@ -118,7 +123,7 @@
                             (change)="checkDetail($event, item)"
                           />
                         </td>
-                        <td >{{ detail.id }}</td>
+                        <td>{{ detail.id }}</td>
                         <td>
                           <img
                             class="product-image"
@@ -144,17 +149,17 @@
                         <td *ngIf="!detail.isEdit">{{ detail.soLuong }}</td>
                         <td *ngIf="detail.isEdit">
                           <p-inputNumber
-                          [(ngModel)]="detail.changeSoLuong"
-                          [showButtons]="true"
-                          buttonLayout="horizontal"
-                          spinnerMode="vertical"
-                          inputId="vertical"
-                          [min]="0"
-                          decrementButtonClass="p-button-secondary"
-                          incrementButtonClass="p-button-secondary"
-                          incrementButtonIcon="pi pi-plus"
-                          decrementButtonIcon="pi pi-minus"
-                        ></p-inputNumber>
+                            [(ngModel)]="detail.changeSoLuong"
+                            [showButtons]="true"
+                            buttonLayout="horizontal"
+                            spinnerMode="vertical"
+                            inputId="vertical"
+                            [min]="0"
+                            decrementButtonClass="p-button-secondary"
+                            incrementButtonClass="p-button-secondary"
+                            incrementButtonIcon="pi pi-plus"
+                            decrementButtonIcon="pi pi-minus"
+                          ></p-inputNumber>
                         </td>
                         <td>{{ detail.sanPhamChiTiet.kichCo.ten }}</td>
                         <td>
@@ -174,10 +179,23 @@
                           }}
                         </td>
                         <td *ngIf="!detail.isEdit">
-                          <button class="btn btn-primary" (click)="detail.isEdit = true;detail.changeSoLuong = detail.soLuong"><i class="bx bx-edit-alt"></i></button>
+                          <button
+                            class="btn btn-primary"
+                            (click)="
+                              detail.isEdit = true;
+                              detail.changeSoLuong = detail.soLuong
+                            "
+                          >
+                            <i class="bx bx-edit-alt"></i>
+                          </button>
                         </td>
                         <td *ngIf="detail.isEdit">
-                          <button class="btn btn-primary" (click)="editSoLuong(detail)"><i class="bx bx-check-square"></i></button>
+                          <button
+                            class="btn btn-primary"
+                            (click)="editSoLuong(detail)"
+                          >
+                            <i class="bx bx-check-square"></i>
+                          </button>
                         </td>
                       </tr>
                     </tbody>
@@ -395,7 +413,7 @@
                   <div style="font-weight: bold">Phiếu giảm giá hóa đơn</div>
                   <div class="small">chỉ được chọn 1</div>
                 </div>
-                <div
+                <!-- <div
                   class="item-voucher"
                   [class.isDisableVoucher]="
                     !voucher.isUse || voucher.soLuong < 1 || !voucher.sale
@@ -490,6 +508,104 @@
                       Hủy sử dụng
                     </button>
                   </div>
+                </div> -->
+                <div class="all-voucher">
+                  <div
+                    class="item-vouchers"
+                    [class.check-voucher]="v.isChecked"
+                    *ngFor="let v of listVoucherKhanhHang?.voucherHoaDon"
+                    style="cursor: pointer"
+                    [class.disable]=" !v.isUse || v.soLuong < 1 || !v.sale"
+                  >
+                    <div class="ball" style="margin-left: -15px">
+                      <div class="item-ball"></div>
+                    </div>
+                    <div class="item-voucher" style="color: #fff !important">
+                      <div class="left">
+                        <div class="title">{{ v.voucher.phanTramGiam }}%</div>
+                        <div class="sub-title">Số lượng:{{ v.soLuong }}</div>
+                      </div>
+                      <div
+                        class="right"
+                        style="
+                          padding: 10px;
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                        "
+                      >
+                        <div
+                          class=""
+                          style="
+                            display: flex;
+                            gap: 10px;
+                            flex-direction: column;
+                            text-align: start;
+                            justify-content: center;
+                          "
+                        >
+                          <div>
+                            Áp dụng :
+                            {{
+                              v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn"
+                            }}
+                          </div>
+                          <div>
+                            Hạn sử dụng :
+                            {{ v.ngayKetThuc | date : "dd/MM/yyyy" }}
+                          </div>
+                          <div style="display: flex; gap: 5px">
+                            <span
+                              >Giảm từ :
+                              {{
+                                v.voucher.giaTriGiamToiThieu
+                                  | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span
+                            >
+                            <span
+                              >Giảm tối đa
+                              {{
+                                v.voucher.giamToiDa
+                                  | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ball" style="margin-right: -15px">
+                      <div class="item-ball">
+                        <div style="height: 100%;width: 100%;" *ngIf="!v.isChecked">
+                          <button
+                            class="btn"
+                            style="
+                              width: 100%;
+                              height: 100%;
+                              border: 1px solid gray;
+                              border-radius: 50%;
+                              margin: 0;
+                              padding: 0;
+                            "
+                            (click)="useVoucher(v, 'bill')"
+                          ><i class='bx bx-check-circle'></i></button>
+                        </div>
+                        <div style="height: 100%;width: 100%;" *ngIf="v.isChecked">
+                          <button
+                            class="btn"
+                            style="
+                              width: 100%;
+                              height: 100%;
+                              border: 1px solid gray;
+                              border-radius: 50%;
+                              margin: 0;
+                              padding: 0;
+                            "
+                            (click)="useVoucher(v, 'bill')"
+                          ><i class='bx bxs-x-circle'></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -504,7 +620,7 @@
                   <div style="font-weight: bold">Phiếu giảm giá vận chuyển</div>
                   <div class="small">chỉ được chọn 1</div>
                 </div>
-                <div
+                <!-- <div
                   class="item-voucher"
                   [class.isDisableVoucher]="
                     !voucher.isUse || voucher.soLuong < 1 || !voucher.sale
@@ -598,6 +714,104 @@
                     >
                       Hủy sử dụng
                     </button>
+                  </div>
+                </div> -->
+                <div class="all-voucher">
+                  <div
+                    class="item-vouchers"
+                    [class.check-voucher]="v.isChecked"
+                    *ngFor="let v of listVoucherKhanhHang?.voucherVanCHuyen"
+                    style="cursor: pointer"
+                    [class.disable]=" !v.isUse || v.soLuong < 1 || !v.sale"
+                  >
+                    <div class="ball" style="margin-left: -15px">
+                      <div class="item-ball"></div>
+                    </div>
+                    <div class="item-voucher" style="color: #fff !important">
+                      <div class="left">
+                        <div class="title">{{ v.voucher.phanTramGiam }}%</div>
+                        <div class="sub-title">Số lượng:{{ v.soLuong }}</div>
+                      </div>
+                      <div
+                        class="right"
+                        style="
+                          padding: 10px;
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                        "
+                      >
+                        <div
+                          class=""
+                          style="
+                            display: flex;
+                            gap: 10px;
+                            flex-direction: column;
+                            text-align: start;
+                            justify-content: center;
+                          "
+                        >
+                          <div>
+                            Áp dụng :
+                            {{
+                              v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn"
+                            }}
+                          </div>
+                          <div>
+                            Hạn sử dụng :
+                            {{ v.ngayKetThuc | date : "dd/MM/yyyy" }}
+                          </div>
+                          <div style="display: flex; gap: 5px">
+                            <span
+                              >Giảm từ :
+                              {{
+                                v.voucher.giaTriGiamToiThieu
+                                  | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span
+                            >
+                            <span
+                              >Giảm tối đa
+                              {{
+                                v.voucher.giamToiDa
+                                  | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ball" style="margin-right: -15px">
+                      <div class="item-ball">
+                        <div style="height: 100%;width: 100%;" *ngIf="!v.isChecked">
+                          <button
+                            class="btn"
+                            style="
+                              width: 100%;
+                              height: 100%;
+                              border: 1px solid gray;
+                              border-radius: 50%;
+                              margin: 0;
+                              padding: 0;
+                            "
+                            (click)="useVoucher(v, 'ship')"
+                          ><i class='bx bx-check-circle'></i></button>
+                        </div>
+                        <div style="height: 100%;width: 100%;" *ngIf="v.isChecked">
+                          <button
+                            class="btn"
+                            style="
+                              width: 100%;
+                              height: 100%;
+                              border: 1px solid gray;
+                              border-radius: 50%;
+                              margin: 0;
+                              padding: 0;
+                            "
+                            (click)="useVoucher(v, 'ship')"
+                          ><i class='bx bxs-x-circle'></i></button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -22,6 +22,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { RatingModule } from 'primeng/rating';
 import { ImageModule } from 'primeng/image';
 import { EditorModule } from 'primeng/editor';
+import {MatStepperModule} from '@angular/material/stepper';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -47,7 +48,8 @@ import { EditorModule } from 'primeng/editor';
     TooltipModule,
     RatingModule,
     ImageModule,
-    EditorModule
+    EditorModule,
+    MatStepperModule
   ],
   exports: [fromPagesComponent.SanPhamAllSearchComponent],
   entryComponents: [],

@@ -112,6 +112,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     this.getAllDiaChi('rows');
     this.data.phuongThucThanhToan = 3;
     this.getAllVoucher();
+
   }
   async getAllDiaChi(type: string, action?: string): Promise<void> {
     // this.spinner.show();
@@ -143,6 +144,8 @@ export class ClinetCardOnlineComponent implements OnInit {
     if (data) {
       this.getTotalPage(data);
       this.listData = data.item;
+      const dataDiaChi = this.listData.find((item : any) => item.macDinh);
+      this.useLocation(dataDiaChi);
       setTimeout(() => {
         this.spinner.hide();
       }, 500);
@@ -853,6 +856,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
+        this.spinner.hide();
       } else {
         this.errorService.displayError(
           'Cập nhật số lượng thành công',

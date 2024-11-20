@@ -25,12 +25,13 @@ export class DetailDonHangKhComponent implements OnInit {
   data: any = {};
   steps: any[] = [
     { title: 'Hóa đơn chờ sử lý', step: 2, index: 1 },
-    { title: 'Hóa đơn chờ sử lý', step: 4, index: 2 },
-    { title: 'Hóa đơn chờ sử lý', step: 5, index: 3 },
-    { title: 'Hóa đơn chờ sử lý', step: 6, index: 4 },
-    { title: 'Hóa đơn chờ sử lý', step: 0, index: 5 },
+    { title: 'Hóa đơn đóng gói', step: 4, index: 2 },
+    { title: 'Hóa đơn vận chuyển', step: 5, index: 3 },
+    { title: 'Hóa đơn hoàn thành', step: 6, index: 4 },
+    { title: 'Hóa đơn đã hủy', step: 0, index: 5 },
   ];
   currentStep: number = 0;
+  progressWidth1: string = '0%'; // Khởi tạo với chiều rộng là 0%
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -57,14 +58,48 @@ export class DetailDonHangKhComponent implements OnInit {
         this.getDetailHoaDon();
       }
     });
+    // Chạy hiệu ứng khi component được khởi tạo
+    this.dataService.data$.subscribe((data: any) => {
+     if(this.idhd){
+      this.getDetailHoaDon();
+     }
+    });
   }
   async getDetailHoaDon() {
     const data = await this.service
       .getDetailHoaDonByIdHD(this.idhd)
       .toPromise();
     if (data) {
-      this.data = data;
-      console.log(this.data);
+      this.data = data
+       const stepGet =  this.steps.find(step => step.step === data.hoaDon.trangThai);
+       this.currentStep = stepGet.index
+      this.animateProgress(this.currentStep);
     }
+  }
+  animateProgress(step: number) {
+    const targetWidth = ((step - 1) / 4) * 100; // Tính chiều rộng mục tiêu
+    let currentWidth = 0; // Bắt đầu từ 0
+    const increment = 0.5; // Tăng dần chiều rộng mỗi lần lặp
+    const duration = 400; // Thời gian tổng cộng để hoàn thành (milliseconds)
+    const intervalTime = 20; // Thời gian giữa mỗi lần lặp (milliseconds)
+
+    const totalSteps = duration / intervalTime; // Tổng số lần lặp
+    const widthIncrement = (targetWidth - currentWidth) / totalSteps; // Tính toán chiều rộng tăng dần mỗi lần lặp
+
+    const interval = setInterval(() => {
+        if (currentWidth >= targetWidth) {
+            clearInterval(interval); // Dừng khi đạt đến chiều rộng mục tiêu
+        } else {
+            currentWidth += widthIncrement; // Tăng dần chiều rộng
+            this.progressWidth1 = currentWidth + '%'; // Cập nhật chiều rộng
+        }
+    }, intervalTime); // Thời gian giữa các lần lặp
+}
+
+  getProgressWidth(): string {
+    return this.progressWidth1; // Trả về chiều rộng hiện tại
+  }
+  isActive(stepIndex: number): boolean {
+    return stepIndex <= this.currentStep; // Trả về true nếu bước nhỏ hơn chỉ số hiện tại
   }
 }
