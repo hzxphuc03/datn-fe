@@ -23,6 +23,14 @@ import { HomeServoceService } from '../../../services/home-service.service';
 export class DetailDonHangKhComponent implements OnInit {
   idhd: any;
   data: any = {};
+  steps: any[] = [
+    { title: 'Hóa đơn chờ sử lý', step: 2, index: 1 },
+    { title: 'Hóa đơn chờ sử lý', step: 4, index: 2 },
+    { title: 'Hóa đơn chờ sử lý', step: 5, index: 3 },
+    { title: 'Hóa đơn chờ sử lý', step: 6, index: 4 },
+    { title: 'Hóa đơn chờ sử lý', step: 0, index: 5 },
+  ];
+  currentStep: number = 0;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
