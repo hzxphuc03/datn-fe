@@ -14,7 +14,7 @@ export class ChatComponent implements OnInit {
   newMessage = '';
   messageList: string[] = [];
   listChatBox: any[] = [];
-
+  public clients: string[] = []; // Danh sách client
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
@@ -28,6 +28,11 @@ export class ChatComponent implements OnInit {
       console.log(notification);
       
       // this.messageList.push(notification);
+    });
+    this.chatService.getClients().subscribe((clients) => {
+      this.clients = clients; // Cập nhật danh sách client
+      console.log(this.clients);
+      
     });
   }
   sendMessage() {

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientLazyModule } from './client-lazy.module';
 import * as fromPagesComponent from './index';
+import { ChatClintComponent } from 'src/app/shareds/chat/chat-clinet/chat.component';
 const routes: Routes = [
   {
     path: '',
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'su-kien-thang',
     component: fromPagesComponent.EventPageComponent,
+  },
+  {
+    path: 'doan-chat',
+    component: ChatClintComponent,
   },
 ];
 @NgModule({
