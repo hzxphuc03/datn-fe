@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ChatService } from '../chat.service';
+import { AdminChatService } from '../admin-chat.service';
+import { TokenService } from 'src/app/services/token.service';
+import { ErrorTsService } from '../../message/error.service';
+import { UploadImgService } from 'src/app/components/admin/service/upload-img.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat',
@@ -7,36 +12,294 @@ import { ChatService } from '../chat.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  // đăng nhập sẽ có thông tin người dùng hiện tại
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+  @ViewChild('uploadFileInput', { static: false }) uploadFileInput: ElementRef | undefined;
   // bước 2 showing những tin nhắn có id người dùng hiện tại và group by với id
   // bước 3 khi click vào show 10 tin nhắn gần nhất lên và scroll lên sẽ load thêm 10 tin nhắn nữa
   // bước 4 quản lý việc gửi tin nhắn người gửi , người nhận , thời gian , đã đọc chưa (có hoặc không)
   newMessage = '';
-  messageList: string[] = [];
+  messageList: any[] = [];
   listChatBox: any[] = [];
-  public clients: string[] = []; // Danh sách client
-  constructor(private chatService: ChatService) {}
+  public clients: any[] = []; // Danh sách client
+  idNhanVien : any = '';
+  activeTab : number = 1
+  queryParams : any = {};
+  totalItem : number = 0;
+  userChat : any = {
+    activeChat : false,
+    idBoxActive : 0,
+    imgUserChat : '',
+    userChat : {
+      id : 0,
+      img : '',
+      ten : '',
+      hoatDong : false
+    }
+  }
+  idTinNhanVuaXOng : any = 0;
+  isInitialLoad : boolean = true;
+  listAnhDuocChon : any[] = [];
+  private mediaRecorder: MediaRecorder | null = null;
+  private audioChunks: Blob[] = [];
+  public audioUrl: SafeUrl | null = null; // Thay đổi kiểu dữ liệu sang SafeUrl
+  constructor(
+    private chatService: ChatService,
+    private server: AdminChatService,
+    private tokenService: TokenService,
+    private errorService: ErrorTsService,
+    private renderer: Renderer2,
+    private serviceIMG: UploadImgService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
-    this.chatService.getNewMessage().subscribe((message: string) => {
-      // kiểm tra người nhận có phải là mình không để load lại tin nhắn oke
-      console.log(message);
-      this.messageList.push(message);
+    this.getAllNhanVienBox();
+    this.chatService.getNewMessage().subscribe((message: any) => {      
+      if(this.isInitialLoad){
+        this.isInitialLoad = false;
+        return;
+      }
+      if(message){
+        if(this.idTinNhanVuaXOng === message.id){
+          return;
+        }
+        if(message.idNguoiNhan === this.idNhanVien && message.role === 'nv-nv'){
+          this.idTinNhanVuaXOng = message.id;
+          this.messageList.push(message);
+        }
+        setTimeout(()=>{
+          this.scrollToBottom();
+         },100)
+      }
     });
-    this.chatService.getNewNotification().subscribe((notification: string) => {
-      // kiểm tra người nhận có phải là mình không để load lại tin nhắn oke
-      console.log(notification);
-      
-      // this.messageList.push(notification);
-    });
+    //
     this.chatService.getClients().subscribe((clients) => {
       this.clients = clients; // Cập nhật danh sách client
       console.log(this.clients);
       
+      this.checkOnline();
+      
     });
+    this.queryParams.page = 1;
+    this.queryParams.pageSize = 15;
+
   }
-  sendMessage() {
-    this.chatService.sendNotification(this.newMessage);
-    this.newMessage = '';
+  startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.start();
+
+        this.mediaRecorder.ondataavailable = event => {
+          this.audioChunks.push(event.data);
+        };
+
+        this.mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+          const url = URL.createObjectURL(audioBlob); // Tạo URL blob
+          this.audioUrl = this.sanitizer.bypassSecurityTrustUrl(url); // Sử dụng DomSanitizer
+          this.audioChunks = [];
+        };
+      })
+      .catch(err => console.error('Error accessing microphone: ', err));
+  }
+
+  stopRecording() {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.stop();
+    }
+  }
+  async getAllNhanVienBox() {
+    const { decoded } = this.tokenService.getToken();
+    if (decoded && decoded?.user.id) {
+      this.idNhanVien = decoded?.user.id
+    }
+    const data = await this.server.getAllBoxNhanVien(this.idNhanVien).toPromise();
+    if (data) {
+      this.listChatBox = data.map((item : any) => ({
+        ...item,
+        thoiGianNhanCuoi: this.getTimeAgo(item.hopThoaiNhanVien.thoiGianNhanCuoi)
+      }));
+      this.checkOnline();
+    } else {
+      this.listChatBox = [];
+    }
+    
+  }
+  getTimeAgo(thoiGianNhanCuoi: string): string {
+    const now = new Date();
+    const then = new Date(thoiGianNhanCuoi);
+    const seconds = Math.floor((now.getTime() - then.getTime()) / 1000);
+  
+    let interval = seconds / 31536000; // năm
+    if (interval >= 1) {
+      return Math.floor(interval) + ' năm trước';
+    }
+    interval = seconds / 2592000; // tháng
+    if (interval >= 1) {
+      return Math.floor(interval) + ' tháng trước';
+    }
+    interval = seconds / 86400; // ngày
+    if (interval >= 1) {
+      return Math.floor(interval) + ' ngày trước';
+    }
+    interval = seconds / 3600; // giờ
+    if (interval >= 1) {
+      return Math.floor(interval) + ' giờ trước';
+    }
+    interval = seconds / 60; // phút
+    if (interval >= 1) {
+      return Math.floor(interval) + ' phút trước';
+    }
+    return 'Vừa xong';
+  }
+  checkOnline(){
+    // Lặp qua listChatBox và kiểm tra trạng thái online
+    this.listChatBox.forEach((chatBox) => {
+      // Kiểm tra xem id của chatBox có trong clients hay không
+      if(chatBox.hopThoaiNhanVien.nhanVien1.id !== this.idNhanVien){
+        chatBox.isOnline = this.clients.some((client : any) => client.id === chatBox.hopThoaiNhanVien.nhanVien1.id);
+      }
+      if(chatBox.hopThoaiNhanVien.nhanVien2.id !== this.idNhanVien){
+        chatBox.isOnline = this.clients.some((client : any) => client.id === chatBox.hopThoaiNhanVien.nhanVien2.id);
+      }
+    });
+    this.userChat.userChat.hoatDong =  this.clients.some((item : any) => item.id ===   this.userChat.userChat.id);
+  }
+  activeBox(id : any){
+    if(id === this.userChat.idBoxActive){
+      return;
+    }
+    this.listChatBox.map((item => {
+      if(item.hopThoaiNhanVien.id === id){
+        if(item.hopThoaiNhanVien.nhanVien1.id !== this.idNhanVien){
+          this.userChat.userChat = {
+            id : item.hopThoaiNhanVien.nhanVien1.id,
+            img :  item.hopThoaiNhanVien.nhanVien1.hinhAnh,
+            ten :  item.hopThoaiNhanVien.nhanVien1.hoTen,
+            hoatDong : item.isOnline
+          }
+        }
+        if(item.hopThoaiNhanVien.nhanVien2.id !== this.idNhanVien){
+          this.userChat.userChat = {
+            id : item.hopThoaiNhanVien.nhanVien2.id,
+            img :  item.hopThoaiNhanVien.nhanVien2.hinhAnh,
+            ten :  item.hopThoaiNhanVien.nhanVien2.hoTen,
+            hoatDong : item.isOnline
+          }
+        }
+      }
+    }))
+    this.userChat.idBoxActive = id;
+    this.queryParams.idHopThoai =  this.userChat.idBoxActive;
+    this.getAllChatByIdBox();
+    this.userChat.activeChat = true;
+  }
+  async getAllChatByIdBox(){
+    const data = await this.server.getAllMess(this.queryParams).toPromise();
+    if(data){
+      data.item.map((item : any) =>{
+        this.messageList.unshift(item);
+      })
+      this.totalItem = data.totalItem;    
+      setTimeout(()=>{
+        this.scrollToBottom();
+       },100)
+    }
+  }
+  async sendMessage(){
+    if(!this.newMessage){
+      return;
+    }
+    const params = {
+      theLoai : 'Text',
+      hinhAnhList : [],
+      voice : '',
+      tinNhan : this.newMessage,
+      idNguoiGui : this.idNhanVien,
+      idNguoiNhan :  this.userChat.userChat.id,
+      idHopThoaiNhanVien : this.userChat.idBoxActive
+
+    }
+    const data = await this.server.guiTinNhan(params).toPromise();
+    if (data) {
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+      } else {
+        this.messageList.push(data.body);
+        const messageToSend = {
+          ...data.body,               // Spread the existing properties
+          idNguoiNhan: this.userChat.userChat.id, // Add the new property;
+          role: 'nv-nv' // Add the new property;
+        };
+        this.chatService.sendMessage(messageToSend);
+        this.newMessage = '';
+        setTimeout(()=>{
+          this.scrollToBottom();
+         },100)
+      }
+    }
+    
+  }
+  async sendImg(){
+    if(this.listAnhDuocChon.length === 0){
+      return;
+    }
+    const params = {
+      theLoai : 'IMG',
+      hinhAnhList : this.listAnhDuocChon,
+      voice : '',
+      tinNhan : '',
+      idNguoiGui : this.idNhanVien,
+      idNguoiNhan :  this.userChat.userChat.id,
+      idHopThoaiNhanVien : this.userChat.idBoxActive
+
+    }
+    const data = await this.server.guiTinNhan(params).toPromise();
+    if (data) {
+      if (data.body.errorCode === 400) {
+        this.errorService.displayError(data.body.messageError, 'error');
+      } else {
+        const hinhAnh = data.body.hinhAnh.split(',');
+        data.body.hinhAnhList = hinhAnh;
+        this.messageList.push(data.body);
+        const messageToSend = {
+          ...data.body,               // Spread the existing properties
+          idNguoiNhan: this.userChat.userChat.id, // Add the new property;
+          role: 'nv-nv' // Add the new property;
+        };
+        this.chatService.sendMessage(messageToSend);
+        this.newMessage = '';
+        this.listAnhDuocChon = [];
+        this.clearFileInput();
+        setTimeout(()=>{
+          this.scrollToBottom();
+         },100)
+      }
+    }
+    
+  }
+  scrollToBottom(): void {
+    this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+  }
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const files = Array.from(input.files).slice(0, 5); // Limit to 5 files
+      for (const file of files) {
+        const post = await this.serviceIMG.upload(file, 'Images').toPromise();
+        if (post) {
+          this.listAnhDuocChon.push(post.result);
+        }
+      }
+    }
+  }
+  deleteImage(index: number): void {
+    this.listAnhDuocChon.splice(index, 1);
+  }
+  clearFileInput(): void {
+    if (this.uploadFileInput) {
+      this.uploadFileInput.nativeElement.value = '';
+    }
   }
 }

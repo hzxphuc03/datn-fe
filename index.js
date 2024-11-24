@@ -19,8 +19,9 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     console.log(message);
-    io.emit('message', `${clients[socket.id]?.name}: ${message}`); // Sử dụng tên khách hàng
+    socket.broadcast.emit('message', message); // Phát message tới các client khác
   });
+  
 
   socket.on('notification', (notification) => {
     console.log(notification);

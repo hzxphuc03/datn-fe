@@ -17,12 +17,12 @@ import { SwiperModule } from 'swiper/angular';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ClientLayoutMasterComponent } from './shareds/client-layout-master/client-layout-master.component';
 import { TooltipModule } from 'primeng/tooltip';
-
+import { ImageModule } from 'primeng/image';
 @NgModule({
   declarations: [
     AppComponent,
     MasterLayoutAdminComponent,
-    ChatComponent,
+    // ChatComponent,
     ClientLayoutMasterComponent,
   ],
   imports: [
@@ -41,6 +41,7 @@ import { TooltipModule } from 'primeng/tooltip';
     SwiperModule,
     AutoCompleteModule,
     TooltipModule,
+    ImageModule
   ],
   providers: [],
   bootstrap: [AppComponent],

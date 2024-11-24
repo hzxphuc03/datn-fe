@@ -4,6 +4,7 @@ import { TokenService } from 'src/app/services/token.service';
 import { ErrorTsService } from '../message/error.service';
 import { Subscription } from 'rxjs';
 import { AutoServiceService } from '../auto-service.service';
+import { ChatService } from '../chat/chat.service';
 
 @Component({
   selector: 'app-master-layout-admin',
@@ -77,16 +78,42 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       url: '/auth/admin/event',
     },
   ];
+  idTinNhanVuaXOng: any = 0;
   constructor(
     private tokenService: TokenService,
     private router: Router,
     private errorService: ErrorTsService,
-    private autoVoucher: AutoServiceService
+    private autoVoucher: AutoServiceService,
+    private chatService: ChatService
   ) {
     this.checkToken();
   }
 
   ngOnInit(): void {
+    const { decoded } = this.tokenService.getToken();
+    this.chatService.getNewMessage().subscribe((message: any) => {
+      if (message) {
+        if (this.idTinNhanVuaXOng === message.id) {
+          return;
+        }
+        if (
+          message.idNguoiNhan === decoded?.user.id &&
+          message.role === 'nv-nv'
+        ) {
+          this.idTinNhanVuaXOng = message.id;
+          this.errorService.displayError(
+            `Bạn có tin nhắn mới từ ${message.nguoiGui.hoTen}`,
+            'normal'
+          );
+          const audio = new Audio(
+            'https://s3-sgn10.fptcloud.com/fsel/Files/livechat129007_2763_1732457163133.mp3'
+          );
+          audio.play().catch((error) => {
+            console.error('Error playing audio:', error);
+          });
+        }
+      }
+    });
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkToken();
@@ -108,7 +135,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         const isExpired = this.tokenService.isTokenExpired();
         const { decoded } = this.tokenService.getToken();
         const a = this.tokenService.getToken();
-        if(a.decoded === null){
+        if (a.decoded === null) {
           this.router.navigate(['/auth/shop/login']);
         }
         if (a.decoded.role !== 'Admin' && a.decoded.role !== 'NhanVien') {

@@ -1,3 +1,4 @@
+import { ChatComponent } from 'src/app/shareds/chat/chat-admin/chat.component';
 import { AddDiaChiComponent } from './components/add-dia-chi/add-dia-chi.component';
 import { ClinetCardOnlineComponent } from './components/clinet-card-online/clinet-card-online.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
@@ -36,6 +37,7 @@ export const pagesComponents: any[] = [
   DanhGiaComponent,
   HoaDonTraCucComponent,
   DetailDonHangKhComponent,
+  ChatComponent
 ];
 
 export * from './components/home-page/home-page.component';
@@ -56,3 +58,4 @@ export * from './components/event-page/event-page.component';
 export * from './components/info-custumer/danh-gia/danh-gia.component';
 export * from './components/info-custumer/hoa-don-tra-cuc/hoa-don-tra-cuc.component';
 export * from './components/info-custumer/detail-don-hang-kh/detail-don-hang-kh.component';
+export * from 'src/app/shareds/chat/chat-admin/chat.component';
