@@ -8,6 +8,7 @@ import { Observable, catchError, of } from 'rxjs';
 export class AdminChatService {
   url : string = 'http://localhost:8080/api/nhan-tin';
   urlDoanChat : string = 'http://localhost:8080/api/doan-chat';
+  urlHopThoai : string = 'http://localhost:8080/api/hop-thoai';
   constructor(private http: HttpClient) { }
 
   getAllBoxNhanVien(id : any): Observable<any> {
@@ -22,6 +23,36 @@ export class AdminChatService {
   }
   getAllMess(params : any): Observable<any> {
     return this.http.get<any>(`${this.urlDoanChat}/get-doan-chat-by-hop-thoai`,{params}).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  checkHopThoaiByNhannVien(params : any): Observable<any> {
+    return this.http.get<any>(`${this.urlHopThoai}/check-hop-thoai-nhan-vien`,{params}).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  addHopThoaiByNhannVien(params : any): Observable<any> {
+    return this.http.post<any>(`${this.urlHopThoai}/add-hop-thoai-nhan-vien`,params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  getAllNhanVien(): Observable<any> {
+    return this.http.get<any>(`${this.url}/get-all-nhan-vien`).pipe(
       (res: any) => {
         return res || null;
       },
