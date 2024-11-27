@@ -71,7 +71,7 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
     this.userUseChat =  decoded.user;
-    // this.getAllChatBox();
+    this.getAllChatBox();
     this.chatService.getNewMessage().subscribe((message: any) => {
       // this.getAllChatBox();
       if (this.isInitialLoad) {
@@ -177,17 +177,17 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     const { decoded } = this.tokenService.getToken();
     if (decoded && decoded?.user.id) {
       this.idNhanVien = decoded?.user.id;
-    }
-    if(decoded.user.chucVu){
+    } 
+    if(!decoded.user.chucVu){
       const data = await this.server
       .getAllBoxNhanVienByKhachHang(decoded?.user.id)
       .toPromise();
     if (data) {
       this.listChatBox = data.map((item: any) => ({
         ...item,
-        thoiGianNhanCuoi: this.getTimeAgo(
-          item.hopThoaiNhanVien.thoiGianNhanCuoi
-        ),
+        thoiGianNhanCuoi: item.hopThoaiKhachHang.thoiGianNhanCuoi?(this.getTimeAgo(
+          item.hopThoaiKhachHang.thoiGianNhanCuoi
+        )):'',
       }));
       this.checkOnline();
     } else {
@@ -200,9 +200,9 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     if (data) {
       this.listChatBox = data.map((item: any) => ({
         ...item,
-        thoiGianNhanCuoi: this.getTimeAgo(
-          item.hopThoaiNhanVien.thoiGianNhanCuoi
-        ),
+        thoiGianNhanCuoi: item.hopThoaiKhachHang.thoiGianNhanCuoi?(this.getTimeAgo(
+          item.hopThoaiKhachHang.thoiGianNhanCuoi
+        )):'',
       }));
       this.checkOnline();
     } else {

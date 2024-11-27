@@ -60,16 +60,16 @@
             *ngFor="let a of listChatBox"
             style="width: 100%; position: relative"
           >
-            <div (click)="activeBox(a.hopThoaiNhanVien.id)">
+            <div (click)="activeBox(a.hopThoaiKhachHang.id)">
               <div
                 style="width: 100%"
                 class="user"
-                *ngIf="a.hopThoaiNhanVien.nhanVien1.id !== idNhanVien"
+                *ngIf="a.hopThoaiKhachHang.khachHang.id !== userUseChat.id"
               >
-                <img [src]="a.hopThoaiNhanVien.nhanVien1.hinhAnh" alt="" />
+                <img [src]="a.hopThoaiKhachHang.khachHang.hinhAnh" alt="" />
                 <div class="right">
                   <div class="name">
-                    {{ a.hopThoaiNhanVien.nhanVien1.hoTen }}
+                    {{ a.hopThoaiKhachHang.khachHang.hoTen }}
                   </div>
                   <div
                     style="
@@ -118,19 +118,19 @@
                       >
                     </div>
                     <div class="text" style="font-size: 10px">
-                      {{ a.thoiGianNhanCuoi }}
+                      {{ a?.thoiGianNhanCuoi }}
                     </div>
                   </div>
                 </div>
               </div>
               <div
                 class="user"
-                *ngIf="a.hopThoaiNhanVien.nhanVien2.id !== idNhanVien"
+                *ngIf="a.hopThoaiKhachHang.nhanVien.id !== userUseChat.id"
               >
-                <img [src]="a.hopThoaiNhanVien.nhanVien2.hinhAnh" alt="" />
+                <img [src]="a.hopThoaiKhachHang.nhanVien.hinhAnh" alt="" />
                 <div class="right">
                   <div class="name">
-                    {{ a.hopThoaiNhanVien.nhanVien2.hoTen }}
+                    {{ a.hopThoaiKhachHang.nhanVien.hoTen }}
                   </div>
                   <div
                     style="
@@ -178,7 +178,7 @@
                 </div>
               </div>
               <div
-                *ngIf="a?.hopThoaiNhanVien?.trangThai === 2"
+                *ngIf="a?.hopThoaiKhachHang?.trangThai === 2"
                 style="position: absolute; color: green; right: 10px; top: 5px"
               >
                 <i class="bx bxs-circle"></i>

@@ -257,6 +257,9 @@ export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
   goToLienHe() {
     this.router.navigate(['/g4/shop/lien-he']);
   }
+  goToChat() {
+    this.router.navigate(['/g4/shop/doan-chat']);
+  }
   logOut() {
     this.tokenService.removeToken();
     this.errorService.displayError('Đăng xuất thành công', 'normal');
