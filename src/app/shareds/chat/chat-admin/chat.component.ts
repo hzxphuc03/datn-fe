@@ -109,7 +109,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     });
     //
     this.chatService.getClients().subscribe((clients) => {
-      this.clients = clients; // Cập nhật danh sách client
+      const nhanVien = clients.filter((item) => item.chucVu !== null);
+       this.clients = nhanVien; // Cập nhật danh sách client với những thằng có chức vụ
       this.checkOnline();
     });
     this.queryParams.page = 1;

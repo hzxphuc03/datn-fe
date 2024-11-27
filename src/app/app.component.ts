@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // thêm người dùng vào list 
     this.errorSubscription = this.errorService
       .getErrorObservable()
-      .subscribe((message) => {
+      .subscribe((message) => { 
         this.errorMessage = message;
       });
     this.auto();

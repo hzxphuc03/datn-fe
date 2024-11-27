@@ -18,12 +18,14 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ClientLayoutMasterComponent } from './shareds/client-layout-master/client-layout-master.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { ImageModule } from 'primeng/image';
+import { ChatClintComponent } from './shareds/chat/chat-clinet/chat.component';
 @NgModule({
   declarations: [
     AppComponent,
     MasterLayoutAdminComponent,
     // ChatComponent,
     ClientLayoutMasterComponent,
+    ChatClintComponent
   ],
   imports: [
     BrowserModule,

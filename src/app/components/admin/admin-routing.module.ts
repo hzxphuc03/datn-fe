@@ -4,6 +4,7 @@ import { AppModule } from 'src/app/app.module';
 import * as fromPagesComponent from './index';
 import { AdminLazyModule } from './admin-lazy.module';
 import { ChatComponent } from 'src/app/shareds/chat/chat-admin/chat.component';
+import { ChatClintComponent } from 'src/app/shareds/chat/chat-clinet/chat.component';
 
 const routes: Routes = [
   {
@@ -121,6 +122,10 @@ const routes: Routes = [
   {
     path: 'chat',
     component: ChatComponent,
+  },
+  {
+    path: 'chat-client',
+    component: ChatClintComponent,
   },
 ];
 

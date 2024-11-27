@@ -319,3 +319,29 @@
     display: unset;
   }
 }
+:host ::ng-deep{
+  .chat{
+    height: 100vh !important;
+  }
+  .list-user-chat {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 300px) !important;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: #555559;
+      border-radius: 7px;
+    }
+  }
+}

@@ -5,19 +5,262 @@
         <div class="header">
           <div class="title">Đoạn chat</div>
         </div>
+        <div class="tab" *ngIf="!userUseChat.chucVu">
+          <button
+            class="btn btn-primary"
+            (click)="activeTab = 1"
+            [class.active-tab]="activeTab === 1"
+          >
+            Hộp thoại của bạn
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="activeTab = 2"
+            [class.active-tab]="activeTab === 2"
+          >
+            Nhân Viên hoạt động
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="activeTab = 3"
+            [class.active-tab]="activeTab === 3"
+          >
+            Nhân viên
+          </button>
+        </div>
+        <div class="tab" *ngIf="userUseChat.chucVu">
+          <button
+            class="btn btn-primary"
+            (click)="activeTab = 1"
+            [class.active-tab]="activeTab === 1"
+          >
+            Hộp thoại của bạn
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="activeTab = 2"
+            [class.active-tab]="activeTab === 2"
+          >
+            Khách hàng hoạt động
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="activeTab = 3"
+            [class.active-tab]="activeTab === 3"
+          >
+            Khách hàng
+          </button>
+        </div>
         <div class="search">
           <i class="bx bx-search"></i>
           <input type="text" placeholder="Tìm kiếm trên chat" />
         </div>
-        <div class="list-user-chat">
-          <div class="user">
-            <img
-              src="https://ttol.vietnamnetjsc.vn/images/2018/12/22/18/49/gai-Nga-xinh-dep-10.jpg"
-              alt=""
-            />
-            <div class="right">
-              <div class="name">Nguyễn Khánh Duy</div>
-              <div class="text">Hello bạn khỏe không ?</div>
+        <div class="list-user-chat" style="gap: 18px" *ngIf="activeTab === 1">
+          <div
+            *ngFor="let a of listChatBox"
+            style="width: 100%; position: relative"
+          >
+            <div (click)="activeBox(a.hopThoaiNhanVien.id)">
+              <div
+                style="width: 100%"
+                class="user"
+                *ngIf="a.hopThoaiNhanVien.nhanVien1.id !== idNhanVien"
+              >
+                <img [src]="a.hopThoaiNhanVien.nhanVien1.hinhAnh" alt="" />
+                <div class="right">
+                  <div class="name">
+                    {{ a.hopThoaiNhanVien.nhanVien1.hoTen }}
+                  </div>
+                  <div
+                    style="
+                      width: 100%;
+                      display: flex;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div
+                      class="text"
+                      style="
+                        display: inline-block; /* Để áp dụng các thuộc tính chiều rộng */
+                        max-width: 165px; /* Giới hạn chiều rộng */
+                        overflow: hidden; /* Ẩn phần văn bản ngoài giới hạn */
+                        text-overflow: ellipsis; /* Thêm dấu ba chấm */
+                        white-space: nowrap; /* Không cho xuống dòng */
+                      "
+                    >
+                      <!-- kiểm tra xem mình có phải người nhận hay -->
+                      <span
+                        *ngIf="a?.doanChatCuoi?.nguoiGui?.id === idNhanVien"
+                      >
+                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
+                        {{ "bạn : " }}
+                      </span>
+                      <span
+                        *ngIf="a?.doanChatCuoi?.nguoiNhan?.id === idNhanVien"
+                      >
+                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
+                        {{ a.doanChatCuoi.nguoiGui.hoTen + " :" }}
+                      </span>
+                      <span
+                        *ngIf="a.doanChatCuoi.theLoai === 'Text'"
+                        pTooltip="{{ a.doanChatCuoi.tinNhan }}"
+                        >{{ a.doanChatCuoi.tinNhan }}</span
+                      >
+                      <span
+                        *ngIf="a.doanChatCuoi.theLoai === 'IMG'"
+                        pTooltip="đã gửi ảnh"
+                        >{{ "đã gửi ảnh" }}</span
+                      >
+                      <span
+                        *ngIf="a.doanChatCuoi.theLoai === 'MP3'"
+                        pTooltip="đã gửi tin nhắn thoại"
+                        >{{ "đã gửi tin nhắn thoại" }}</span
+                      >
+                    </div>
+                    <div class="text" style="font-size: 10px">
+                      {{ a.thoiGianNhanCuoi }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+                *ngIf="a.hopThoaiNhanVien.nhanVien2.id !== idNhanVien"
+              >
+                <img [src]="a.hopThoaiNhanVien.nhanVien2.hinhAnh" alt="" />
+                <div class="right">
+                  <div class="name">
+                    {{ a.hopThoaiNhanVien.nhanVien2.hoTen }}
+                  </div>
+                  <div
+                    style="
+                      width: 100%;
+                      display: flex;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div
+                      class="text"
+                      style="
+                        display: inline-block; /* Để áp dụng các thuộc tính chiều rộng */
+                        max-width: 165px; /* Giới hạn chiều rộng */
+                        overflow: hidden; /* Ẩn phần văn bản ngoài giới hạn */
+                        text-overflow: ellipsis; /* Thêm dấu ba chấm */
+                        white-space: nowrap; /* Không cho xuống dòng */
+                      "
+                    >
+                      <span
+                        *ngIf="a?.doanChatCuoi?.nguoiGui?.id === idNhanVien"
+                      >
+                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
+                        {{ "bạn : " }}
+                      </span>
+                      <span
+                        *ngIf="a?.doanChatCuoi?.nguoiNhan?.id === idNhanVien"
+                      >
+                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
+                        {{ a?.doanChatCuoi?.nguoiGui?.hoTen + " :" }}
+                      </span>
+                      <span *ngIf="a?.doanChatCuoi?.theLoai === 'Text'">{{
+                        a.doanChatCuoi.tinNhan
+                      }}</span>
+                      <span *ngIf="a?.doanChatCuoi?.theLoai === 'IMG'">{{
+                        "Đã gửi ảnh"
+                      }}</span>
+                      <span *ngIf="a?.doanChatCuoi?.theLoai === 'Voice'">{{
+                        "Đã gửi tin nhắn thoại"
+                      }}</span>
+                    </div>
+                    <div class="text" style="font-size: 10px">
+                      {{ a?.thoiGianNhanCuoi }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                *ngIf="a?.hopThoaiNhanVien?.trangThai === 2"
+                style="position: absolute; color: green; right: 10px; top: 5px"
+              >
+                <i class="bx bxs-circle"></i>
+              </div>
+              <div
+                *ngIf="a.isOnline"
+                style="
+                  position: absolute;
+                  color: #00ff00;
+                  /* right: 10px; */
+                  top: 47px;
+                  left: 47px;
+                "
+              >
+                <i class="bx bxs-circle"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-user-chat" style="gap: 18px" *ngIf="activeTab === 2">
+          <div
+            *ngFor="let a of clients"
+            style="width: 100%; position: relative"
+          >
+            <div style="width: 100%" class="user" (click)="boxChat(a)">
+              <img [src]="a.hinhAnh" alt="" />
+              <div class="right">
+                <div class="name">
+                  {{ a.id === idNhanVien ? "Bạn" : a.hoTen }}
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                  "
+                ></div>
+              </div>
+            </div>
+            <div
+              style="
+                position: absolute;
+                color: #00ff00;
+                /* right: 10px; */
+                top: 47px;
+                left: 47px;
+              "
+            >
+              <i class="bx bxs-circle"></i>
+            </div>
+          </div>
+        </div>
+        <div class="list-user-chat" style="gap: 18px" *ngIf="activeTab === 3">
+          <div
+            *ngFor="let a of listUserChatBox"
+            style="width: 100%; position: relative"
+          >
+            <div style="width: 100%" class="user" (click)="boxChat(a)">
+              <img [src]="a.hinhAnh" alt="" />
+              <div class="right">
+                <div class="name">
+                  {{ a.id === idNhanVien ? "Bạn" : a.hoTen }}
+                </div>
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                  "
+                ></div>
+              </div>
+            </div>
+            <div *ngIf="a.isOnline"
+              style="
+                position: absolute;
+                color: #00ff00;
+                /* right: 10px; */
+                top: 47px;
+                left: 47px;
+              "
+            >
+              <i class="bx bxs-circle"></i>
             </div>
           </div>
         </div>
@@ -25,24 +268,197 @@
     </div>
     <div class="right">
       <div class="all-content">
-        <div class="online">
-          sdasasd
-        </div>
-        <div class="header">
-          <div class="left">
-            <img src="https://ttol.vietnamnetjsc.vn/images/2018/12/22/18/49/gai-Nga-xinh-dep-10.jpg" alt="">
-            <div class="name">Nguyễn Khánh Duy</div>
+        <div class="header" *ngIf="userChat.activeChat">
+          <div class="left" style="position: relative">
+            <img [src]="userChat.userChat.img" alt="" />
+            <div
+              *ngIf="userChat.userChat.hoatDong"
+              style="
+                position: absolute;
+                color: #00ff00;
+                /* right: 10px; */
+                top: 47px;
+                left: 47px;
+              "
+            >
+              <i class="bx bxs-circle"></i>
+            </div>
+            <div
+              class="name"
+              style="display: flex; flex-direction: column; gap: 5px"
+            >
+              <div>{{ userChat.userChat.ten }}</div>
+              <div style="font-size: 12px">
+                {{
+                  userChat.userChat.hoatDong
+                    ? "Đang hoạt động"
+                    : "Không hoạt động"
+                }}
+              </div>
+            </div>
           </div>
-          <div class="right" style="align-items: center;"></div>
         </div>
-        <div class="list-messages">
-          <div class="from messages"><div class="text">Hello bebe</div></div>
-          <div class="to messages"><img class="avata" src="https://ttol.vietnamnetjsc.vn/images/2018/12/22/18/49/gai-Nga-xinh-dep-10.jpg" alt="">
-          <div class="text">Nhu nao ???</div></div>
+
+        <div class="list-messages" *ngIf="userChat.activeChat" #scrollContainer (scroll)="onScroll($event)">
+          <div *ngFor="let item of messageList" #scrollContainer>
+            <div class="from messages" *ngIf="item.nguoiGui?.id === idNhanVien">
+              <div class="text" *ngIf="item.theLoai === 'Text'">
+                {{ item.tinNhan }}
+              </div>
+              <div class="text" *ngIf="item.theLoai === 'Voice'">
+                <audio style="height: 63px" [src]="item.voice" controls></audio>
+              </div>
+              <div class="text" *ngIf="item.theLoai === 'IMG'">
+                <div class="items-img">
+                  <div class="items" *ngFor="let img of item.hinhAnhList">
+                    <p-image
+                      [src]="img"
+                      alt="Image"
+                      width="100"
+                      height="100"
+                      [preview]="true"
+                    ></p-image>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="to messages" *ngIf="item.nguoiGui?.id !== idNhanVien">
+              <img class="avata" [src]="userChat.userChat.img" alt="" />
+              <div class="text" *ngIf="item.theLoai === 'Text'">
+                {{ item.tinNhan }}
+              </div>
+              <div class="text" *ngIf="item.theLoai === 'Voice'">
+                <audio style="height: 63px" [src]="item.voice" controls></audio>
+              </div>
+              <div class="text" *ngIf="item.theLoai === 'IMG'">
+                <div class="items-img">
+                  <div class="items" *ngFor="let img of item.hinhAnhList">
+                    <p-image
+                      [src]="img"
+                      alt="Image"
+                      width="50"
+                      height="50"
+                      [preview]="true"
+                    ></p-image>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="chatText">
-          <div class="input-mess"><input type="text"></div>
-          <div class="icon-send"><i class='bx bx-send'(click)="sendMessage()" ></i></div>
+        <div class="chatText" *ngIf="userChat.activeChat">
+          <div class="input-mess" *ngIf="typeChat === 'Text'">
+            <input
+              type="text"
+              [(ngModel)]="newMessage"
+              (keyup.enter)="sendMessage()"
+            />
+          </div>
+          <div class="input-mess" *ngIf="typeChat === 'Voice'">
+            <input
+              *ngIf="isRecoding === true"
+              type="text"
+              value="Đang ghi âm...."
+            />
+            <div *ngIf="isRecoding === false">
+              <audio
+                style="height: 63px"
+                *ngIf="audioUrl"
+                [src]="audioUrl"
+                controls
+              ></audio>
+            </div>
+          </div>
+          <div
+            class="input-mess"
+            *ngIf="typeChat === 'IMG'"
+            style="display: flex; align-items: center; gap: 10px"
+          >
+            <div
+              class="item-img"
+              *ngFor="let img of listAnhDuocChon; let i = index"
+              style="position: relative"
+            >
+              <p-image
+                [src]="img"
+                alt="Image"
+                width="50"
+                height="50"
+                [preview]="true"
+              ></p-image>
+              <i
+                class="bx bx-x-circle"
+                style="
+                  color: #9e9e9e;
+                  position: absolute;
+                  top: -5px;
+                  right: -9px;
+                  cursor: pointer;
+                "
+                (click)="deleteImage(i)"
+              ></i>
+            </div>
+          </div>
+          <div class="icon-send">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              *ngIf="!isRecoding"
+            >
+              <i
+                class="bx bx-microphone"
+                (click)="isRecoding = true; startRecording()"
+              ></i>
+            </div>
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              *ngIf="isRecoding"
+            >
+              <i
+                class="bx bxs-microphone-off"
+                (click)="isRecoding = false; stopRecording()"
+              ></i>
+            </div>
+            <label
+              class="uploadimg"
+              for="upload-file"
+              style="
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <i class="bx bx-image-alt"></i>
+            </label>
+            <div class="item" style="display: none">
+              <input
+                type="file"
+                id="upload-file"
+                #uploadFileInput
+                multiple
+                accept="image/*"
+                style="display: none"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+            <div class="items" *ngIf="typeChat === 'Text'">
+              <i class="bx bx-send" (click)="sendMessage()"></i>
+            </div>
+            <div class="items" *ngIf="typeChat === 'IMG'">
+              <i class="bx bx-send" (click)="sendImg()"></i>
+            </div>
+            <div class="items" *ngIf="typeChat === 'Voice'">
+              <i class="bx bx-send" (click)="sendVoice()"></i>
+            </div>
+          </div>
         </div>
       </div>
     </div>

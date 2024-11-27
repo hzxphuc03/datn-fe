@@ -1,6 +1,6 @@
 .chat {
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   background: gray;
   .content {
     width: 100%;
@@ -14,7 +14,7 @@
       padding-right: 5px;
       height: 100%;
       color: #fff;
-      .all-content {  
+      .all-content {
         width: 100%;
         height: 100%;
         background-color: #222222;
@@ -23,7 +23,7 @@
       }
       .header {
         height: 50px;
-        font-size: 30px;
+        font-size: 17px;
         font-weight: bold;
       }
       .search {
@@ -52,6 +52,20 @@
         align-items: center;
         flex-direction: column;
         width: 100%;
+        height: calc(80vh - 230px);
+        overflow: auto;
+        &::-webkit-scrollbar {
+          width: 2px;
+        }
+      
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+      
+        &::-webkit-scrollbar-thumb {
+          background: #555559;
+          border-radius: 7px;
+        }
         .user {
           cursor: pointer;
           width: 100%;
@@ -59,8 +73,11 @@
           align-items: center;
           gap: 10px;
           img {
-            width: 60px;
+            max-width: 60px;
             border-radius: 50%;
+            height: 60px;
+            width: 100;
+            width: 100%;
           }
           .right {
             padding: 10px;
@@ -80,13 +97,13 @@
       padding: 10px;
       height: 100%;
       padding-left: 5px;
-      .all-content {  
+      .all-content {
         width: 100%;
         height: 100%;
         background-color: #222222;
         border-radius: 20px;
         padding: 25px;
-        .header{
+        .header {
           width: 100%;
           display: flex;
           justify-content: space-between;
@@ -94,17 +111,18 @@
           height: 70px;
           // border-bottom: 1px solid gray ;
           // flex-direction: column;
-          .left{
-            width: 50%;  
+          .left {
+            width: 50%;
             display: flex;
             gap: 20px;
             align-items: center;
-            img{
+            img {
               width: 50px;
               border-radius: 50%;
+              height: 50px;
             }
           }
-          .right{
+          .right {
             width: 50%;
             color: #fff;
             justify-content: flex-end;
@@ -117,71 +135,134 @@
     }
   }
 }
-.list-messages{
+.list-messages {
   color: #fff;
   display: flex;
   flex-direction: column;
   gap: 20px;
   height: calc(100vh - 200px);
   overflow: auto;
-  .to{
+  padding: 20px;
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #555559;
+    border-radius: 7px;
+  }
+  .to {
     display: flex;
     align-items: center;
     gap: 20px;
-    .avata{
+    .avata {
       width: 40px;
       border-radius: 50%;
       height: 40px;
     }
   }
-  .messages{
+  .messages {
     width: 100%;
   }
-  .messages .text{
-    width: fit-content;
+  .messages .text {
+    max-width: 360px;
     padding: 20px;
-    background-color: #4C4C4C;
+    background-color: #4c4c4c;
     border-radius: 20px;
+    width: fit-content;
   }
-  .from{
+  .from {
     display: flex;
     justify-content: flex-end;
   }
 }
-.chatText{
+.chatText {
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
   color: #fff;
   position: relative;
-  .input-mess{
-    background-color: #3A3B3C;
+  .input-mess {
+    background-color: #3a3b3c;
     padding: 10px 20px;
     color: #fff;
     width: 100%;
     border-radius: 15px;
     font-size: large;
+    padding-right: 150px;
+    height: 65px;
+    display: flex;
+    align-items: center;
   }
-  input{
+  input {
     height: 40px;
     width: 100%;
     outline: none;
     border: none;
     background: transparent;
     color: #fff;
-    padding-right: 50px;
-
+    padding-right: 150px;
   }
-  .icon-send{
+  .icon-send {
     position: absolute;
     right: 20px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    i{
+    gap: 10px;
+    i {
       font-size: 30px;
+    }
+  }
+}
+.tab {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    box-sizing: unset;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .active-tab {
+    border-bottom: 1px solid gray;
+  }
+}
+.items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.items-img {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép xuống dòng */
+  gap: 10px; /* Khoảng cách giữa các ảnh */
+  justify-content: flex-start;
+}
+
+.items {
+  // flex: 1 1 calc(33.33% - 10px); /* Mỗi ảnh chiếm 1/3 chiều rộng của hàng */
+  box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước */
+}
+:host ::ng-deep {
+  .p-image-preview-container > img {
+    width: 100px;
+    height: 100px;
+  }
+  .item-img {
+    .p-image-preview-container > img {
+      width: 50px !important;
+      height: 50px !important;
     }
   }
 }
