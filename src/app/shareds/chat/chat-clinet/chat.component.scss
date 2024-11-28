@@ -57,11 +57,11 @@
         &::-webkit-scrollbar {
           width: 2px;
         }
-      
+
         &::-webkit-scrollbar-track {
           background: transparent;
         }
-      
+
         &::-webkit-scrollbar-thumb {
           background: #555559;
           border-radius: 7px;
@@ -264,5 +264,8 @@
       width: 50px !important;
       height: 50px !important;
     }
+  }
+  .list-messages {
+    height: calc(100% - 135px);
   }
 }

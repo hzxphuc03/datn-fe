@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { ChatService } from '../chat.service';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,7 +21,7 @@ import { ClientChatService } from '../client-chat.servi';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatClintComponent implements OnInit , AfterViewInit {
+export class ChatClintComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
   @ViewChild('uploadFileInput', { static: false }) uploadFileInput:
     | ElementRef
@@ -48,10 +56,10 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
   private mediaRecorder: MediaRecorder | null = null;
   private audioChunks: Blob[] = [];
   public audioUrl: SafeUrl | null = null; // Thay đổi kiểu dữ liệu sang SafeUrl
-  // 
-  listUserChatBox : any[] = [];
-  isCheckScroll : boolean = true;
-  userUseChat : any = {};
+  //
+  listUserChatBox: any[] = [];
+  isCheckScroll: boolean = true;
+  userUseChat: any = {};
   constructor(
     private chatService: ChatService,
     private server: ClientChatService,
@@ -70,32 +78,51 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
-    this.userUseChat =  decoded.user;
+    this.userUseChat = decoded.user;
     this.getAllChatBox();
     this.chatService.getNewMessage().subscribe((message: any) => {
-      // this.getAllChatBox();
+      this.getAllChatBox();
       if (this.isInitialLoad) {
         return;
       }
-      if(message.hopThoaiNhanVien.id !== this.userChat.idBoxActive){
+      if (message.hopThoaiKhachHang.id !== this.userChat.idBoxActive) {
         return;
       }
       if (message) {
         if (this.idTinNhanVuaXOng === message.id) {
           return;
         }
-        if (
-          message.idNguoiNhan === this.idNhanVien &&
-          message.role === 'nv-nv' &&
-          !this.messageList.some(
-            (existingMessage) => existingMessage.id === message.id
-          ) // Kiểm tra nếu tin nhắn đã tồn tại
-        ) {
-          this.idTinNhanVuaXOng = message.id;
-          setTimeout(() => {
-            this.messageList.push(message);
-            this.changeDetector.detectChanges();
-          }, 100);
+        if (message.huongGui === 'nv-kh') {
+          // khách hàng là người nhận
+          if (!this.userUseChat.chucVu) {
+            // khách hàng
+            if (
+              this.userUseChat.id === message.khachHang.id &&
+              !this.messageList.some(
+                (existingMessage) => existingMessage.id === message.id
+              )
+            ) {
+              this.messageList.push(message);
+              this.changeDetector.detectChanges();
+            }
+          }
+          // nếu hướng gửi là từ nhân viên cho khách hàng mà là khách hàng nào
+        }
+        if (message.huongGui === 'kh-nv') {
+          // Nhân viên là người nhận
+          if (this.userUseChat.chucVu) {
+            // khách hàng
+            if (
+              this.userUseChat.id === message.nhanVien.id &&
+              !this.messageList.some(
+                (existingMessage) => existingMessage.id === message.id
+              )
+            ) {
+              this.messageList.push(message);
+              this.changeDetector.detectChanges();
+            }
+          }
+          // nếu hướng gửi là từ nhân viên cho khách hàng mà là khách hàng nào
         }
         setTimeout(() => {
           this.scrollToBottom();
@@ -103,12 +130,12 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
       }
     });
     //
-    this.chatService.getClients().subscribe((clients) => {      
-      if(decoded.user.chucVu === null){
+    this.chatService.getClients().subscribe((clients) => {
+      if (decoded.user.chucVu === null) {
         // gọi list nhân viên by id
         const nhanVien = clients.filter((item) => item.chucVu !== null);
         this.clients = nhanVien; // Cập nhật danh sách client với những thằng có chức vụ
-      }else{
+      } else {
         // gọi list khách hàng by nhân viên
         const khachHang = clients.filter((item) => item.chucVu === null);
         this.clients = khachHang; // Cập nhật danh sách client với những thằng có chức vụ
@@ -118,9 +145,9 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     this.queryParams.page = 1;
     this.queryParams.pageSize = 15;
     if (decoded && decoded?.user.id) {
-      if(decoded.user.chucVu === null){
+      if (decoded.user.chucVu === null) {
         this.getAllNhanVien();
-      }else{
+      } else {
         // gọi list khách hàng by nhân viên
         this.getAllKhachHang();
       }
@@ -177,37 +204,37 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     const { decoded } = this.tokenService.getToken();
     if (decoded && decoded?.user.id) {
       this.idNhanVien = decoded?.user.id;
-    } 
-    if(!decoded.user.chucVu){
-      const data = await this.server
-      .getAllBoxNhanVienByKhachHang(decoded?.user.id)
-      .toPromise();
-    if (data) {
-      this.listChatBox = data.map((item: any) => ({
-        ...item,
-        thoiGianNhanCuoi: item.hopThoaiKhachHang.thoiGianNhanCuoi?(this.getTimeAgo(
-          item.hopThoaiKhachHang.thoiGianNhanCuoi
-        )):'',
-      }));
-      this.checkOnline();
-    } else {
-      this.listChatBox = [];
     }
-    }else{
+    if (!decoded.user.chucVu) {
       const data = await this.server
-      .getAllBoxKhachHangByNhanVien(decoded?.user.id)
-      .toPromise();
-    if (data) {
-      this.listChatBox = data.map((item: any) => ({
-        ...item,
-        thoiGianNhanCuoi: item.hopThoaiKhachHang.thoiGianNhanCuoi?(this.getTimeAgo(
-          item.hopThoaiKhachHang.thoiGianNhanCuoi
-        )):'',
-      }));
-      this.checkOnline();
+        .getAllBoxNhanVienByKhachHang(decoded?.user.id)
+        .toPromise();
+      if (data) {
+        this.listChatBox = data.map((item: any) => ({
+          ...item,
+          thoiGianNhanCuoi: item.hopThoaiKhachHang.thoiGianNhanCuoi
+            ? this.getTimeAgo(item.hopThoaiKhachHang.thoiGianNhanCuoi)
+            : '',
+        }));
+        this.checkOnline();
+      } else {
+        this.listChatBox = [];
+      }
     } else {
-      this.listChatBox = [];
-    }
+      const data = await this.server
+        .getAllBoxKhachHangByNhanVien(decoded?.user.id)
+        .toPromise();
+      if (data) {
+        this.listChatBox = data.map((item: any) => ({
+          ...item,
+          thoiGianNhanCuoi: item.hopThoaiKhachHang.thoiGianNhanCuoi
+            ? this.getTimeAgo(item.hopThoaiKhachHang.thoiGianNhanCuoi)
+            : '',
+        }));
+        this.checkOnline();
+      } else {
+        this.listChatBox = [];
+      }
     }
   }
   getTimeAgo(thoiGianNhanCuoi: string): string {
@@ -241,22 +268,24 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     // Lặp qua listChatBox và kiểm tra trạng thái online
     this.listChatBox.forEach((chatBox) => {
       // Kiểm tra xem id của chatBox có trong clients hay không
-      if (chatBox.hopThoaiNhanVien.nhanVien1.id !== this.idNhanVien) {
+      if (chatBox.hopThoaiKhachHang.nhanVien.id !== this.userUseChat.id) {
         chatBox.isOnline = this.clients.some(
-          (client: any) => client.id === chatBox.hopThoaiNhanVien.nhanVien1.id
+          (client: any) => client.id === chatBox.hopThoaiKhachHang.nhanVien.id
         );
       }
-      if (chatBox.hopThoaiNhanVien.nhanVien2.id !== this.idNhanVien) {
+      if (chatBox.hopThoaiKhachHang.khachHang.id !== this.userUseChat.id) {
         chatBox.isOnline = this.clients.some(
-          (client: any) => client.id === chatBox.hopThoaiNhanVien.nhanVien2.id
+          (client: any) => client.id === chatBox.hopThoaiKhachHang.khachHang.id
         );
       }
     });
     this.userChat.userChat.hoatDong = this.clients.some(
       (item: any) => item.id === this.userChat.userChat.id
     );
-    this.listUserChatBox.forEach(nhanVien => {
-      nhanVien.isOnline = this.clients.some(client => client.id === nhanVien.id);
+    this.listUserChatBox.forEach((nhanVien) => {
+      nhanVien.isOnline = this.clients.some(
+        (client) => client.id === nhanVien.id
+      );
     });
   }
   activeBox(id: any) {
@@ -264,20 +293,21 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
       return;
     }
     this.listChatBox.map((item) => {
-      if (item.hopThoaiNhanVien.id === id) {
-        if (item.hopThoaiNhanVien.nhanVien1.id !== this.idNhanVien) {
+      if (item.hopThoaiKhachHang.id === id) {
+        if (this.userUseChat.chucVu) {
+          // neu no la nhan vien
           this.userChat.userChat = {
-            id: item.hopThoaiNhanVien.nhanVien1.id,
-            img: item.hopThoaiNhanVien.nhanVien1.hinhAnh,
-            ten: item.hopThoaiNhanVien.nhanVien1.hoTen,
+            id: item.hopThoaiKhachHang.khachHang.id,
+            img: item.hopThoaiKhachHang.khachHang.hinhAnh,
+            ten: item.hopThoaiKhachHang.khachHang.hoTen,
             hoatDong: item.isOnline,
           };
-        }
-        if (item.hopThoaiNhanVien.nhanVien2.id !== this.idNhanVien) {
+        } else {
+          // neu la khach hang
           this.userChat.userChat = {
-            id: item.hopThoaiNhanVien.nhanVien2.id,
-            img: item.hopThoaiNhanVien.nhanVien2.hinhAnh,
-            ten: item.hopThoaiNhanVien.nhanVien2.hoTen,
+            id: item.hopThoaiKhachHang.nhanVien.id,
+            img: item.hopThoaiKhachHang.nhanVien.hinhAnh,
+            ten: item.hopThoaiKhachHang.nhanVien.hoTen,
             hoatDong: item.isOnline,
           };
         }
@@ -289,13 +319,13 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     this.getAllChatByIdBox();
     this.userChat.activeChat = true;
     this.isCheckScroll = false;
-    setTimeout(()=>{
+    setTimeout(() => {
       this.isCheckScroll = true;
-    },300)
+    }, 300);
   }
   async getAllChatByIdBox() {
     this.messageList = [];
-    const data = await this.server.getAllMess(this.queryParams).toPromise();
+    const data = await this.server.getAllMessKH(this.queryParams).toPromise();
     if (data) {
       data.item.map((item: any) => {
         this.messageList.unshift(item);
@@ -310,16 +340,28 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     if (!this.newMessage) {
       return;
     }
-    if(this.userChat.idBoxActive === 0){
-      // tạo mới box 
-      const data = await this.server.addHopThoaiByNhannVien(
-        {
-          idNhanVien1 : this.idNhanVien,
-          idNhanVien2 : this.userChat.userChat.id
-        }
-      ).toPromise();
-      if(data.body){
-        this.userChat.idBoxActive = data.body.id
+    if (this.userChat.idBoxActive === 0) {
+      // tạo mới box
+      let params = {};
+      if (this.userUseChat.chucVu) {
+        // nếu là bên của nhân viên
+        params = {
+          idKhachHang: this.userChat.userChat.id, // id của thằng đang active box
+          idNhanVien: this.userUseChat.id, // id của thằng hiện tại
+        };
+      }
+      if (!this.userUseChat.chucVu) {
+        // nếu là bên của nhân viên
+        params = {
+          idKhachHang: this.userUseChat.id, // id của thằng đang active box
+          idNhanVien: this.userChat.userChat.id, // id của thằng hiện tại
+        };
+      }
+      const data = await this.server
+        .addHopThoaiNhanVienKhachHang(params)
+        .toPromise();
+      if (data.body) {
+        this.userChat.idBoxActive = data.body.id;
       }
     }
     const params = {
@@ -327,14 +369,25 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
       hinhAnhList: [],
       voice: '',
       tinNhan: this.newMessage,
-      idNguoiGui: this.idNhanVien,
-      idNguoiNhan: this.userChat.userChat.id,
-      idHopThoaiNhanVien: this.userChat.idBoxActive,
+      idKhachHang: '',
+      idNhanVien: '',
+      idHopThoaiKhachHang: this.userChat.idBoxActive,
+      huongGui: this.userUseChat.chucVu ? 'nv-kh' : 'kh-nv',
     };
-    if(this.userChat.idBoxActive === 0){
+    if (this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params.idKhachHang = this.userChat.userChat.id;
+      params.idNhanVien = this.userUseChat.id;
+    }
+    if (!this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params.idKhachHang = this.userUseChat.id;
+      params.idNhanVien = this.userChat.userChat.id;
+    }
+    if (this.userChat.idBoxActive === 0) {
       return;
     }
-    const data = await this.server.guiTinNhan(params).toPromise();
+    const data = await this.server.guiTinNhanKh(params).toPromise();
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
@@ -342,8 +395,6 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
         this.messageList.push(data.body);
         const messageToSend = {
           ...data.body, // Spread the existing properties
-          idNguoiNhan: this.userChat.userChat.id, // Add the new property;
-          role: 'nv-nv', // Add the new property;
         };
         this.chatService.sendMessage(messageToSend);
         this.getAllChatBox();
@@ -358,16 +409,28 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     if (this.listAnhDuocChon.length === 0) {
       return;
     }
-    if(this.userChat.idBoxActive === 0){
-      // tạo mới box 
-      const data = await this.server.addHopThoaiByNhannVien(
-        {
-          idNhanVien1 : this.idNhanVien,
-          idNhanVien2 : this.userChat.userChat.id
-        }
-      ).toPromise();
-      if(data.body){
-        this.userChat.idBoxActive = data.body.id
+    if (this.userChat.idBoxActive === 0) {
+      // tạo mới box
+      let params = {};
+      if (this.userUseChat.chucVu) {
+        // nếu là bên của nhân viên
+        params = {
+          idKhachHang: this.userChat.userChat.id, // id của thằng đang active box
+          idNhanVien: this.userUseChat.id, // id của thằng hiện tại
+        };
+      }
+      if (!this.userUseChat.chucVu) {
+        // nếu là bên của nhân viên
+        params = {
+          idKhachHang: this.userUseChat.id, // id của thằng đang active box
+          idNhanVien: this.userChat.userChat.id, // id của thằng hiện tại
+        };
+      }
+      const data = await this.server
+        .addHopThoaiNhanVienKhachHang(params)
+        .toPromise();
+      if (data.body) {
+        this.userChat.idBoxActive = data.body.id;
       }
     }
     const params = {
@@ -375,14 +438,25 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
       hinhAnhList: this.listAnhDuocChon,
       voice: '',
       tinNhan: '',
-      idNguoiGui: this.idNhanVien,
-      idNguoiNhan: this.userChat.userChat.id,
-      idHopThoaiNhanVien: this.userChat.idBoxActive,
+      idKhachHang: '',
+      idNhanVien: '',
+      idHopThoaiKhachHang: this.userChat.idBoxActive,
+      huongGui: this.userUseChat.chucVu ? 'nv-kh' : 'kh-nv',
     };
-    if(this.userChat.idBoxActive === 0){
+    if (this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params.idKhachHang = this.userChat.userChat.id;
+      params.idNhanVien = this.userUseChat.id;
+    }
+    if (!this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params.idKhachHang = this.userUseChat.id;
+      params.idNhanVien = this.userChat.userChat.id;
+    }
+    if (this.userChat.idBoxActive === 0) {
       return;
     }
-    const data = await this.server.guiTinNhan(params).toPromise();
+    const data = await this.server.guiTinNhanKh(params).toPromise();
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
@@ -408,16 +482,28 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
     }
   }
   async sendVoice() {
-    if(this.userChat.idBoxActive === 0){
-      // tạo mới box 
-      const data = await this.server.addHopThoaiByNhannVien(
-        {
-          idNhanVien1 : this.idNhanVien,
-          idNhanVien2 : this.userChat.userChat.id
-        }
-      ).toPromise();
-      if(data.body){
-        this.userChat.idBoxActive = data.body.id
+    if (this.userChat.idBoxActive === 0) {
+      // tạo mới box
+      let params = {};
+      if (this.userUseChat.chucVu) {
+        // nếu là bên của nhân viên
+        params = {
+          idKhachHang: this.userChat.userChat.id, // id của thằng đang active box
+          idNhanVien: this.userUseChat.id, // id của thằng hiện tại
+        };
+      }
+      if (!this.userUseChat.chucVu) {
+        // nếu là bên của nhân viên
+        params = {
+          idKhachHang: this.userUseChat.id, // id của thằng đang active box
+          idNhanVien: this.userChat.userChat.id, // id của thằng hiện tại
+        };
+      }
+      const data = await this.server
+        .addHopThoaiNhanVienKhachHang(params)
+        .toPromise();
+      if (data.body) {
+        this.userChat.idBoxActive = data.body.id;
       }
     }
     const params = {
@@ -425,14 +511,25 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
       hinhAnhList: [],
       voice: this.audioUrl,
       tinNhan: '',
-      idNguoiGui: this.idNhanVien,
-      idNguoiNhan: this.userChat.userChat.id,
-      idHopThoaiNhanVien: this.userChat.idBoxActive,
+      idKhachHang: '',
+      idNhanVien: '',
+      idHopThoaiKhachHang: this.userChat.idBoxActive,
+      huongGui: this.userUseChat.chucVu ? 'nv-kh' : 'kh-nv',
     };
-    if(this.userChat.idBoxActive === 0){
+    if (this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params.idKhachHang = this.userChat.userChat.id;
+      params.idNhanVien = this.userUseChat.id;
+    }
+    if (!this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params.idKhachHang = this.userUseChat.id;
+      params.idNhanVien = this.userChat.userChat.id;
+    }
+    if (this.userChat.idBoxActive === 0) {
       return;
     }
-    const data = await this.server.guiTinNhan(params).toPromise();
+    const data = await this.server.guiTinNhanKh(params).toPromise();
     if (data) {
       if (data.body.errorCode === 400) {
         this.errorService.displayError(data.body.messageError, 'error');
@@ -486,70 +583,82 @@ export class ChatClintComponent implements OnInit , AfterViewInit {
       this.uploadFileInput.nativeElement.value = '';
     }
   }
-  async getAllNhanVien(){
+  async getAllNhanVien() {
     const data = await this.server.getAllNhanVien().toPromise();
-    if(data){
+    if (data) {
       this.listUserChatBox = data;
     }
   }
-  async getAllKhachHang(){
+  async getAllKhachHang() {
     const data = await this.server.getAllKhachHang().toPromise();
-    if(data){
+    if (data) {
       this.listUserChatBox = data;
     }
   }
-  async boxChat(user : any){
-    if(user.id === this.idNhanVien){
+  async boxChat(user: any) {
+    if (user.id === this.idNhanVien) {
       return;
     }
     // check xem có giữa 2 người đã có tin nhắn hay chưa
     this.userChat.activeChat = true;
     this.isCheckScroll = false;
-    setTimeout(()=>{
+    setTimeout(() => {
       this.isCheckScroll = true;
-    },300)
+    }, 300);
     this.userChat.idBoxActive = 0;
     this.userChat.imgUserChat = user.hinhAnh;
     this.userChat.userChat = {
-      id : user.id,
-      img : user.hinhAnh,
-      ten : user.hoTen,
-      hoatDong : user.isOnline
+      id: user.id,
+      img: user.hinhAnh,
+      ten: user.hoTen,
+      hoatDong: user.isOnline,
+    };
+    let params = {};
+    if (this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params = {
+        idKhachHang: this.userChat.userChat.id, // id của thằng đang active box
+        idNhanVien: this.userUseChat.id, // id của thằng hiện tại
+      };
     }
-    const data = await this.server.checkHopThoaiByNhannVien({
-      idNhanVien1 : this.idNhanVien,
-      idNhanVien2 : user.id
-    }).toPromise();
-    if(data.body){
+    if (!this.userUseChat.chucVu) {
+      // nếu là bên của nhân viên
+      params = {
+        idKhachHang: this.userUseChat.id, // id của thằng đang active box
+        idNhanVien: this.userChat.userChat.id, // id của thằng hiện tại
+      };
+    }
+    const data = await this.server.checkHopThoaiByKhachHang(params).toPromise();
+    if (data.body) {
       // nếu có box thì mở box đó lên
-      this.userChat.idBoxActive = data.body.id
+      this.userChat.idBoxActive = data.body.id;
     }
-    if(this.userChat.idBoxActive > 0){
+    if (this.userChat.idBoxActive > 0) {
       this.queryParams.idHopThoai = this.userChat.idBoxActive;
       this.getAllChatByIdBox();
     }
-    if(this.userChat.idBoxActive === 0){
+    if (this.userChat.idBoxActive === 0) {
       this.messageList = [];
     }
   }
   async onScroll(event: Event): Promise<void> {
     const element = event.target as HTMLElement;
-    if(!this.isCheckScroll){
+    if (!this.isCheckScroll) {
       return;
     }
     // Kiểm tra xem đã cuộn đến đầu chưa
     if (element.scrollTop === 0) {
-      if(this.messageList.length === this.totalItem){
+      if (this.messageList.length === this.totalItem) {
         return;
       }
-      this.queryParams.page =  this.queryParams.page + 1
-      const data = await this.server.getAllMess(this.queryParams).toPromise();
-    if (data) {
-      data.item.map((item: any) => {
-        this.messageList.unshift(item);
-      });
-      this.totalItem = data.totalItem;
-    }
+      this.queryParams.page = this.queryParams.page + 1;
+      const data = await this.server.getAllMessKH(this.queryParams).toPromise();
+      if (data) {
+        data.item.map((item: any) => {
+          this.messageList.unshift(item);
+        });
+        this.totalItem = data.totalItem;
+      }
     }
   }
 }

@@ -93,6 +93,22 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     const { decoded } = this.tokenService.getToken();
     this.chatService.getNewMessage().subscribe((message: any) => {
       if (message) {
+        if (message.huongGui === 'kh-nv') {
+          if (message.nhanVien.id === decoded?.user.id) {
+            this.errorService.displayError(
+              `Bạn có tin nhắn mới từ khách hàng tên ${message.khachHang.hoTen}`,
+              'normal'
+            );
+            const audio = new Audio(
+              'https://s3-sgn10.fptcloud.com/fsel/Files/livechat129007_2763_1732457163133.mp3'
+            );
+            audio.play().catch((error) => {
+              console.error('Error playing audio:', error);
+            });
+          }
+        }
+      }
+      if (message) {
         if (this.idTinNhanVuaXOng === message.id) {
           return;
         }

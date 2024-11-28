@@ -115,6 +115,24 @@ export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
           }
         });
     };
+    this.chatService.getNewMessage().subscribe((message: any) => {
+      if (message) {
+        if (message.huongGui === 'nv-kh') {
+          if (message.khachHang.id === decoded?.user.id) {
+            this.errorService.displayError(
+              `Bạn có tin nhắn mới từ nhân viên ${message.nhanVien.hoTen}`,
+              'normal'
+            );
+            const audio = new Audio(
+              'https://s3-sgn10.fptcloud.com/fsel/Files/livechat129007_2763_1732457163133.mp3'
+            );
+            audio.play().catch((error) => {
+              console.error('Error playing audio:', error);
+            });
+          }
+        }
+      }
+    });
   }
   goDetail(id: any) {
     this.isOpenSearch = false;

@@ -89,18 +89,25 @@
                       "
                     >
                       <!-- kiểm tra xem mình có phải người nhận hay -->
-                      <span
-                        *ngIf="a?.doanChatCuoi?.nguoiGui?.id === idNhanVien"
-                      >
-                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
-                        {{ "bạn : " }}
+                      <span *ngIf="userUseChat.chucVu !== null">
+                        <!--  bên nhân viên -->
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'kh-nv'">
+                          {{ a.doanChatCuoi.khachHang.hoTen + " :" }}
+                        </span>
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'nv-kh'">
+                          {{ "bạn : " }}
+                        </span>
                       </span>
-                      <span
-                        *ngIf="a?.doanChatCuoi?.nguoiNhan?.id === idNhanVien"
-                      >
-                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
-                        {{ a.doanChatCuoi.nguoiGui.hoTen + " :" }}
+                      <span *ngIf="userUseChat.chucVu === null">
+                        <!--  bên kh -->
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'nv-kh'">
+                          {{ a.doanChatCuoi.nhanVien.hoTen + " :" }}
+                        </span>
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'kh-nv'">
+                          {{ "bạn : " }}
+                        </span>
                       </span>
+
                       <span
                         *ngIf="a.doanChatCuoi.theLoai === 'Text'"
                         pTooltip="{{ a.doanChatCuoi.tinNhan }}"
@@ -112,7 +119,7 @@
                         >{{ "đã gửi ảnh" }}</span
                       >
                       <span
-                        *ngIf="a.doanChatCuoi.theLoai === 'MP3'"
+                        *ngIf="a.doanChatCuoi.theLoai === 'Voice'"
                         pTooltip="đã gửi tin nhắn thoại"
                         >{{ "đã gửi tin nhắn thoại" }}</span
                       >
@@ -149,17 +156,24 @@
                         white-space: nowrap; /* Không cho xuống dòng */
                       "
                     >
-                      <span
-                        *ngIf="a?.doanChatCuoi?.nguoiGui?.id === idNhanVien"
-                      >
-                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
-                        {{ "bạn : " }}
+                      <!-- kiểm tra xem mình có phải người nhận hay -->
+                      <span *ngIf="userUseChat.chucVu !== null">
+                        <!--  bên nhân viên -->
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'kh-nv'">
+                          {{ a.doanChatCuoi.khachHang.hoTen + " :" }}
+                        </span>
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'nv-kh'">
+                          {{ "bạn : " }}
+                        </span>
                       </span>
-                      <span
-                        *ngIf="a?.doanChatCuoi?.nguoiNhan?.id === idNhanVien"
-                      >
-                        <!-- người nhận là mình thì show ra tên người gửi luôn-->
-                        {{ a?.doanChatCuoi?.nguoiGui?.hoTen + " :" }}
+                      <span *ngIf="userUseChat.chucVu === null">
+                        <!--  bên kh -->
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'nv-kh'">
+                          {{ a.doanChatCuoi.nhanVien.hoTen + " :" }}
+                        </span>
+                        <span *ngIf="a?.doanChatCuoi?.huongGui === 'kh-nv'">
+                          {{ "bạn : " }}
+                        </span>
                       </span>
                       <span *ngIf="a?.doanChatCuoi?.theLoai === 'Text'">{{
                         a.doanChatCuoi.tinNhan
@@ -251,7 +265,8 @@
                 ></div>
               </div>
             </div>
-            <div *ngIf="a.isOnline"
+            <div
+              *ngIf="a.isOnline"
               style="
                 position: absolute;
                 color: #00ff00;
@@ -299,47 +314,120 @@
           </div>
         </div>
 
-        <div class="list-messages" *ngIf="userChat.activeChat" #scrollContainer (scroll)="onScroll($event)">
+        <div
+          class="list-messages"
+          *ngIf="userChat.activeChat"
+          #scrollContainer
+          (scroll)="onScroll($event)"
+        >
           <div *ngFor="let item of messageList" #scrollContainer>
-            <div class="from messages" *ngIf="item.nguoiGui?.id === idNhanVien">
-              <div class="text" *ngIf="item.theLoai === 'Text'">
-                {{ item.tinNhan }}
+            <!--  nếu đang là nhân viên thì sao -->
+            <div *ngIf="userUseChat.chucVu">
+              <!-- là bên nhân viên -->
+              <div class="from messages" *ngIf="item.huongGui === 'nv-kh'">
+                <div class="text" *ngIf="item.theLoai === 'Text'">
+                  {{ item.tinNhan }}
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'Voice'">
+                  <audio
+                    style="height: 63px"
+                    [src]="item.voice"
+                    controls
+                  ></audio>
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'IMG'">
+                  <div class="items-img">
+                    <div class="items" *ngFor="let img of item.hinhAnhList">
+                      <p-image
+                        [src]="img"
+                        alt="Image"
+                        width="100"
+                        height="100"
+                        [preview]="true"
+                      ></p-image>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="text" *ngIf="item.theLoai === 'Voice'">
-                <audio style="height: 63px" [src]="item.voice" controls></audio>
-              </div>
-              <div class="text" *ngIf="item.theLoai === 'IMG'">
-                <div class="items-img">
-                  <div class="items" *ngFor="let img of item.hinhAnhList">
-                    <p-image
-                      [src]="img"
-                      alt="Image"
-                      width="100"
-                      height="100"
-                      [preview]="true"
-                    ></p-image>
+              <!-- nếu là khách hàng thì show ntn -->
+              <div class="to messages" *ngIf="item.huongGui === 'kh-nv'">
+                <img class="avata" [src]="userChat.userChat.img" alt="" />
+                <div class="text" *ngIf="item.theLoai === 'Text'">
+                  {{ item.tinNhan }}
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'Voice'">
+                  <audio
+                    style="height: 63px"
+                    [src]="item.voice"
+                    controls
+                  ></audio>
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'IMG'">
+                  <div class="items-img">
+                    <div class="items" *ngFor="let img of item.hinhAnhList">
+                      <p-image
+                        [src]="img"
+                        alt="Image"
+                        width="50"
+                        height="50"
+                        [preview]="true"
+                      ></p-image>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="to messages" *ngIf="item.nguoiGui?.id !== idNhanVien">
-              <img class="avata" [src]="userChat.userChat.img" alt="" />
-              <div class="text" *ngIf="item.theLoai === 'Text'">
-                {{ item.tinNhan }}
+            <div *ngIf="!userUseChat.chucVu">
+              <!-- là bên khách hàng -->
+              <div class="from messages" *ngIf="item.huongGui === 'kh-nv'">
+                <div class="text" *ngIf="item.theLoai === 'Text'">
+                  {{ item.tinNhan }}
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'Voice'">
+                  <audio
+                    style="height: 63px"
+                    [src]="item.voice"
+                    controls
+                  ></audio>
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'IMG'">
+                  <div class="items-img">
+                    <div class="items" *ngFor="let img of item.hinhAnhList">
+                      <p-image
+                        [src]="img"
+                        alt="Image"
+                        width="100"
+                        height="100"
+                        [preview]="true"
+                      ></p-image>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="text" *ngIf="item.theLoai === 'Voice'">
-                <audio style="height: 63px" [src]="item.voice" controls></audio>
-              </div>
-              <div class="text" *ngIf="item.theLoai === 'IMG'">
-                <div class="items-img">
-                  <div class="items" *ngFor="let img of item.hinhAnhList">
-                    <p-image
-                      [src]="img"
-                      alt="Image"
-                      width="50"
-                      height="50"
-                      [preview]="true"
-                    ></p-image>
+              <!-- nếu là khách hàng thì show ntn -->
+              <div class="to messages" *ngIf="item.huongGui === 'nv-kh'">
+                <img class="avata" [src]="userChat.userChat.img" alt="" />
+                <div class="text" *ngIf="item.theLoai === 'Text'">
+                  {{ item.tinNhan }}
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'Voice'">
+                  <audio
+                    style="height: 63px"
+                    [src]="item.voice"
+                    controls
+                  ></audio>
+                </div>
+                <div class="text" *ngIf="item.theLoai === 'IMG'">
+                  <div class="items-img">
+                    <div class="items" *ngFor="let img of item.hinhAnhList">
+                      <p-image
+                        [src]="img"
+                        alt="Image"
+                        width="50"
+                        height="50"
+                        [preview]="true"
+                      ></p-image>
+                    </div>
                   </div>
                 </div>
               </div>

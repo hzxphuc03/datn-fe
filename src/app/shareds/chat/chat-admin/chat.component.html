@@ -89,7 +89,7 @@
                         >{{ "đã gửi ảnh" }}</span
                       >
                       <span
-                        *ngIf="a.doanChatCuoi.theLoai === 'MP3'"
+                        *ngIf="a.doanChatCuoi.theLoai === 'Voice'"
                         pTooltip="đã gửi tin nhắn thoại"
                         >{{ "đã gửi tin nhắn thoại" }}</span
                       >
@@ -228,7 +228,8 @@
                 ></div>
               </div>
             </div>
-            <div *ngIf="a.isOnline"
+            <div
+              *ngIf="a.isOnline"
               style="
                 position: absolute;
                 color: #00ff00;
@@ -276,7 +277,12 @@
           </div>
         </div>
 
-        <div class="list-messages" *ngIf="userChat.activeChat" #scrollContainer (scroll)="onScroll($event)">
+        <div
+          class="list-messages"
+          *ngIf="userChat.activeChat"
+          #scrollContainer
+          (scroll)="onScroll($event)"
+        >
           <div *ngFor="let item of messageList" #scrollContainer>
             <div class="from messages" *ngIf="item.nguoiGui?.id === idNhanVien">
               <div class="text" *ngIf="item.theLoai === 'Text'">
