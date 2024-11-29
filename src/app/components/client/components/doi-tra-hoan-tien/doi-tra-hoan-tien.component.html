@@ -1,0 +1,163 @@
+<div class="doi-tra-component">
+  <div
+    class="header"
+    style="display: flex; justify-content: space-between; align-items: center"
+  >
+    <div class="title" style="font-size: 20px; font-weight: bold">
+      Phiếu đổi trả && hoàn tiền của bạn
+    </div>
+    <div class="all-action">
+      <button class="btn btn-primary" (click)="openTapMoi()">
+        Tạo mới phiếu
+      </button>
+    </div>
+  </div>
+  <div class="luu-y">
+    <div class="title" style="font-weight: bold">Lưu ý</div>
+    <ul>
+      <li style="font-weight: bold">Thao tác (bên cửa hàng)</li>
+      <li>
+        <ul>
+          <li>
+            1.
+            <span style="color: green; font-weight: bold">Xác nhận phiếu</span>
+            (cửa hàng chấp thuận phiếu).
+          </li>
+          <li>
+            2.
+            <span style="color: red; font-weight: bold"
+              >Không xác nhận phiếu</span
+            >
+            (cửa hàng không chấp thuận phiếu).
+          </li>
+        </ul>
+      </li>
+      <li style="font-weight: bold">Trạng thái các bước.</li>
+      <li>
+        <ul>
+          <li>
+            1. Phiếu khởi tạo (yêu cầu bằng chứng để cửa hàng kiểm duyệt.)
+          </li>
+          <li>2. Gửi trả sản phẩm lại cửa hàng (có hướng dẫn).</li>
+          <li>
+            3. Kiểm tra (bên cửa hàng sẽ kiểm tra sản phẩm sau khi nhận lại sản
+            phẩm)-
+            <span style="color: red"
+              >(cửa hàng có thể hủy phiếu nếu khách hàng không nghiêm túc)</span
+            >.
+          </li>
+          <li>4.</li>
+          <li>
+            <ul>
+              <li>
+                Đối với phiếu hoàn tiền : Shop chấp nhận mà cho phép hoàn tiền
+                (Người dùng nhập ngân hàng hoặc ra cửa hàng để nhận tiền).
+              </li>
+              <li>
+                Đối với đổi trả : Tạo hóa đơn mới (Người dùng sẽ nhập thông tin
+                địa chỉ , sdt... giao hàng mới ).
+              </li>
+            </ul>
+          </li>
+          <li>5. Hoàn thành phiếu đổi trả hoặc hoàn tiền.</li>
+        </ul>
+      </li>
+      <li style="font-weight: bold">Luồng thao tác</li>
+      <li>
+        <ul>
+          <li>
+            Hoàn tiền : 1.mặc đinh {{ "--->" }} 2.gửi trả sản phẩm
+            {{ "--->" }} 3.kiểm ra {{ "--->" }} 4.cho phép hoàn tiền
+            {{ "--->" }} 5.Hoàn thành
+          </li>
+          <li>
+            Đổi trả : 1.mặc đinh {{ "--->" }} 2.gửi trả sản phẩm
+            {{ "--->" }} 3.kiểm ra {{ "--->" }} 4.tạo hóa đơn mới
+            {{ "--->" }} 5.Hoàn thành
+          </li>
+          <li>0. Hủy phiếu</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="table-pagination d-flex mb-3 pb-4">
+    <div class="flex-grow-1"></div>
+    <div><small class="text-muted">Pages: </small></div>
+    <div>
+      <p-dropdown
+        (onChange)="getAllDiaChi('page')"
+        [options]="listPageNumber"
+        [(ngModel)]="searchQuery.page"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <!-- <div class="px-3"></div> -->
+    <div>
+      <p-dropdown
+        (onChange)="getAllDiaChi('rows')"
+        [options]="[10, 20, 30]"
+        [(ngModel)]="searchQuery.pageSize"
+        class="table-pagination-item fsel-select fsel-select-xsm"
+      ></p-dropdown>
+    </div>
+    <div><small class="text-muted ml-1">Items per page</small></div>
+    <div class="d-flex justify-content-center align-items-center">
+      <span
+        (click)="getAllDiaChi('page', 'prev')"
+        class="table-pagination-item btn-prev ml-2"
+      >
+        <i class="bx bx-left-arrow-alt"></i>
+      </span>
+      <span
+        (click)="getAllDiaChi('page', 'next')"
+        class="table-pagination-item btn-next"
+      >
+        <i class="bx bx-right-arrow-alt"></i>
+      </span>
+    </div>
+  </div>
+  <div class="content" style="margin-top: 20px">
+    <p-table
+      [value]="listData"
+      [rowHover]="true"
+      styleClass="p-datatable-gridlines"
+      [scrollable]="true"
+      scrollHeight="calc(90vh - 100px)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <td>Id phiếu</td>
+          <td>Id hóa đơn đổi trả</td>
+          <td>Id hóa đơn mới</td>
+          <td>Thao tác</td>
+          <td>Thể loại đổi trả</td>
+          <td>Ngày tạo</td>
+          <td>Trạng thái</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.id }}</td>
+          <td>{{ product.hoaDonCu.id }}</td>
+          <td>{{ product.hoaDonMoi ? product.hoaDonMoi.id : "------" }}</td>
+          <td *ngIf="product.thaoTac === 1">Phiếu chờ sử lý</td>
+          <td *ngIf="product.thaoTac === 0">Phiếu đã bị Từ chối</td>
+          <td *ngIf="product.thaoTac === 2">Phiếu được chấp thuận</td>
+          <td>{{ product.theLoai === 1 ? "Hoàn tiền" : "Đổi trả" }}</td>
+          <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
+          <td *ngIf="product.trangThai === 1">Phiếu khởi tạo</td>
+          <td *ngIf="product.trangThai === 2">Đơn đang được trả</td>
+          <td *ngIf="product.trangThai === 3">Cửa hàng đang kiểm tra đơn</td>
+          <td *ngIf="product.trangThai === 4">Xác thực thành công</td>
+          <td *ngIf="product.trangThai === 5">Hoàn thành phiếu</td>
+          <td *ngIf="product.trangThai === 0">Phiếu đã bị hủy</td>
+          <td>
+            <button class="btn btn-primary" (click)="goToChiTiet(product)">
+              Xem chi tiết
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -65,7 +65,9 @@
                   : "-------"
               }}
             </td>
-            <td>{{ product.tongTien | currency : "VND" : "symbol" : "1.0-0" }}</td>
+            <td>
+              {{ product.tongTien | currency : "VND" : "symbol" : "1.0-0" }}
+            </td>
             <td>{{ product.phuongThucThanhToan.ten }}</td>
             <td>
               {{ product.thanhToan ? "Đã thanh toán" : "Chưa thanh toán" }}
@@ -78,7 +80,11 @@
             <td *ngIf="product.trangThai === 5">Hóa đơn đang vận chuyển</td>
             <td *ngIf="product.trangThai === 6">Hóa đơn hoàn thành</td>
             <td *ngIf="product.trangThai === 0">Hóa đơn đã hủy</td>
-            <td><button class="btn btn-primary" (click)="details(product)">Chi tiết</button></td>
+            <td>
+              <button class="btn btn-primary" (click)="details(product)">
+                Chi tiết
+              </button>
+            </td>
           </tr>
         </ng-template>
       </p-table>

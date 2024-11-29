@@ -127,6 +127,10 @@ const routes: Routes = [
     path: 'chat-client',
     component: ChatClintComponent,
   },
+  {
+    path: 'doi-tra',
+    component: fromPagesComponent.QuanLyPhieuDoiTraComponent,
+  },
 ];
 
 @NgModule({

@@ -17,6 +17,9 @@ import { Trung0tamHoTroComponent } from './components/info-custumer/trung0tam-ho
 import { LoginClientComponent } from './components/login-client/login-client.component';
 import { SanPhamAllSearchComponent } from './components/san-pham-all-search/san-pham-all-search.component';
 import { VoucherKhachHangComponent } from './components/voucher-khach-hang/voucher-khach-hang.component';
+import { DoiTraHoanTienComponent } from './components/doi-tra-hoan-tien/doi-tra-hoan-tien.component';
+import { TaoPhieuDoiTraComponent } from './components/tao-phieu-doi-tra/tao-phieu-doi-tra.component';
+import { ChiTietDoiTraComponent } from './components/chi-tiet-doi-tra/chi-tiet-doi-tra.component';
 
 export const pagesComponents: any[] = [
   HomePageComponent,
@@ -37,7 +40,10 @@ export const pagesComponents: any[] = [
   DanhGiaComponent,
   HoaDonTraCucComponent,
   DetailDonHangKhComponent,
-  ChatComponent
+  ChatComponent,
+  DoiTraHoanTienComponent,
+  TaoPhieuDoiTraComponent,
+  ChiTietDoiTraComponent,
 ];
 
 export * from './components/home-page/home-page.component';
@@ -59,3 +65,6 @@ export * from './components/info-custumer/danh-gia/danh-gia.component';
 export * from './components/info-custumer/hoa-don-tra-cuc/hoa-don-tra-cuc.component';
 export * from './components/info-custumer/detail-don-hang-kh/detail-don-hang-kh.component';
 export * from 'src/app/shareds/chat/chat-admin/chat.component';
+export * from './components/doi-tra-hoan-tien/doi-tra-hoan-tien.component';
+export * from './components/tao-phieu-doi-tra/tao-phieu-doi-tra.component';
+export * from './components/chi-tiet-doi-tra/chi-tiet-doi-tra.component';

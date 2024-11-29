@@ -1,0 +1,358 @@
+<div class="all-content">
+  <div class="header">
+    <button
+      style="margin-bottom: 20px"
+      class="btn btn-primary"
+      *ngIf="step !== 1"
+      [disabled]="step === 1"
+      (click)="step = step - 1"
+    >
+      <i class="bx bx-arrow-back"></i>
+    </button>
+  </div>
+  <div class="content" style="width: 100%" *ngIf="step === 1">
+    <div class="all-content">
+      <div class="title" style="font-size: 20px; font-weight: bold">
+        1. Chọn hóa đơn cần đổi trả
+      </div>
+      <div class="table-pagination d-flex mb-3 pb-4">
+        <div class="flex-grow-1"></div>
+        <div><small class="text-muted">Pages: </small></div>
+        <div>
+          <p-dropdown
+            (onChange)="getListWords('page')"
+            [options]="listPageNumber"
+            [(ngModel)]="searchQuery.page"
+            class="table-pagination-item fsel-select fsel-select-xsm"
+          ></p-dropdown>
+        </div>
+        <!-- <div class="px-3"></div> -->
+        <div>
+          <p-dropdown
+            (onChange)="getListWords('rows')"
+            [options]="[10, 20, 30]"
+            [(ngModel)]="searchQuery.pageSize"
+            class="table-pagination-item fsel-select fsel-select-xsm"
+          ></p-dropdown>
+        </div>
+        <div><small class="text-muted ml-1">Items per page</small></div>
+        <div class="d-flex justify-content-center align-items-center">
+          <span
+            (click)="getListWords('page', 'prev')"
+            class="table-pagination-item btn-prev ml-2"
+          >
+            <i class="bx bx-left-arrow-alt"></i>
+          </span>
+          <span
+            (click)="getListWords('page', 'next')"
+            class="table-pagination-item btn-next"
+          >
+            <i class="bx bx-right-arrow-alt"></i>
+          </span>
+        </div>
+      </div>
+      <div class="bill">
+        <div class="content">
+          <p-table [value]="listData">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Mã hóa đơn</th>
+                <th>Ngày tạo</th>
+                <th>Ngày thanh toán</th>
+                <th>Tổng tiền</th>
+                <th>Phương thức thanh toán</th>
+                <th>Thanh toán</th>
+                <th>Ghi chú</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr>
+                <td>{{ product.ma }}</td>
+                <td>{{ product.ngayTao | date : "dd/MM/yyyy" }}</td>
+                <td>
+                  {{
+                    product.ngayThanhToan
+                      ? (product.ngayThanhToan | date : "dd/MM/yyyy")
+                      : "-------"
+                  }}
+                </td>
+                <td>
+                  {{ product.tongTien | currency : "VND" : "symbol" : "1.0-0" }}
+                </td>
+                <td>{{ product.phuongThucThanhToan.ten }}</td>
+                <td>
+                  {{ product.thanhToan ? "Đã thanh toán" : "Chưa thanh toán" }}
+                </td>
+                <td>{{ product.ghiChu }}</td>
+                <td *ngIf="product.trangThai === 1">Chờ sử lý</td>
+                <td *ngIf="product.trangThai === 2">Chờ sử lý</td>
+                <td *ngIf="product.trangThai === 3">
+                  Hóa đơn đang được đóng gói
+                </td>
+                <td *ngIf="product.trangThai === 4">
+                  Hóa đơn đang được đóng gói
+                </td>
+                <td *ngIf="product.trangThai === 5">Hóa đơn đang vận chuyển</td>
+                <td *ngIf="product.trangThai === 6">Hóa đơn hoàn thành</td>
+                <td *ngIf="product.trangThai === 0">Hóa đơn đã hủy</td>
+                <td>
+                  <button
+                    class="btn btn-primary"
+                    (click)="createPhieu(product)"
+                  >
+                    Tạo phiếu
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content" style="width: 100%" *ngIf="step === 2">
+    <div class="title" style="display: flex; justify-content: space-between">
+      <div style="font-size: 20px; font-weight: bold">
+        2. Chọn sản phẩm cần đổi trả
+      </div>
+      <button class="btn btn-primary" (click)="toBuoc3()">
+        Bước điền thông tin
+      </button>
+    </div>
+    <div
+      class="all-content-step-2"
+      style="display: flex; gap: 10px; margin-top: 20px"
+    >
+      <div class="left" style="width: 49%">
+        <div class="title" style="font-size: 20px; font-weight: bold">
+          Sản phẩm thuộc hóa đơn : {{ queryParams.idHdDoi }}
+        </div>
+        <p-table [value]="listChiTietSanPham">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Hình ảnh</th>
+              <th>Tên sản phẩm</th>
+              <th>Màu sắc</th>
+              <th>Kích cỡ</th>
+              <th>Số lượng</th>
+              <th>Giá mua</th>
+              <th>Chọn sản phẩm</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>
+                <img
+                  [src]="product.sanPhamChiTiet.hinhAnh"
+                  alt=""
+                  style="width: 50px; height: 50px; border-radius: 20px"
+                />
+              </td>
+              <td>{{ product.sanPhamChiTiet.sanPham.ten }}</td>
+              <td>
+                <div
+                  *ngIf="product.sanPhamChiTiet.mauSac.maMau"
+                  class="color-swatch"
+                  style="width: 20px; height: 20px; border-radius: 50%"
+                  [ngStyle]="{
+                    'background-color': product.sanPhamChiTiet.mauSac.maMau
+                  }"
+                ></div>
+              </td>
+              <td>{{ product.sanPhamChiTiet.kichCo.ten }}</td>
+              <td>{{ product.soLuong }}</td>
+              <td>
+                {{ product.giaDaGiam | currency : "VND" : "symbol" : "1.0-0" }}
+              </td>
+              <td>
+                <button class="btn btn-primary" (click)="addSpToPhieu(product)">
+                  <i class="bx bx-reset"></i>
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="right" style="width: 49%">
+        <div class="title" style="font-size: 20px; font-weight: bold">
+          Sản phẩm đổi trả
+        </div>
+        <p-table [value]="queryParams.listChiTietSanPham">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Hình ảnh</th>
+              <th>Tên sản phẩm</th>
+              <th>Màu sắc</th>
+              <th>Kích cỡ</th>
+              <th>Số lượng</th>
+              <th>Giá mua</th>
+              <th>Chọn sản phẩm</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+            <tr>
+              <td>
+                <img
+                  [src]="product.sanPhamChiTiet.hinhAnh"
+                  alt=""
+                  style="width: 50px; height: 50px; border-radius: 20px"
+                />
+              </td>
+              <td>{{ product.sanPhamChiTiet.sanPham.ten }}</td>
+              <td>
+                <div
+                  *ngIf="product.sanPhamChiTiet.mauSac.maMau"
+                  class="color-swatch"
+                  style="width: 20px; height: 20px; border-radius: 50%"
+                  [ngStyle]="{
+                    'background-color': product.sanPhamChiTiet.mauSac.maMau
+                  }"
+                ></div>
+              </td>
+              <td>{{ product.sanPhamChiTiet.kichCo.ten }}</td>
+              <td>
+                <p-inputNumber
+                  [(ngModel)]="product.soLuong"
+                  [showButtons]="true"
+                  buttonLayout="horizontal"
+                  spinnerMode="vertical"
+                  inputId="vertical"
+                  [max]="product.maxSoluong"
+                  [min]="1"
+                  decrementButtonClass="p-button-secondary"
+                  incrementButtonClass="p-button-secondary"
+                  incrementButtonIcon="pi pi-plus"
+                  decrementButtonIcon="pi pi-minus"
+                ></p-inputNumber>
+              </td>
+              <td>
+                {{ product.giaDaGiam | currency : "VND" : "symbol" : "1.0-0" }}
+              </td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  (click)="removeSpFromPhieu(rowIndex)"
+                >
+                  <i class="bx bx-x"></i>
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+  <div class="content" style="width: 100%" *ngIf="step === 3">
+    <span>Lưu ý</span>
+    <ul>
+      <li>Nhân viên sẽ kiểm tra phiếu của bạn</li>
+      <li style="color: red">
+        Nhân viên có thể hủy phiếu của bạn nếu có sai phạm
+      </li>
+    </ul>
+    <div class="title" style="display: flex; justify-content: space-between">
+      <div style="font-size: 20px; font-weight: bold">
+        3. Thông tin phiếu đổi trả
+      </div>
+      <button class="btn btn-primary" (click)="taoPhieu()">Tạo phiếu</button>
+    </div>
+    <div
+      class="contents"
+      style="
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      "
+    >
+      <div class="title" style="font-weight: 600">
+        Chọn ảnh hoăc video (tối đa 5)
+      </div>
+      <div
+        class="all-item-file-img"
+        style="width: 100%; display: flex; flex-wrap: wrap; gap: 20px"
+      >
+        <div
+          class="item"
+          *ngFor="let a of queryParams.hinhAnhList; let i = index"
+          style="display: flex; gap: 10px"
+        >
+          <div
+            class="img-item"
+            style="width: 100px; height: 100px; display: flex"
+          >
+            <img
+              *ngIf="a.type === 'image'"
+              [src]="a.url"
+              alt=""
+              style="
+                width: 100%;
+                height: 100%;
+                border: 1px solid gray;
+                border-radius: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            />
+            <video
+              *ngIf="a.type === 'video'"
+              [src]="a.url"
+              controls
+              width="300"
+            >
+              Trình duyệt của bạn không hỗ trợ video.
+            </video>
+          </div>
+        </div>
+        <div class="item">
+          <label
+            class="uploadimg"
+            for="upload-file"
+            style="
+              width: 100px;
+              height: 100px;
+              border: 1px solid gray;
+              border-radius: 20px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <span>UploadFile</span>
+          </label>
+        </div>
+      </div>
+      <div class="item">
+        <input
+          type="file"
+          id="upload-file"
+          multiple
+          accept="image/*,video/*"
+          style="display: none"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+      <span class="">
+        <textarea
+          style="width: 100%"
+          name=""
+          id="loat-input"
+          pInputText
+          [(ngModel)]="queryParams.lyDoDoiTra"
+          placeholder="Lý do đổi trả"
+        ></textarea>
+      </span>
+      <p-dropdown
+        style="width: 100%"
+        [options]="optionValue"
+        optionLabel="title"
+        optionValue="value"
+        [(ngModel)]="queryParams.theLoai"
+      ></p-dropdown>
+    </div>
+  </div>
+</div>

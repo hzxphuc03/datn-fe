@@ -44,6 +44,7 @@ import { VatLieuComponent } from './vat-lieu/vat-lieu.component';
 import { VoucherAddOrEditComponent } from './vouchers/voucher-add-or-edit/voucher-add-or-edit.component';
 import { VoucherComponent } from './vouchers/voucher/voucher.component';
 import { AddOrEditEventComponent } from './events/add-or-edit-event/add-or-edit-event.component';
+import { QuanLyPhieuDoiTraComponent } from './quan-ly-phieu-doi-tra/quan-ly-phieu-doi-tra.component';
 
 export const pagesComponents: any[] = [
   AdminHomePageComponent,
@@ -91,7 +92,8 @@ export const pagesComponents: any[] = [
   QuanLyHoaDonComponent,
   DetailHoaDonQuanLyComponent,
   EventComponent,
-  AddOrEditEventComponent
+  AddOrEditEventComponent,
+  QuanLyPhieuDoiTraComponent,
 ];
 export * from './admin-home-page/admin-home-page.component';
 export * from './thuong-hieu/thuong-hieu.component';
@@ -138,3 +140,4 @@ export * from './quan-ly-hoa-don-all/quan-ly-hoa-don/quan-ly-hoa-don.component';
 export * from './quan-ly-hoa-don-all/detail-hoa-don-quan-ly/detail-hoa-don-quan-ly.component';
 export * from './events/event/event.component';
 export * from './events/add-or-edit-event/add-or-edit-event.component';
+export * from './quan-ly-phieu-doi-tra/quan-ly-phieu-doi-tra.component';

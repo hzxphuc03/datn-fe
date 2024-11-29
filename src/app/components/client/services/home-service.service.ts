@@ -19,6 +19,7 @@ export class HomeServoceService {
   urlThongBao = 'http://localhost:8080/api/thong_bao';
   urlDanhGia = 'http://localhost:8080/api/danh_gia_san_pham';
   urlHoaDon = 'http://localhost:8080/api/hoa_don';
+  urlDoiTra = 'http://localhost:8080/api/doi-tra';
   constructor(private http: HttpClient) {}
 
   getTop5BanChay(): Observable<any> {
@@ -266,6 +267,42 @@ export class HomeServoceService {
         return of(error?.errorJson ? error.errorJson : error.error);
       })
     );
+  }
+  addPhieuDoiTra(params: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.urlDoiTra}/add-pheu-doi-tra`, params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
+  getPhieuDoiTraByKH(params: any): Observable<any> {
+    return this.http
+      .get<any>(`${this.urlDoiTra}/get-phieu-doi-tra-by-khach-hang`, { params })
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
+  getPhieuDoiTraById(id: any): Observable<any> {
+    return this.http
+      .get<any>(`${this.urlDoiTra}/get-detail-phieu-doi-tra/${id}`)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
   }
   getTatCaSpCHuaDanhGiaByIdKh(id: any): Observable<any> {
     return this.http.get<any>(`${this.url}/san-pham-chua-danh-gia/${id}`).pipe(

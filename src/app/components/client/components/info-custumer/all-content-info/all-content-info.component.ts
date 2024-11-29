@@ -16,6 +16,7 @@ export class AllContentInfoComponent implements OnInit {
     'Cài đặt chung',
     'Trung tâm hỗ trợ',
     'Đánh giá sản phẩm',
+    'Đổi trả & hoàn tiền',
   ];
   @ViewChild('targetElement') targetElement!: ElementRef;
   selectedIndex: number | null = 0;
