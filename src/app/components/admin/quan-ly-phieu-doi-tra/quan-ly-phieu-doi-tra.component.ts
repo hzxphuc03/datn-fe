@@ -18,7 +18,16 @@ export class QuanLyPhieuDoiTraComponent implements OnInit {
     { value: '', name: 'Tất cả' },
     { value: '1', name: 'Hoàn tiền' },
     { value: '2', name: 'Đổi trả' },
-  ];
+  ];  
+  itemsTypePhieu : any[] = [
+    {index : 1 , value : 'Phiếu khởi tạo'},
+    {index : 2 , value :'Đơn đang trả về cửa hàng'},
+    {index : 3 , value :'Cửa hàng nhận đơn và kiểm tra'},
+    {index : 4 , value :'Kiểm tra thành công cho phép đổi hoặc hoàn tiền'},
+    {index : 5 , value :'Phiếu hoàn thành'},
+    {index : 0 , value :'Phiếu đã hủy'},
+
+  ]
   openDialog: boolean = false;
   dataDialog: any;
   constructor(
@@ -29,6 +38,7 @@ export class QuanLyPhieuDoiTraComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchQuery.status = 1;
     this.getListWords('rows');
   }
   async getListWords(type: string, action?: string): Promise<void> {

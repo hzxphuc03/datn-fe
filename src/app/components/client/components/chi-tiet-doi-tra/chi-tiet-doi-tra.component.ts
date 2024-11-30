@@ -24,6 +24,7 @@ export class ChiTietDoiTraComponent implements OnInit {
   visible2: boolean = false;
   visible3: boolean = false;
   visible4: boolean = false;
+  visible5: boolean = false;
   listTinhThanh: any[] = [];
   isCheckUrl : boolean = false;
   //
@@ -273,6 +274,7 @@ removeIdPhieuDoiTraFromUrl(): void {
       if (data.body) {
         // Chuyển hướng đến link cụ thể trong tab hiện tại
         this.getAllDetailPhieu();
+        this.dataService.updateData('1232312312');
         this.spinner.hide();
       }
     }
@@ -329,6 +331,7 @@ removeIdPhieuDoiTraFromUrl(): void {
         this.getAllDetailPhieu();
         this.errorService.displayError('Cập nhật thông tin ngân hàng thành công , vui lòng đợi bên nhân viên phảm hồi !!!', 'normal');
         this.spinner.hide();
+        this.dataService.updateData('1231231232');
       }
     }
   }

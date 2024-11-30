@@ -6,8 +6,8 @@
         font-size: 20px;
         font-weight: bold;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        gap: 20px;
+        flex-direction: column;
       "
     >
       <div>
@@ -21,7 +21,10 @@
           Ảnh/video của bên khách hàng
         </button>
         <button class="btn btn-primary" (click)="visible4 = true">
-          Ảnh/video của bên cửa hàng (mở gói hàng / ảnh chuyển tiền )
+          Ảnh/video của bên cửa hàng (mở gói hàng )
+        </button>
+        <button class="btn btn-primary" (click)="visible5 = true">
+          Ảnh/video của bên cửa hàng (ảnh chuyển khoản )
         </button>
       </div>
     </div>
@@ -178,6 +181,25 @@
       </div>
       <div class="buoc-tiep-theo" *ngIf="data?.phieuDoiTra.thaoTac === 2">
         <div class="step-1" *ngIf="data?.phieuDoiTra.trangThai === 1">
+          <div>
+            Hướng dẫn :
+            <ul>
+              <li><span style="font-weight: bold;">Từ</span> : Từ địa chỉ của bạn</li>
+              <li>
+                <span style="font-weight: bold;">Đến</span> : Địa chỉ của cửa hàng : Số 35 Lạc Trung , Hai Bà Trưng , Hà
+                Nội
+              </li>
+              <li>
+                <span style="font-weight: bold;">Nội dung</span> : bạn ghi
+                <span style="font-weight: bold">sản phẩm</span> muốn đổi và kèm
+                theo <span style="font-weight: bold">Mã Phiếu</span> (Mã phiếu
+                của bạn là {{ data?.phieuDoiTra.ma }})
+              </li>
+              <li>
+                <span style="font-weight: bold;">Nội dung sản phẩm</span> ghi theo cú pháp (tên sản phẩm) - (màu sắc) - (kích-cỡ) - SL(số lượng)
+              </li>
+            </ul>
+          </div>
           <div class="titke" style="font-weight: bold; font-size: 18px">
             Bước 1.Hướng dẫn đóng gói hóa đơn và gửi
           </div>
@@ -207,7 +229,7 @@
               href="https://s3-sgn10.fptcloud.com/fsel/Files/Mauphieugiaohangphobien_1893_1732894420585.docx"
               download
             >
-              Tải vè mẫu
+              Tải về mẫu
             </a>
           </div>
           <div class="luu-y" style="margin-top: 20px">
@@ -243,7 +265,7 @@
           "
         >
           <div style="font-size: 30px; color: green; font-weight: bolder">
-            Vui Lòng đợi phản hồi từ phí cửa hàng
+            Vui Lòng đợi phản hồi từ phía cửa hàng
           </div>
           <img
             style="width: 400px; margin-top: 30px; text-align: center"
@@ -770,13 +792,13 @@
   </div>
 </p-dialog>
 <p-dialog
-  header="Ảnh và video của cửa hàng !"
+  header="Ảnh và video của cửa hàng (mở hàng)!"
   [(visible)]="visible4"
   [modal]="true"
   [style]="{ width: '80vw' }"
 >
   <div style="margin-top: 20px">
-    >Ảnh,video của cửa hàng (mở gói hàng khách hàng gửi phòng tránh rủi ro)
+    
   </div>
   <div style="width: 100%; display: flex; flex-wrap: wrap; gap: 10px">
     <div
@@ -825,6 +847,67 @@
       class="btn btn-primary"
       style="width: 100%"
       (click)="visible4 = false"
+    >
+      Quay lại
+    </button>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Ảnh và video của cửa hàng (chuyển khoản)!"
+  [(visible)]="visible5"
+  [modal]="true"
+  [style]="{ width: '80vw' }"
+>
+  <div style="margin-top: 20px">
+    
+  </div>
+  <div style="width: 100%; display: flex; flex-wrap: wrap; gap: 10px">
+    <div
+      class="item"
+      *ngFor="let a of data?.thongTinCuaHangChuyenKhoanList; let i = index"
+    >
+      <div class="img-item" style="display: flex; gap: 10px">
+        <video
+          *ngIf="a.type === 'video'"
+          [src]="a.url"
+          controls
+          width="200"
+          height="240"
+        >
+          Trình duyệt của bạn không hỗ trợ video.
+        </video>
+        <ng-container *ngIf="isVideo(a.video); else isImage">
+          <video width="200" height="240" controls>
+            <source [src]="a.video" type="video/mp4" />
+          </video>
+        </ng-container>
+
+        <!-- Nếu không phải video, hiển thị ảnh -->
+        <ng-template #isImage>
+          <p-image
+            [src]="a.video"
+            alt="Image"
+            width="220"
+            height="240"
+            [preview]="true"
+          ></p-image>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      justify-items: flex-end;
+      margin-top: 20px;
+    "
+  >
+    <button
+      class="btn btn-primary"
+      style="width: 100%"
+      (click)="visible5 = false"
     >
       Quay lại
     </button>

@@ -1,1 +1,846 @@
-<p>detail-phieu-doi-tra works!</p>
+<div class="all-content" style="padding: 20px">
+  <div class="header">
+    <div
+      class="title"
+      style="
+        font-size: 20px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <div>
+        Chi tiết phiếu đổi trả hoặc hoàn tiền id: {{ data?.phieuDoiTra.id }}
+      </div>
+      <div style="display: flex; gap: 10px">
+        <button class="btn btn-primary" (click)="visible2 = true">
+          Lịch sử thao tác
+        </button>
+        <button class="btn btn-primary" (click)="visible3 = true">
+          Ảnh/video của bên khách hàng
+        </button>
+        <button class="btn btn-primary" (click)="visible4 = true">
+          Ảnh/video của bên cửa hàng (mở gói hàng )
+        </button>
+        <button class="btn btn-primary" (click)="visible5 = true">
+          Ảnh/video của bên cửa hàng (ảnh chuyển khoản )
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="all-content"
+    style="display: flex; width: 100%; gap: 10px; margin-top: 20px"
+  >
+    <div class="left" style="width: 39%">
+      <div
+        class="header"
+        style="display: flex; gap: 20px; flex-direction: column"
+      >
+        <div>> Thông tin phiếu</div>
+        <table>
+          <tbody>
+            <tr>
+              <td>id Phiếu</td>
+              <td>{{ data?.phieuDoiTra.id }}</td>
+            </tr>
+            <tr>
+              <td>Mã phiếu</td>
+              <td>{{ data?.phieuDoiTra.ma }}</td>
+            </tr>
+            <tr>
+              <td>Lý do đổi trả</td>
+              <td>{{ data?.phieuDoiTra.lyDoDoiTra }}</td>
+            </tr>
+            <tr>
+              <td>Phiếu thuộc hóa đơn</td>
+              <td>{{ data?.phieuDoiTra.hoaDonCu.ma }}</td>
+            </tr>
+            <tr>
+              <td>Phiếu hóa đơn mới</td>
+              <td>
+                {{
+                  data?.phieuDoiTra?.hoaDonMoi?.ma
+                    ? data?.phieuDoiTra?.hoaDonMoi?.ma
+                    : "-----"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td>Thể loại đổi trả</td>
+              <td>
+                {{ data?.phieuDoiTra.theLoai === 1 ? "Hoàn tiền" : "Đổi trả" }}
+              </td>
+            </tr>
+            <tr>
+              <td>Trạng thái phiếu</td>
+              <td *ngIf="data?.phieuDoiTra.trangThai === 1">Phiếu khởi tạo</td>
+              <td *ngIf="data?.phieuDoiTra.trangThai === 2">
+                Đợi đơn hàng về và kiểm tra
+              </td>
+              <td *ngIf="data?.phieuDoiTra.trangThai === 3">
+                Cửa hàng đang kiểm tra đơn
+              </td>
+              <td *ngIf="data?.phieuDoiTra.trangThai === 4">
+               {{ data?.phieuDoiTra.theLoai === 1 ? "Khách hàng cập nhật thông tin ngân hàng" : "Khách hàng cập nhật địa chỉ  và tạo hóa đơn"}}
+              </td>
+              <td *ngIf="data?.phieuDoiTra.trangThai === 5">
+                Hoàn thành phiếu
+              </td>
+              <td *ngIf="data?.phieuDoiTra.trangThai === 0">Phiếu đã bị hủy</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 20px">>Sản phẩm đổi</div>
+        <table>
+          <table>
+            <th>Tên sản phẩm</th>
+            <th>Hình ảnh</th>
+            <th>Màu sắc</th>
+            <th>Kích thước</th>
+            <th>Số lượng</th>
+            <tbody>
+              <tr *ngFor="let item of data?.sanPhamDoiTraList">
+                <td>{{ item.sanPham.sanPham.ten }}</td>
+                <td>
+                  <img
+                    [src]="item.sanPham.sanPham.hinhAnh"
+                    alt=""
+                    style="width: 50px; height: 50px"
+                  />
+                </td>
+                <td>
+                  <div
+                    *ngIf="item?.sanPham.mauSac.maMau"
+                    style="height: 20px; width: 90%"
+                    [ngStyle]="{
+                      'background-color': item?.sanPham.mauSac.maMau
+                    }"
+                  ></div>
+                </td>
+                <td>
+                  {{ item.sanPham.kichCo.ten }}
+                </td>
+                <td>
+                  {{ item.soLuong }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </table>
+      </div>
+    </div>
+    <div class="right" style="width: 59%">
+      <div
+        class="doi-xac-nhan-tu-nv"
+        *ngIf="data?.phieuDoiTra.thaoTac === 1"
+        style="
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          font-size: 30px;
+          color: green;
+          font-weight: bolder;
+          text-align: center;
+          margin-top: 20px;
+        "
+      >
+        <div>Nhân viên vui lòng kiểm tra sau đó chấp thuận hoặc Hủy</div>
+        <img
+          style="width: 400px; margin-top: 30px; text-align: center"
+          src="https://symbols.vn/wp-content/uploads/2023/11/Hinh-anh-cho-doi-la-hanh-phuc-che-vui.jpg"
+          alt=""
+        />
+        <div class="action" style="width: 70%; display: flex; gap: 10px">
+          <button
+            class="btn btn-danger"
+            style="width: 100%"
+            (click)="visibaleNoteHuy = true; note = ''"
+          >
+            Hủy
+          </button>
+          <button
+            class="btn btn-primary"
+            style="width: 100%"
+            (click)="xacNhanPhieu()"
+          >
+            Xác nhận
+          </button>
+        </div>
+      </div>
+      <div
+        class="huy-phieu"
+        *ngIf="data?.phieuDoiTra.thaoTac === 0"
+        style="text-align: center"
+      >
+        <span
+          style="
+            font-size: 30px;
+            color: red;
+            font-weight: bolder;
+            text-align: center;
+            margin-top: 20px;
+          "
+        >
+          Phiếu này đã bị hủy do không đủ thuyết phục</span
+        >
+        <img
+          style="width: 400px; margin-top: 30px; text-align: center"
+          src="https://tse4.mm.bing.net/th?id=OIP.fX72xrLMAD1GmU3gyRbjNwHaHa&pid=Api&P=0&h=220"
+          alt=""
+        />
+        <div></div>
+      </div>
+      <div class="buoc-tiep-theo" *ngIf="data?.phieuDoiTra.thaoTac === 2">
+        <div style="width: 100%; display: flex; justify-content: flex-end">
+          <button
+            class="btn btn-danger"
+            (click)="visibaleNoteHuy = true"
+            *ngIf="data?.phieuDoiTra.trangThai !== 5"
+          >
+            Hủy phiếu (nếu có sai phạm)
+          </button>
+        </div>
+        <div
+          class="step-1"
+          *ngIf="data?.phieuDoiTra.trangThai === 1"
+          style="
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+          "
+        >
+          <div style="font-size: 30px; color: green; font-weight: bolder">
+            Vui lòng đợi khách hàng đóng gói và gửi trả sản phẩm
+          </div>
+          <img
+            style="width: 400px; margin-top: 30px; text-align: center"
+            src="https://symbols.vn/wp-content/uploads/2023/11/Hinh-anh-cho-doi-la-hanh-phuc-che-vui.jpg"
+            alt=""
+          />
+          <span style="color: green; font-size: 16px"
+            >khi cửa hàng nhận được sản phẩm sẽ quay video mở gói hàng đảm đảm
+            bảo đúng quy trình</span
+          >
+        </div>
+        <div
+          class="step-2"
+          *ngIf="data?.phieuDoiTra.trangThai === 2"
+          style="
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+          "
+        >
+          <div style="font-size: 30px; color: green; font-weight: bolder">
+            Sau khi gói hàng về với shop thì đến bước kiểm tra
+          </div>
+          <img
+            style="width: 400px; margin-top: 30px; text-align: center"
+            src="https://symbols.vn/wp-content/uploads/2023/11/Hinh-anh-cho-doi-la-hanh-phuc-che-vui.jpg"
+            alt=""
+          />
+          <div>
+            <button class="btn btn-primary" (click)="nextStep()">
+              Đã nhận được gói hàng vào bước kiểm tra
+            </button>
+          </div>
+        </div>
+        <div
+          class="step-2"
+          *ngIf="data?.phieuDoiTra.trangThai === 3"
+          style="
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+          "
+        >
+          <div style="font-size: 30px; color: green; font-weight: bolder">
+            Vui lòng kiểm tra kỹ sản phẩm đồng thời quay video hoặc ảnh để làm
+            bằng chứng !!!
+          </div>
+          <div>
+            <div
+              class="all-item-file-img"
+              style="width: 100%; display: flex; gap: 20px"
+            >
+              <div
+                class="item"
+                *ngFor="let a of hinhAnhList; let i = index"
+                style="display: flex; gap: 10px"
+              >
+                <div class="img-item" style="height: 100px; display: flex">
+                  <img
+                    *ngIf="a.type === 'image'"
+                    [src]="a.url"
+                    alt=""
+                    style="
+                      width: 100%;
+                      height: 100%;
+                      border: 1px solid gray;
+                      border-radius: 20px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                  />
+                  <video *ngIf="a.type === 'video'" [src]="a.url" controls>
+                    Trình duyệt của bạn không hỗ trợ video.
+                  </video>
+                </div>
+              </div>
+              <div class="item">
+                <label
+                  class="uploadimg"
+                  for="upload-file"
+                  style="
+                    width: 100px;
+                    height: 100px;
+                    border: 1px solid gray;
+                    border-radius: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <span>UploadFile</span>
+                </label>
+              </div>
+            </div>
+            <div class="item">
+              <input
+                type="file"
+                id="upload-file"
+                multiple
+                accept="image/*,video/*"
+                style="display: none"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-primary" (click)="nextStepKiemTra()">
+              Xác nhận kiểm tra thành công
+            </button>
+          </div>
+          <span style="color: green; font-size: 16px"
+            >sau khi kiểm tra có thể hủy hoặc cập nhật bước tiếp theo
+          </span>
+        </div>
+        <div
+          class="step-4"
+          style="
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+          "
+          *ngIf="data?.phieuDoiTra.trangThai === 4"
+        >
+          <div
+            *ngIf="data?.phieuDoiTra.theLoai === 1"
+            style="
+              align-items: center;
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              text-align: center;
+              margin-top: 20px;
+            "
+          >
+            <div *ngIf="data?.phieuDoiTra.soTaiKhoanNganHang">
+              <table>
+                <tr>
+                  <th style="padding: 10px">Số tài khoản</th>
+                  <th style="padding: 10px">Ngân hàng</th>
+                  <th style="padding: 10px">Tên chủ tài khoản</th>
+                </tr>
+                <tbody>
+                  <tr>
+                    <td>{{ data.phieuDoiTra.soTaiKhoanNganHang }}</td>
+                    <td>{{ data.phieuDoiTra.tenNganHang }}</td>
+                    <td>{{ data.phieuDoiTra.tenChuTaiKhoan }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="!data?.phieuDoiTra.soTaiKhoanNganHang">
+              <div style="font-size: 30px; color: green; font-weight: bolder">
+                Vui lòng đọi khách hàng cập nhật thông tin giao hàng hoặc ra cửa
+                hàng gần nhất để hoàn tiền !!!
+              </div>
+            </div>
+            <div>
+              <div
+                class="all-item-file-img"
+                style="width: 100%; display: flex; gap: 20px"
+              >
+                <div
+                  class="item"
+                  *ngFor="let a of hinhAnhList; let i = index"
+                  style="display: flex; gap: 10px"
+                >
+                  <div class="img-item" style="height: 100px; display: flex">
+                    <img
+                      *ngIf="a.type === 'image'"
+                      [src]="a.url"
+                      alt=""
+                      style="
+                        width: 100%;
+                        height: 100%;
+                        border: 1px solid gray;
+                        border-radius: 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    />
+                    <video *ngIf="a.type === 'video'" [src]="a.url" controls>
+                      Trình duyệt của bạn không hỗ trợ video.
+                    </video>
+                  </div>
+                </div>
+                <div class="item">
+                  <label
+                    class="uploadimg"
+                    for="upload-file"
+                    style="
+                      width: 100px;
+                      height: 100px;
+                      border: 1px solid gray;
+                      border-radius: 20px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                  >
+                    <span>UploadFile</span>
+                  </label>
+                </div>
+              </div>
+              <div class="item">
+                <input
+                  type="file"
+                  id="upload-file"
+                  multiple
+                  accept="image/*,video/*"
+                  style="display: none"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 40px">
+              <button class="btn btn-primary" (click)="nhanTientaiQuay()">
+                Hoàn thành nhận tiền (khách hàng được hoàn tại cửa hàng)
+              </button>
+              <button class="btn btn-primary" (click)="addAnhThanhToan()" *ngIf="data?.phieuDoiTra.soTaiKhoanNganHang">Đẩy ảnh thanh toán lên</button>
+            </div>
+          </div>
+          <div
+            *ngIf="data?.phieuDoiTra.theLoai === 2"
+            style="
+              align-items: center;
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              text-align: center;
+              margin-top: 20px;
+            "
+          >
+            <div style="font-size: 30px; color: green; font-weight: bolder">
+              Vui lòng đợi khách hàng tạo hóa đơn đổi trả 
+            </div>
+            <img
+              style="width: 400px; margin-top: 30px; text-align: center"
+              src="https://symbols.vn/wp-content/uploads/2023/11/Hinh-anh-cho-doi-la-hanh-phuc-che-vui.jpg"
+              alt=""
+            />
+            <span style="color: green; font-size: 16px"
+              ></span
+            >
+          </div>
+        </div>
+        <div class="step-5" *ngIf="data?.phieuDoiTra.trangThai === 5">
+          <div *ngIf="data?.phieuDoiTra.theLoai === 1">
+            <div
+              class="title"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+              "
+            >
+              <div style="font-size: 32px; color: gray; font-weight: bold">
+                Đã hoàn tiền thành công
+              </div>
+              <div style="font-weight: bold">chúc bạn 1 ngày tốt lành</div>
+              <img
+                style="width: 400px"
+                src="https://www.invert.vn/media/uploads/uploads/2022/12/07224530-2.jpeg"
+                alt=""
+              />
+            </div>
+          </div>
+          <div *ngIf="data?.phieuDoiTra.theLoai === 2">
+            <div
+              class="dialog"
+              style="
+                width: 100%;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                justify-content: space-between;
+                text-align: center;
+                align-items: center;
+              "
+            >
+              <img
+                style="width: 200px; text-align: center"
+                src="https://s3-sgn10.fptcloud.com/fsel/Images/State_6958_1732084682054.png"
+                alt=""
+              />
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+                  gap: 10px;
+                "
+              >
+                <div class="title" style="font-size: 32px; font-weight: 600">
+                  Hoàn thành phiếu
+                </div>
+                <div
+                  class="sub-title"
+                  *ngIf="data.phieuDoiTra && data.phieuDoiTra.hoaDonMoi"
+                >
+                  Đây là mã hóa đơn mới của bạn :{{
+                    data.phieuDoiTra.hoaDonMoi?.id
+                  }}
+                </div>
+              </div>
+              <img
+                style="width: 40%"
+                src="https://ss-images.saostar.vn/wp700/pc/1603420406132/photo-1-1603252079197228812157.jpg"
+                alt=""
+              />
+              <div>
+                Nếu có thắc mắc hãy liên hệ nhân viên chúng tôi qua phần nhắn
+                tin !
+              </div>
+              <div style="width: 70%; display: flex; gap: 20px">
+                <button
+                  class="btn btn-primary"
+                  style="width: 100%"
+                  (click)="goto()"
+                >
+                  Đi đến hóa đơn
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog
+  header="Bạn đã nhận được tiền ?"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+>
+  <div style="width: 100%; display: flex; gap: 20px; justify-items: flex-end">
+    <button
+      class="btn btn-primary"
+      style="width: 100%"
+      (click)="visible = false"
+    >
+      Quay lại
+    </button>
+    <button
+      class="btn btn-primary"
+      style="width: 100%"
+      (click)="visible = false; nextStep()"
+    >
+      Đẫ nhận đủ
+    </button>
+  </div>
+</p-dialog>
+<p-dialog
+  header="ghi chú"
+  [(visible)]="visibaleNoteHuy"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+>
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      justify-items: flex-end;
+      flex-direction: column;
+    "
+  >
+    <textarea name="" id="" rows="10" [(ngModel)]="note"></textarea>
+    <div style="width: 100%; display: flex; gap: 10px">
+      <button
+        class="btn btn-primary"
+        style="width: 100%"
+        (click)="visible = false"
+      >
+        Quay lại
+      </button>
+      <button (click)="huyPhieu()" class="btn btn-primary" style="width: 100%">
+        Xác nhận hủy
+      </button>
+    </div>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Ảnh và video của bạn !"
+  [(visible)]="visible3"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <div style="margin-top: 20px">>Ảnh,video của khách hàng</div>
+  <div style="width: 100%; display: flex; flex-wrap: wrap; gap: 10px">
+    <div
+      class="item"
+      *ngFor="let a of data?.khachHangDoiTraThongTinList; let i = index"
+    >
+      <div class="img-item" style="display: flex; gap: 10px">
+        <video *ngIf="a.type === 'video'" [src]="a.url" controls>
+          Trình duyệt của bạn không hỗ trợ video.
+        </video>
+        <ng-container *ngIf="isVideo(a.video); else isImage">
+          <video width="200" height="240" controls>
+            <source [src]="a.video" type="video/mp4" />
+          </video>
+        </ng-container>
+
+        <!-- Nếu không phải video, hiển thị ảnh -->
+        <ng-template #isImage>
+          <p-image
+            [src]="a.video"
+            alt="Image"
+            width="220"
+            height="240"
+            [preview]="true"
+          ></p-image>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      justify-items: flex-end;
+      margin-top: 20px;
+    "
+  >
+    <button
+      class="btn btn-primary"
+      style="width: 100%"
+      (click)="visibaleNoteHuy = false"
+    >
+      Quay lại
+    </button>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Ảnh và video của cửa hàng (mở hàng)!"
+  [(visible)]="visible4"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <div style="margin-top: 20px">
+    
+  </div>
+  <div style="width: 100%; display: flex; flex-wrap: wrap; gap: 10px">
+    <div
+      class="item"
+      *ngFor="let a of data?.thongTinKiemTraList; let i = index"
+    >
+      <div class="img-item" style="display: flex; gap: 10px">
+        <video
+          *ngIf="a.type === 'video'"
+          [src]="a.url"
+          controls
+          width="200"
+          height="240"
+        >
+          Trình duyệt của bạn không hỗ trợ video.
+        </video>
+        <ng-container *ngIf="isVideo(a.video); else isImage">
+          <video width="200" height="240" controls>
+            <source [src]="a.video" type="video/mp4" />
+          </video>
+        </ng-container>
+
+        <!-- Nếu không phải video, hiển thị ảnh -->
+        <ng-template #isImage>
+          <p-image
+            [src]="a.video"
+            alt="Image"
+            width="220"
+            height="240"
+            [preview]="true"
+          ></p-image>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      justify-items: flex-end;
+      margin-top: 20px;
+    "
+  >
+    <button
+      class="btn btn-primary"
+      style="width: 100%"
+      (click)="visible4 = false"
+    >
+      Quay lại
+    </button>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Ảnh và video của cửa hàng (chuyển khoản)!"
+  [(visible)]="visible5"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <div style="margin-top: 20px">
+    
+  </div>
+  <div style="width: 100%; display: flex; flex-wrap: wrap; gap: 10px">
+    <div
+      class="item"
+      *ngFor="let a of data?.thongTinCuaHangChuyenKhoanList; let i = index"
+    >
+      <div class="img-item" style="display: flex; gap: 10px">
+        <video
+          *ngIf="a.type === 'video'"
+          [src]="a.url"
+          controls
+          width="200"
+          height="240"
+        >
+          Trình duyệt của bạn không hỗ trợ video.
+        </video>
+        <ng-container *ngIf="isVideo(a.video); else isImage">
+          <video width="200" height="240" controls>
+            <source [src]="a.video" type="video/mp4" />
+          </video>
+        </ng-container>
+
+        <!-- Nếu không phải video, hiển thị ảnh -->
+        <ng-template #isImage>
+          <p-image
+            [src]="a.video"
+            alt="Image"
+            width="220"
+            height="240"
+            [preview]="true"
+          ></p-image>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      justify-items: flex-end;
+      margin-top: 20px;
+    "
+  >
+    <button
+      class="btn btn-primary"
+      style="width: 100%"
+      (click)="visible5 = false"
+    >
+      Quay lại
+    </button>
+  </div>
+</p-dialog>
+<p-dialog
+  header="Lịch sử thao tác"
+  [(visible)]="visible2"
+  [modal]="true"
+  [style]="{ width: '500px', height: '80vh' }"
+>
+  <div
+    style="
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
+    "
+  >
+    <div
+      class="items"
+      style="
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 800px;
+        overflow: auto;
+        padding: 10px;
+      "
+    >
+      <div
+        class="item"
+        *ngFor="let a of data?.thaoTacPhieuDoiTraList"
+        style="
+          padding: 10px 20px;
+          background-color: rgb(227, 218, 218);
+          border-radius: 10px;
+        "
+      >
+        <div class="ngay-tao" style="font-weight: bold">
+          {{ a.ngayTao | date : "dd/MM/yyyy HH:mm:ss" }}
+        </div>
+        <div class="mess">
+          <span>{{ a.ghiChu }}</span>
+        </div>
+      </div>
+    </div>
+    <div style="width: 100%; display: flex; gap: 20px; justify-items: flex-end">
+      <button
+        class="btn btn-primary"
+        style="width: 100%"
+        (click)="visible2 = false"
+      >
+        Quay lại
+      </button>
+    </div>
+  </div>
+</p-dialog>

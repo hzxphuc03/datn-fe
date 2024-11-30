@@ -31,8 +31,58 @@ export class DoiTraService {
       })
     );
   }
+  nhanVienHuyPhieuDoiTra(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/nhan-vien-huy-phieu-doi-tra`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  nhanVienXacNhanPhieuDoiTra(params: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/nhan-vien-xac-nhan-phieu-doi-tra`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
   add(params: any): Observable<any> {
     return this.http.post<any>(`${this.url}/add`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  noteByNhanVien(params: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/nhan-vien-note`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  kiemTraAnhVideoNhanVien(params: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/nhan-vien-kiem-tra-hang`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+  kiemTraAnhVideoBanhChungNhanVien(params: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/nhan-vien-gui-bang-chung-thanh-toan`, params).pipe(
       (res: any) => {
         return res || null;
       },

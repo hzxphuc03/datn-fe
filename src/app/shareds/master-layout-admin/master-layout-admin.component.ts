@@ -5,6 +5,8 @@ import { ErrorTsService } from '../message/error.service';
 import { Subscription } from 'rxjs';
 import { AutoServiceService } from '../auto-service.service';
 import { ChatService } from '../chat/chat.service';
+import { WebsocketService } from '../websocket.service';
+import { DataService } from 'src/app/components/client/services/data.service';
 
 @Component({
   selector: 'app-master-layout-admin',
@@ -89,7 +91,9 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     private router: Router,
     private errorService: ErrorTsService,
     private autoVoucher: AutoServiceService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private websocketService: WebsocketService,
+    private dataService: DataService,
   ) {
     this.checkToken();
   }
@@ -145,6 +149,25 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       .subscribe((message) => {
         this.errorMessage = message;
       });
+
+      this.websocketService
+      .connect()
+      .then(() => {
+        console.log('WebSocket connection established');
+      })
+      .catch((error) => {
+        console.error('Error establishing WebSocket connection', error);
+      });
+      
+      this.websocketService.getStompClient().onConnect = (frame) => {
+        this.websocketService
+          .getStompClient()
+          .subscribe('/topic/notifications', (message) => {
+            console.log(message);
+            
+              this.dataService.updateData('');
+          });
+      };
   }
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {

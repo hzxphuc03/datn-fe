@@ -21,6 +21,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { EditorModule } from 'primeng/editor';
 import { BrowserModule } from '@angular/platform-browser';
+import { ImageModule } from 'primeng/image';
 @NgModule({
   declarations: [fromPagesComponent.pagesComponents],
   imports: [
@@ -43,6 +44,7 @@ import { BrowserModule } from '@angular/platform-browser';
     ButtonModule,
     DialogModule,
     EditorModule,
+    ImageModule
   ],
   exports: [],
   entryComponents: [AddOrDetailComponent],
