@@ -119,4 +119,7 @@ export class QuanLyPhieuDoiTraComponent implements OnInit {
   //     this.getListWords('page');
   //   }
   // }
+  goToDetail(item : any){
+    this.router.navigate([`/auth/admin/doi-tra/${item.id}`]);
+  }
 }

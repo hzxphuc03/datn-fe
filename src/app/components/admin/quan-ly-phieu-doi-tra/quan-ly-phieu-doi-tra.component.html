@@ -22,11 +22,6 @@
         class="table-pagination-item fsel-select fsel-select-xsm"
       ></p-dropdown>
     </div>
-    <div class="add">
-      <button class="btn" (click)="add()">
-        Thêm mới <i class="bx bx-message-square-add"></i>
-      </button>
-    </div>
   </div>
   <div class="content">
     <p-table
@@ -64,7 +59,7 @@
           <td *ngIf="product.trangThai === 5">Hoàn thành phiếu</td>
           <td *ngIf="product.trangThai === 0">Phiếu đã bị hủy</td>
           <td>
-            <button class="btn btn-primary">Xem chi tiết</button>
+            <button class="btn btn-primary" (click)="goToDetail(product)">Xem chi tiết</button>
           </td>
         </tr>
       </ng-template>

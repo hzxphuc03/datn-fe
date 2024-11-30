@@ -304,6 +304,42 @@ export class HomeServoceService {
         })
       );
   }
+  udpateTrangThaiPhieu(params: any): Observable<any> {
+    return this.http
+      .put<any>(`${this.urlDoiTra}/cap-nhat-trang-thai-phieu-doi-tra`,params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
+  craeteNewHoaDonInPhieu(params: any): Observable<any> {
+    return this.http
+      .put<any>(`${this.urlDoiTra}/them-dia-chi-vao-phieu-doi-tra`,params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
+  udpateThongTinNganHang(params: any): Observable<any> {
+    return this.http
+      .put<any>(`${this.urlDoiTra}/thong-tin-chuyen-khoan-phieu-doi-tra`,params)
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
   getTatCaSpCHuaDanhGiaByIdKh(id: any): Observable<any> {
     return this.http.get<any>(`${this.url}/san-pham-chua-danh-gia/${id}`).pipe(
       (res: any) => {
@@ -344,6 +380,18 @@ export class HomeServoceService {
   getHoaDonByIdKH(params: any): Observable<any> {
     return this.http
       .get<any>(`${this.urlHoaDon}/get-hoa-don-by-khach-hang`, { params })
+      .pipe(
+        (res: any) => {
+          return res || null;
+        },
+        catchError((error: any) => {
+          return of(error?.errorJson ? error.errorJson : error.error);
+        })
+      );
+  }
+  getHoaDonByHoanThanhIdKH(params: any): Observable<any> {
+    return this.http
+      .get<any>(`${this.urlHoaDon}/get-hoa-don-hoan-thanh-by-khach-hang`, { params })
       .pipe(
         (res: any) => {
           return res || null;

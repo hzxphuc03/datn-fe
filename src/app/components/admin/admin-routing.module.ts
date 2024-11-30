@@ -131,6 +131,10 @@ const routes: Routes = [
     path: 'doi-tra',
     component: fromPagesComponent.QuanLyPhieuDoiTraComponent,
   },
+  {
+    path: 'doi-tra/:id',
+    component: fromPagesComponent.DetailPhieuDoiTraComponent,
+  },
 ];
 
 @NgModule({

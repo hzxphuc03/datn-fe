@@ -24,6 +24,7 @@ table tr:hover {
 table td:first-child {
   font-weight: bold; /* Đậm nội dung cột đầu tiên */
   color: #555;
+  text-align: left;
 }
 
 table tr:last-child td {
@@ -37,5 +38,19 @@ table td:last-child {
 @media (max-width: 768px) {
   table {
     font-size: 14px; /* Thu nhỏ chữ trên màn hình nhỏ */
+  }
+}
+:host ::ng-deep{
+  .p-dropdown{
+    width: 100%;
+  }
+  textarea{
+    width: 100%;
+  }
+  .p-float-label{
+    width: 100%;
+    input{
+      width: 100%;
+    }
   }
 }

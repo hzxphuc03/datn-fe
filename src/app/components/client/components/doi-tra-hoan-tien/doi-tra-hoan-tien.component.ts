@@ -64,6 +64,7 @@ export class DoiTraHoanTienComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // load lại trang
+        this.getAllDiaChi('rows');
       }
     });
   }

@@ -111,7 +111,7 @@ export class TaoPhieuDoiTraComponent implements OnInit {
     this.spinner.show();
     this.searchQuery.idKhachHang = this.idKhachHang;
     const data = await this.service
-      .getHoaDonByIdKH(this.searchQuery)
+      .getHoaDonByHoanThanhIdKH(this.searchQuery)
       .toPromise();
     if (data) {
       this.getTotalPage(data);
