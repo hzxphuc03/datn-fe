@@ -348,4 +348,16 @@
 .nav-list {
   height: calc(100vh - 155px) !important;
   overflow: auto;
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #2f2c58;
+    border-radius: 7px;
+  }
 }
