@@ -3,6 +3,7 @@ import { NhanVienServiceService } from '../../service/nhan-vien-service.service'
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { ErrorTsService } from 'src/app/shareds/message/error.service';
 
 @Component({
   selector: 'app-nhan-vien',
@@ -23,7 +24,8 @@ export class NhanVienComponent implements OnInit {
     private service: NhanVienServiceService,
     private dialog: MatDialog,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private errorService: ErrorTsService
   ) {}
 
   ngOnInit(): void {

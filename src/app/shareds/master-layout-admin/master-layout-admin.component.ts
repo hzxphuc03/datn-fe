@@ -86,6 +86,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     },
   ];
   idTinNhanVuaXOng: any = 0;
+  nhanVien : any;
   constructor(
     private tokenService: TokenService,
     private router: Router,
@@ -199,6 +200,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         } else {
           this.router.navigate(['/auth/shop/login']);
         }
+        this.nhanVien = a.decoded.user        
       }
     });
     this.auto();

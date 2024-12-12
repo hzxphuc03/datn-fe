@@ -31,7 +31,7 @@ export class AdminHomePageComponent implements OnInit {
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
-    this.originalText = `Chào mừng trở lại ` + decoded.username;
+    this.originalText = `Chào mừng trở lại ` + decoded.user.hoTen;
 
     this.spinner.show();
     setTimeout(() => {

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MauSacServiceService } from '../../service/mau-sac-service.service';
+import { ErrorTsService } from 'src/app/shareds/message/error.service';
 
 @Component({
   selector: 'app-mau-sac-add-or-edit',
@@ -11,7 +12,7 @@ export class MauSacAddOrEditComponent implements OnInit {
   dataDetail: any = {}; 
   @Output() end = new EventEmitter();
   isAdd: boolean = false;
-  constructor(private service: MauSacServiceService) {}
+  constructor(private service: MauSacServiceService , private errorService: ErrorTsService) {}
 
   ngOnInit(): void {
     if (this.dataGet.id) {
@@ -29,13 +30,39 @@ export class MauSacAddOrEditComponent implements OnInit {
   noneClick(event: any) {
     event.stopPropagation();
   }
+  // async addOrUpdate() {
+  //   if (this.dataGet.id) {
+  //     const update = await this.service.update(this.dataDetail).toPromise();
+  //     if (update) {
+  //     }
+  //   } else {
+  //    let  data = {
+  //       id: 0,
+  //       ten: this.dataDetail.ten,
+  //       maMau: this.dataDetail.maMau,
+  //       ngayTao: "2024-10-12T14:12:06.754Z",
+  //       ngaySua: "2024-10-12T14:12:06.754Z",
+  //       trangThai: 1
+  //     } 
+  //     const add = await this.service.add(data).toPromise();
+  //     if (add) {
+  //     }
+  //   }
+  //   this.end.emit('add-or-update');
+  // }
   async addOrUpdate() {
     if (this.dataGet.id) {
       const update = await this.service.update(this.dataDetail).toPromise();
       if (update) {
+        if (update.body.errorCode === 400) {
+          this.errorService.displayError(update.body.messageError, 'error');
+        }else{
+          this.errorService.displayError('Thành công', 'normal');
+          this.end.emit('add-or-update');
+        }
       }
     } else {
-     let  data = {
+      let  data = {
         id: 0,
         ten: this.dataDetail.ten,
         maMau: this.dataDetail.maMau,
@@ -45,8 +72,14 @@ export class MauSacAddOrEditComponent implements OnInit {
       } 
       const add = await this.service.add(data).toPromise();
       if (add) {
+        if (add.body.errorCode === 400) {
+          this.errorService.displayError(add.body.messageError, 'error');
+        }else{
+          this.errorService.displayError('Thành công', 'normal');
+          this.end.emit('add-or-update');
+        }
       }
     }
-    this.end.emit('add-or-update');
+    
   }
 }

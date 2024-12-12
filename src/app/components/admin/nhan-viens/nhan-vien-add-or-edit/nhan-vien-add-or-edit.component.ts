@@ -223,17 +223,28 @@ export class NhanVienAddOrEditComponent implements OnInit {
     if (this.isAdd) {
       const data = await this.service.add(body).toPromise();
       if (data) {
-        this.errorService.displayError('Thêm nhân viên thành công', 'success');
-        this.router.navigate(['/auth/admin/nhan-vien']);
+        if (data.body.errorCode === 400) {
+          this.errorService.displayError(data.body.messageError, 'error');
+          this.spinner.hide();
+        }else{
+          this.errorService.displayError('Thêm nhân viên thành công', 'success');
+          this.router.navigate(['/auth/admin/nhan-vien']);
+        }
+
       }
     } else {
       const data = await this.service.update(body).toPromise();
       if (data) {
-        this.errorService.displayError(
-          'Cập nhật nhân viên thành công',
-          'success'
-        );
-        this.router.navigate(['/auth/admin/nhan-vien']);
+        if (data.body.errorCode === 400) {
+          this.errorService.displayError(data.body.messageError, 'error');
+          this.spinner.hide();
+        }else{
+          this.errorService.displayError(
+            'Cập nhật nhân viên thành công',
+            'success'
+          );
+          this.router.navigate(['/auth/admin/nhan-vien']);
+        }
       }
     }
   }

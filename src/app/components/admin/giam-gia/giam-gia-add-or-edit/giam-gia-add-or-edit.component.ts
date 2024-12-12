@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GiamGiaServiceService } from '../../service/giam-gia-service.service';
+import { ErrorTsService } from 'src/app/shareds/message/error.service';
 
 @Component({
   selector: 'app-giam-gia-add-or-edit',
@@ -12,6 +13,7 @@ export class GiamGiaAddOrEditComponent implements OnInit {
     private matDialogRef: MatDialogRef<GiamGiaAddOrEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data : any,
     private service: GiamGiaServiceService,
+    private errorService: ErrorTsService
   ) { 
     if(data){
       if(data.ngayBatDau ){
@@ -32,7 +34,12 @@ export class GiamGiaAddOrEditComponent implements OnInit {
     if (this.data.id) {
       const update = await this.service.update(this.data).toPromise();
       if (update) {
-        this.matDialogRef.close();
+        if (update.body.errorCode === 400) {
+          this.errorService.displayError(update.body.messageError, 'error');
+        }else{
+          this.errorService.displayError('Cập nhật thành công', 'success');
+          this.matDialogRef.close();
+        }
       }
     } else {
      let dataAdd = {
@@ -47,7 +54,11 @@ export class GiamGiaAddOrEditComponent implements OnInit {
       } 
       const add = await this.service.add(dataAdd).toPromise();
       if (add) {
-        this.matDialogRef.close();
+        if (add.body.errorCode === 400) {
+          this.errorService.displayError(add.body.messageError, 'error');
+        }else{
+          this.matDialogRef.close();
+        }
       }
     }
   }

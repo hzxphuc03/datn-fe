@@ -66,14 +66,24 @@ export class VoucherAddOrEditComponent implements OnInit {
       if (this.isAdd) {
         const data = await this.service.add(body).toPromise();
         if (data) {
-          this.errorService.displayError('Thêm thành công', 'success');
-          this.router.navigate(['/auth/admin/voucher']);
+          if (data.body.errorCode === 400) {
+            this.errorService.displayError(data.body.messageError, 'error');
+          } else{
+            this.errorService.displayError('Thêm thành công', 'success');
+            this.router.navigate(['/auth/admin/voucher']);
+          }
+      
         }
       } else {
         const data = await this.service.update(body).toPromise();
         if (data) {
-          this.errorService.displayError('Cập nhật thành công', 'success');
-          this.router.navigate(['/auth/admin/voucher']);
+          if (data.body.errorCode === 400) {
+            this.errorService.displayError(data.body.messageError, 'error');
+          }else{
+            this.errorService
+            .displayError('Cập nhật thành công', 'success');
+            this.router.navigate(['/auth/admin/voucher']);
+          }
         }
       }
     }

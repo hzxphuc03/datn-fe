@@ -2,12 +2,11 @@
   <div class="logo-details">
     <img
       class="icon"
-      src="../assets/img/logo.png"
-      style="width: 50px"
+      [src]="nhanVien.hinhAnh"
       alt=""
-      style="border-radius: 50%; width: 50px; margin-right: 20px"
+      style="border-radius: 60%; width: 40px;height: 40px; margin-right: 20px"
     />
-    <div class="logo_name"></div>
+    <div class="logo_name">{{nhanVien.hoTen}}</div>
     <i
       style="cursor: pointer"
       class="bx bx-menu"
