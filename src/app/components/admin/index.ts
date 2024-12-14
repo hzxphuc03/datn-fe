@@ -46,6 +46,7 @@ import { VoucherComponent } from './vouchers/voucher/voucher.component';
 import { AddOrEditEventComponent } from './events/add-or-edit-event/add-or-edit-event.component';
 import { QuanLyPhieuDoiTraComponent } from './quan-ly-phieu-doi-tra/quan-ly-phieu-doi-tra.component';
 import { DetailPhieuDoiTraComponent } from './detail-phieu-doi-tra/detail-phieu-doi-tra.component';
+import { ThongKeComponent } from './thong-ke/thong-ke.component';
 
 export const pagesComponents: any[] = [
   AdminHomePageComponent,
@@ -95,6 +96,7 @@ export const pagesComponents: any[] = [
   EventComponent,
   AddOrEditEventComponent,
   QuanLyPhieuDoiTraComponent,
+  ThongKeComponent,
   DetailPhieuDoiTraComponent
 ];
 export * from './admin-home-page/admin-home-page.component';
@@ -144,3 +146,4 @@ export * from './events/event/event.component';
 export * from './events/add-or-edit-event/add-or-edit-event.component';
 export * from './quan-ly-phieu-doi-tra/quan-ly-phieu-doi-tra.component';
 export * from './detail-phieu-doi-tra/detail-phieu-doi-tra.component';
+export * from './thong-ke/thong-ke.component';
