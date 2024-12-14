@@ -1,0 +1,94 @@
+body {
+    display: flex;
+    justify-content: center; // Căn giữa nội dung theo chiều ngang
+    align-items: center; // Căn giữa theo chiều dọc
+    min-height: 100vh; // Chiều cao tối thiểu của body để căn giữa theo chiều dọc
+    margin: 0; // Gạch bỏ margin mặc định
+    background-color: #f0f0f0; // Màu nền cho toàn bộ trang
+}
+
+.title-main {
+    font-size: x-large;
+    font-weight: bold;
+  }
+
+.container {
+    display: flex; // Sử dụng flexbox để căn giữa
+    justify-content: space-between; // Căn giữa các thẻ
+    margin: 20px; // Khoảng cách giữa các container
+    width: 100%; // Để container chiếm toàn bộ chiều rộng
+    max-width: 100%; // Đặt chiều rộng tối đa cho container
+}
+
+.card {
+    background-color: #fff; // Màu nền cho thẻ
+    border: 1px solid #ddd; // Đường viền
+    border-radius: 8px; // Bo góc
+    padding: 20px; // Khoảng cách bên trong
+    flex: 1 1 calc(30% - 20px); // Chiều rộng của thẻ   
+    margin: 10px; // Khoảng cách giữa các thẻ
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Đổ bóng
+
+    // Tùy chọn: Thay đổi kích thước tối đa để thẻ không quá nhỏ
+    min-height: 200px; // Đặt chiều cao tối thiểu cho thẻ
+    max-width: 450px; // Đặt chiều rộng tối đa cho thẻ
+
+    .title {
+        font-size: 1.2em; // Giảm kích thước tiêu đề
+        margin-bottom: 15px; // Khoảng cách dưới tiêu đề
+        font-weight: bold; // Đậm cho tiêu đề
+    }
+
+    .item {
+        font-size: 1.2em; // Kích thước văn bản lớn hơn
+        margin: 5px 0; // Khoảng cách giữa các mục
+    }
+    span {
+        font-size: 1.5em; // Tăng kích thước chữ trong thẻ span
+        font-weight: bold; // Làm cho chữ trong span đậm (tùy chọn)
+    }
+
+    .bold {
+        font-weight: bold; // Đậm cho văn bản
+    }
+}
+
+.container2 {
+    display: grid; // Sử dụng grid để tạo hai hàng
+    // grid-template-columns: 1fr 1fr; // Hai cột
+    gap: 20px; // Khoảng cách giữa các phần tử
+    margin-top: 20px; // Khoảng cách từ container trên
+    padding: 20px; // Khoảng cách bên trong
+    background-color: #f9f9f9; // Màu nền cho container2
+    border-radius: 8px; // Bo góc
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Đổ bóng
+}
+
+.chart {
+    // grid-column: span 2; // Để canvas chiếm toàn bộ chiều rộng của container2
+    display: flex;
+    justify-content: center; // Căn giữa canvas
+    align-items: center; // Căn giữa theo chiều dọc
+    margin-top: 20px; // Khoảng cách từ tiêu đề
+    canvas {
+        width: 100%; // Điều chỉnh chiều rộng của canvas
+        height: 500px; // Đặt chiều cao cố định cho canvas để nó thấp hơn
+        max-width: 70%; // Chiều rộng tối đa cho canvas
+    }
+}
+
+.title {
+    // grid-column: span 2;
+    font-size: 1.5em; // Kích thước tiêu đề
+    margin-bottom: 10px; // Khoảng cách dưới tiêu đề
+    text-align: center; // Căn giữa tiêu đề
+    align-items: center;
+}
+
+.item {
+    font-size: 1em; // Kích thước văn bản
+}
+
+.bold {
+    font-weight: bold; // Đậm cho văn bản
+}

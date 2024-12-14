@@ -135,6 +135,10 @@ const routes: Routes = [
     path: 'doi-tra/:id',
     component: fromPagesComponent.DetailPhieuDoiTraComponent,
   },
+  {
+    path: 'thong-ke',
+    component: fromPagesComponent.ThongKeComponent,
+  },
 ];
 
 @NgModule({

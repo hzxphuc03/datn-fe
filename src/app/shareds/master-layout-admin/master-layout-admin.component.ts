@@ -84,6 +84,11 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       name: 'Đổi trả & hoàn tiền',
       url: '/auth/admin/doi-tra',
     },
+    {
+      icon: 'bx bx-cube',
+      name: 'Thống kê',
+      url: '/auth/admin/thong-ke',
+    },
   ];
   idTinNhanVuaXOng: any = 0;
   nhanVien : any;
