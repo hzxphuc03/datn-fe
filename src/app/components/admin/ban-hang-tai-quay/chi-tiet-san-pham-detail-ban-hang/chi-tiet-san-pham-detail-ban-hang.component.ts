@@ -13,6 +13,7 @@ interface Size {
   soLuong: any;
   giaBan: any;
   hinhAnh: any;
+  trangThai : any;
 }
 
 interface Color {
@@ -111,6 +112,7 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
             soLuong: item.soLuong,
             giaBan: item.giaBan,
             hinhAnh: item.hinhAnh,
+            trangThai : item.trangThai
           });
 
           this.coler.push(coler); // Thêm đối tượng vào mảng
@@ -127,6 +129,7 @@ export class ChiTietSanPhamDetailBanHangComponent implements OnInit {
               soLuong: item.soLuong,
               giaBan: item.giaBan,
               hinhAnh: item.hinhAnh,
+              trangThai : item.trangThai
             });
           }
         }

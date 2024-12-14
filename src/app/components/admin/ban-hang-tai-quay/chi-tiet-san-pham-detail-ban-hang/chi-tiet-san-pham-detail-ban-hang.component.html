@@ -134,6 +134,7 @@
               align-items: center;
             "
             (click)="indexActiveSize = indexSize + 1"
+            [class.disable]="size.trangThai === 0 || size.soLuong === 0"
           >
             {{ size.size }}
           </div>
