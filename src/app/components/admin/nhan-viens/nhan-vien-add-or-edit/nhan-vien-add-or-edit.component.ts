@@ -127,11 +127,11 @@ export class NhanVienAddOrEditComponent implements OnInit {
 
   validateBody() {
     let isDone = true; // Mặc định là hợp lệ
-    if (this.data.ma === '' || this.data.ma === null) {
-      this.errorService.displayError('Mã không được để trống.', 'error');
-      isDone = false;
-      return;
-    }
+    // if (this.data.ma === '' || this.data.ma === null) {
+    //   this.errorService.displayError('Mã không được để trống.', 'error');
+    //   isDone = false;
+    //   return;
+    // }
     if (this.data.hoTen === '' || this.data.hoTen === null) {
       this.errorService.displayError('Họ tên không được để trống.', 'error');
       isDone = false;

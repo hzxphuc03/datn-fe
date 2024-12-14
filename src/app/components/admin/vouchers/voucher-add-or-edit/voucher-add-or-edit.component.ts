@@ -91,15 +91,15 @@ export class VoucherAddOrEditComponent implements OnInit {
   validate() {
     let isDone = true;
     let message = '';
-    if (
-      this.data.ma === null ||
-      this.data.ma === '' ||
-      this.data.ma === undefined
-    ) {
-      isDone = false;
-      this.errorService.displayError('Mã voucher không được để trống', 'error');
-      return isDone;
-    }
+    // if (
+    //   this.data.ma === null ||
+    //   this.data.ma === '' ||
+    //   this.data.ma === undefined
+    // ) {
+    //   isDone = false;
+    //   this.errorService.displayError('Mã voucher không được để trống', 'error');
+    //   return isDone;
+    // }
     if (
       this.data.ten === null ||
       this.data.ten === '' ||
