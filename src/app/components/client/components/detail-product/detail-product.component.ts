@@ -203,6 +203,10 @@ export class DetailProductComponent implements OnInit {
   async addSPToGHCT() {
     this.checkToken();
     const { decoded } = this.tokenService.getToken();
+    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize].trangThai === 0){
+      this.errorService.displayError('Sản phảm đã hết hoặc đã dừng hoạt động', 'error');
+      return;
+    }
     const param = {
       soLuong: this.soLuongBuy,
       idKhachhang: decoded.user.id,
@@ -318,5 +322,14 @@ export class DetailProductComponent implements OnInit {
       this.listPageNumber.push(i);
     }
     return totalPage;
+  }
+  async muaNgay(){
+   await this.addSPToGHCT();
+   const  idSanPhamChiTiet =
+    this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]
+      ?.idSP;
+      this.router.navigate(['/g4/shop/gio-hang'], {
+        queryParams: { activeIdSp: idSanPhamChiTiet }
+      });
   }
 }

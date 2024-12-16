@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MuaHangService } from '../../services/mua-hang.service';
 import { TokenService } from 'src/app/services/token.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DiaChiServiceService } from 'src/app/shareds/dia-chi-service.service';
 import { KhachHangServiceService } from 'src/app/components/admin/service/khach-hang-service.service';
@@ -75,6 +75,7 @@ export class ClinetCardOnlineComponent implements OnInit {
   listVoucherKhanhHang: any;
   voucherHoaDon: any = {};
   voucherVanChuyen: any = {};
+  idActiveSp : any ;
   constructor(
     private service: MuaHangService,
     private tokenService: TokenService,
@@ -85,10 +86,13 @@ export class ClinetCardOnlineComponent implements OnInit {
     private dialog: MatDialog,
     private errorService: ErrorTsService,
     private broadcastService: BroadcastService,
-    private dataService: DataService
+    private dataService: DataService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    const activeIdSp = this.route.snapshot.queryParams['activeIdSp'];
+    this.idActiveSp = +activeIdSp || 0;
     this.broadcastService.data$.subscribe((data) => {
       if (data) {
         // nhận được dữ liệu kho thành toán thành công
@@ -112,7 +116,12 @@ export class ClinetCardOnlineComponent implements OnInit {
     this.getAllDiaChi('rows');
     this.data.phuongThucThanhToan = 3;
     this.getAllVoucher();
-
+    setTimeout(()=>{
+      this.scrollToTopSmooth();
+    },300)
+  }
+  scrollToTopSmooth() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   async getAllDiaChi(type: string, action?: string): Promise<void> {
     // this.spinner.show();
@@ -272,7 +281,13 @@ export class ClinetCardOnlineComponent implements OnInit {
           isShow: true,
         };
       }
-      result[productId].chiTietSanPham.push(item); // Thay đổi ở đây
+      if(this.idActiveSp !== 0){
+        if(this.idActiveSp === item.sanPhamChiTiet.id){
+          item.isChecked = true;
+        }
+      }
+      
+      result[productId].chiTietSanPham.push(item); // Thay đổi ở đây 
     }
 
     return Object.values(result);

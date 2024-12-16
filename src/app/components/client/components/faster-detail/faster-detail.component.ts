@@ -23,6 +23,7 @@ interface Size {
   soLuong: any;
   giaBan: any;
   hinhAnh: any;
+  trangThai : any;
 }
 
 interface Color {
@@ -156,6 +157,7 @@ export class FasterDetailComponent implements OnInit {
             soLuong: item.soLuong,
             giaBan: item.giaBan,
             hinhAnh: item.hinhAnh,
+            trangThai : item.trangThai
           });
 
           this.coler.push(coler); // Thêm đối tượng vào mảng
@@ -172,6 +174,7 @@ export class FasterDetailComponent implements OnInit {
               soLuong: item.soLuong,
               giaBan: item.giaBan,
               hinhAnh: item.hinhAnh,
+              trangThai : item.trangThai
             });
           }
         }
@@ -181,6 +184,10 @@ export class FasterDetailComponent implements OnInit {
   async addSPToGHCT() {
     this.checkToken();
     const { decoded } = this.tokenService.getToken();
+    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize].trangThai === 0){
+      this.errorService.displayError('Sản phảm đã hết hoặc đã dừng hoạt động', 'error');
+      return;
+    }
     const param = {
       soLuong: this.soLuongBuy,
       idKhachhang: decoded.user.id,
@@ -228,4 +235,14 @@ export class FasterDetailComponent implements OnInit {
   slidePrev() {
     this.swiperRef.swiperRef.slidePrev(); // Gọi slidePrev
   }
+  async muaNgay(){
+    await this.addSPToGHCT();
+    this.matDialogRef.close();
+    const  idSanPhamChiTiet =
+     this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]
+       ?.idSP;
+       this.router.navigate(['/g4/shop/gio-hang'], {
+         queryParams: { activeIdSp: idSanPhamChiTiet }
+       });
+   }
 }
