@@ -16,24 +16,50 @@
   </div>
   <ul class="nav-list">
     <li *ngFor="let item of actionNavItems">
+    <div  *ngIf="item.role === 'All'">
       <a [routerLink]="item.url" *ngIf="item.type !== 'drop'">
         <i class="{{ item.icon }}"></i>
         <span class="links_name">{{ item.name }}</span>
       </a>
-      <a
-        *ngIf="item.type === 'drop'"
-        style="cursor: pointer; display: flex; justify-content: space-between"
-        (click)="item.open = !item.open"
-      >
-        <div>
-          <i class="{{ item.icon }}"></i>
-          <span class="links_name" *ngIf="isOpen">{{ item.name }}</span>
-        </div>
-        <div *ngIf="isOpen" class="show-up">
-          <i class="bx bxs-chevron-down" *ngIf="!item.open"></i>
-          <i class="bx bxs-chevron-up" *ngIf="item.open"></i>
-        </div>
+    </div>
+    <div  *ngIf="item.role === 'Admin'">
+      <a [routerLink]="item.url" *ngIf="item.type !== 'drop' && role === 'Admin'">
+        <i class="{{ item.icon }}"></i>
+        <span class="links_name">{{ item.name }}</span>
       </a>
+    </div>
+    <div  *ngIf="item.role === 'Admin'">
+      <a
+      *ngIf="item.type === 'drop' && role === 'Admin'"
+      style="cursor: pointer; display: flex; justify-content: space-between"
+      (click)="item.open = !item.open"
+    >
+      <div>
+        <i class="{{ item.icon }}"></i>
+        <span class="links_name" *ngIf="isOpen">{{ item.name }}</span>
+      </div>
+      <div *ngIf="isOpen" class="show-up">
+        <i class="bx bxs-chevron-down" *ngIf="!item.open"></i>
+        <i class="bx bxs-chevron-up" *ngIf="item.open"></i>
+      </div>
+    </a>
+    </div>
+    <div  *ngIf="item.role === 'All'">
+      <a
+      *ngIf="item.type === 'drop'"
+      style="cursor: pointer; display: flex; justify-content: space-between"
+      (click)="item.open = !item.open"
+    >
+      <div>
+        <i class="{{ item.icon }}"></i>
+        <span class="links_name" *ngIf="isOpen">{{ item.name }}</span>
+      </div>
+      <div *ngIf="isOpen" class="show-up">
+        <i class="bx bxs-chevron-down" *ngIf="!item.open"></i>
+        <i class="bx bxs-chevron-up" *ngIf="item.open"></i>
+      </div>
+    </a>
+    </div>
       <div
         class="option-item-drop"
         *ngIf="item.type === 'drop' && item.open && isOpen"

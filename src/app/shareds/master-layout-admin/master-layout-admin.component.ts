@@ -17,6 +17,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
   isOpen: boolean = true;
   errorMessage: any | null = null; // Đảm bảo kiểu dữ liệu cho phép null
   private errorSubscription?: Subscription;
+  role : any = ''
   actionNavItems: any[] = [
     { icon: 'bx bx-home-circle', name: 'Trang chủ', url: '/auth/admin/home' },
     {
@@ -24,6 +25,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       name: 'Sản phẩm',
       url: '',
       type: 'drop',
+      role : 'All',
       item: [
         {
           icon: 'bx bx-cube',
@@ -41,12 +43,13 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         { icon: 'bx bx-cube', name: 'Loại đế', url: '/auth/admin/loai-de' },
         { icon: 'bx bx-cube', name: 'Vật liệu', url: '/auth/admin/vat-lieu' },
         { icon: 'bx bx-cube', name: 'Màu Sắc', url: '/auth/admin/mau-sac' },
-        { icon: 'bx bx-cube', name: 'Giảm giá', url: '/auth/admin/giam-gia' },
+        { icon: 'bx bx-cube', name: 'Giảm giá', url: '/auth/admin/giam-gia',role:"Admin" },
       ],
     },
     {
       icon: 'bx bx-home-circle',
       name: 'Nhân viên',
+      role : 'Admin',
       url: '',
       type: 'drop',
       item: [
@@ -58,36 +61,43 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       icon: 'bx bx-home-circle',
       name: 'Khách hàng',
       url: '/auth/admin/khach-hang',
+      role : 'Admin',
     },
     {
       icon: 'bx bx-cube',
       name: 'Phiếu giảm giá',
       url: '/auth/admin/voucher',
+      role : 'Admin',
     },
     {
       icon: 'bx bx-cube',
       name: 'Bán hàng',
+      role : 'All',
       url: '/auth/admin/ban-hang-tai-quay',
     },
     {
       icon: 'bx bx-cube',
       name: 'Hóa đơn',
+      role : 'All',
       url: '/auth/admin/quan-ly-hoa-don',
     },
     {
       icon: 'bx bx-cube',
       name: 'Sự kiện',
       url: '/auth/admin/event',
+      role : 'Admin',
     },
     {
       icon: 'bx bx-cube',
       name: 'Đổi trả & hoàn tiền',
       url: '/auth/admin/doi-tra',
+      role : 'All',
     },
     {
       icon: 'bx bx-cube',
       name: 'Thống kê',
       url: '/auth/admin/thong-ke',
+      role : 'Admin',
     },
   ];
   idTinNhanVuaXOng: any = 0;
@@ -193,6 +203,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
           this.router.navigate(['/auth/shop/login']);
           return;
         }
+        this.role = a.decoded.role;
         if (decoded) {
           if (isExpired) {
             this.errorService.displayError(
