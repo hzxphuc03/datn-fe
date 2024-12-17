@@ -184,7 +184,7 @@ export class FasterDetailComponent implements OnInit {
   async addSPToGHCT() {
     this.checkToken();
     const { decoded } = this.tokenService.getToken();
-    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize].trangThai === 0){
+    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1].trangThai === 0){
       this.errorService.displayError('Sản phảm đã hết hoặc đã dừng hoạt động', 'error');
       return;
     }

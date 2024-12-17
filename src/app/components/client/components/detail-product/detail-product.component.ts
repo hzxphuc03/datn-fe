@@ -187,23 +187,25 @@ export class DetailProductComponent implements OnInit {
           }
         }
       });
+      console.log('this.indexActiveColer',this.indexActiveColer);
+      
     }
-    const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
-    if (listSize) {
-      listSize?.some((item, index) => {
-          if (item.trangThai !== 0) {
-              this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
-              return true; // Dừng vòng lặp
-          }
-          return false; // Tiếp tục vòng lặp
-      });
-  }
+    // const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
+  //   if (listSize) {
+  //     listSize?.some((item, index) => {
+  //         if (item.trangThai !== 0) {
+  //             this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
+  //             return true; // Dừng vòng lặp
+  //         }
+  //         return false; // Tiếp tục vòng lặp
+  //     });
+  // }
     
   }
   async addSPToGHCT() {
     this.checkToken();
     const { decoded } = this.tokenService.getToken();
-    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize].trangThai === 0){
+    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]?.trangThai === 0){
       this.errorService.displayError('Sản phảm đã hết hoặc đã dừng hoạt động', 'error');
       return;
     }
