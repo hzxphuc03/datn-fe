@@ -23,7 +23,7 @@ interface Size {
   soLuong: any;
   giaBan: any;
   hinhAnh: any;
-  trangThai : any;
+  trangThai: any;
 }
 
 interface Color {
@@ -45,7 +45,7 @@ export class DetailProductComponent implements OnInit {
   indexActiveColer: number = 1;
   indexActiveSize: number = 1;
   listImg: string[] = [];
-  totalItem : any = 0;
+  totalItem: any = 0;
   public config: SwiperOptions = {
     autoHeight: true,
     spaceBetween: 20,
@@ -67,9 +67,9 @@ export class DetailProductComponent implements OnInit {
   fromMoneny: number = 0;
   toMoneny: number = 0;
   soLuongBuy: number = 1;
-  danhGiaParams : any = {};
-  listData : any[] = [];
-  listPageNumber : any[] = [];
+  danhGiaParams: any = {};
+  listData: any[] = [];
+  listPageNumber: any[] = [];
   private intervalId: any; // Khai báo biến để lưu ID của interval
   constructor(
     private route: ActivatedRoute,
@@ -81,18 +81,18 @@ export class DetailProductComponent implements OnInit {
     private router: Router,
     private gioHangService: MuaHangService,
     private dataService: DataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
       if (this.id) {
-        this.danhGiaParams.idSanPham  = this.id;
+        this.danhGiaParams.idSanPham = this.id;
         this.getAll(this.id);
       }
     });
     this.getListDataDanhGia('rows');;
-    
+
     this.startAutoSlide();
     setTimeout(() => {
       this.scrollToTarget();
@@ -165,7 +165,7 @@ export class DetailProductComponent implements OnInit {
             soLuong: item.soLuong,
             giaBan: item.giaBan,
             hinhAnh: item.hinhAnh,
-            trangThai : item.trangThai
+            trangThai: item.trangThai
           });
 
           this.coler.push(coler); // Thêm đối tượng vào mảng
@@ -174,98 +174,160 @@ export class DetailProductComponent implements OnInit {
           const existingColor = this.coler.find(
             (a: Color) => a.coler === item?.mauSac.maMau
           );
-          if (existingColor) {
-            existingColor?.listSize.push({
+          if (existingColor && existingColor.listSize) {
+            existingColor.listSize.push({
               size: item.kichCo.ten,
               id: item.kichCo.id,
               idSP: item.id,
               soLuong: item.soLuong,
               giaBan: item.giaBan,
               hinhAnh: item.hinhAnh,
-              trangThai : item.trangThai
+              trangThai: item.trangThai
             });
           }
         }
       });
-      console.log('this.indexActiveColer',this.indexActiveColer);
-      
+      console.log('this.indexActiveColer', this.indexActiveColer);
+
+      // Đảm bảo indexActiveSize hợp lệ sau khi load data
+      if (this.coler.length > 0 && this.coler[this.indexActiveColer - 1]?.listSize) {
+        const listSize = this.coler[this.indexActiveColer - 1].listSize;
+        if (listSize && listSize.length > 0) {
+          // Tìm size đầu tiên có trangThai !== 0
+          const firstActiveSize = listSize.findIndex((item: any) => item.trangThai !== 0);
+          if (firstActiveSize !== -1) {
+            this.indexActiveSize = firstActiveSize + 1;
+          } else {
+            this.indexActiveSize = 1;
+          }
+        }
+      }
     }
     // const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
-  //   if (listSize) {
-  //     listSize?.some((item, index) => {
-  //         if (item.trangThai !== 0) {
-  //             this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
-  //             return true; // Dừng vòng lặp
-  //         }
-  //         return false; // Tiếp tục vòng lặp
-  //     });
-  // }
-    
+    //   if (listSize) {
+    //     listSize?.some((item, index) => {
+    //         if (item.trangThai !== 0) {
+    //             this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
+    //             return true; // Dừng vòng lặp
+    //         }
+    //         return false; // Tiếp tục vòng lặp
+    //     });
+    // }
+
   }
-  async addSPToGHCT() {
+  async addSPToGHCT(): Promise<boolean> {
     this.checkToken();
-    const { decoded } = this.tokenService.getToken();
-    if(this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]?.trangThai === 0){
-      this.errorService.displayError('Sản phảm đã hết hoặc đã dừng hoạt động', 'error');
-      return;
+
+    // Get user ID safely
+    const userInfo = this.tokenService.getUserInfo();
+    const userId = userInfo?.id;
+
+    if (!userId) {
+      console.error('❌ Cannot add to cart: No user ID');
+      this.errorService.displayError('Vui lòng đăng nhập để mua hàng', 'error');
+      this.router.navigate(['/g4/shop/login']);
+      return false;
     }
+
+    if (this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]?.trangThai === 0) {
+      this.errorService.displayError('Sản phảm đã hết hoặc đã dừng hoạt động', 'error');
+      return false;
+    }
+
     const param = {
       soLuong: this.soLuongBuy,
-      idKhachhang: decoded.user.id,
+      idKhachhang: userId,
       idSanPhamChiTiet:
         this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]
           ?.idSP,
     };
+
+    console.log('🛒 Adding to cart:', param);
     const data = await this.gioHangService
       .themSanPhamVaoGioHang(param)
       .toPromise();
+
+    console.log('📦 Backend response:', data);
+
     if (data) {
       if (data.body.errorCode === 400) {
+        console.error('❌ Backend error:', data.body.messageError);
         this.errorService.displayError(data.body.messageError, 'error');
+        return false;
       } else {
         this.dataService.updateData('');
         this.errorService.displayError(
           `Thêm vào giỏ hàng thành công`,
           'success'
         );
+        return true;
       }
     }
+    return false;
   }
   checkToken() {
     const isExpired = this.tokenService.isTokenExpired();
-    const { decoded } = this.tokenService.getToken();
+    const userInfo = this.tokenService.getUserInfo();
     const currentUrl = this.router.url;
-    if (decoded) {
-      if (isExpired || decoded.role !== 'KhachHang') {
-        this.tokenService.removeToken();
-        this.router.navigate(['/g4/shop/login'], {
-          queryParams: { backurl: currentUrl },
-        });
-      }
-    } else {
+
+    if (!userInfo || !userInfo.id) {
+      console.log('❌ No user info, redirecting to login');
+      this.tokenService.removeToken();
       this.router.navigate(['/g4/shop/login'], {
         queryParams: { backurl: currentUrl },
       });
+      return;
     }
+
+    if (isExpired) {
+      console.log('⏰ Token expired, redirecting to login');
+      this.tokenService.removeToken();
+      this.router.navigate(['/g4/shop/login'], {
+        queryParams: { backurl: currentUrl },
+      });
+      return;
+    }
+
+    // Check role - support multiple formats
+    const role = userInfo.role;
+    const isCustomer = role === 'KhachHang' ||
+      role === 'KHACH_HANG' ||
+      role === 'khach_hang' ||
+      userInfo.authorities?.includes('ROLE_KHACH_HANG');
+
+    if (!isCustomer) {
+      console.log('❌ Not a customer role:', role);
+      this.tokenService.removeToken();
+      this.router.navigate(['/g4/shop/login'], {
+        queryParams: { backurl: currentUrl },
+      });
+      return;
+    }
+
+    console.log('✅ Token check passed:', { userId: userInfo.id, role });
   }
   slideNext() {
-    this.swiperRef?.swiperRef?.slideNext(); // Gọi slideNext
+    if (this.swiperRef?.swiperRef) {
+      this.swiperRef.swiperRef.slideNext();
+    }
   }
   slidePrev() {
-    this.swiperRef?.swiperRef?.slidePrev(); // Gọi slidePrev
+    if (this.swiperRef?.swiperRef) {
+      this.swiperRef.swiperRef.slidePrev();
+    }
   }
-  change(index : any){
-    this.indexActiveColer =  index;
+  change(index: any) {
+    this.indexActiveColer = index;
     const listSize = this.coler[this.indexActiveColer - 1]?.listSize;
-    if (listSize) {
+    if (listSize && listSize.length > 0) {
       listSize?.some((item, index) => {
-          if (item.trangThai !== 0) {
-              this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
-              return true; // Dừng vòng lặp
-          }
-          return false; // Tiếp tục vòng lặp
+        if (item.trangThai !== 0) {
+          this.indexActiveSize = index + 1; // Gán giá trị cho indexActiveSize
+          return true; // Dừng vòng lặp
+        }
+        return false; // Tiếp tục vòng lặp
       });
-  }
+    }
 
   }
   async getListDataDanhGia(type: string, action?: string): Promise<void> {
@@ -325,13 +387,22 @@ export class DetailProductComponent implements OnInit {
     }
     return totalPage;
   }
-  async muaNgay(){
-   await this.addSPToGHCT();
-   const  idSanPhamChiTiet =
-    this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]
-      ?.idSP;
-      this.router.navigate(['/g4/shop/gio-hang'], {
-        queryParams: { activeIdSp: idSanPhamChiTiet }
-      });
+  async muaNgay() {
+    console.log('🚀 muaNgay() called');
+    const success = await this.addSPToGHCT();
+    console.log('📊 addSPToGHCT result:', success);
+    if (success) {
+      const idSanPhamChiTiet =
+        this.coler[this.indexActiveColer - 1]?.listSize[this.indexActiveSize - 1]
+          ?.idSP;
+      console.log('✅ Navigating to cart with idSP:', idSanPhamChiTiet);
+      
+      // Force navigate using window.location as fallback
+      setTimeout(() => {
+        window.location.href = `/g4/shop/gio-hang?activeIdSp=${idSanPhamChiTiet}`;
+      }, 500);
+    } else {
+      console.error('❌ Failed to add to cart, not navigating');
+    }
   }
 }

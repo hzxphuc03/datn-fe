@@ -19,57 +19,67 @@
         <div class="col-md-6 col-lg-4">
           <div class="login-wrap p-0">
             <h3 class="mb-4 text-center">Bạn đã có tài khoản?</h3>
-            <div action="#" class="signin-form">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="signin-form">
               <div class="form-group">
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Username"
-                  required
-                  [(ngModel)]="username"
+                  placeholder="Email hoặc Số điện thoại"
+                  formControlName="username"
+                  [class.is-invalid]="hasError('username')"
                 />
+                <small *ngIf="hasError('username')" class="text-danger">
+                  {{ getErrorMessage('username') }}
+                </small>
               </div>
-              <div class="form-group">
+              <div class="form-group" style="position: relative;">
                 <input
                   id="password-field"
-                  type="password"
+                  [type]="showPassword ? 'text' : 'password'"
                   class="form-control"
-                  placeholder="Password"
-                  required
-                  [(ngModel)]="password"
+                  placeholder="Mật khẩu"
+                  formControlName="password"
+                  [class.is-invalid]="hasError('password')"
                 />
                 <span
-                  toggle="#password-field"
-                  class="fa fa-fw fa-eye field-icon toggle-password"
+                  (click)="togglePasswordVisibility()"
+                  [class]="showPassword ? 'fa fa-fw fa-eye-slash field-icon toggle-password' : 'fa fa-fw fa-eye field-icon toggle-password'"
+                  style="cursor: pointer;"
                 ></span>
+                <small *ngIf="hasError('password')" class="text-danger">
+                  {{ getErrorMessage('password') }}
+                </small>
               </div>
               <div class="form-group">
                 <button
                   type="submit"
                   class="form-control btn btn-primary submit px-3"
-                  (click)="onSubmit()"
+                  [disabled]="isLoading"
                 >
-                  Sign In
+                  <span *ngIf="!isLoading">Đăng nhập</span>
+                  <span *ngIf="isLoading">
+                    <i class="fa fa-spinner fa-spin"></i> Đang đăng nhập...
+                  </span>
                 </button>
               </div>
               <div class="form-group d-md-flex">
                 <div class="w-50">
-                  <label class="checkbox-wrap checkbox-primary"
-                    >Remember Me
-                    <input type="checkbox" checked />
+                  <label class="checkbox-wrap checkbox-primary">
+                    Ghi nhớ đăng nhập
+                    <input type="checkbox" [(ngModel)]="rememberMe" [ngModelOptions]="{standalone: true}" />
                     <span class="checkmark"></span>
                   </label>
                 </div>
                 <div class="w-50 text-md-right">
-                  <a href="http://localhost:8080/quen-mat-khau/gmail" style="color: #fff">Forgot Password</a>
+                  <a (click)="goToForgotPassword()" style="color: #fff; cursor: pointer;">Quên mật khẩu?</a>
                 </div>
               </div>
-            </div>
-            <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
+            </form>
+            <p class="w-100 text-center">&mdash; Hoặc &mdash;</p>
             <div class="social d-flex text-center">
-              <a href="http://localhost:8080/dang-ky/lay-ma-opt" class="px-2 py-2 mr-md-1 rounded"
-                ><span class="ion-logo-facebook mr-2"></span> Đăng ký</a
-              >
+              <a (click)="goToRegister()" class="px-2 py-2 mr-md-1 rounded" style="cursor: pointer;">
+                <span class="ion-logo-facebook mr-2"></span> Đăng ký tài khoản mới
+              </a>
             </div>
           </div>
         </div>

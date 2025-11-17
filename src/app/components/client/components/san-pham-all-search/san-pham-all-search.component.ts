@@ -137,7 +137,7 @@ export class SanPhamAllSearchComponent implements OnInit {
   }
 }
   async getAllLoaiCo(){
-    const data = await this.service.getAllLoaiDe().toPromise();
+    const data = await this.service.getAllLoaiCo().toPromise();
     if (data) {
      this.listLoaiCo = data.body;
   }

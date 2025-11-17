@@ -117,8 +117,8 @@ export class FormBanHangTaiQuayComponent implements OnInit {
     });
     this.data.khachHang = {};
     const { decoded } = this.tokenService.getToken();
-    if (decoded && decoded?.user.id) {
-      this.searchQuery.idNhanVien = decoded?.user.id;
+    if (decoded && decoded?.["user"]?.id) {
+      this.searchQuery.idNhanVien = decoded?.["user"]?.id;
     }
     this.getListHoaDon('rows');
   }

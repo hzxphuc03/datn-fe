@@ -90,8 +90,8 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
   }
   async nextStep() {
     const { decoded } = this.tokenService.getToken();
-    if (decoded && decoded?.user.id) {
-      this.idNhanVien = decoded?.user.id;
+    if (decoded && decoded?.["user"]?.id) {
+      this.idNhanVien = decoded?.["user"]?.id;
     }
     const response = await this.service
       .nextStepHoaDonStatus({
@@ -128,8 +128,8 @@ export class DetailHoaDonQuanLyComponent implements OnInit {
     }
     this.visible = false;
     const { decoded } = this.tokenService.getToken();
-    if (decoded && decoded?.user.id) {
-      this.idNhanVien = decoded?.user.id;
+    if (decoded && decoded?.["user"]?.id) {
+      this.idNhanVien = decoded?.["user"]?.id;
     }
     const response = await this.service
       .huyHoaDon({

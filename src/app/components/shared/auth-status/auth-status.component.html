@@ -1,0 +1,74 @@
+<div class="auth-status" (clickOutside)="closeUserMenu()">
+  <!-- Authenticated User -->
+  <div *ngIf="isAuthenticated" class="user-menu-container">
+    <div class="user-info" (click)="toggleUserMenu()">
+      <img [src]="getUserAvatar()" [alt]="getUserDisplayName()" class="user-avatar">
+      <div class="user-details">
+        <span class="user-name">{{ getUserDisplayName() }}</span>
+        <span class="user-role">{{ getUserRole() }}</span>
+        <span *ngIf="isTokenExpiringSoon()" class="token-warning">
+          Hết hạn sau: {{ getTimeUntilExpiration() }}
+        </span>
+      </div>
+      <i class="pi pi-chevron-down" [class.rotated]="showUserMenu"></i>
+    </div>
+
+    <!-- User Dropdown Menu -->
+    <div class="user-dropdown" [class.show]="showUserMenu">
+      <div class="dropdown-header">
+        <img [src]="getUserAvatar()" [alt]="getUserDisplayName()" class="dropdown-avatar">
+        <div class="dropdown-user-info">
+          <strong>{{ getUserDisplayName() }}</strong>
+          <small>{{ getUserRole() }}</small>
+        </div>
+      </div>
+      
+      <div class="dropdown-divider"></div>
+      
+      <ul class="dropdown-menu">
+        <li>
+          <a (click)="goToProfile()" class="dropdown-item">
+            <i class="pi pi-user"></i>
+            <span>Thông tin cá nhân</span>
+          </a>
+        </li>
+        
+        <li *ngIf="isCustomer()">
+          <a (click)="goToOrders()" class="dropdown-item">
+            <i class="pi pi-shopping-bag"></i>
+            <span>Đơn hàng của tôi</span>
+          </a>
+        </li>
+        
+        <li>
+          <a (click)="goToSettings()" class="dropdown-item">
+            <i class="pi pi-cog"></i>
+            <span>Cài đặt</span>
+          </a>
+        </li>
+        
+        <div class="dropdown-divider"></div>
+        
+        <li>
+          <a (click)="logout()" class="dropdown-item logout">
+            <i class="pi pi-sign-out"></i>
+            <span>Đăng xuất</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Not Authenticated -->
+  <div *ngIf="!isAuthenticated" class="auth-buttons">
+    <button (click)="login()" class="btn btn-outline">
+      <i class="pi pi-sign-in"></i>
+      <span>Đăng nhập</span>
+    </button>
+    
+    <button (click)="register()" class="btn btn-primary" *ngIf="!router.url.includes('/auth/admin')">
+      <i class="pi pi-user-plus"></i>
+      <span>Đăng ký</span>
+    </button>
+  </div>
+</div>

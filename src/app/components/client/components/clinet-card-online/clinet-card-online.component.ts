@@ -75,7 +75,7 @@ export class ClinetCardOnlineComponent implements OnInit {
   listVoucherKhanhHang: any;
   voucherHoaDon: any = {};
   voucherVanChuyen: any = {};
-  idActiveSp : any ;
+  idActiveSp: any;
   constructor(
     private service: MuaHangService,
     private tokenService: TokenService,
@@ -88,7 +88,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     private broadcastService: BroadcastService,
     private dataService: DataService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const activeIdSp = this.route.snapshot.queryParams['activeIdSp'];
@@ -107,18 +107,27 @@ export class ClinetCardOnlineComponent implements OnInit {
       }
     });
     const { decoded } = this.tokenService.getToken();
-    if (!decoded) {
+    const userInfo = this.tokenService.getUserInfo();
+    
+    console.log('🔐 Cart Auth Check:', { decoded, userInfo });
+    
+    if (!decoded && !userInfo) {
+      console.log('❌ No auth, redirecting to login');
       this.router.navigate(['/g4/shop/login']);
+      return;
     }
-    this.searchQuery.idKhachHang = decoded.user.id;
+    
+    // Ưu tiên lấy từ userInfo
+    this.searchQuery.idKhachHang = userInfo?.id || decoded?.["user"]?.id;
+    console.log('✅ Cart loaded for user:', this.searchQuery.idKhachHang);
     this.getGioHang();
     this.getAllTinhThanh();
     this.getAllDiaChi('rows');
     this.data.phuongThucThanhToan = 3;
     this.getAllVoucher();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.scrollToTopSmooth();
-    },300)
+    }, 300)
   }
   scrollToTopSmooth() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -153,8 +162,13 @@ export class ClinetCardOnlineComponent implements OnInit {
     if (data) {
       this.getTotalPage(data);
       this.listData = data.item;
-      const dataDiaChi = this.listData.find((item : any) => item.macDinh);
-      this.useLocation(dataDiaChi);
+      const dataDiaChi = this.listData.find((item: any) => item.macDinh);
+      console.log('🏠 Default address:', dataDiaChi);
+      if (dataDiaChi) {
+        this.useLocation(dataDiaChi);
+      } else {
+        console.warn('⚠️ No default address found');
+      }
       setTimeout(() => {
         this.spinner.hide();
       }, 500);
@@ -227,12 +241,36 @@ export class ClinetCardOnlineComponent implements OnInit {
   async getGioHang() {
     this.checkToken();
     this.spinner.show();
-    const { decoded } = this.tokenService.getToken();
+
+    // Get user ID safely - with retry if userInfo not ready
+    let userInfo = this.tokenService.getUserInfo();
+    let userId = userInfo?.id;
+
+    // Retry once if userInfo not available (might be reconstructing from token)
+    if (!userId) {
+      console.log('⏳ UserInfo not ready, waiting...');
+      await new Promise(resolve => setTimeout(resolve, 100));
+      userInfo = this.tokenService.getUserInfo();
+      userId = userInfo?.id;
+    }
+
+    if (!userId) {
+      console.error('❌ Cannot get cart: No user ID after retry');
+      this.spinner.hide();
+      return;
+    }
+
+    console.log('🛒 Getting cart for user:', userId);
     const data = await this.service
-      .getGoHangByIdKH(decoded.user.id)
+      .getGoHangByIdKH(userId)
       .toPromise();
+    console.log('📦 Cart API response:', data);
+    console.log('📦 Is array?', Array.isArray(data));
+    console.log('📦 Length:', data?.length);
+    
     if (data) {
       this.listGh = data;
+      console.log('✅ Cart items loaded:', this.listGh.length);
       this.dataService.updateData('');
       this.listGh.map((item: any) => {
         // nếu có giảm giá
@@ -252,7 +290,7 @@ export class ClinetCardOnlineComponent implements OnInit {
               item.sanPhamChiTiet.giaBan -
               (item.sanPhamChiTiet.giaBan *
                 item.sanPhamChiTiet.sanPham.giamGia.mucGiam) /
-                100;
+              100;
             item.mucGiam = item.sanPhamChiTiet.sanPham.giamGia.mucGiam;
           }
         } else {
@@ -261,6 +299,9 @@ export class ClinetCardOnlineComponent implements OnInit {
         }
       });
       this.productList = this.groupByProductId(this.listGh);
+      console.log('📋 Product list after grouping:', this.productList);
+      console.log('📊 Current step:', this.currentStep);
+      console.log('🎯 Should show content?', this.currentStep === 1);
       // this.listGh = data;
       this.spinner.hide();
     }
@@ -281,12 +322,12 @@ export class ClinetCardOnlineComponent implements OnInit {
           isShow: true,
         };
       }
-      if(this.idActiveSp !== 0){
-        if(this.idActiveSp === item.sanPhamChiTiet.id){
+      if (this.idActiveSp !== 0) {
+        if (this.idActiveSp === item.sanPhamChiTiet.id) {
           item.isChecked = true;
         }
       }
-      
+
       result[productId].chiTietSanPham.push(item); // Thay đổi ở đây 
     }
 
@@ -297,7 +338,7 @@ export class ClinetCardOnlineComponent implements OnInit {
     const { decoded } = this.tokenService.getToken();
     const currentUrl = this.router.url;
     if (decoded) {
-      if (isExpired || decoded.role !== 'KhachHang') {
+      if (isExpired || decoded.role !== 'KHACH_HANG') {
         this.tokenService.removeToken();
         this.router.navigate(['/g4/shop/login'], {
           queryParams: { backurl: currentUrl },
@@ -327,22 +368,40 @@ export class ClinetCardOnlineComponent implements OnInit {
       }
     });
   }
-  useLocation(item: any) {
-    // chỉ khi có tinhThanh hoặc idQuanHuyen
-    this.data.idTinhThanh = Number(item.idTinhThanh);
-    this.data.tinhThanh = item.tinhThanh;
-    this.data.idPhuongXa = item.idPhuongXa;
-    this.data.quanHuyen = item.quanHuyen;
-    this.data.idQuanHuyen = Number(item.idQuanHuyen);
-    this.getAllPhuongXa(this.data.idQuanHuyen);
-    this.getAllQuanHuyen(this.data.idTinhThanh);
-    this.data.ghiChu = item.ghiChu;
-    this.ghiChu = item.ghiChu;
-    this.data.phuongXa = item.phuongXa;
-    this.errorService.displayError(`Đã sử dụng địa chỉ này`, 'success');
-    this.getShipPrice();
+  useLocation(item: any, showNotification: boolean = false) {
+    try {
+      if (!item) {
+        console.error('❌ Cannot use location: item is undefined');
+        return;
+      }
+
+      if (!item.idTinhThanh && !item.idQuanHuyen) {
+        console.error('❌ Cannot use location: missing idTinhThanh and idQuanHuyen', item);
+        return;
+      }
+
+      // chỉ khi có tinhThanh hoặc idQuanHuyen
+      this.data.idTinhThanh = Number(item.idTinhThanh);
+      this.data.tinhThanh = item.tinhThanh;
+      this.data.idPhuongXa = item.idPhuongXa;
+      this.data.quanHuyen = item.quanHuyen;
+      this.data.idQuanHuyen = Number(item.idQuanHuyen);
+      this.getAllPhuongXa(this.data.idQuanHuyen);
+      this.getAllQuanHuyen(this.data.idTinhThanh);
+      this.data.ghiChu = item.ghiChu;
+      this.ghiChu = item.ghiChu;
+      this.data.phuongXa = item.phuongXa;
+
+      if (showNotification) {
+        this.errorService.displayError(`Đã sử dụng địa chỉ này`, 'success');
+      }
+
+      this.getShipPrice();
+    } catch (error) {
+      console.error('❌ Error in useLocation:', error, 'item:', item);
+    }
   }
-  checkPTGH() {}
+  checkPTGH() { }
   changeTinhThanh() {
     if (this.data.idTinhThanh !== null) {
       this.getAllQuanHuyen(this.data.idTinhThanh);
@@ -402,10 +461,10 @@ export class ClinetCardOnlineComponent implements OnInit {
   }
   useInfoCustumer() {
     const { decoded } = this.tokenService.getToken();
-    this.data.tenNguoiNhan = decoded.user.hoTen;
-    this.data.sdtNguoiNhan = decoded.user.soDienThoai;
+    this.data.tenNguoiNhan = decoded?.["user"].hoTen;
+    this.data.sdtNguoiNhan = decoded?.["user"].soDienThoai;
   }
-  choseOptionThanhToan() {}
+  choseOptionThanhToan() { }
   checkAll(event: any, item: any) {
     event.stopPropagation();
     item.chiTietSanPham.map((a: any) => {

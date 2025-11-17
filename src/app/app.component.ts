@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
     // Gửi thông tin khách hàng khi kết nối 
-    const customer = decoded.user; // Thay thế bằng thông tin thực tế
+    const customer = decoded?.['user']; // Thay thế bằng thông tin thực tế
     this.chatService.registerCustomer(customer);
     // thêm người dùng vào list 
     this.errorSubscription = this.errorService

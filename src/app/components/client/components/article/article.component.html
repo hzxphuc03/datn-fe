@@ -1,0 +1,57 @@
+<div class="blog">
+      <div class="container">
+        <div class="blog-container">
+          <div *ngFor="let post of posts" class="blog-card">
+            <a class="blog-image-link">
+              <img [src]="post.image" [alt]="post.title" class="blog-banner" />
+              <div class="image-overlay"></div>
+            </a>
+
+            <div class="blog-content">
+              <a class="blog-category">{{ post.category }}</a>
+
+              <a class="blog-title-link">
+                <h3 class="blog-title">{{ post.title }}</h3>
+              </a>
+
+              <p class="blog-description">{{ post.content }}</p>
+
+              <div class="blog-meta">
+                <div class="blog-author">
+                  <span class="author-avatar">{{ post.author.charAt(0) }}</span>
+                  <cite class="author-name">{{ post.author }}</cite>
+                </div>
+                <div class="blog-info">
+                  <time class="blog-date" [attr.datetime]="post.dateTime">{{ post.date }}</time>
+                  <span class="read-time">
+                    <svg class="clock-icon" viewBox="0 0 16 16" fill="none">
+                      <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M8 4v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    {{ post.readTime }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="blog-actions">
+                <a class="read-more-btn" (click)="readMore(post.id)">
+                  Đọc thêm
+                  <svg class="arrow-icon" viewBox="0 0 16 16" fill="none">
+                    <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="load-more-section">
+          <button class="load-more-btn" (click)="loadMore()">
+            Xem thêm bài viết
+            <svg class="arrow-icon" viewBox="0 0 16 16" fill="none">
+              <path d="M8 4v8m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>

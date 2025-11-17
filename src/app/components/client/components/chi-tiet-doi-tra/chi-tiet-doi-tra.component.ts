@@ -57,7 +57,7 @@ export class ChiTietDoiTraComponent implements OnInit {
     if (!decoded) {
       this.router.navigate(['/g4/shop/login']);
     }
-    this.searchQuery.idKhachHang = decoded.user.id;
+    this.searchQuery.idKhachHang = decoded?.["user"].id;
     this.getAllDiaChi('rows');
     this.getAllDetailPhieu();
     this.getAllTinhThanh();
@@ -139,8 +139,8 @@ async getAllPhuongXa(id: any) {
 }
 useInfoCustumer() {
   const { decoded } = this.tokenService.getToken();
-  this.data.tenNguoiNhan = decoded.user.hoTen;
-  this.data.sdtNguoiNhan = decoded.user.soDienThoai;
+  this.data.tenNguoiNhan = decoded?.["user"].hoTen;
+  this.data.sdtNguoiNhan = decoded?.["user"].soDienThoai;
 }
 async getAllTinhThanh() {
   this.spinner.show();

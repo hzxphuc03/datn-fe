@@ -53,8 +53,8 @@ export class QuanLyHoaDonComponent implements OnInit {
   idNhanVien: any;
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
-    if (decoded && decoded?.user.id) {
-      this.idNhanVien = decoded?.user.id;
+    if (decoded && decoded?.["user"]?.id) {
+      this.idNhanVien = decoded?.["user"]?.id;
     }
     this.searchQuery.status = this.activeIndex;
     this.getListWords('rows');

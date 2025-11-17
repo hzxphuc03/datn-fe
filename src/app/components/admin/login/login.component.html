@@ -12,20 +12,51 @@
     "
   >
     <h2>Login user</h2>
-    <span class="p-float-label" style="width: 90%">
-      <input id="float-input" type="text" pInputText [(ngModel)]="username" />
-      <label for="float-input">Username</label>
-    </span>
-    <span class="p-float-label" style="width: 90%">
-      <input id="float-input" type="text" pInputText [(ngModel)]="password" />
-      <label for="float-input">Password</label>
-    </span>
-    <button
-      class="btn btn-primary"
-      style="margin-top: 20px; width: 90%"
-      (click)="onSubmit()"
-    >
-      Login now
-    </button>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <span class="p-float-label" style="width: 90%">
+        <input 
+          id="username-input" 
+          type="text" 
+          pInputText 
+          formControlName="username"
+          [class.p-invalid]="hasError('username')"
+        />
+        <label for="username-input">Username</label>
+      </span>
+      <small *ngIf="hasError('username')" class="p-error" style="width: 90%; text-align: left;">
+        {{ getErrorMessage('username') }}
+      </small>
+
+      <span class="p-float-label" style="width: 90%">
+        <input 
+          id="password-input" 
+          [type]="showPassword ? 'text' : 'password'" 
+          pInputText 
+          formControlName="password"
+          [class.p-invalid]="hasError('password')"
+        />
+        <label for="password-input">Password</label>
+        <i 
+          [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'" 
+          (click)="togglePasswordVisibility()"
+          style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
+        ></i>
+      </span>
+      <small *ngIf="hasError('password')" class="p-error" style="width: 90%; text-align: left;">
+        {{ getErrorMessage('password') }}
+      </small>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="margin-top: 20px; width: 90%"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Login now</span>
+        <span *ngIf="isLoading">
+          <i class="pi pi-spin pi-spinner"></i> Đang đăng nhập...
+        </span>
+      </button>
+    </form>
   </div>
 </div>

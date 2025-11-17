@@ -77,7 +77,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   async getAllVoucherToKhachHang() {
     const { decoded } = this.tokenService.getToken();
     const data = await this.service
-      .getAllVoucherByKh(decoded.user.id)
+      .getAllVoucherByKh(decoded?.["user"].id)
       .toPromise();
     if (data && data.body) {
       this.listVoucher = data.body;
@@ -92,7 +92,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     const { decoded } = this.tokenService.getToken();
     const currentUrl = this.router.url;
     if (decoded) {
-      if (isExpired || decoded.role !== 'KhachHang') {
+      if (isExpired || decoded.role !== 'KHACH_HANG') {
         this.tokenService.removeToken();
         this.router.navigate(['/g4/shop/login'], {
           queryParams: { backurl: currentUrl },
@@ -182,7 +182,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     const { decoded } = this.tokenService.getToken();
     const param = {
       chiPhieuGiamGiaSuKien: id,
-      khachHang: decoded.user.id,
+      khachHang: decoded?.["user"].id,
     };
     const data = await this.service.addVoucherEvent(param).toPromise();
     if (data) {

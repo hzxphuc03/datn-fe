@@ -190,7 +190,7 @@ export class FasterDetailComponent implements OnInit {
     }
     const param = {
       soLuong: this.soLuongBuy,
-      idKhachhang: decoded.user.id,
+      idKhachhang: decoded?.["user"].id,
       idSanPhamChiTiet:
         this.coler[this.indexActiveColer - 1].listSize[this.indexActiveSize - 1]
           ?.idSP,
@@ -217,7 +217,7 @@ export class FasterDetailComponent implements OnInit {
     const { decoded } = this.tokenService.getToken();
     const currentUrl = this.router.url;
     if (decoded) {
-      if (isExpired || decoded.role !== 'KhachHang') {
+      if (isExpired || decoded.role !== 'KHACH_HANG') {
         this.tokenService.removeToken();
         this.router.navigate(['/g4/shop/login'], {
           queryParams: { backurl: currentUrl },

@@ -20,6 +20,7 @@ import { VoucherKhachHangComponent } from './components/voucher-khach-hang/vouch
 import { DoiTraHoanTienComponent } from './components/doi-tra-hoan-tien/doi-tra-hoan-tien.component';
 import { TaoPhieuDoiTraComponent } from './components/tao-phieu-doi-tra/tao-phieu-doi-tra.component';
 import { ChiTietDoiTraComponent } from './components/chi-tiet-doi-tra/chi-tiet-doi-tra.component';
+import { ArticleComponent } from  './components/article/article.component'
 
 export const pagesComponents: any[] = [
   HomePageComponent,
@@ -44,6 +45,7 @@ export const pagesComponents: any[] = [
   DoiTraHoanTienComponent,
   TaoPhieuDoiTraComponent,
   ChiTietDoiTraComponent,
+  ArticleComponent
 ];
 
 export * from './components/home-page/home-page.component';
@@ -68,3 +70,4 @@ export * from 'src/app/shareds/chat/chat-admin/chat.component';
 export * from './components/doi-tra-hoan-tien/doi-tra-hoan-tien.component';
 export * from './components/tao-phieu-doi-tra/tao-phieu-doi-tra.component';
 export * from './components/chi-tiet-doi-tra/chi-tiet-doi-tra.component';
+export * from './components/article/article.component'

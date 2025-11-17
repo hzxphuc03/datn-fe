@@ -53,7 +53,7 @@ export class HoaDonTraCucComponent implements OnInit {
     if (a.decoded === null) {
       this.router.navigate(['/g4/shop/login']);
     }
-    if (a.decoded.role !== 'KhachHang') {
+    if (a.decoded?.role !== 'KHACH_HANG') {
       this.tokenService.removeToken();
       this.router.navigate(['/g4/shop/login']);
       return;
@@ -70,7 +70,7 @@ export class HoaDonTraCucComponent implements OnInit {
     } else {
       this.router.navigate(['/g4/shop/login']);
     }
-    this.idKhachHang = decoded.user.id;
+    this.idKhachHang = decoded?.["user"].id;
     this.getListWords('rows');
     this.dataService.data$.subscribe((data: any) => {
       this.getListWords('load');

@@ -61,7 +61,7 @@ export class DetailPhieuDoiTraComponent implements OnInit {
       this.idPhieu = params.get('id');
     });
     const { decoded } = this.tokenService.getToken();
-    this.searchQuery.idNhanVien = decoded.user.id;
+    this.searchQuery.idNhanVien = decoded?.["user"].id;
     this.getAllDetailPhieu();
     
     this.dataService.data$.subscribe((data: any) => {
@@ -123,7 +123,7 @@ export class DetailPhieuDoiTraComponent implements OnInit {
         // Chuyển hướng đến link cụ thể trong tab hiện tại
         // sau khi note xong cập nhật trang thái
         const { decoded } = this.tokenService.getToken();
-        params.ghiChu = `Nhân viên :${decoded.user.hoTen} đã hủy phiếu này , thắc mắc vui lòng liên hệ của hàng`;
+        params.ghiChu = `Nhân viên :${decoded?.["user"].hoTen} đã hủy phiếu này , thắc mắc vui lòng liên hệ của hàng`;
         const update = await this.doiTraService.nhanVienHuyPhieuDoiTra(params).toPromise();
         if(update){
           if (update?.errorCode) {
@@ -243,7 +243,7 @@ async onFileSelected(event: Event) {
           ghiChu : this.note
         }
         const { decoded } = this.tokenService.getToken();
-        params.ghiChu = `Nhân viên :${decoded.user.hoTen} đã xác nhận khách hàng nhạn tiền mặt tại quầy`;
+        params.ghiChu = `Nhân viên :${decoded?.["user"].hoTen} đã xác nhận khách hàng nhạn tiền mặt tại quầy`;
         const note  = await this.doiTraService.noteByNhanVien(params).toPromise();
         if (note) {
           if (note?.errorCode) {
@@ -286,7 +286,7 @@ async onFileSelected(event: Event) {
         ghiChu : this.note
       }
       const { decoded } = this.tokenService.getToken();
-      params.ghiChu = `Nhân viên :${decoded.user.hoTen} đã xác nhận khách hàng nhạn tiền mặt tại quầy`;
+      params.ghiChu = `Nhân viên :${decoded?.["user"].hoTen} đã xác nhận khách hàng nhạn tiền mặt tại quầy`;
       const note  = await this.doiTraService.noteByNhanVien(params).toPromise();
       if (note) {
         if (note?.errorCode) {

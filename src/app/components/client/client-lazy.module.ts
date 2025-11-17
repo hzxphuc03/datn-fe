@@ -23,8 +23,9 @@ import { RatingModule } from 'primeng/rating';
 import { ImageModule } from 'primeng/image';
 import { EditorModule } from 'primeng/editor';
 import {MatStepperModule} from '@angular/material/stepper';
+import { ArticleComponent } from './components/article/article.component';
 @NgModule({
-  declarations: [fromPagesComponent.pagesComponents],
+  declarations: [fromPagesComponent.pagesComponents, ArticleComponent],
   imports: [
     CommonModule,
     FormsModule,

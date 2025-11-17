@@ -7,8 +7,7 @@
     <div class="banner">
       <div class="container">
         <div class="slider-container has-scrollbar" style="position: relative">
-          <div
-            style="
+          <div style="
               position: absolute;
               width: 100%;
               display: flex;
@@ -17,8 +16,7 @@
               z-index: 998;
               font-size: 30px;
               color: #fff;
-            "
-          >
+            ">
             <button (click)="slidePrev()" style="font-size: 40px; color: #fff">
               <i class="bx bx-chevron-left"></i>
             </button>
@@ -31,9 +29,7 @@
               <div class="slider-item">
                 <img
                   src="https://png.pngtree.com/template/20220330/ourlarge/pngtree-national-day-sports-shoes-promotion-rotation-banner-image_907554.jpg"
-                  alt="women's latest fashion sale"
-                  class="banner-img"
-                />
+                  alt="women's latest fashion sale" class="banner-img" />
 
                 <!-- <div class="banner-content">
                   <p class="banner-subtitle">Trending item</p>
@@ -49,10 +45,8 @@
             <ng-template swiperSlide>
               <div class="slider-item">
                 <img
-                  src="https://sneakernews.com/wp-content/uploads/2019/09/ebay-september-2019-jordan-banner-1.jpg"
-                  alt="modern sunglasses"
-                  class="banner-img"
-                />
+                  src="https://png.pngtree.com/template/20220330/ourlarge/pngtree-national-day-sports-shoes-promotion-rotation-banner-image_907554.jpg"
+                  alt="modern sunglasses" class="banner-img" />
 
                 <!-- <div class="banner-content">
                   <p class="banner-subtitle">Trending accessories</p>
@@ -69,9 +63,7 @@
               <div class="slider-item">
                 <img
                   src="https://storage.pixteller.com/designs/designs-images/2020-12-21/05/sport-shoes-sale-banner-1-5fe0c471dbecb.png"
-                  alt="new fashion summer sale"
-                  class="banner-img"
-                />
+                  alt="new fashion summer sale" class="banner-img" />
 
                 <!-- <div class="banner-content">
               <p class="banner-subtitle">Sale Offer</p>
@@ -96,12 +88,7 @@
     <div class="category">
       <div class="container">
         <div class="category-item-container has-scrollbar">
-          <swiper
-            #swiperSlideShowCategory
-            [slidesPerView]="5"
-            [spaceBetween]="10"
-            [loop]="true"
-          >
+          <swiper #swiperSlideShowCategory [slidesPerView]="5" [spaceBetween]="10" [loop]="true">
             <ng-template swiperSlide *ngFor="let item of itemCategory">
               <div class="category-item">
                 <div class="category-img-box">
@@ -142,11 +129,8 @@
 
             <ul class="sidebar-menu-category-list">
               <li class="sidebar-menu-category" *ngFor="let item of allTheLoai">
-                <button
-                  class="sidebar-accordion-menu"
-                  data-accordion-btn
-                  (click)="getTop5SanPhamMoiTheoTheLhoai(item.id)"
-                >
+                <button class="sidebar-accordion-menu" data-accordion-btn
+                  (click)="getTop5SanPhamMoiTheoTheLhoai(item.id)">
                   <div class="menu-title-flex">
                     <i class="bx bx-subdirectory-right"></i>
 
@@ -166,21 +150,10 @@
 
             <div class="showcase-wrapper has-scrollbar">
               <div class="showcase-container">
-                <div
-                  class="showcase"
-                  (click)="goToDetailSanPham(sale.id)"
-                  style="cursor: pointer"
-                  style="cursor: pointer"
-                  *ngFor="let sale of topsTheLoai"
-                >
+                <div class="showcase" (click)="goToDetailSanPham(sale.id)" style="cursor: pointer"
+                  style="cursor: pointer" *ngFor="let sale of topsTheLoai">
                   <a class="showcase-img-box">
-                    <img
-                      [src]="sale.hinhAnh"
-                      alt=""
-                      class="showcase-img"
-                      width="70"
-                      height="70"
-                    />
+                    <img [src]="sale.hinhAnh" alt="" class="showcase-img" width="70" height="70" />
                   </a>
 
                   <div class="showcase-content">
@@ -197,19 +170,19 @@
                     <div class="price-box" *ngIf="sale.isSales">
                       <p class="price">
                         {{
-                          sale.afterSaleLowst
-                            | currency : "VND" : "symbol" : "1.0-0"
+                        sale.afterSaleLowst
+                        | currency : "VND" : "symbol" : "1.0-0"
                         }}
                       </p>
                       <del>{{
                         sale.giaThapNhat | currency : "VND" : "symbol" : "1.0-0"
-                      }}</del>
+                        }}</del>
                     </div>
                     <div class="price-box" *ngIf="!sale.isSales">
                       <p class="price">
                         {{
-                          sale.giaThapNhat
-                            | currency : "VND" : "symbol" : "1.0-0"
+                        sale.giaThapNhat
+                        | currency : "VND" : "symbol" : "1.0-0"
                         }}
                       </p>
                     </div>
@@ -226,27 +199,22 @@
         -->
           <div class="event" *ngIf="isHaveEvent">
             <div class="title" style="border: none; margin-bottom: 0px;display: flex;gap: 10px; align-items: center; ">
-             <span> Sự kiện</span> <div style="background: red;border-radius: 10px;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;color: #fff;" >Hot</div>
+              <span> Sự kiện</span>
+              <div
+                style="background: red;border-radius: 10px;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;color: #fff;">
+                Hot</div>
             </div>
-            <div
-              class="event-title"
-              style="
+            <div class="event-title" style="
                 height: 300px;
                 width: 100%;
                 border: 1px solid gray;
                 border-radius: 12px;
                 margin-bottom: 20px;
-              "
-              (click)="goToSuKien()"
-            >
+              " (click)="goToSuKien()">
               <div style="position: relative; width: 100%; height: 100%">
-                <img class="abc"
-                  src="{{ eventData.hinhAnh }}"
-                  alt=""
-                  style="width: 100%; height: 100%; border-radius: 9px"
-                />
-                <div
-                  style="
+                <img class="abc" src="{{ eventData.hinhAnh }}" alt=""
+                  style="width: 100%; height: 100%; border-radius: 9px" />
+                <div style="
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -256,11 +224,8 @@
                     border-radius: 9px;
                     height: 100%;
                     width: 100%;
-                  "
-                >
-                  <div
-                    class="left"
-                    style="
+                  ">
+                  <div class="left" style="
                       width: 100%;
                       height: 100%;
                       display: flex;
@@ -268,25 +233,17 @@
                       gap: 10px;
                       justify-content: center;
                       padding: 20px;
-                    "
-                  >
+                    ">
                     <div class="sub-title" style="color: #fff; font-size: 26px">
                       {{ eventData.maSuKien }}
                     </div>
-                    <div
-                      class="title1"
-                      style="font-size: 32px; color: #fff; border: none"
-                    >
+                    <div class="title1" style="font-size: 32px; color: #fff; border: none">
                       {{ eventData.tenSuKien }}
                     </div>
-                    <div
-                      class="small-title"
-                      style="color: #fff; font-size: 16px"
-                    >
+                    <div class="small-title" style="color: #fff; font-size: 16px">
                       {{ eventData.moTa }}
                     </div>
-                    <img
-                      style="
+                    <img style="
                           position: absolute;
                           width: 200px;
                           right: -38px;
@@ -295,13 +252,13 @@
                           border-radius: 72%;
                       "
                       src="https://s3-sgn10.fptcloud.com/fsel/Images/pngtreevectorpaintedgoldenbowpngimage_1338635_6752_1731682021887removebgpreview_7513_1731682078914.png"
-                      alt=""
-                    />
+                      alt="" />
                   </div>
                 </div>
-                <div class="" style="cursor: pointer;display: flex;gap: 10px;align-items: center;position: absolute;right: 20px;bottom: 20px;font-size: 15px; color: #fff;">
+                <div class=""
+                  style="cursor: pointer;display: flex;gap: 10px;align-items: center;position: absolute;right: 20px;bottom: 20px;font-size: 15px; color: #fff;">
                   <span> Chi tiết sự kiện </span> <i class='bx bx-right-arrow-alt'></i>
-                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -312,21 +269,10 @@
 
               <div class="showcase-wrapper has-scrollbar">
                 <div class="showcase-container">
-                  <div
-                    class="showcase"
-                    (click)="goToDetailSanPham(sale.id)"
-                    style="cursor: pointer"
-                    style="cursor: pointer"
-                    *ngFor="let sale of topsNew"
-                  >
+                  <div class="showcase" (click)="goToDetailSanPham(sale.id)" style="cursor: pointer"
+                    style="cursor: pointer" *ngFor="let sale of topsNew">
                     <a class="showcase-img-box">
-                      <img
-                        [src]="sale.hinhAnh"
-                        alt=""
-                        class="showcase-img"
-                        width="70"
-                        height="70"
-                      />
+                      <img [src]="sale.hinhAnh" alt="" class="showcase-img" width="70" height="70" />
                     </a>
 
                     <div class="showcase-content">
@@ -343,20 +289,20 @@
                       <div class="price-box" *ngIf="sale.isSales">
                         <p class="price">
                           {{
-                            sale.afterSaleLowst
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          sale.afterSaleLowst
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </p>
                         <del>{{
                           sale.giaThapNhat
-                            | currency : "VND" : "symbol" : "1.0-0"
-                        }}</del>
+                          | currency : "VND" : "symbol" : "1.0-0"
+                          }}</del>
                       </div>
                       <div class="price-box" *ngIf="!sale.isSales">
                         <p class="price">
                           {{
-                            sale.giaThapNhat
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          sale.giaThapNhat
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </p>
                       </div>
@@ -371,23 +317,10 @@
 
               <div class="showcase-wrapper has-scrollbar">
                 <div class="showcase-container">
-                  <div
-                    class="showcase"
-                    (click)="goToDetailSanPham(sale.id)"
-                    style="cursor: pointer"
-                    *ngFor="let sale of topsSell"
-                  >
-                    <a
-                      class="showcase-img-box"
-                      (click)="(sale.isSales != sale.isSales)"
-                    >
-                      <img
-                        [src]="sale.hinhAnh"
-                        alt=""
-                        class="showcase-img"
-                        width="70"
-                        height="70"
-                      />
+                  <div class="showcase" (click)="goToDetailSanPham(sale.id)" style="cursor: pointer"
+                    *ngFor="let sale of topsSell">
+                    <a class="showcase-img-box" (click)="(sale.isSales != sale.isSales)">
+                      <img [src]="sale.hinhAnh" alt="" class="showcase-img" width="70" height="70" />
                     </a>
 
                     <div class="showcase-content">
@@ -402,20 +335,20 @@
                       <div class="price-box" *ngIf="sale.isSales">
                         <p class="price">
                           {{
-                            sale.afterSaleLowst
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          sale.afterSaleLowst
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </p>
                         <del>{{
                           sale.giaThapNhat
-                            | currency : "VND" : "symbol" : "1.0-0"
-                        }}</del>
+                          | currency : "VND" : "symbol" : "1.0-0"
+                          }}</del>
                       </div>
                       <div class="price-box" *ngIf="!sale.isSales">
                         <p class="price">
                           {{
-                            sale.giaThapNhat
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          sale.giaThapNhat
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </p>
                       </div>
@@ -430,23 +363,10 @@
 
               <div class="showcase-wrapper has-scrollbar">
                 <div class="showcase-container">
-                  <div
-                    class="showcase"
-                    (click)="goToDetailSanPham(sale.id)"
-                    style="cursor: pointer"
-                    *ngFor="let sale of topsSale"
-                  >
-                    <a
-                      class="showcase-img-box"
-                      (click)="(sale.isSales != sale.isSales)"
-                    >
-                      <img
-                        [src]="sale.hinhAnh"
-                        alt=""
-                        class="showcase-img"
-                        width="70"
-                        height="70"
-                      />
+                  <div class="showcase" (click)="goToDetailSanPham(sale.id)" style="cursor: pointer"
+                    *ngFor="let sale of topsSale">
+                    <a class="showcase-img-box" (click)="(sale.isSales != sale.isSales)">
+                      <img [src]="sale.hinhAnh" alt="" class="showcase-img" width="70" height="70" />
                     </a>
 
                     <div class="showcase-content">
@@ -461,20 +381,20 @@
                       <div class="price-box" *ngIf="sale.isSales">
                         <p class="price">
                           {{
-                            sale.afterSaleLowst
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          sale.afterSaleLowst
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </p>
                         <del>{{
                           sale.giaThapNhat
-                            | currency : "VND" : "symbol" : "1.0-0"
-                        }}</del>
+                          | currency : "VND" : "symbol" : "1.0-0"
+                          }}</del>
                       </div>
                       <div class="price-box" *ngIf="!sale.isSales">
                         <p class="price">
                           {{
-                            sale.giaThapNhat
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          sale.giaThapNhat
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </p>
                       </div>
@@ -496,12 +416,8 @@
               <div class="showcase-container">
                 <div class="showcase">
                   <div class="showcase-banner">
-                    <img
-                      style="max-height: 400px; border-radius: 5px"
-                      [src]="giamGiaSau?.hinhAnh"
-                      alt="shampoo, conditioner & facewash packs"
-                      class="showcase-img"
-                    />
+                    <img style="max-height: 400px; border-radius: 5px" [src]="giamGiaSau?.hinhAnh"
+                      alt="shampoo, conditioner & facewash packs" class="showcase-img" />
                   </div>
 
                   <div class="showcase-content">
@@ -514,11 +430,7 @@
                     </div> -->
 
                     <a>
-                      <h3
-                        class="showcase-title"
-                        style="cursor: pointer"
-                        (click)="goToDetailSanPham(giamGiaSau.id)"
-                      >
+                      <h3 class="showcase-title" style="cursor: pointer" (click)="goToDetailSanPham(giamGiaSau.id)">
                         {{ giamGiaSau?.ten }}
                       </h3>
                     </a>
@@ -530,25 +442,21 @@
                     <div class="price-box">
                       <p class="price">
                         {{
-                          giamGiaSau?.giaThapNhat -
-                            (giamGiaSau?.giaThapNhat *
-                              giamGiaSau?.giamGia.mucGiam) /
-                              100 | currency : "VND" : "symbol" : "1.0-0"
+                        giamGiaSau?.giaThapNhat -
+                        (giamGiaSau?.giaThapNhat *
+                        giamGiaSau?.giamGia.mucGiam) /
+                        100 | currency : "VND" : "symbol" : "1.0-0"
                         }}
                       </p>
 
-                      <del
-                        >{{
-                          giamGiaSau?.giaThapNhat
-                            | currency : "VND" : "symbol" : "1.0-0"
+                      <del>{{
+                        giamGiaSau?.giaThapNhat
+                        | currency : "VND" : "symbol" : "1.0-0"
                         }}
                       </del>
                     </div>
 
-                    <button
-                      class="add-cart-btn"
-                      (click)="openFasterDialogDetail(giamGiaSau.id)"
-                    >
+                    <button class="add-cart-btn" (click)="openFasterDialogDetail(giamGiaSau.id)">
                       Thêm vào giỏ hàng
                     </button>
 
@@ -607,34 +515,18 @@
             <div class="product-grid">
               <div class="showcase" *ngFor="let item of get12update">
                 <div class="showcase-banner">
-                  <img
-                    style="height: 250px"
-                    [src]="item?.hinhAnh"
-                    alt="Mens Winter Leathers Jackets"
-                    width="300"
-                    class="product-img default"
-                  />
-                  <img
-                    style="height: 240px"
-                    [src]="item?.hinhAnh"
-                    alt="Mens Winter Leathers Jackets"
-                    width="300"
-                    class="product-img hover"
-                  />
+                  <img style="height: 250px" [src]="item?.hinhAnh" alt="Mens Winter Leathers Jackets" width="300"
+                    class="product-img default" />
+                  <img style="height: 240px" [src]="item?.hinhAnh" alt="Mens Winter Leathers Jackets" width="300"
+                    class="product-img hover" />
 
                   <p class="showcase-badge somesong" *ngIf="item.isSales">
                     {{ item.giamGia.mucGiam }}%
                   </p>
-                  <p
-                    class="showcase-badge angle pink"
-                    *ngIf="item.status === 'NEW'"
-                  >
+                  <p class="showcase-badge angle pink" *ngIf="item.status === 'NEW'">
                     new
                   </p>
-                  <p
-                    class="showcase-badge angle black"
-                    *ngIf="item.status === 'SALE'"
-                  >
+                  <p class="showcase-badge angle black" *ngIf="item.status === 'SALE'">
                     sale
                   </p>
 
@@ -643,10 +535,7 @@
                       <ion-icon name="heart-outline"></ion-icon>
                     </button>
 
-                    <button
-                      class="btn-action"
-                      (click)="goToDetailSanPham(item.id)"
-                    >
+                    <button class="btn-action" (click)="goToDetailSanPham(item.id)">
                       <ion-icon name="eye-outline"></ion-icon>
                     </button>
 
@@ -654,22 +543,15 @@
                       <ion-icon name="repeat-outline"></ion-icon>
                     </button> -->
 
-                    <button
-                      class="btn-action"
-                      (click)="openFasterDialogDetail(item.id)"
-                    >
+                    <button class="btn-action" (click)="openFasterDialogDetail(item.id)">
                       <ion-icon name="add-circle-outline"></ion-icon>
                     </button>
                   </div>
                 </div>
 
                 <div class="showcase-content">
-                  <a
-                    class="showcase-category"
-                    style="cursor: pointer"
-                    (click)="goToDetailSanPham(item.id)"
-                    >{{ item.ten }}</a
-                  >
+                  <a class="showcase-category" style="cursor: pointer" (click)="goToDetailSanPham(item.id)">{{ item.ten
+                    }}</a>
 
                   <a>
                     <!-- <h3 class="showcase-title">{{ item.moTa }}</h3> -->
@@ -679,30 +561,29 @@
                     <ion-icon name="star"></ion-icon>
                     <ion-icon name="star"></ion-icon>
                     <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
                     <ion-icon name="star-outline"></ion-icon>
                   </div>
                   <div class="price-box" *ngIf="item.isSales">
                     <p class="price">
                       {{
-                        item?.giaThapNhat -
-                          (item?.giaThapNhat * item?.giamGia.mucGiam) / 100
-                          | currency : "VND" : "symbol" : "1.0-0"
+                      item?.giaThapNhat -
+                      (item?.giaThapNhat * item?.giamGia.mucGiam) / 100
+                      | currency : "VND" : "symbol" : "1.0-0"
                       }}
                     </p>
 
-                    <del
-                      >{{
-                        item?.giaThapNhat
-                          | currency : "VND" : "symbol" : "1.0-0"
+                    <del>{{
+                      item?.giaThapNhat
+                      | currency : "VND" : "symbol" : "1.0-0"
                       }}
                     </del>
                   </div>
                   <div class="price-box" *ngIf="!item.isSales">
                     <p class="price">
                       {{
-                        item?.giaThapNhat
-                          | currency : "VND" : "symbol" : "1.0-0"
+                      item?.giaThapNhat
+                      | currency : "VND" : "symbol" : "1.0-0"
                       }}
                     </p>
                   </div>
@@ -729,27 +610,16 @@
             <h2 class="title">Lời chứng thực</h2>
 
             <div class="testimonial-card">
-              <img
-                src="../assets/img/logo.png"
-                alt="alan doe"
-                class="testimonial-banner"
-                width="80"
-                height="80"
-              />
+              <img src="../assets/img/logo.png" alt="alan doe" class="testimonial-banner" width="80" height="80" />
 
-              <p class="testimonial-name">Nguyễn Khánh Duy</p>
+              <p class="testimonial-name">Phạm Hải Phúc</p>
 
               <p class="testimonial-title">CEO & Founder Invision</p>
 
-              <img
-                src="./assets/images/icons/quotes.svg"
-                alt="quotation"
-                class="quotation-img"
-                width="26"
-              />
+              <img src="./assets/images/icons/quotes.svg" alt="quotation" class="quotation-img" width="26" />
 
               <p class="testimonial-desc">
-                Bản thân nỗi đau phải được theo sau bởi chính nỗi đau.
+                TOP 1 WEB BÁN GIÀY
               </p>
             </div>
           </div>
@@ -759,11 +629,7 @@
         -->
 
           <div class="cta-container">
-            <img
-              src="./assets/images/cta-banner.jpg"
-              alt="summer collection"
-              class="cta-banner"
-            />
+            <img src="./assets/images/cta-banner.jpg" alt="summer collection" class="cta-banner" />
 
             <a class="cta-content">
               <p class="discount">25% Discount</p>
@@ -844,12 +710,8 @@
         <div class="blog-container has-scrollbar">
           <div class="blog-card">
             <a>
-              <img
-                src="./assets/images/blog-1.jpg"
-                alt="Clothes Retail KPIs 2021 Guide for Clothes Executives"
-                width="300"
-                class="blog-banner"
-              />
+              <img src="./assets/images/blog-1.jpg" alt="Clothes Retail KPIs 2021 Guide for Clothes Executives"
+                width="300" class="blog-banner" />
             </a>
 
             <div class="blog-content">
@@ -871,22 +733,16 @@
 
           <div class="blog-card">
             <a>
-              <img
-                src="./assets/images/blog-2.jpg"
-                alt="Curbside fashion Trends: How to Win the Pickup Battle."
-                class="blog-banner"
-                width="300"
-              />
+              <img src="./assets/images/blog-2.jpg" alt="Curbside fashion Trends: How to Win the Pickup Battle."
+                class="blog-banner" width="300" />
             </a>
 
             <div class="blog-content">
               <a class="blog-category">Clothes</a>
 
               <h3>
-                <a class="blog-title"
-                  >Xu hướng thời trang lề đường: Làm thế nào để giành chiến
-                  thắng trong cuộc chiến mua sắm.</a
-                >
+                <a class="blog-title">Xu hướng thời trang lề đường: Làm thế nào để giành chiến
+                  thắng trong cuộc chiến mua sắm.</a>
               </h3>
 
               <p class="blog-meta">
@@ -898,22 +754,16 @@
 
           <div class="blog-card">
             <a>
-              <img
-                src="./assets/images/blog-3.jpg"
-                alt="EBT vendors: Claim Your Share of SNAP Online Revenue."
-                class="blog-banner"
-                width="300"
-              />
+              <img src="./assets/images/blog-3.jpg" alt="EBT vendors: Claim Your Share of SNAP Online Revenue."
+                class="blog-banner" width="300" />
             </a>
 
             <div class="blog-content">
               <a class="blog-category">Shoes</a>
 
               <h3>
-                <a class="blog-title"
-                  >Nhà cung cấp EBT: Nhận phần chia sẻ doanh thu SNAP trực tuyến
-                  của bạn.</a
-                >
+                <a class="blog-title">Nhà cung cấp EBT: Nhận phần chia sẻ doanh thu SNAP trực tuyến
+                  của bạn.</a>
               </h3>
 
               <p class="blog-meta">
@@ -925,22 +775,16 @@
 
           <div class="blog-card">
             <a>
-              <img
-                src="./assets/images/blog-4.jpg"
-                alt="Curbside fashion Trends: How to Win the Pickup Battle."
-                class="blog-banner"
-                width="300"
-              />
+              <img src="./assets/images/blog-4.jpg" alt="Curbside fashion Trends: How to Win the Pickup Battle."
+                class="blog-banner" width="300" />
             </a>
 
             <div class="blog-content">
               <a class="blog-category">Electronics</a>
 
               <h3>
-                <a class="blog-title"
-                  >Xu hướng thời trang lề đường: Làm thế nào để giành chiến
-                  thắng trong cuộc chiến mua sắm.</a
-                >
+                <a class="blog-title">Xu hướng thời trang lề đường: Làm thế nào để giành chiến
+                  thắng trong cuộc chiến mua sắm.</a>
               </h3>
 
               <p class="blog-meta">

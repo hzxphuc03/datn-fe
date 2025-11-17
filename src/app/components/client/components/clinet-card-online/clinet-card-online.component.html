@@ -6,26 +6,17 @@
     <div class="left" style="height: 100%; width: 100%">
       <div class="header-content" style="position: relative; padding-top: 25px">
         <div class="progress" [attr.data-click]="currentStep">
-          <div
-            class="progress-bar"
-            [ngStyle]="{ width: progressWidth + '%' }"
-          ></div>
+          <div class="progress-bar" [ngStyle]="{ width: progressWidth + '%' }"></div>
           <div class="all-step">
             <div class="step" *ngFor="let step of steps; let i = index">
-              <div
-                class="show-step"
-                [class.active-step]="i < currentStep"
-                [pTooltip]="step.title"
-                tooltipPosition="bottom"
-              >
+              <div class="show-step" [class.active-step]="i < currentStep" [pTooltip]="step.title"
+                tooltipPosition="bottom">
                 {{ step.step }}
               </div>
             </div>
           </div>
         </div>
-        <div
-          class="content content-scroll"
-          style="
+        <div class="content content-scroll" style="
             margin-top: 20px;
             display: flex;
             flex-direction: column;
@@ -33,28 +24,20 @@
             height: 800px;
             overflow: auto;
             flex-wrap: nowrap;
-          "
-          *ngIf="currentStep === 1"
-        >
-          <div
-            class="header"
-            style="
+          " *ngIf="currentStep === 1">
+          <div class="header" style="
               font-size: 23px;
               display: flex;
               justify-content: space-between;
               align-items: center;
-            "
-          >
+            ">
             <div>Giỏ hàng chi tiết</div>
             <div style="display: flex; gap: 20px">
               <button class="btn btn-danger" (click)="deleteAll()">
                 Xóa tất cả
               </button>
-              <button
-                class="btn btn-danger"
-                (click)="deleteChose()"
-                *ngIf="this.data.tongTien && this.data.tongTien > 0"
-              >
+              <button class="btn btn-danger" (click)="deleteChose()"
+                *ngIf="this.data.tongTien && this.data.tongTien > 0">
                 Xóa sản phẩm đã chọn
               </button>
             </div>
@@ -63,27 +46,16 @@
             <div class="contents" style="height: 100%; overflow: auto">
               <div class="content-product" *ngFor="let item of productList">
                 <div class="item-header">
-                  <div
-                    class="item"
-                    style="display: flex; align-items: center; gap: 20px"
-                  >
-                    <input
-                      style="height: 20px; width: 20px"
-                      type="checkbox"
-                      [name]="item.sanPham.id"
-                      [(ngModel)]="item.sanPham.isCheckAll"
-                      (change)="checkAll($event, item)"
-                    />
+                  <div class="item" style="display: flex; align-items: center; gap: 20px">
+                    <input style="height: 20px; width: 20px" type="checkbox" [name]="item.sanPham.id"
+                      [(ngModel)]="item.sanPham.isCheckAll" (change)="checkAll($event, item)" />
                   </div>
-                  <div
-                    style="
+                  <div style="
                       display: flex;
                       justify-content: space-between;
                       width: 100%;
                       padding-left: 20px;
-                    "
-                    (click)="item.isShow = !item.isShow"
-                  >
+                    " (click)="item.isShow = !item.isShow">
                     <span> {{ item?.sanPham?.ten }}</span>
                     <div class="icon">
                       <i class="bx bx-caret-down" *ngIf="item.isShow"></i>
@@ -91,10 +63,7 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="all-product-details"
-                  [class.isCloseHeaderProduct]="item.isShow"
-                >
+                <div class="all-product-details" [class.isCloseHeaderProduct]="item.isShow">
                   <table class="product-table">
                     <thead>
                       <tr>
@@ -114,27 +83,17 @@
                     <tbody>
                       <tr *ngFor="let detail of item.chiTietSanPham">
                         <td>
-                          <input
-                            style="height: 20px; width: 20px"
-                            type="checkbox"
-                            [name]="detail.id"
-                            id="something"
-                            [(ngModel)]="detail.isChecked"
-                            (change)="checkDetail($event, item)"
-                          />
+                          <input style="height: 20px; width: 20px" type="checkbox" [name]="detail.id" id="something"
+                            [(ngModel)]="detail.isChecked" (change)="checkDetail($event, item)" />
                         </td>
                         <td>{{ detail.id }}</td>
                         <td>
-                          <img
-                            class="product-image"
-                            [src]="detail.sanPhamChiTiet.hinhAnh"
-                            alt=""
-                          />
+                          <img class="product-image" [src]="detail.sanPhamChiTiet.hinhAnh" alt="" />
                         </td>
                         <td>
                           {{
-                            detail.giaHienHanh
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          detail.giaHienHanh
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </td>
                         <td>
@@ -142,58 +101,40 @@
                         </td>
                         <td>
                           {{
-                            detail.giaDaGiam
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          detail.giaDaGiam
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </td>
                         <td *ngIf="!detail.isEdit">{{ detail.soLuong }}</td>
                         <td *ngIf="detail.isEdit">
-                          <p-inputNumber
-                            [(ngModel)]="detail.changeSoLuong"
-                            [showButtons]="true"
-                            buttonLayout="horizontal"
-                            spinnerMode="vertical"
-                            inputId="vertical"
-                            [min]="0"
-                            decrementButtonClass="p-button-secondary"
-                            incrementButtonClass="p-button-secondary"
-                            incrementButtonIcon="pi pi-plus"
-                            decrementButtonIcon="pi pi-minus"
-                          ></p-inputNumber>
+                          <p-inputNumber [(ngModel)]="detail.changeSoLuong" [showButtons]="true"
+                            buttonLayout="horizontal" spinnerMode="vertical" inputId="vertical" [min]="0"
+                            decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary"
+                            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
                         </td>
                         <td>{{ detail.sanPhamChiTiet.kichCo.ten }}</td>
                         <td>
-                          <div
-                            *ngIf="detail.sanPhamChiTiet.mauSac.maMau"
-                            class="color-swatch"
-                            [ngStyle]="{
+                          <div *ngIf="detail.sanPhamChiTiet.mauSac.maMau" class="color-swatch" [ngStyle]="{
                               'background-color':
                                 detail.sanPhamChiTiet.mauSac.maMau
-                            }"
-                          ></div>
+                            }"></div>
                         </td>
                         <td>
                           {{
-                            detail.soLuong * detail.giaDaGiam
-                              | currency : "VND" : "symbol" : "1.0-0"
+                          detail.soLuong * detail.giaDaGiam
+                          | currency : "VND" : "symbol" : "1.0-0"
                           }}
                         </td>
                         <td *ngIf="!detail.isEdit">
-                          <button
-                            class="btn btn-primary"
-                            (click)="
+                          <button class="btn btn-primary" (click)="
                               detail.isEdit = true;
                               detail.changeSoLuong = detail.soLuong
-                            "
-                          >
+                            ">
                             <i class="bx bx-edit-alt"></i>
                           </button>
                         </td>
                         <td *ngIf="detail.isEdit">
-                          <button
-                            class="btn btn-primary"
-                            (click)="editSoLuong(detail)"
-                          >
+                          <button class="btn btn-primary" (click)="editSoLuong(detail)">
                             <i class="bx bx-check-square"></i>
                           </button>
                         </td>
@@ -205,19 +146,12 @@
             </div>
           </div>
         </div>
-        <div
-          class="content"
-          style="display: flex; flex-direction: column; gap: 5px"
-          *ngIf="currentStep === 2"
-        >
-          <div
-            class="header"
-            style="
+        <div class="content" style="display: flex; flex-direction: column; gap: 5px" *ngIf="currentStep === 2">
+          <div class="header" style="
               display: flex;
               align-items: center;
               justify-content: space-between;
-            "
-          >
+            ">
             <span>Thông tin giao hàng</span>
             <div class="icon">
               <button class="btn btn-primary" (click)="visible = true">
@@ -225,39 +159,23 @@
               </button>
             </div>
           </div>
-          <div
-            class="all-content"
-            style="display: flex; gap: 10px; flex-direction: column"
-          >
+          <div class="all-content" style="display: flex; gap: 10px; flex-direction: column">
             <div class="right">
-              <div
-                class="loaction-option"
-                style="
+              <div class="loaction-option" style="
                   display: flex;
                   flex-direction: column;
                   gap: 10px;
                   width: 100%;
-                "
-              >
-                <div
-                  style="
+                ">
+                <div style="
                     width: 100%;
                     gap: 20px;
                     display: flex;
                     flex-direction: column;
-                  "
-                >
-                  <p-dropdown
-                    [options]="listTinhThanh"
-                    [(ngModel)]="data.idTinhThanh"
-                    optionLabel="ProvinceName"
-                    optionValue="ProvinceID"
-                    [filter]="true"
-                    filterBy="ProvinceName"
-                    [showClear]="true"
-                    placeholder="Chọn tỉnh thành"
-                    (onChange)="changeTinhThanh()"
-                  >
+                  ">
+                  <p-dropdown [options]="listTinhThanh" [(ngModel)]="data.idTinhThanh" optionLabel="ProvinceName"
+                    optionValue="ProvinceID" [filter]="true" filterBy="ProvinceName" [showClear]="true"
+                    placeholder="Chọn tỉnh thành" (onChange)="changeTinhThanh()">
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                       <div class="flex align-items-center gap-2">
                         <div>{{ selectedOption.ProvinceName }}</div>
@@ -269,17 +187,9 @@
                       </div>
                     </ng-template>
                   </p-dropdown>
-                  <p-dropdown
-                    [options]="listQuanHuyen"
-                    [(ngModel)]="data.idQuanHuyen"
-                    optionLabel="DistrictName"
-                    optionValue="DistrictID"
-                    [filter]="true"
-                    filterBy="DistrictName"
-                    [showClear]="true"
-                    placeholder="Chọn quận huyện"
-                    (onChange)="changeQuanHuyen()"
-                  >
+                  <p-dropdown [options]="listQuanHuyen" [(ngModel)]="data.idQuanHuyen" optionLabel="DistrictName"
+                    optionValue="DistrictID" [filter]="true" filterBy="DistrictName" [showClear]="true"
+                    placeholder="Chọn quận huyện" (onChange)="changeQuanHuyen()">
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                       <div class="flex align-items-center gap-2">
                         <div>{{ selectedOption.DistrictName }}</div>
@@ -291,17 +201,9 @@
                       </div>
                     </ng-template>
                   </p-dropdown>
-                  <p-dropdown
-                    [options]="listQuanXa"
-                    [(ngModel)]="data.idPhuongXa"
-                    optionLabel="WardName"
-                    optionValue="WardCode"
-                    [filter]="true"
-                    filterBy="WardName"
-                    [showClear]="true"
-                    placeholder="Chọn phường xã"
-                    (onChange)="changePhuongXa()"
-                  >
+                  <p-dropdown [options]="listQuanXa" [(ngModel)]="data.idPhuongXa" optionLabel="WardName"
+                    optionValue="WardCode" [filter]="true" filterBy="WardName" [showClear]="true"
+                    placeholder="Chọn phường xã" (onChange)="changePhuongXa()">
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                       <div class="flex align-items-center gap-2">
                         <div>{{ selectedOption.WardName }}</div>
@@ -315,100 +217,60 @@
                   </p-dropdown>
                 </div>
                 <span class="p-float-label">
-                  <textarea
-                    pInputText
-                    id="float-input"
-                    variant="filled"
-                    rows="3"
-                    cols="30"
-                    pInputTextarea
-                    [(ngModel)]="data.ghiChu"
-                  ></textarea>
-                  <label for="float-input"
-                    >Ghi chú cụ thể (địa chỉ hoặc ghi chú)</label
-                  >
+                  <textarea pInputText id="float-input" variant="filled" rows="3" cols="30" pInputTextarea
+                    [(ngModel)]="data.ghiChu"></textarea>
+                  <label for="float-input">Ghi chú cụ thể (địa chỉ hoặc ghi chú)</label>
                 </span>
-                <div
-                  class="use-user"
-                  (click)="useInfoCustumer()"
-                  style="
+                <div class="use-user" (click)="useInfoCustumer()" style="
                     cursor: pointer;
                     display: flex;
                     gap: 10px;
                     align-items: center;
                     text-decoration: underline;
-                  "
-                >
+                  ">
                   <a>
                     <i class="bx bx-user-check"></i>
-                    <span>sử dụng thông tin khách hàng</span></a
-                  >
+                    <span>sử dụng thông tin khách hàng</span></a>
                 </div>
-                <div
-                  class="d-flex"
-                  style="
+                <div class="d-flex" style="
                     width: 100%;
                     display: flex;
                     align-items: center;
                     gap: 20px;
                     flex-direction: column;
-                  "
-                >
+                  ">
                   <span class="p-float-label">
-                    <input
-                      id="float-input"
-                      type="text"
-                      pInputText
-                      [(ngModel)]="data.tenNguoiNhan"
-                    />
+                    <input id="float-input" type="text" pInputText [(ngModel)]="data.tenNguoiNhan" />
                     <label for="float-input">Tên người nhận</label>
                   </span>
                   <span class="p-float-label">
-                    <input
-                      id="float-input"
-                      type="text"
-                      pInputText
-                      [(ngModel)]="data.sdtNguoiNhan"
-                    />
+                    <input id="float-input" type="text" pInputText [(ngModel)]="data.sdtNguoiNhan" />
                     <label for="float-input">Số điện thoại người nhận</label>
                   </span>
                 </div>
-                <p-dropdown
-                  [options]="optionPhuongThucThanhToan"
-                  [(ngModel)]="data.phuongThucThanhToan"
-                  optionLabel="title"
-                  optionValue="id"
-                  (onChange)="choseOptionThanhToan()"
-                  placeholder="Chọn phương thức thanh toán"
-                ></p-dropdown>
+                <p-dropdown [options]="optionPhuongThucThanhToan" [(ngModel)]="data.phuongThucThanhToan"
+                  optionLabel="title" optionValue="id" (onChange)="choseOptionThanhToan()"
+                  placeholder="Chọn phương thức thanh toán"></p-dropdown>
               </div>
               <div class="luu-y"></div>
             </div>
           </div>
         </div>
-        <div
-          class="content"
-          style="display: flex; flex-direction: column; gap: 20px"
-          *ngIf="currentStep === 3"
-        >
+        <div class="content" style="display: flex; flex-direction: column; gap: 20px" *ngIf="currentStep === 3">
           <div class="header">Phiếu giảm giá</div>
           <div class="content" style="height: 800px; overflow: auto">
-            <div
-              style="
+            <div style="
                 display: flex;
                 flex-direction: column;
                 gap: 30px;
                 width: 100%;
-              "
-            >
-              <div
-                style="
+              ">
+              <div style="
                   display: flex;
                   flex-direction: column;
                   gap: 20px;
                   width: 100%;
-                "
-              >
+                ">
                 <div>
                   <div style="font-weight: bold">Phiếu giảm giá hóa đơn</div>
                   <div class="small">chỉ được chọn 1</div>
@@ -510,13 +372,9 @@
                   </div>
                 </div> -->
                 <div class="all-voucher">
-                  <div
-                    class="item-vouchers"
-                    [class.check-voucher]="v.isChecked"
-                    *ngFor="let v of listVoucherKhanhHang?.voucherHoaDon"
-                    style="cursor: pointer"
-                    [class.disable]=" !v.isUse || v.soLuong < 1 || !v.sale"
-                  >
+                  <div class="item-vouchers" [class.check-voucher]="v.isChecked"
+                    *ngFor="let v of listVoucherKhanhHang?.voucherHoaDon" style="cursor: pointer"
+                    [class.disable]=" !v.isUse || v.soLuong < 1 || !v.sale">
                     <div class="ball" style="margin-left: -15px">
                       <div class="item-ball"></div>
                     </div>
@@ -525,29 +383,23 @@
                         <div class="title">{{ v.voucher.phanTramGiam }}%</div>
                         <div class="sub-title">Số lượng:{{ v.soLuong }}</div>
                       </div>
-                      <div
-                        class="right"
-                        style="
+                      <div class="right" style="
                           padding: 10px;
                           display: flex;
                           justify-content: center;
                           align-items: center;
-                        "
-                      >
-                        <div
-                          class=""
-                          style="
+                        ">
+                        <div class="" style="
                             display: flex;
                             gap: 10px;
                             flex-direction: column;
                             text-align: start;
                             justify-content: center;
-                          "
-                        >
+                          ">
                           <div>
                             Áp dụng :
                             {{
-                              v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn"
+                            v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn"
                             }}
                           </div>
                           <div>
@@ -555,20 +407,16 @@
                             {{ v.ngayKetThuc | date : "dd/MM/yyyy" }}
                           </div>
                           <div style="display: flex; gap: 5px">
-                            <span
-                              >Giảm từ :
+                            <span>Giảm từ :
                               {{
-                                v.voucher.giaTriGiamToiThieu
-                                  | currency : "VND" : "symbol" : "1.0-0"
-                              }}</span
-                            >
-                            <span
-                              >Giảm tối đa
+                              v.voucher.giaTriGiamToiThieu
+                              | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span>
+                            <span>Giảm tối đa
                               {{
-                                v.voucher.giamToiDa
-                                  | currency : "VND" : "symbol" : "1.0-0"
-                              }}</span
-                            >
+                              v.voucher.giamToiDa
+                              | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span>
                           </div>
                         </div>
                       </div>
@@ -576,46 +424,36 @@
                     <div class="ball" style="margin-right: -15px">
                       <div class="item-ball">
                         <div style="height: 100%;width: 100%;" *ngIf="!v.isChecked">
-                          <button
-                            class="btn"
-                            style="
+                          <button class="btn" style="
                               width: 100%;
                               height: 100%;
                               border: 1px solid gray;
                               border-radius: 50%;
                               margin: 0;
                               padding: 0;
-                            "
-                            (click)="useVoucher(v, 'bill')"
-                          ><i class='bx bx-check-circle'></i></button>
+                            " (click)="useVoucher(v, 'bill')"><i class='bx bx-check-circle'></i></button>
                         </div>
                         <div style="height: 100%;width: 100%;" *ngIf="v.isChecked">
-                          <button
-                            class="btn"
-                            style="
+                          <button class="btn" style="
                               width: 100%;
                               height: 100%;
                               border: 1px solid gray;
                               border-radius: 50%;
                               margin: 0;
                               padding: 0;
-                            "
-                            (click)="useVoucher(v, 'bill')"
-                          ><i class='bx bxs-x-circle'></i></button>
+                            " (click)="useVoucher(v, 'bill')"><i class='bx bxs-x-circle'></i></button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                style="
+              <div style="
                   display: flex;
                   flex-direction: column;
                   gap: 20px;
                   width: 100%;
-                "
-              >
+                ">
                 <div>
                   <div style="font-weight: bold">Phiếu giảm giá vận chuyển</div>
                   <div class="small">chỉ được chọn 1</div>
@@ -717,13 +555,9 @@
                   </div>
                 </div> -->
                 <div class="all-voucher">
-                  <div
-                    class="item-vouchers"
-                    [class.check-voucher]="v.isChecked"
-                    *ngFor="let v of listVoucherKhanhHang?.voucherVanCHuyen"
-                    style="cursor: pointer"
-                    [class.disable]=" !v.isUse || v.soLuong < 1 || !v.sale"
-                  >
+                  <div class="item-vouchers" [class.check-voucher]="v.isChecked"
+                    *ngFor="let v of listVoucherKhanhHang?.voucherVanCHuyen" style="cursor: pointer"
+                    [class.disable]=" !v.isUse || v.soLuong < 1 || !v.sale">
                     <div class="ball" style="margin-left: -15px">
                       <div class="item-ball"></div>
                     </div>
@@ -732,29 +566,23 @@
                         <div class="title">{{ v.voucher.phanTramGiam }}%</div>
                         <div class="sub-title">Số lượng:{{ v.soLuong }}</div>
                       </div>
-                      <div
-                        class="right"
-                        style="
+                      <div class="right" style="
                           padding: 10px;
                           display: flex;
                           justify-content: center;
                           align-items: center;
-                        "
-                      >
-                        <div
-                          class=""
-                          style="
+                        ">
+                        <div class="" style="
                             display: flex;
                             gap: 10px;
                             flex-direction: column;
                             text-align: start;
                             justify-content: center;
-                          "
-                        >
+                          ">
                           <div>
                             Áp dụng :
                             {{
-                              v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn"
+                            v.voucher.theLoai === 1 ? "Vận chuyển" : "Hóa đơn"
                             }}
                           </div>
                           <div>
@@ -762,20 +590,16 @@
                             {{ v.ngayKetThuc | date : "dd/MM/yyyy" }}
                           </div>
                           <div style="display: flex; gap: 5px">
-                            <span
-                              >Giảm từ :
+                            <span>Giảm từ :
                               {{
-                                v.voucher.giaTriGiamToiThieu
-                                  | currency : "VND" : "symbol" : "1.0-0"
-                              }}</span
-                            >
-                            <span
-                              >Giảm tối đa
+                              v.voucher.giaTriGiamToiThieu
+                              | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span>
+                            <span>Giảm tối đa
                               {{
-                                v.voucher.giamToiDa
-                                  | currency : "VND" : "symbol" : "1.0-0"
-                              }}</span
-                            >
+                              v.voucher.giamToiDa
+                              | currency : "VND" : "symbol" : "1.0-0"
+                              }}</span>
                           </div>
                         </div>
                       </div>
@@ -783,32 +607,24 @@
                     <div class="ball" style="margin-right: -15px">
                       <div class="item-ball">
                         <div style="height: 100%;width: 100%;" *ngIf="!v.isChecked">
-                          <button
-                            class="btn"
-                            style="
+                          <button class="btn" style="
                               width: 100%;
                               height: 100%;
                               border: 1px solid gray;
                               border-radius: 50%;
                               margin: 0;
                               padding: 0;
-                            "
-                            (click)="useVoucher(v, 'ship')"
-                          ><i class='bx bx-check-circle'></i></button>
+                            " (click)="useVoucher(v, 'ship')"><i class='bx bx-check-circle'></i></button>
                         </div>
                         <div style="height: 100%;width: 100%;" *ngIf="v.isChecked">
-                          <button
-                            class="btn"
-                            style="
+                          <button class="btn" style="
                               width: 100%;
                               height: 100%;
                               border: 1px solid gray;
                               border-radius: 50%;
                               margin: 0;
                               padding: 0;
-                            "
-                            (click)="useVoucher(v, 'ship')"
-                          ><i class='bx bxs-x-circle'></i></button>
+                            " (click)="useVoucher(v, 'ship')"><i class='bx bxs-x-circle'></i></button>
                         </div>
                       </div>
                     </div>
@@ -830,9 +646,9 @@
               <i class="bx bx-last-page"></i>
               <span>{{
                 data?.tongTien
-                  ? (data?.tongTien | currency : "VND" : "symbol" : "1.0-0")
-                  : (0 | currency : "VND" : "symbol" : "1.0-0")
-              }}</span>
+                ? (data?.tongTien | currency : "VND" : "symbol" : "1.0-0")
+                : (0 | currency : "VND" : "symbol" : "1.0-0")
+                }}</span>
             </div>
           </div>
           <div class="item">
@@ -851,7 +667,7 @@
               </div>
               <span>
                 {{
-                  data.giamGiaVanChuyen | currency : "VND" : "symbol" : "1.0-0"
+                data.giamGiaVanChuyen | currency : "VND" : "symbol" : "1.0-0"
                 }}
               </span>
             </div>
@@ -861,8 +677,8 @@
               </div>
               <span>
                 {{
-                  data.giamGiaHoaDon + data.giamGiaVanChuyen
-                    | currency : "VND" : "symbol" : "1.0-0"
+                data.giamGiaHoaDon + data.giamGiaVanChuyen
+                | currency : "VND" : "symbol" : "1.0-0"
                 }}
               </span>
             </div>
@@ -886,9 +702,9 @@
               </div>
               <span>
                 {{
-                  data.phiShip
-                    ? (data.phiShip | currency : "VND" : "symbol" : "1.0-0")
-                    : (0 | currency : "VND" : "symbol" : "1.0-0")
+                data.phiShip
+                ? (data.phiShip | currency : "VND" : "symbol" : "1.0-0")
+                : (0 | currency : "VND" : "symbol" : "1.0-0")
                 }}
               </span>
             </div>
@@ -899,21 +715,19 @@
               <i class="bx bx-last-page"></i>
               <span>{{
                 data.phuongThucThanhToan === 2
-                  ? "Thanh toán online"
-                  : "Thanh toán khi nhận hàng"
-              }}</span>
+                ? "Thanh toán online"
+                : "Thanh toán khi nhận hàng"
+                }}</span>
             </div>
           </div>
           <div class="item">
             <span>Địa chỉ giao hàng</span>
             <div class="icon">
               <i class="bx bx-last-page"></i>
-              <span
-                >{{ data?.tinhThanh ? data?.tinhThanh : "Chưa chọn" }} ,{{
-                  data?.quanHuyen ? data?.quanHuyen : "Chưa chọn"
+              <span>{{ data?.tinhThanh ? data?.tinhThanh : "Chưa chọn" }} ,{{
+                data?.quanHuyen ? data?.quanHuyen : "Chưa chọn"
                 }}
-                ,{{ data?.phuongXa ? data?.phuongXa : "Chưa chọn" }}</span
-              >
+                ,{{ data?.phuongXa ? data?.phuongXa : "Chưa chọn" }}</span>
             </div>
           </div>
           <div class="item">
@@ -949,12 +763,12 @@
 
               <span>
                 {{
-                  data.tongTien
-                    ? (data.tongTien +
-                        data.phiShip -
-                        (data.giamGiaHoaDon + data.giamGiaVanChuyen)
-                      | currency : "VND" : "symbol" : "1.0-0")
-                    : "-----"
+                data.tongTien
+                ? (data.tongTien +
+                data.phiShip -
+                (data.giamGiaHoaDon + data.giamGiaVanChuyen)
+                | currency : "VND" : "symbol" : "1.0-0")
+                : "-----"
                 }}
               </span>
             </div>
@@ -962,11 +776,7 @@
         </div>
       </div>
       <div class="action">
-        <button
-          class="button back"
-          (click)="prev()"
-          [class.disabled]="currentStep === 1"
-        >
+        <button class="button back" (click)="prev()" [class.disabled]="currentStep === 1">
           <i style="font-size: 37px" class="bx bx-chevron-left"></i>
         </button>
         <div style="width: 100%" *ngIf="currentStep !== steps.length">
@@ -984,50 +794,31 @@
   </div>
 </div>
 <!-- dialog -->
-<p-dialog
-  header="Edit Profile"
-  [modal]="true"
-  [(visible)]="visible"
-  [style]="{ width: '40vw' }"
->
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '40vw' }">
   <div class="left">
     <div style="display: flex; flex-direction: column; gap: 20px">
       <div style="display: flex; width: 100%; justify-content: space-between">
         <div style="display: flex; gap: 20px">
           <span>Thông tin địa chỉ khách hàng</span>
-          <button
-            class="btn btn-primary"
-            (click)="addLocation(); visible = false"
-          >
+          <button class="btn btn-primary" (click)="addLocation(); visible = false">
             <i class="bx bx-location-plus"></i>
           </button>
         </div>
         <div class="table-pagination d-flex">
           <div class="flex-grow-1"></div>
           <div class="d-flex justify-content-center align-items-center">
-            <span
-              (click)="getAllDiaChi('page', 'prev')"
-              class="table-pagination-item btn-prev ml-2"
-            >
+            <span (click)="getAllDiaChi('page', 'prev')" class="table-pagination-item btn-prev ml-2">
               <i class="bx bx-left-arrow-alt"></i>
             </span>
-            <span
-              (click)="getAllDiaChi('page', 'next')"
-              class="table-pagination-item btn-next"
-            >
+            <span (click)="getAllDiaChi('page', 'next')" class="table-pagination-item btn-next">
               <i class="bx bx-right-arrow-alt"></i>
             </span>
           </div>
         </div>
       </div>
 
-      <p-table
-        [value]="listData"
-        [rowHover]="true"
-        styleClass="p-datatable-gridlines"
-        [scrollable]="true"
-        scrollHeight="calc(90vh - 100px)"
-      >
+      <p-table [value]="listData" [rowHover]="true" styleClass="p-datatable-gridlines" [scrollable]="true"
+        scrollHeight="calc(90vh - 100px)">
         <ng-template pTemplate="header">
           <tr>
             <td>Tỉnh thành</td>
@@ -1054,12 +845,7 @@
     </div>
   </div>
 </p-dialog>
-<p-dialog
-  header="Thông báo thanh toán"
-  [modal]="true"
-  [(visible)]="visibleThanhToan"
-  [style]="{ width: '40vw' }"
->
+<p-dialog header="Thông báo thanh toán" [modal]="true" [(visible)]="visibleThanhToan" [style]="{ width: '40vw' }">
   <div class="all-conent">
     <div class="title"></div>
   </div>

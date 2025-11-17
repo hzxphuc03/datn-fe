@@ -45,7 +45,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
       name: 'Balenciaga',
     },
     {
-      img: 'http://tous-logos.com/wp-content/uploads/2017/04/Vans-logo.png',
+      img: 'https://i.ebayimg.com/images/g/t24AAOSwLu1kBlu4/s-l1600.webp',
       name: 'Vans ',
     },
     {

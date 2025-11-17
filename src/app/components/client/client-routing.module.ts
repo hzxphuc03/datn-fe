@@ -37,6 +37,10 @@ const routes: Routes = [
     component: fromPagesComponent.GtComponent,
   },
   {
+    path:'bai-viet',
+    component: fromPagesComponent.ArticleComponent,
+  },
+  {
     path: 'lien-he',
     component: fromPagesComponent.ContactUsComponent,
   },

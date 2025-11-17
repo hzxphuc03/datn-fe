@@ -111,15 +111,19 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     private websocketService: WebsocketService,
     private dataService: DataService,
   ) {
-    this.checkToken();
+    // Don't check token in constructor - wait for ngOnInit
   }
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
+    
+    // Check token once on init
+    this.checkToken();
+    
     this.chatService.getNewMessage().subscribe((message: any) => {
       if (message) {
         if (message.huongGui === 'kh-nv') {
-          if (message.nhanVien.id === decoded?.user.id) {
+          if (message.nhanVien.id === decoded?.['user']?.id) {
             this.errorService.displayError(
               `Bạn có tin nhắn mới từ khách hàng tên ${message.khachHang.hoTen}`,
               'normal'
@@ -138,7 +142,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
           return;
         }
         if (
-          message.idNguoiNhan === decoded?.user.id &&
+          message.idNguoiNhan === decoded?.['user']?.id &&
           message.role === 'nv-nv'
         ) {
           this.idTinNhanVuaXOng = message.id;
@@ -155,18 +159,21 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         }
       }
     });
+    
+    // Only check token on route changes, not every navigation
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkToken();
       }
     });
+    
     this.errorSubscription = this.errorService
       .getErrorObservable()
       .subscribe((message) => {
         this.errorMessage = message;
       });
 
-      this.websocketService
+    this.websocketService
       .connect()
       .then(() => {
         console.log('WebSocket connection established');
@@ -175,50 +182,70 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         console.error('Error establishing WebSocket connection', error);
       });
       
-      this.websocketService.getStompClient().onConnect = (frame) => {
-        this.websocketService
-          .getStompClient()
-          .subscribe('/topic/notifications', (message) => {
-            console.log(message);
-            
-              this.dataService.updateData('');
-          });
-      };
+    this.websocketService.getStompClient().onConnect = (frame) => {
+      this.websocketService
+        .getStompClient()
+        .subscribe('/topic/notifications', (message) => {
+          console.log(message);
+          this.dataService.updateData('');
+        });
+    };
   }
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {
-    this.checkToken();
+    // Don't check token on every click - too expensive
   }
   checkToken() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        const isExpired = this.tokenService.isTokenExpired();
-        const { decoded } = this.tokenService.getToken();
-        const a = this.tokenService.getToken();
-        if (a.decoded === null) {
-          this.router.navigate(['/auth/shop/login']);
-        }
-        if (a.decoded.role !== 'Admin' && a.decoded.role !== 'NhanVien') {
-          this.tokenService.removeToken();
-          this.router.navigate(['/auth/shop/login']);
-          return;
-        }
-        this.role = a.decoded.role;
-        if (decoded) {
-          if (isExpired) {
-            this.errorService.displayError(
-              'hết thời gian đăng nhập, vui lòng đăng nhập lại',
-              'normal'
-            );
-            this.tokenService.removeToken();
-            this.router.navigate(['/auth/shop/login']);
-          }
-        } else {
-          this.router.navigate(['/auth/shop/login']);
-        }
-        this.nhanVien = a.decoded.user        
-      }
-    });
+    const isExpired = this.tokenService.isTokenExpired();
+    const { decoded } = this.tokenService.getToken();
+    
+    // Skip check if on login page
+    if (this.router.url.includes('/login')) {
+      return;
+    }
+    
+    console.log('🔍 Admin - Token decoded:', decoded);
+    console.log('🔍 Admin - Role:', decoded?.role);
+    
+    if (decoded === null) {
+      console.log('❌ Token decoded is null');
+      this.router.navigate(['/auth/shop/login']);
+      return;
+    }
+    
+    // Check role - support multiple formats
+    const userRole = decoded?.role || decoded?.['user']?.role;
+    const isAdmin = userRole === 'Admin' || 
+                    userRole === 'ADMIN' || 
+                    userRole === 'admin';
+    const isNhanVien = userRole === 'NhanVien' || 
+                       userRole === 'NHAN_VIEN' || 
+                       userRole === 'nhan_vien' ||
+                       userRole === 'NV';
+    const hasAdminAuthority = decoded?.authorities?.includes('ROLE_ADMIN') || 
+                              decoded?.authorities?.includes('ROLE_NHAN_VIEN');
+    
+    if (!isAdmin && !isNhanVien && !hasAdminAuthority) {
+      console.log('❌ Not admin/staff role:', userRole, 'authorities:', decoded?.authorities);
+      this.tokenService.removeToken();
+      this.router.navigate(['/auth/shop/login']);
+      return;
+    }
+    
+    console.log('✅ Role check passed:', userRole);
+    this.role = userRole;
+    
+    if (isExpired) {
+      this.errorService.displayError(
+        'hết thời gian đăng nhập, vui lòng đăng nhập lại',
+        'normal'
+      );
+      this.tokenService.removeToken();
+      this.router.navigate(['/auth/shop/login']);
+      return;
+    }
+    
+    this.nhanVien = decoded?.['user'];
     this.auto();
   }
   async auto() {

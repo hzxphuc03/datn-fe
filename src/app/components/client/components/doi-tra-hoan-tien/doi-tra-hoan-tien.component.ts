@@ -39,7 +39,7 @@ export class DoiTraHoanTienComponent implements OnInit {
     if (a.decoded === null) {
       this.router.navigate(['/g4/shop/login']);
     }
-    if (a.decoded.role !== 'KhachHang') {
+    if (a.decoded?.role !== 'KHACH_HANG') {
       this.tokenService.removeToken();
       this.router.navigate(['/g4/shop/login']);
       return;
@@ -56,7 +56,7 @@ export class DoiTraHoanTienComponent implements OnInit {
     } else {
       this.router.navigate(['/g4/shop/login']);
     }
-    this.searchQuery.idKhachHang = decoded.user.id;
+    this.searchQuery.idKhachHang = decoded?.["user"].id;
     this.getAllDiaChi('rows');
   }
   openTapMoi() {

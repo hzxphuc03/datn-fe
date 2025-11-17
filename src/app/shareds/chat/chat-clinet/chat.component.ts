@@ -78,7 +78,7 @@ export class ChatClintComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
-    this.userUseChat = decoded.user;
+    this.userUseChat = decoded?.["user"];
     this.getAllChatBox();
     this.chatService.getNewMessage().subscribe((message: any) => {
       this.getAllChatBox();
@@ -131,7 +131,7 @@ export class ChatClintComponent implements OnInit, AfterViewInit {
     });
     //
     this.chatService.getClients().subscribe((clients) => {
-      if (decoded.user.chucVu === null) {
+      if (decoded?.["user"].chucVu === null) {
         // gọi list nhân viên by id
         const nhanVien = clients.filter((item) => item.chucVu !== null);
         this.clients = nhanVien; // Cập nhật danh sách client với những thằng có chức vụ
@@ -144,8 +144,8 @@ export class ChatClintComponent implements OnInit, AfterViewInit {
     });
     this.queryParams.page = 1;
     this.queryParams.pageSize = 15;
-    if (decoded && decoded?.user.id) {
-      if (decoded.user.chucVu === null) {
+    if (decoded && decoded?.["user"]?.id) {
+      if (decoded?.["user"].chucVu === null) {
         this.getAllNhanVien();
       } else {
         // gọi list khách hàng by nhân viên
@@ -202,12 +202,12 @@ export class ChatClintComponent implements OnInit, AfterViewInit {
   }
   async getAllChatBox() {
     const { decoded } = this.tokenService.getToken();
-    if (decoded && decoded?.user.id) {
-      this.idNhanVien = decoded?.user.id;
+    if (decoded && decoded?.["user"]?.id) {
+      this.idNhanVien = decoded?.["user"]?.id;
     }
-    if (!decoded.user.chucVu) {
+    if (!decoded?.["user"].chucVu) {
       const data = await this.server
-        .getAllBoxNhanVienByKhachHang(decoded?.user.id)
+        .getAllBoxNhanVienByKhachHang(decoded?.["user"]?.id)
         .toPromise();
       if (data) {
         this.listChatBox = data.map((item: any) => ({
@@ -222,7 +222,7 @@ export class ChatClintComponent implements OnInit, AfterViewInit {
       }
     } else {
       const data = await this.server
-        .getAllBoxKhachHangByNhanVien(decoded?.user.id)
+        .getAllBoxKhachHangByNhanVien(decoded?.["user"]?.id)
         .toPromise();
       if (data) {
         this.listChatBox = data.map((item: any) => ({

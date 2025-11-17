@@ -34,7 +34,7 @@ export class VoucherKhachHangComponent implements OnInit {
     if (!decoded) {
       this.router.navigate(['/g4/shop/login']);
     }
-    this.searchQuery.idKhachHang = decoded.user.id;
+    this.searchQuery.idKhachHang = decoded?.["user"].id;
     this.getAllVoucher();
   }
   async getAllVoucher() {

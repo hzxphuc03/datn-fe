@@ -166,8 +166,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
   async getAllNhanVienBox() {
     const { decoded } = this.tokenService.getToken();
-    if (decoded && decoded?.user.id) {
-      this.idNhanVien = decoded?.user.id;
+    if (decoded && decoded?.["user"]?.id) {
+      this.idNhanVien = decoded?.["user"]?.id;
     }
     const data = await this.server
       .getAllBoxNhanVien(this.idNhanVien)

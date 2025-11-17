@@ -101,21 +101,21 @@
         >
       </div>
       <div class="price-item" style="font-size: 24px; color: black">
-        <span *ngIf="!isGiamGia">
+        <span *ngIf="!isGiamGia && coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]">
           {{
-            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.giaBan
+            coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]?.giaBan
               | currency : "VND" : "symbol" : "1.0-0"
           }}
         </span>
         <div
-          *ngIf="isGiamGia"
+          *ngIf="isGiamGia && coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]"
           style="display: flex; align-items: center; gap: 10px"
         >
           <span>
             {{
-              coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+              coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]
                 ?.giaBan -
-                (coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+                (coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]
                   ?.giaBan *
                   phanTramGiam) /
                   100 | currency : "VND" : "symbol" : "1.0-0"
@@ -126,7 +126,7 @@
             style="font-size: 16px; opacity: 0.7"
           >
             {{
-              coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.giaBan
+              coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]?.giaBan
                 | currency : "VND" : "symbol" : "1.0-0"
             }}
           </div>
@@ -223,7 +223,7 @@
           <div
             class="item-size"
             *ngFor="
-              let size of coler[indexActiveColer - 1]?.listSize;
+              let size of coler[indexActiveColer - 1]?.listSize || [];
               let indexSize = index
             "
             [class.active-size]="indexSize + 1 === indexActiveSize"
@@ -249,14 +249,14 @@
         style="margin-top: 10px"
         *ngIf="
           coler[indexActiveColer - 1] &&
-          coler[indexActiveColer - 1].listSize &&
-          coler[indexActiveColer - 1].listSize[indexActiveSize - 1]
+          coler[indexActiveColer - 1]?.listSize &&
+          coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]
         "
       >
         <span>
           Sản phẩm có sẵn :
           {{
-            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong
+            coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]?.soLuong
           }}</span
         >
       </div>
@@ -273,7 +273,7 @@
           decrementButtonIcon="pi pi-minus"
           [min]="1"
           [max]="
-            coler[indexActiveColer - 1].listSize[indexActiveSize - 1]?.soLuong
+            coler[indexActiveColer - 1]?.listSize?.[indexActiveSize - 1]?.soLuong || 1
           "
         ></p-inputNumber>
       </div>

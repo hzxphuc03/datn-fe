@@ -33,14 +33,32 @@ export class InfoUserComponent implements OnInit {
     const isExpired = this.tokenService.isTokenExpired();
     const { decoded } = this.tokenService.getToken();
     const a = this.tokenService.getToken();
+    
+    console.log('🔍 InfoUser - Token decoded:', decoded);
+    console.log('🔍 InfoUser - Role:', decoded?.role);
+    console.log('🔍 InfoUser - Full decoded:', JSON.stringify(decoded, null, 2));
+    
     if (a.decoded === null) {
+      console.log('❌ Token decoded is null, redirecting to login');
       this.router.navigate(['/g4/shop/login']);
+      return;
     }
-    if (a.decoded.role !== 'KhachHang') {
+    
+    // Check role - support multiple formats
+    const userRole = a.decoded?.role || a.decoded?.['user']?.role;
+    const isKhachHang = userRole === 'KhachHang' || 
+                        userRole === 'KHACH_HANG' || 
+                        userRole === 'khach_hang' ||
+                        a.decoded?.authorities?.includes('ROLE_KHACH_HANG');
+    
+    if (!isKhachHang) {
+      console.log('❌ Not a customer role:', userRole, 'authorities:', a.decoded?.authorities);
       this.tokenService.removeToken();
       this.router.navigate(['/g4/shop/login']);
       return;
     }
+    
+    console.log('✅ Role check passed:', userRole);
     if (decoded) {
       if (isExpired) {
         this.errorService.displayError(
@@ -53,7 +71,7 @@ export class InfoUserComponent implements OnInit {
     } else {
       this.router.navigate(['/g4/shop/login']);
     }
-    this.idKhachHang = decoded.user.id;
+    this.idKhachHang = decoded?.["user"].id;
     this.getKh();
   }
   async getKh() {

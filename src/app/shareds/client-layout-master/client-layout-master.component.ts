@@ -42,34 +42,58 @@ export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private websocketService: WebsocketService,
     private spinner: NgxSpinnerService
-  ) {}
+  ) { }
   notifications: string[] = []; // Mảng chứa các thông báo
 
   ngOnInit(): void {
+    // Lấy user info từ token service
+    const userInfo = this.tokenService.getUserInfo();
     const { decoded } = this.tokenService.getToken();
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        const navigationEndEvent = event as NavigationEnd; // Type assertion
-        // console.log('URL changed to:', navigationEndEvent.url);
-        // Thực hiện hành động khi URL thay đổi
-      });
 
-    this.idKhachHang = decoded?.user?.id;
+    console.log('🔍 ClientLayoutMaster - OnInit:', {
+      decoded,
+      userInfo,
+      userIdFromDecoded: decoded?.["user"]?.id || decoded?.userId,
+      userIdFromUserInfo: userInfo?.id
+    });
+
+    // Ưu tiên lấy từ userInfo trước, sau đó từ decoded token
+    this.idKhachHang = userInfo?.id || decoded?.["user"]?.id || decoded?.userId;
     this.searchQuery.idKhachHang = this.idKhachHang;
+
+    console.log('👤 idKhachHang set to:', this.idKhachHang);
+
+    // Kiểm tra có token và đã đăng nhập không trước khi gọi API
+    const hasToken = this.tokenService.isTokenExists();
+    const isAuthenticated = this.tokenService.isAuthenticated();
+
+    console.log('🔐 Auth check:', {
+      hasToken,
+      isAuthenticated,
+      idKhachHang: this.idKhachHang
+    });
+
     if (this.idKhachHang) {
       this.isLoginKhachHang = true;
     } else {
       this.isLoginKhachHang = false;
     }
-    this.getAllNoti();
+
+    // Chỉ gọi API nếu có token và đã authenticated
+    if (hasToken && isAuthenticated && this.idKhachHang) {
+      this.getAllNoti();
+    } else {
+      console.warn('⚠️ Skipping getAllNoti - not authenticated or missing idKhachHang');
+    }
     this.receivedData = this.dataService.getData();
 
     // Lắng nghe các thay đổi từ service
     this.dataService.data$.subscribe((data: any) => {
       this.receivedData = data; // Cập nhật dữ liệu khi có thay đổi
       this.searchQuery.page = 1;
-      this.getGioHang(decoded?.user?.id);
+      const currentUserInfo = this.tokenService.getUserInfo();
+      const currentId = currentUserInfo?.id || this.idKhachHang;
+      this.getGioHang(currentId);
     });
 
     this.searchControl.valueChanges
@@ -118,7 +142,7 @@ export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
     this.chatService.getNewMessage().subscribe((message: any) => {
       if (message) {
         if (message.huongGui === 'nv-kh') {
-          if (message.khachHang.id === decoded?.user.id) {
+          if (message.khachHang.id === decoded?.["user"]?.id) {
             this.errorService.displayError(
               `Bạn có tin nhắn mới từ nhân viên ${message.nhanVien.hoTen}`,
               'normal'
@@ -255,7 +279,11 @@ export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
     this.router.navigate(['/g4/shop']);
   }
   gioHang() {
-    this.router.navigate(['/g4/shop/gio-hang']);
+    console.log('🛒 Navigating to cart...');
+    console.log('🔗 Current URL before:', this.router.url);
+    
+    // Force reload page to cart
+    window.location.href = '/g4/shop/gio-hang';
   }
   sanPham() {
     this.router.navigate(['/g4/shop/san-pham']);
@@ -271,6 +299,9 @@ export class ClientLayoutMasterComponent implements OnInit, OnDestroy {
   }
   goToGioiThieu() {
     this.router.navigate(['/g4/shop/gioi-thieu']);
+  }
+  goToBaiViet() {
+    this.router.navigate(['/g4/shop/bai-viet']);
   }
   goToLienHe() {
     this.router.navigate(['/g4/shop/lien-he']);
