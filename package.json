@@ -5,8 +5,13 @@
     "ng": "ng",
     "start": "concurrently \"ng serve\" \"node .\"",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
   },
   "private": true,
   "dependencies": {

@@ -1,0 +1,28 @@
+═══════════════════════════════════════════════════════════════
+  RENDER STATIC SITE - CẤU HÌNH NHANH (COPY-PASTE)
+═══════════════════════════════════════════════════════════════
+
+📍 TRONG RENDER DASHBOARD:
+
+┌─────────────────────────────────────────────────────────────┐
+│ Name:                    datn-fe                            │
+│ Root Directory:          .                                  │
+│ Branch:                  <BRANCH_NAME>                      │
+│ Build Command:           npm install && npm run build:prod  │
+│ Publish Directory:       dist/datn_fe                       │
+└─────────────────────────────────────────────────────────────┘
+
+📍 REWRITE RULE (Settings → Redirects / Rewrites):
+
+Source:     /*
+Destination: /index.html
+Type:       200
+
+═══════════════════════════════════════════════════════════════
+
+✅ ĐÃ CẬP NHẬT:
+- package.json: Thêm script "build:prod" và engines
+- File hướng dẫn: RENDER_DEPLOY_GUIDE.md
+
+═══════════════════════════════════════════════════════════════
+
