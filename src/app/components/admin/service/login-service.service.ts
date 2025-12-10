@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 export interface LoginRequest {
   username: string;
@@ -29,10 +30,12 @@ export interface ApiResponse<T = any> {
   providedIn: 'root',
 })
 export class LoginServiceService {
-  private readonly API_BASE_URL = 'http://localhost:8080/api';
+  private readonly API_BASE_URL = environment.apiUrl;
   private readonly EMPLOYEE_LOGIN_URL = `${this.API_BASE_URL}/auth/login/nhan-vien`;
   private readonly CUSTOMER_LOGIN_URL = `${this.API_BASE_URL}/auth/login/khach-hang`;
   private readonly REFRESH_TOKEN_URL = `${this.API_BASE_URL}/auth/refresh-token`;
+  private readonly LOGOUT_URL = `${this.API_BASE_URL}/auth/logout`;
+  private readonly ME_URL = `${this.API_BASE_URL}/auth/me`;
 
   constructor(private http: HttpClient) {}
 
@@ -127,6 +130,24 @@ export class LoginServiceService {
    */
   loginKH(params: any): Observable<any> {
     return this.loginCustomer(params);
+  }
+
+  /**
+   * Logout user
+   */
+  logout(): Observable<any> {
+    return this.http.post<any>(this.LOGOUT_URL, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Get current authenticated user info
+   */
+  getCurrentUser(): Observable<any> {
+    return this.http.get<any>(this.ME_URL).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /**

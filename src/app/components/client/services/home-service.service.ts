@@ -1,25 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HomeServoceService {
-  url: string = 'http://localhost:8080/api/san_pham';
-  urlTheLoai = 'http://localhost:8080/api/the_loai';
-  urlVatLieu = 'http://localhost:8080/api/vat_lieu';
-  urlThuongHieu = 'http://localhost:8080/api/thuong_hieu';
-  urlLoaiDe = 'http://localhost:8080/api/loai_de';
-  urlLoaiCo = 'http://localhost:8080/api/loai_co';
-  urlGiamGia = 'http://localhost:8080/api/giam_gia';
-  urlGioHang = 'http://localhost:8080/api/gio_hang';
-  urlSuKien = 'http://localhost:8080/api/su_kien';
-  urlSuKienVoucher = 'http://localhost:8080/api/lich_su_su_dung';
-  urlThongBao = 'http://localhost:8080/api/thong_bao';
-  urlDanhGia = 'http://localhost:8080/api/danh_gia_san_pham';
-  urlHoaDon = 'http://localhost:8080/api/hoa_don';
-  urlDoiTra = 'http://localhost:8080/api/doi-tra';
+  url: string = `${environment.apiUrl}/san_pham`;
+  urlTheLoai = `${environment.apiUrl}/the_loai`;
+  urlVatLieu = `${environment.apiUrl}/vat_lieu`;
+  urlThuongHieu = `${environment.apiUrl}/thuong_hieu`;
+  urlLoaiDe = `${environment.apiUrl}/loai_de`;
+  urlLoaiCo = `${environment.apiUrl}/loai_co`;
+  urlGiamGia = `${environment.apiUrl}/giam_gia`;
+  urlGioHang = `${environment.apiUrl}/gio_hang`;
+  urlSuKien = `${environment.apiUrl}/su_kien`;
+  urlSuKienVoucher = `${environment.apiUrl}/lich_su_su_dung`;
+  urlThongBao = `${environment.apiUrl}/thong_bao`;
+  urlDanhGia = `${environment.apiUrl}/danh_gia_san_pham`;
+  urlHoaDon = `${environment.apiUrl}/hoa_don`;
+  urlDoiTra = `${environment.apiUrl}/doi-tra`;
   constructor(private http: HttpClient) {}
 
   getTop5BanChay(): Observable<any> {
@@ -414,5 +415,33 @@ export class HomeServoceService {
           return of(error?.errorJson ? error.errorJson : error.error);
         })
       );
+  }
+
+  /**
+   * Lấy danh sách sản phẩm có đánh giá
+   */
+  getSanPhamCoDanhGia(): Observable<any> {
+    return this.http.get<any>(`${this.url}/co-danh-gia`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Lấy danh sách đánh giá của sản phẩm
+   */
+  getDanhGiaBySanPham(idSanPham: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/san-pham/${idSanPham}/danh-gia`).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
   }
 }

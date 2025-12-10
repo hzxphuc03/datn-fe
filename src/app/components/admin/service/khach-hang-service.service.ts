@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KhachHangServiceService {
-  url: string = 'http://localhost:8080/api/khach_hang';
-  urlDiaChi: string = 'http://localhost:8080/api/dia_chi';
+  url: string = `${environment.apiUrl}/khach_hang`;
+  urlDiaChi: string = `${environment.apiUrl}/dia_chi`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {
@@ -92,5 +93,47 @@ export class KhachHangServiceService {
           return of(error?.errorJson ? error.errorJson : error.error);
         })
       );
+  }
+
+  /**
+   * Gửi mã OTP qua email
+   */
+  guiMaOTP(params: { email: string }): Observable<any> {
+    return this.http.post<any>(`${this.url}/gui-ma-otp`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Cập nhật số điện thoại
+   */
+  capNhatSoDienThoai(params: { idKhachHang: number; soDienThoai: string; otp: string }): Observable<any> {
+    return this.http.put<any>(`${this.url}/cap-nhat-so-dien-thoai`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Cập nhật email
+   */
+  capNhatEmail(params: { idKhachHang: number; email: string; otp: string }): Observable<any> {
+    return this.http.put<any>(`${this.url}/cap-nhat-email`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
   }
 }

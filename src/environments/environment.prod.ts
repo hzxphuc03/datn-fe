@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8080/api' // TODO: Update with production API URL
+  apiUrl: 'https://ba-datn-1.onrender.com/api',
+  wsUrl: 'https://ba-datn-1.onrender.com/ws',
+  socketUrl: 'https://ba-datn-1.onrender.com'
 };

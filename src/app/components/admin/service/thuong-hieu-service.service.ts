@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class ThuongHieuServiceService {
-  url: string = 'http://localhost:8080/api/thuong_hieu';
+  url: string = `${environment.apiUrl}/thuong_hieu`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {

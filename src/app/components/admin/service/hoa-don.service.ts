@@ -1,14 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HoaDonService {
-  url: string = 'http://localhost:8080/api/hoa_don';
-  urlCT: string = 'http://localhost:8080/api/hoa_don_chi_tiet';
-  urlThaoTacHoaDon: string = 'http://localhost:8080/api/thao_tac_hoa_don';
+  url: string = `${environment.apiUrl}/hoa_don`;
+  urlCT: string = `${environment.apiUrl}/hoa_don_chi_tiet`;
+  urlThaoTacHoaDon: string = `${environment.apiUrl}/thao_tac_hoa_don`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {

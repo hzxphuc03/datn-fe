@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
-  url: string = 'http://localhost:8080/api/su_kien';
-  urlVoucher: string = 'http://localhost:8080/api/voucher';
-  urlVoucherEvent: string = 'http://localhost:8080/api/chi_phieu_giam_gia_su_kien';
+  url: string = `${environment.apiUrl}/su_kien`;
+  urlVoucher: string = `${environment.apiUrl}/voucher`;
+  urlVoucherEvent: string = `${environment.apiUrl}/chi_phieu_giam_gia_su_kien`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {

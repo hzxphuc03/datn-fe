@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThongKeServiceService {
-  url: string = 'http://localhost:8080/api/thong-ke';
+  url: string = `${environment.apiUrl}/thong-ke`;
   constructor(private http: HttpClient) {}
 
   getDoanhSoThangNay(): Observable<any> {

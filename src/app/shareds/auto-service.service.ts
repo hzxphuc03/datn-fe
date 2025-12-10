@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutoServiceService {
-  url: string = 'http://localhost:8080/api/voucher/update-trangthai-auto';
+  url: string = `${environment.apiUrl}/voucher/update-trangthai-auto`;
   constructor(private http: HttpClient) {}
 
   autoVoucher(): Observable<any> {

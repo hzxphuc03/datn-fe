@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 import { TokenService, UserInfo } from './token.service';
 
@@ -38,7 +39,7 @@ export interface ChangePasswordRequest {
   providedIn: 'root'
 })
 export class UserService {
-  private readonly API_BASE_URL = 'http://localhost:8080/api';
+  private readonly API_BASE_URL = environment.apiUrl;
   
   // User profile observable
   private userProfileSubject = new BehaviorSubject<UserProfile | null>(null);

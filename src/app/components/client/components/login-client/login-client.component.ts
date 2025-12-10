@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { LoginServiceService, LoginRequest } from 'src/app/components/admin/service/login-service.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -299,12 +300,14 @@ export class LoginClientComponent implements OnInit, OnDestroy {
   // Navigation methods
   goToRegister(): void {
     // Redirect to backend registration page
-    window.location.href = 'http://localhost:8080/dang-ky/lay-ma-opt';
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    window.location.href = `${baseUrl}/dang-ky/lay-ma-opt`;
   }
 
   goToForgotPassword(): void {
     // Redirect to backend forgot password page
-    window.location.href = 'http://localhost:8080/quen-mat-khau/gmail';
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    window.location.href = `${baseUrl}/quen-mat-khau/gmail`;
   }
 
   // Utility methods for template

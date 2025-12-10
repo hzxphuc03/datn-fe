@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoaiDeServiceService {
 
-  url: string = 'http://localhost:8080/api/loai_de';
+  url: string = `${environment.apiUrl}/loai_de`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {

@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminChatService {
-  url : string = 'http://localhost:8080/api/nhan-tin';
-  urlDoanChat : string = 'http://localhost:8080/api/doan-chat';
-  urlHopThoai : string = 'http://localhost:8080/api/hop-thoai';
+  url : string = `${environment.apiUrl}/nhan-tin`;
+  urlDoanChat : string = `${environment.apiUrl}/doan-chat`;
+  urlHopThoai : string = `${environment.apiUrl}/hop-thoai`;
   constructor(private http: HttpClient) { }
 
   getAllBoxNhanVien(id : any): Observable<any> {

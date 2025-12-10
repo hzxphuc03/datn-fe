@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class CTSPServiceService {
-  url: string = 'http://localhost:8080/api/san_pham';
-  urlCTSP: string = 'http://localhost:8080/api/san_pham_chi_tiet';
-  urlDanhGia: string = 'http://localhost:8080/api/danh_gia_san_pham';
+  url: string = `${environment.apiUrl}/san_pham`;
+  urlCTSP: string = `${environment.apiUrl}/san_pham_chi_tiet`;
+  urlDanhGia: string = `${environment.apiUrl}/danh_gia_san_pham`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {

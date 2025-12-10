@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Client, Stomp } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class WebsocketService {
 
   constructor() {
     // Tạo kết nối SockJS
-    this.socket = new SockJS('http://localhost:8080/ws'); // URL WebSocket backend của bạn
+    this.socket = new SockJS(environment.wsUrl);
     this.stompClient = Stomp.over(this.socket);
   }
 

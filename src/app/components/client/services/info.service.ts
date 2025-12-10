@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InfoService {
-  url: string = 'http://localhost:8080/api/khach_hang';
+  url: string = `${environment.apiUrl}/khach_hang`;
   constructor(private http: HttpClient, private dataService: DataService) {}
 
   getUserByIdKh(id: any): Observable<any> {

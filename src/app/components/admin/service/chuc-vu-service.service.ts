@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChucVuServiceService {
-  url: string = 'http://localhost:8080/api/chuc_vu';
+  url: string = `${environment.apiUrl}/chuc_vu`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {

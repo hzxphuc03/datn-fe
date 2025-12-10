@@ -1,14 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VoucherService {
-  url: string = 'http://localhost:8080/api/voucher';
-  urlVoucherHoaDon: string = 'http://localhost:8080/api/voucher_hoa_don';
-  urlVoucherHoaDonCT: string = 'http://localhost:8080/api/hoa_don';
+  url: string = `${environment.apiUrl}/voucher`;
+  urlVoucherHoaDon: string = `${environment.apiUrl}/voucher_hoa_don`;
+  urlVoucherHoaDonCT: string = `${environment.apiUrl}/hoa_don`;
   constructor(private http: HttpClient) {}
 
   getAll(params: any): Observable<any> {
@@ -109,5 +110,75 @@ export class VoucherService {
           return of(error?.errorJson ? error.errorJson : error.error);
         })
       );
+  }
+
+  /**
+   * Lấy voucher hóa đơn
+   */
+  getVoucherHoaDon(params: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/Voucher-Hoa-Don`, { params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Lấy voucher ship
+   */
+  getVoucherShip(params: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/Voucher-Ship`, { params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Lấy phiếu giảm giá sự kiện
+   */
+  getPhieuGiamGiaSuKien(params: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/get-phieu-giam-gia-su-kien`, { params }).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Thêm voucher sự kiện
+   */
+  addVoucherSuKien(params: { idSuKien: number; vouchers: any[] }): Observable<any> {
+    return this.http.post<any>(`${this.url}/add-voucher-su-kien`, params).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
+  }
+
+  /**
+   * Cập nhật trạng thái voucher tự động (scheduled job)
+   */
+  updateTrangThaiAuto(): Observable<any> {
+    return this.http.put<any>(`${this.url}/update-trangthai-auto`, {}).pipe(
+      (res: any) => {
+        return res || null;
+      },
+      catchError((error: any) => {
+        return of(error?.errorJson ? error.errorJson : error.error);
+      })
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { io } from 'socket.io-client';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root' // Đảm bảo service này được cung cấp ở root
@@ -10,7 +11,7 @@ export class ChatService {
   public notification$: BehaviorSubject<string> = new BehaviorSubject<string>(''); // Thêm BehaviorSubject cho thông báo
   public clients$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]); // Thay đổi kiểu cho danh sách client để lưu đối tượng khách hàng
 
-  private socket = io('http://localhost:3200');
+  private socket = io(environment.socketUrl);
 
   constructor() {
     this.listenForClients(); // Lắng nghe danh sách client khi khởi tạo
