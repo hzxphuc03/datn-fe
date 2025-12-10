@@ -66,7 +66,7 @@ export class VoucherService {
         })
       );
   }
-  getVoucherHoaDon(params: any): Observable<any> {
+  getVoucherActive(params: any): Observable<any> {
     return this.http
       .get<any>(`${this.url}/get-voucher-active`, { params })
       .pipe(
