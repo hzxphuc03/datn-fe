@@ -27,14 +27,29 @@ export class AuthInterceptor implements HttpInterceptor {
     const isLoginRequest = request.url.includes('/auth/') && 
                           (request.url.includes('login') || request.url.includes('register'));
     
+    // Check if request body is FormData (for file uploads)
+    const isFormData = request.body instanceof FormData;
+    
     // Clone the request and add the authorization header if token exists
     if (token && !isLoginRequest && !this.tokenService.isTokenExpired()) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      // For FormData, only add Authorization header, don't set Content-Type
+      // Angular will automatically set multipart/form-data with boundary
+      if (isFormData) {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`
+            // DO NOT set Content-Type - let Angular handle it for FormData
+          }
+        });
+      } else {
+        // For JSON requests, set both Authorization and Content-Type
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+      }
     }
 
     // Handle the request and catch any authentication errors
