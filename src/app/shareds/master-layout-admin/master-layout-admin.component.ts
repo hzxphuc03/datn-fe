@@ -17,7 +17,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
   isOpen: boolean = true;
   errorMessage: any | null = null; // Đảm bảo kiểu dữ liệu cho phép null
   private errorSubscription?: Subscription;
-  role : any = ''
+  role: any = '';
   actionNavItems: any[] = [
     { icon: 'bx bx-home-circle', name: 'Trang chủ', url: '/auth/admin/home' },
     {
@@ -25,7 +25,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       name: 'Sản phẩm',
       url: '',
       type: 'drop',
-      role : 'All',
+      role: 'All',
       item: [
         {
           icon: 'bx bx-cube',
@@ -43,13 +43,18 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         { icon: 'bx bx-cube', name: 'Loại đế', url: '/auth/admin/loai-de' },
         { icon: 'bx bx-cube', name: 'Vật liệu', url: '/auth/admin/vat-lieu' },
         { icon: 'bx bx-cube', name: 'Màu Sắc', url: '/auth/admin/mau-sac' },
-        { icon: 'bx bx-cube', name: 'Giảm giá', url: '/auth/admin/giam-gia',role:"Admin" },
+        {
+          icon: 'bx bx-cube',
+          name: 'Giảm giá',
+          url: '/auth/admin/giam-gia',
+          role: 'Admin',
+        },
       ],
     },
     {
       icon: 'bx bx-home-circle',
       name: 'Nhân viên',
-      role : 'Admin',
+      role: 'Admin',
       url: '',
       type: 'drop',
       item: [
@@ -61,47 +66,47 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       icon: 'bx bx-home-circle',
       name: 'Khách hàng',
       url: '/auth/admin/khach-hang',
-      role : 'Admin',
+      role: 'Admin',
     },
     {
       icon: 'bx bx-cube',
       name: 'Phiếu giảm giá',
       url: '/auth/admin/voucher',
-      role : 'Admin',
+      role: 'Admin',
     },
     {
       icon: 'bx bx-cube',
       name: 'Bán hàng',
-      role : 'All',
+      role: 'All',
       url: '/auth/admin/ban-hang-tai-quay',
     },
     {
       icon: 'bx bx-cube',
       name: 'Hóa đơn',
-      role : 'All',
+      role: 'All',
       url: '/auth/admin/quan-ly-hoa-don',
     },
     {
       icon: 'bx bx-cube',
       name: 'Sự kiện',
       url: '/auth/admin/event',
-      role : 'Admin',
+      role: 'Admin',
     },
     {
       icon: 'bx bx-cube',
       name: 'Đổi trả & hoàn tiền',
       url: '/auth/admin/doi-tra',
-      role : 'All',
+      role: 'All',
     },
     {
       icon: 'bx bx-cube',
       name: 'Thống kê',
       url: '/auth/admin/thong-ke',
-      role : 'Admin',
+      role: 'Admin',
     },
   ];
   idTinNhanVuaXOng: any = 0;
-  nhanVien : any;
+  nhanVien: any;
   constructor(
     private tokenService: TokenService,
     private router: Router,
@@ -109,17 +114,17 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
     private autoVoucher: AutoServiceService,
     private chatService: ChatService,
     private websocketService: WebsocketService,
-    private dataService: DataService,
+    private dataService: DataService
   ) {
     // Don't check token in constructor - wait for ngOnInit
   }
 
   ngOnInit(): void {
     const { decoded } = this.tokenService.getToken();
-    
+
     // Check token once on init
     this.checkToken();
-    
+
     this.chatService.getNewMessage().subscribe((message: any) => {
       if (message) {
         if (message.huongGui === 'kh-nv') {
@@ -159,14 +164,14 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
         }
       }
     });
-    
+
     // Only check token on route changes, not every navigation
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.checkToken();
       }
     });
-    
+
     this.errorSubscription = this.errorService
       .getErrorObservable()
       .subscribe((message) => {
@@ -181,7 +186,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       .catch((error) => {
         console.error('Error establishing WebSocket connection', error);
       });
-      
+
     this.websocketService.getStompClient().onConnect = (frame) => {
       this.websocketService
         .getStompClient()
@@ -198,43 +203,32 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
   checkToken() {
     const isExpired = this.tokenService.isTokenExpired();
     const { decoded } = this.tokenService.getToken();
-    
+
     // Skip check if on login page
     if (this.router.url.includes('/login')) {
       return;
     }
-    
+
     console.log('🔍 Admin - Token decoded:', decoded);
     console.log('🔍 Admin - Role:', decoded?.role);
-    
+
     if (decoded === null) {
       console.log('❌ Token decoded is null');
       this.router.navigate(['/auth/shop/login']);
       return;
     }
-    
+
     // Check role - support multiple formats
-    const userRole = decoded?.role || decoded?.['user']?.role;
-    const isAdmin = userRole === 'Admin' || 
-                    userRole === 'ADMIN' || 
-                    userRole === 'admin';
-    const isNhanVien = userRole === 'NhanVien' || 
-                       userRole === 'NHAN_VIEN' || 
-                       userRole === 'nhan_vien' ||
-                       userRole === 'NV';
-    const hasAdminAuthority = decoded?.authorities?.includes('ROLE_ADMIN') || 
-                              decoded?.authorities?.includes('ROLE_NHAN_VIEN');
-    
-    if (!isAdmin && !isNhanVien && !hasAdminAuthority) {
-      console.log('❌ Not admin/staff role:', userRole, 'authorities:', decoded?.authorities);
-      this.tokenService.removeToken();
-      this.router.navigate(['/auth/shop/login']);
-      return;
+    const rawRole = decoded?.role || decoded?.['user']?.role;
+
+    if (rawRole === 'ROLE_ADMIN' || rawRole === 'ADMIN') {
+      this.role = 'Admin';
+    } else if (rawRole === 'ROLE_NHAN_VIEN' || rawRole === 'NV') {
+      this.role = 'NhanVien';
+    } else {
+      this.role = rawRole;
     }
-    
-    console.log('✅ Role check passed:', userRole);
-    this.role = userRole;
-    
+
     if (isExpired) {
       this.errorService.displayError(
         'hết thời gian đăng nhập, vui lòng đăng nhập lại',
@@ -244,7 +238,7 @@ export class MasterLayoutAdminComponent implements OnInit, OnDestroy {
       this.router.navigate(['/auth/shop/login']);
       return;
     }
-    
+
     this.nhanVien = decoded?.['user'];
     this.auto();
   }
